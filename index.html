@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Himanshu Nakrani | AI Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-logo">HN</span>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#publications">Research</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact" class="btn-nav">Contact</a></li>
+      </ul>
+      <button class="hamburger" aria-label="Toggle menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="about">
+    <div class="hero-content">
+      <p class="hero-tag">Generative AI Engineer</p>
+      <h1>Himanshu<br /><span class="accent">Nakrani</span></h1>
+      <p class="hero-desc">
+        2+ years building production LLM applications, RAG systems, and scalable AI solutions.
+        Specialized in Text-to-SQL, fine-tuning, and AI agent architectures.
+      </p>
+      <div class="hero-cta">
+        <a href="#experience" class="btn-primary">View Work</a>
+        <a href="#contact" class="btn-secondary">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">75%</span><span class="stat-label">Response time reduction</span></div>
+        <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Internal users served</span></div>
+        <div class="stat"><span class="stat-num">95%+</span><span class="stat-label">Unit test coverage</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Research publications</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="code-card">
+        <div class="code-card-header">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="code-filename">alpha_copilot.py</span>
+        </div>
+        <pre class="code-body"><code><span class="kw">from</span> langchain <span class="kw">import</span> LLMChain
+<span class="kw">from</span> fastapi <span class="kw">import</span> FastAPI
+
+app = FastAPI()
+
+<span class="kw">@app</span>.post(<span class="str">"/query"</span>)
+<span class="kw">async def</span> <span class="fn">natural_language_query</span>(
+    query: <span class="type">str</span>,
+    schema: <span class="type">SchemaContext</span>
+):
+    sql = <span class="kw">await</span> llm_chain.arun(
+        query=query,
+        schema=schema,
+        strategy=<span class="str">"few-shot"</span>
+    )
+    <span class="kw">return</span> execute_and_visualize(sql)</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section class="section" id="experience">
+    <div class="container">
+      <h2 class="section-title">Experience</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <h3>Senior Associate — AI Software Developer</h3>
+                <p class="company">State Street Corporation · Hyderabad, India</p>
+              </div>
+              <span class="date-badge">Mar 2024 – Present</span>
+            </div>
+            <ul class="card-bullets">
+              <li>Architected <strong>Alpha Copilot</strong> — an enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data</li>
+              <li>Engineered FastAPI + SQLAlchemy backend with advanced caching, cutting response time by <strong>75%</strong> (25–30s → 6–8s)</li>
+              <li>Integrated LLM-based data visualization for auto-generating interactive charts from query results</li>
+              <li>Led backend for <strong>WealthAI</strong> — real-time portfolio narrative generation from optimizer outputs</li>
+              <li>Fine-tuned GPT-4o mini, GPT-4.1 mini (Azure OpenAI) and Llama 3.1-8B (Databricks) using PEFT/LoRA</li>
+              <li>Researched schema-linking and few-shot prompting strategies, improving SQL accuracy by <strong>25%</strong></li>
+              <li>Building <strong>Agent Forge</strong> — a no-code AI agent builder with real-time trace monitoring and evaluation dashboards</li>
+              <li>Achieved <strong>95%+</strong> unit test coverage across production systems</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">FastAPI</span><span class="tag">LangChain</span><span class="tag">Azure OpenAI</span>
+              <span class="tag">LoRA/PEFT</span><span class="tag">Text-to-SQL</span><span class="tag">Databricks</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <h3>Associate 2 — AI Software Developer</h3>
+                <p class="company">State Street Corporation · Hyderabad, India</p>
+              </div>
+              <span class="date-badge">Jul 2023 – Feb 2024</span>
+            </div>
+            <ul class="card-bullets">
+              <li>Built production-ready <strong>RAG system</strong> for extracting insights from fund prospectuses using OpenAI + vector embeddings</li>
+              <li>Designed intelligent chunking, semantic embedding, and vector DB pipeline for sub-second retrieval</li>
+              <li>Collaborated with business analysts and compliance officers to meet regulatory requirements</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">RAG</span><span class="tag">OpenAI</span><span class="tag">pgvector</span><span class="tag">Semantic Search</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <h3>Software Development Intern</h3>
+                <p class="company">State Street Corporation · Hyderabad, India</p>
+              </div>
+              <span class="date-badge">Jan 2023 – Jun 2023</span>
+            </div>
+            <ul class="card-bullets">
+              <li>Migrated legacy ideation platform from .NET Core to <strong>FastAPI + ReactJS</strong>, improving performance by 40%</li>
+              <li>Designed RESTful APIs with SQLite backend and comprehensive test coverage</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">FastAPI</span><span class="tag">ReactJS</span><span class="tag">SQLite</span><span class="tag">.NET Core</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <div>
+                <h3>Machine Learning Developer Intern</h3>
+                <p class="company">Technocolabs Software Inc. · Remote</p>
+              </div>
+              <span class="date-badge">Jun 2022 – Jul 2022</span>
+            </div>
+            <ul class="card-bullets">
+              <li>Built CNN-based <strong>Spotify Skip Action Predictor</strong> achieving 87% accuracy in real-time prediction</li>
+              <li>End-to-end ML pipeline: data preprocessing, feature engineering, model training, and API deployment</li>
+            </ul>
+            <div class="tag-row">
+              <span class="tag">CNN</span><span class="tag">Python</span><span class="tag">Deep Learning</span><span class="tag">API Deployment</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <h2 class="section-title">Key Projects</h2>
+      <div class="projects-grid">
+
+        <div class="project-card featured">
+          <div class="project-icon">🤖</div>
+          <h3>Alpha Copilot</h3>
+          <p>Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves 100+ internal users at State Street.</p>
+          <div class="tag-row">
+            <span class="tag">Text-to-SQL</span><span class="tag">FastAPI</span><span class="tag">Azure OpenAI</span><span class="tag">SQLAlchemy</span>
+          </div>
+          <span class="project-badge">Production</span>
+        </div>
+
+        <div class="project-card featured">
+          <div class="project-icon">🔧</div>
+          <h3>Agent Forge</h3>
+          <p>No-code AI agent builder platform for designing, registering, and deploying custom agents with real-time trace monitoring and evaluation dashboards.</p>
+          <div class="tag-row">
+            <span class="tag">AI Agents</span><span class="tag">Google ADK</span><span class="tag">LangChain</span><span class="tag">Observability</span>
+          </div>
+          <span class="project-badge in-progress">In Progress</span>
+        </div>
+
+        <div class="project-card featured">
+          <div class="project-icon">💼</div>
+          <h3>WealthAI</h3>
+          <p>Real-time portfolio narrative generation system that processes optimizer outputs and delivers personalized investment insights at scale.</p>
+          <div class="tag-row">
+            <span class="tag">LLM</span><span class="tag">FastAPI</span><span class="tag">Real-time</span><span class="tag">Finance</span>
+          </div>
+          <span class="project-badge">Production</span>
+        </div>
+
+        <div class="project-card featured">
+          <div class="project-icon">📄</div>
+          <h3>Fund Prospectus RAG</h3>
+          <p>Production RAG system for extracting actionable insights from fund prospectuses using OpenAI models, vector embeddings, and intelligent chunking strategies.</p>
+          <div class="tag-row">
+            <span class="tag">RAG</span><span class="tag">OpenAI</span><span class="tag">pgvector</span><span class="tag">Embeddings</span>
+          </div>
+          <span class="project-badge">Production</span>
+        </div>
+
+        <div class="project-card">
+          <div class="project-icon">🛡️</div>
+          <h3>Intrusion Detection System</h3>
+          <p>ML-based network intrusion detection classifier on KDD Cup 1999 dataset (4.9M records), achieving 94% accuracy across DoS, Probe, R2L, and U2R attacks.</p>
+          <div class="tag-row">
+            <span class="tag">Random Forest</span><span class="tag">XGBoost</span><span class="tag">Python</span><span class="tag">Kaggle</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-icon">₿</div>
+          <h3>Bitcoin Price Prediction</h3>
+          <p>Automated daily-updated cryptocurrency forecasting using LSTM networks with technical indicators. Achieved 18% RMSE reduction via walk-forward validation.</p>
+          <div class="tag-row">
+            <span class="tag">LSTM</span><span class="tag">Time Series</span><span class="tag">Deep Learning</span><span class="tag">Kaggle</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Publications -->
+  <section class="section" id="publications">
+    <div class="container">
+      <h2 class="section-title">Research & Publications</h2>
+      <div class="pub-grid">
+        <div class="pub-card">
+          <span class="pub-venue">FLLM 2025</span>
+          <h3>GoT4SQL-DA: A Graph-of-Thoughts Framework for Scalable Text-to-SQL Data Augmentation</h3>
+          <p>Novel framework leveraging Graph-of-Thoughts reasoning for scalable data augmentation in Text-to-SQL systems.</p>
+          <div class="tag-row">
+            <span class="tag">Graph-of-Thoughts</span><span class="tag">Text-to-SQL</span><span class="tag">Data Augmentation</span>
+          </div>
+        </div>
+        <div class="pub-card">
+          <span class="pub-venue">CSCI 2025</span>
+          <h3>GRAFT: Graph-of-Thoughts based Reasoning and Augmentation for Finetuning Text-to-SQL</h3>
+          <p>Research on applying Graph-of-Thoughts reasoning to improve fine-tuning pipelines for Text-to-SQL generation.</p>
+          <div class="tag-row">
+            <span class="tag">Fine-tuning</span><span class="tag">LLM</span><span class="tag">Reasoning</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section section-alt" id="skills">
+    <div class="container">
+      <h2 class="section-title">Technical Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h4>AI / ML</h4>
+          <div class="tag-row">
+            <span class="tag">LLMs</span><span class="tag">RAG</span><span class="tag">Fine-tuning</span>
+            <span class="tag">LoRA/PEFT</span><span class="tag">Prompt Engineering</span><span class="tag">LangChain</span>
+            <span class="tag">Google ADK</span><span class="tag">AI Agents</span><span class="tag">OpenAI API</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Backend</h4>
+          <div class="tag-row">
+            <span class="tag">FastAPI</span><span class="tag">ASP.NET Core</span><span class="tag">REST APIs</span>
+            <span class="tag">SQLAlchemy</span><span class="tag">Microservices</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Languages</h4>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">Java</span><span class="tag">SQL</span>
+            <span class="tag">C/C++</span><span class="tag">C#</span><span class="tag">Shell/Perl</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Cloud & DevOps</h4>
+          <div class="tag-row">
+            <span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">OCI</span>
+            <span class="tag">Databricks</span><span class="tag">Azure OpenAI Studio</span><span class="tag">CI/CD</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Databases</h4>
+          <div class="tag-row">
+            <span class="tag">PostgreSQL</span><span class="tag">pgvector</span><span class="tag">SQLite</span>
+            <span class="tag">Vector DBs</span><span class="tag">Semantic Search</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>ML / Deep Learning</h4>
+          <div class="tag-row">
+            <span class="tag">CNNs</span><span class="tag">LSTM</span><span class="tag">Computer Vision</span>
+            <span class="tag">XGBoost</span><span class="tag">Random Forest</span><span class="tag">Model Deployment</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section class="section" id="certifications">
+    <div class="container">
+      <h2 class="section-title">Certifications</h2>
+      <div class="cert-grid">
+        <div class="cert-card"><span class="cert-icon">☁️</span><p>Oracle Cloud Infrastructure Certified Generative AI Professional</p></div>
+        <div class="cert-card"><span class="cert-icon">🤖</span><p>Amazon Machine Learning Summer School 2022</p></div>
+        <div class="cert-card"><span class="cert-icon">☁️</span><p>AWS Machine Learning Foundations — Udacity</p></div>
+        <div class="cert-card"><span class="cert-icon">🏦</span><p>Goldman Sachs Engineering Virtual Program</p></div>
+        <div class="cert-card"><span class="cert-icon">🧠</span><p>Generative AI Fundamentals — Databricks</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section-alt" id="contact">
+    <div class="container contact-container">
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="contact-desc">Open to interesting problems in AI, LLMs, and building things that matter.</p>
+      <div class="contact-links">
+        <a href="mailto:himanshunakrani0@gmail.com" class="contact-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email
+        </a>
+        <a href="https://github.com/himanshu-nakrani" target="_blank" rel="noopener" class="contact-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/himanshu-nakrani" target="_blank" rel="noopener" class="contact-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://leetcode.com/himanshu-nakrani" target="_blank" rel="noopener" class="contact-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+          LeetCode
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Built by Himanshu Nakrani · 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
