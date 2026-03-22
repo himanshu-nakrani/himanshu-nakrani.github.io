@@ -34,9 +34,19 @@ export default function Research() {
             </span>
             <h3 style={{ fontSize: '0.95rem', fontWeight: 700, lineHeight: 1.4, marginBottom: '0.6rem' }}>{p.title}</h3>
             <p style={{ fontSize: '0.83rem', color: 'var(--text2)', marginBottom: '1rem', lineHeight: 1.6 }}>{p.desc}</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: p.link ? '1rem' : 0 }}>
               {p.tags.map(t => <Tag key={t}>{t}</Tag>)}
             </div>
+            {p.link && (
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener"
+                style={{ fontSize: '0.78rem', color: 'var(--accent)', textDecoration: 'none', fontFamily: "'Fira Code', monospace", display: 'inline-flex', alignItems: 'center', gap: 4 }}
+              >
+                📄 View on IEEE Xplore →
+              </a>
+            )}
           </motion.div>
         ))}
       </div>
