@@ -399,3 +399,76 @@ body {
   .lc-card { max-width: 100%; }
   .gh-charts { flex-direction: column; }
 }
+
+/* ── Kaggle Section ── */
+.kaggle-header { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.kaggle-tiers { display: flex; gap: 1rem; flex-wrap: wrap; flex: 2; }
+.tier-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem;
+  display: flex; gap: 1rem; align-items: flex-start;
+  flex: 1; min-width: 220px;
+  transition: border-color 0.2s;
+}
+.tier-card:hover { border-color: var(--accent); }
+.tier-icon { width: 40px; height: 40px; flex-shrink: 0; }
+.tier-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 3px; }
+.tier-rank { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+.tier-rank strong { color: var(--text); }
+.medal-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.medal {
+  font-size: 0.72rem; padding: 2px 8px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--surface2); color: var(--text-muted);
+}
+.medal.silver { border-color: rgba(192,192,192,0.4); color: #c0c0c0; }
+.medal.bronze { border-color: rgba(205,127,50,0.4); color: #cd7f32; }
+
+.kaggle-stats {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  align-items: center; flex: 1;
+}
+.kag-stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem 1.4rem; text-align: center;
+  flex: 1; min-width: 80px;
+}
+.kag-num { display: block; font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+.kag-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; display: block; }
+
+.subsection-title {
+  font-size: 1rem; font-weight: 600; color: var(--text-muted);
+  margin-bottom: 1.2rem; font-family: 'Fira Code', monospace;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+.kaggle-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem; margin-bottom: 1.5rem;
+}
+.kag-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem;
+  text-decoration: none; color: var(--text);
+  display: flex; flex-direction: column; gap: 0.5rem;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.kag-card:hover {
+  border-color: var(--accent); transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+.kag-card-top { display: flex; justify-content: space-between; align-items: center; }
+.kag-type {
+  font-size: 0.72rem; font-family: 'Fira Code', monospace;
+  padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border);
+}
+.kag-type.notebook { color: #82aaff; border-color: rgba(130,170,255,0.3); background: rgba(130,170,255,0.08); }
+.kag-type.dataset  { color: #4ade80; border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+.kag-medal { font-size: 1rem; }
+.kag-card h4 { font-size: 0.92rem; font-weight: 600; line-height: 1.3; }
+.kag-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; flex: 1; }
+.kag-votes { font-size: 0.75rem; color: var(--accent); font-family: 'Fira Code', monospace; }
+
+@media (max-width: 768px) {
+  .kaggle-header { flex-direction: column; }
+  .kaggle-stats { justify-content: space-between; }
+}
