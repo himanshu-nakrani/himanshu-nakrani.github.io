@@ -324,3 +324,78 @@ body {
   .timeline-dot { left: -1.9rem; }
   .card-header { flex-direction: column; }
 }
+
+/* ── Avatar Card (replaces code card) ── */
+.avatar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  width: 100%; max-width: 360px;
+  box-shadow: 0 0 60px rgba(108, 99, 255, 0.12);
+}
+.avatar-img {
+  width: 100%; height: 220px;
+  object-fit: cover; object-position: top;
+  display: block;
+}
+.avatar-info { padding: 1.2rem; }
+.avatar-name { font-size: 1.1rem; font-weight: 600; margin-bottom: 2px; }
+.avatar-role { font-size: 0.82rem; color: var(--accent); margin-bottom: 2px; }
+.avatar-company { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+.avatar-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.8rem; }
+.badge-pill {
+  font-size: 0.72rem; background: var(--surface2);
+  border: 1px solid var(--border); color: var(--text-muted);
+  padding: 2px 8px; border-radius: 20px;
+}
+.social-row { display: flex; gap: 12px; }
+.social-row a { color: var(--text-muted); transition: color 0.2s; }
+.social-row a:hover { color: var(--accent); }
+
+/* ── GitHub Section ── */
+.github-overview {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; margin-bottom: 2rem;
+}
+.gh-stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.2rem; text-align: center;
+  transition: border-color 0.2s;
+}
+.gh-stat-card:hover { border-color: var(--accent); }
+.gh-num { display: block; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+.gh-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; display: block; }
+.gh-charts { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.gh-img { border-radius: 10px; max-width: 100%; flex: 1; min-width: 240px; }
+.gh-streak { margin-bottom: 1.5rem; }
+.gh-img-wide { border-radius: 10px; width: 100%; max-width: 600px; display: block; }
+.gh-cta { margin-top: 0.5rem; }
+
+/* ── LeetCode Section ── */
+.lc-wrapper { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+.lc-info { flex: 1; min-width: 200px; }
+.lc-handle {
+  font-family: 'Fira Code', monospace; font-size: 1.2rem;
+  color: var(--accent); margin-bottom: 0.6rem;
+}
+.lc-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+.lc-card { border-radius: 12px; max-width: 500px; width: 100%; flex: 2; }
+
+/* ── Project link ── */
+.project-link {
+  display: inline-block; margin-top: 0.8rem;
+  font-size: 0.8rem; color: var(--accent);
+  text-decoration: none; font-family: 'Fira Code', monospace;
+}
+.project-link:hover { text-decoration: underline; }
+
+/* ── Footer link ── */
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .github-overview { grid-template-columns: repeat(2, 1fr); }
+  .lc-wrapper { flex-direction: column; }
+  .lc-card { max-width: 100%; }
+  .gh-charts { flex-direction: column; }
+}
