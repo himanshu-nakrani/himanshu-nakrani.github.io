@@ -3,11 +3,11 @@ import { motion, useInView } from 'framer-motion'
 import Section from './Section'
 
 const links = [
-  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com', color: '#7c6fff', icon: '✉️' },
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', color: '#fff', icon: '🐙' },
+  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com', color: 'var(--accent)', icon: '✉️' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', color: 'var(--accent)', icon: '🐙' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', color: '#0a66c2', icon: '💼' },
-  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', color: '#ffa116', icon: '⚡' },
-  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', color: '#20beff', icon: '🏆' },
+  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', color: 'var(--yellow)', icon: '⚡' },
+  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', color: 'var(--accent3)', icon: '🏆' },
 ]
 
 export default function Contact() {
@@ -16,16 +16,20 @@ export default function Contact() {
 
   return (
     <Section id="contact" title="Get in Touch" alt>
-      <div ref={ref} style={{ textAlign: 'center' }}>
+      <div ref={ref} style={{ textAlign: 'center', position: 'relative' }}>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          style={{ color: 'var(--text2)', fontSize: '1.05rem', marginBottom: '2.5rem', maxWidth: 480, margin: '0 auto 2.5rem' }}
+          style={{
+            color: 'var(--text2)', fontSize: '1.05rem', marginBottom: '2.5rem',
+            maxWidth: 520, margin: '0 auto 2.5rem', lineHeight: 1.7,
+          }}
         >
           Open to interesting problems in AI, LLMs, and building things that matter.
         </motion.p>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+
+        <div style={{ display: 'flex', gap: '1.2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           {links.map((l, i) => (
             <motion.a
               key={l.label}
@@ -35,18 +39,31 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ scale: 1.05, borderColor: l.color, boxShadow: `0 4px 20px ${l.color}22` }}
+              whileHover={{
+                scale: 1.08,
+                y: -6,
+                boxShadow: `0 12px 32px ${l.color}33`,
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--surface)', border: '1px solid var(--border)',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: `1px solid var(--border)`,
                 color: 'var(--text)', textDecoration: 'none',
-                padding: '12px 22px', borderRadius: 10,
-                fontSize: '0.9rem', fontWeight: 500,
-                transition: 'border-color 0.2s, box-shadow 0.2s',
+                padding: '12px 24px', borderRadius: 12,
+                fontSize: '0.9rem', fontWeight: 600,
+                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <span>{l.icon}</span>
-              {l.label}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: `linear-gradient(135deg, ${l.color}15, transparent)`,
+                opacity: 0,
+                transition: 'opacity 0.3s',
+              }} />
+              <span style={{ position: 'relative', zIndex: 1, fontSize: '1rem' }}>{l.icon}</span>
+              <span style={{ position: 'relative', zIndex: 1 }}>{l.label}</span>
             </motion.a>
           ))}
         </div>

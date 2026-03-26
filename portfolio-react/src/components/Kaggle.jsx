@@ -20,14 +20,16 @@ function KaggleCard({ item, index }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       style={{
-        background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-        border: `1px solid ${hovered ? 'rgba(32,190,255,0.4)' : 'var(--border)'}`,
+        background: hovered ? 'linear-gradient(135deg, rgba(32,190,255,0.08) 0%, rgba(79,195,247,0.04) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        border: `1px solid ${hovered ? 'rgba(32,190,255,0.6)' : 'var(--border)'}`,
         borderRadius: 14, padding: '1.2rem',
         textDecoration: 'none', color: 'var(--text)',
         display: 'flex', flexDirection: 'column', gap: '0.5rem',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        transition: 'transform 0.2s, border-color 0.2s, box-shadow 0.2s',
-        boxShadow: hovered ? '0 8px 30px rgba(32,190,255,0.08)' : 'none',
+        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
+        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        boxShadow: hovered ? '0 12px 40px rgba(32,190,255,0.15)' : '0 4px 16px rgba(0,0,0,0.1)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -35,8 +37,8 @@ function KaggleCard({ item, index }) {
           fontSize: '0.7rem', fontFamily: "'Fira Code', monospace",
           padding: '2px 9px', borderRadius: 20, border: '1px solid',
           ...(item.type === 'notebook'
-            ? { color: '#82aaff', borderColor: 'rgba(130,170,255,0.3)', background: 'rgba(130,170,255,0.08)' }
-            : { color: '#4ade80', borderColor: 'rgba(74,222,128,0.3)', background: 'rgba(74,222,128,0.08)' }),
+            ? { color: 'var(--accent3)', borderColor: 'rgba(79,195,247,0.3)', background: 'rgba(79,195,247,0.08)' }
+            : { color: 'var(--green)', borderColor: 'rgba(22,163,74,0.3)', background: 'rgba(22,163,74,0.08)' }),
         }}>
           {item.type === 'notebook' ? '📓 Notebook' : '🗂️ Dataset'}
         </span>
@@ -67,13 +69,16 @@ export default function Kaggle() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ borderColor: 'rgba(32,190,255,0.4)', y: -2 }}
+              whileHover={{ borderColor: 'rgba(32,190,255,0.6)', y: -4 }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
                 border: '1px solid var(--border)', borderRadius: 16,
                 padding: '1.4rem', flex: 1, minWidth: 240,
                 display: 'flex', gap: '1rem', alignItems: 'flex-start',
-                transition: 'border-color 0.2s, transform 0.2s',
+                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                boxShadow: 'none',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
               <img src="https://www.kaggle.com/static/images/tiers/expert.svg" alt="Expert" style={{ width: 44, height: 44, flexShrink: 0 }} />
@@ -99,10 +104,22 @@ export default function Kaggle() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.2 + i * 0.07 }}
-              style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', textAlign: 'center' }}
+              whileHover={{ y: -3 }}
+              style={{
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', textAlign: 'center',
+                transition: 'all 0.3s',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
             >
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent3), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{num}</div>
-              <div style={{ fontSize: '0.72rem', color: 'var(--text2)', marginTop: 3 }}>{label}</div>
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'radial-gradient(circle at center, rgba(79,195,247,0.05), transparent 70%)',
+                pointerEvents: 'none',
+              }} />
+              <div style={{ fontSize: '1.7rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent3), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{num}</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text2)', marginTop: 3, position: 'relative', zIndex: 1 }}>{label}</div>
             </motion.div>
           ))}
         </div>
@@ -117,12 +134,13 @@ export default function Kaggle() {
           href="https://www.kaggle.com/himanshunakrani"
           target="_blank"
           rel="noopener"
-          whileHover={{ scale: 1.03, borderColor: 'var(--accent3)' }}
+          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(32,190,255,0.25)' }}
           style={{
-            display: 'inline-block', border: '1px solid var(--border2)',
-            color: 'var(--text)', padding: '10px 22px', borderRadius: 10,
-            textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500,
-            transition: 'border-color 0.2s',
+            display: 'inline-block', border: '1px solid rgba(32,190,255,0.3)',
+            background: 'linear-gradient(135deg, rgba(32,190,255,0.1), rgba(79,195,247,0.05))',
+            color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
+            textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
+            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
           View full Kaggle profile →

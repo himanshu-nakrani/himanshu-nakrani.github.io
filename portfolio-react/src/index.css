@@ -3,6 +3,7 @@
 :root {
   --bg: #050508;
   --bg2: #0a0a12;
+  --bg-rgb: 5, 5, 8;
   --surface: #0e0e1a;
   --surface2: #141428;
   --border: #1c1c35;
@@ -18,6 +19,29 @@
   --yellow: #fbbf24;
   --red: #f87171;
   --pink: #f472b6;
+  --accent-light: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --bg2: #f8f9fb;
+  --bg-rgb: 255, 255, 255;
+  --surface: #f0f2f7;
+  --surface2: #e8ecf3;
+  --border: #d8dce8;
+  --border2: #cfd4e4;
+  --accent: #7c6fff;
+  --accent2: #6856d8;
+  --accent3: #0891b2;
+  --glow: rgba(124, 111, 255, 0.08);
+  --glow2: rgba(8, 145, 178, 0.06);
+  --text: #0f172a;
+  --text2: #64748b;
+  --green: #15803d;
+  --yellow: #b45309;
+  --red: #b91c1c;
+  --pink: #be123c;
+  --accent-light: #fff;
 }
 
 html { scroll-behavior: smooth; }
@@ -35,4 +59,6 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-::selection { background: rgba(124,111,255,0.3); }
+::selection { background: rgba(124,111,255,0.3); color: var(--text); }
+
+:root[data-theme="light"]::selection { background: rgba(124,111,255,0.2); color: var(--text); }
