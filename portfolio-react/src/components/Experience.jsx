@@ -15,53 +15,91 @@ function TimelineCard({ item, index }) {
       initial={{ opacity: 0, x: -30 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      style={{ position: 'relative', marginBottom: '2rem' }}
+      style={{ position: 'relative', marginBottom: '2.5rem' }}
     >
       {/* Dot */}
       <motion.div
-        animate={{ boxShadow: hovered ? '0 0 16px var(--accent)' : '0 0 6px rgba(124,111,255,0.4)' }}
+        animate={{
+          boxShadow: hovered ? '0 0 24px var(--accent), 0 0 12px rgba(79,195,247,0.3)' : '0 0 8px rgba(124,111,255,0.5)',
+          scale: hovered ? 1.4 : 1,
+        }}
+        transition={{ duration: 0.3 }}
         style={{
-          position: 'absolute', left: -32, top: 10,
+          position: 'absolute', left: -32, top: 12,
           width: 14, height: 14, borderRadius: '50%',
           background: 'var(--accent)', border: '2px solid var(--bg)',
+          transition: 'transform 0.3s',
         }}
       />
       <motion.div
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        animate={{ borderColor: hovered ? 'rgba(124,111,255,0.5)' : 'var(--border)' }}
+        animate={{
+          borderColor: hovered ? 'rgba(124,111,255,0.6)' : 'var(--border)',
+          y: hovered ? -6 : 0,
+        }}
+        transition={{ duration: 0.3 }}
         style={{
-          background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+          background: hovered ? 'linear-gradient(135deg, rgba(124,111,255,0.06) 0%, rgba(79,195,247,0.03) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
           border: '1px solid var(--border)',
           borderRadius: 16, padding: '1.6rem',
-          transition: 'border-color 0.2s',
-          boxShadow: hovered ? '0 8px 40px rgba(124,111,255,0.1)' : 'none',
+          transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          boxShadow: hovered ? '0 16px 48px rgba(124,111,255,0.15)' : '0 4px 16px rgba(0,0,0,0.1)',
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: hovered ? 'radial-gradient(circle at top left, rgba(124,111,255,0.08), transparent 60%)' : 'transparent',
+          pointerEvents: 'none',
+          transition: 'background 0.3s',
+        }} />
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.2rem', flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
           <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 3 }}>{item.role}</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--accent)', fontWeight: 500 }}>{item.company} · {item.location}</p>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 3, background: hovered ? 'linear-gradient(135deg, var(--text), var(--accent))' : 'transparent', WebkitBackgroundClip: hovered ? 'text' : 'unset', WebkitTextFillColor: hovered ? 'transparent' : 'unset', transition: 'all 0.3s' }}>{item.role}</h3>
+            <p style={{ fontSize: '0.85rem', color: hovered ? 'var(--accent2)' : 'var(--accent)', fontWeight: 500, transition: 'color 0.3s' }}>{item.company} · {item.location}</p>
           </div>
-          <span style={{
-            fontFamily: "'Fira Code', monospace", fontSize: '0.72rem',
-            color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
-            border: '1px solid rgba(124,111,255,0.3)',
-            padding: '4px 12px', borderRadius: 20, whiteSpace: 'nowrap',
-          }}>
+          <motion.span
+            animate={{ y: hovered ? -2 : 0 }}
+            style={{
+              fontFamily: "'Fira Code', monospace", fontSize: '0.72rem',
+              color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
+              border: '1px solid rgba(124,111,255,0.3)',
+              padding: '4px 12px', borderRadius: 20, whiteSpace: 'nowrap',
+              transition: 'all 0.3s',
+            }}>
             {item.period}
-          </span>
+          </motion.span>
         </div>
-        <ul style={{ listStyle: 'none', marginBottom: '1.2rem' }}>
+
+        <ul style={{ listStyle: 'none', marginBottom: '1.2rem', position: 'relative', zIndex: 1 }}>
           {item.bullets.map((b, i) => (
-            <li key={i} style={{ color: 'var(--text2)', fontSize: '0.88rem', padding: '4px 0 4px 1.2rem', position: 'relative', lineHeight: 1.6 }}>
+            <motion.li
+              key={i}
+              animate={hovered ? { x: 4 } : { x: 0 }}
+              transition={{ delay: i * 0.02 }}
+              style={{
+                color: 'var(--text2)', fontSize: '0.88rem', padding: '5px 0 5px 1.2rem',
+                position: 'relative', lineHeight: 1.6, transition: 'color 0.3s',
+              }}>
               <span style={{ position: 'absolute', left: 0, color: 'var(--accent)' }}>▸</span>
-              <span dangerouslySetInnerHTML={{ __html: b.replace(/(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g, '<strong style="color:var(--text)">$1</strong>') }} />
-            </li>
+              <span dangerouslySetInnerHTML={{ __html: b.replace(/(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g, '<strong style="color:var(--accent2)">$1</strong>') }} />
+            </motion.li>
           ))}
         </ul>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {item.tags.map(t => <Tag key={t}>{t}</Tag>)}
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, position: 'relative', zIndex: 1 }}>
+          {item.tags.map((t, idx) => (
+            <motion.div
+              key={t}
+              animate={hovered ? { y: -2, opacity: 1 } : { y: 0, opacity: 1 }}
+              transition={{ delay: idx * 0.02 }}
+            >
+              <Tag>{t}</Tag>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </motion.div>

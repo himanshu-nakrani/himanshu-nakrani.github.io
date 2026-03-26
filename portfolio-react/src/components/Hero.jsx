@@ -16,20 +16,29 @@ const fadeUp = (delay = 0) => ({
 export default function Hero() {
   return (
     <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '100px 2rem 60px', maxWidth: 1100, margin: '0 auto', gap: '4rem', position: 'relative' }}>
-      {/* Background glow blobs */}
-      <div style={{ position: 'fixed', top: '10%', left: '5%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(124,111,255,0.07) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'fixed', top: '40%', right: '5%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(79,195,247,0.05) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      {/* Background glow blobs - enhanced */}
+      <motion.div
+        animate={{ y: [0, 30, 0], x: [0, 20, 0] }}
+        transition={{ duration: 8, repeat: Infinity }}
+        style={{ position: 'fixed', top: '10%', left: '5%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(124,111,255,0.1) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      <motion.div
+        animate={{ y: [0, -30, 0], x: [0, -20, 0] }}
+        transition={{ duration: 10, repeat: Infinity }}
+        style={{ position: 'fixed', top: '40%', right: '5%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(79,195,247,0.08) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
       <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
         <motion.div {...fadeUp(0.1)}>
-          <span style={{
-            fontFamily: "'Fira Code', monospace", fontSize: '0.82rem',
-            color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
-            border: '1px solid rgba(124,111,255,0.4)', padding: '5px 14px',
-            borderRadius: 20, display: 'inline-block', marginBottom: '1.4rem',
-          }}>
+          <motion.span
+            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(124,111,255,0.4)' }}
+            style={{
+              fontFamily: "'Fira Code', monospace", fontSize: '0.82rem',
+              color: 'var(--accent)', background: 'rgba(124,111,255,0.12)',
+              border: '1px solid rgba(124,111,255,0.5)', padding: '6px 14px',
+              borderRadius: 20, display: 'inline-block', marginBottom: '1.4rem',
+              cursor: 'pointer', transition: 'all 0.3s',
+            }}>
             ✦ Generative AI Engineer · State Street Corp
-          </span>
+          </motion.span>
         </motion.div>
 
         <motion.h1 {...fadeUp(0.2)} style={{ fontSize: 'clamp(3rem, 7vw, 5rem)', fontWeight: 800, lineHeight: 1.05, marginBottom: '1.2rem', letterSpacing: '-0.02em' }}>

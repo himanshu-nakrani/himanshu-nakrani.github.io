@@ -24,15 +24,24 @@ export default function GitHub() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ borderColor: 'var(--accent)', y: -2 }}
+              whileHover={{ borderColor: 'rgba(124,111,255,0.6)', y: -4 }}
               style={{
-                background: 'var(--surface)', border: '1px solid var(--border)',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: '1px solid var(--border)',
                 borderRadius: 14, padding: '1.2rem', textAlign: 'center',
-                transition: 'border-color 0.2s, transform 0.2s',
+                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                boxShadow: 'none',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <div style={{ fontSize: '1.6rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.num}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text2)', marginTop: 4 }}>{s.label}</div>
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'radial-gradient(circle at bottom right, rgba(79,195,247,0.1), transparent 70%)',
+                pointerEvents: 'none',
+              }} />
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{s.num}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text2)', marginTop: 4, position: 'relative', zIndex: 1 }}>{s.label}</div>
             </motion.div>
           ))}
         </div>
@@ -76,12 +85,13 @@ export default function GitHub() {
           href="https://github.com/himanshu-nakrani"
           target="_blank"
           rel="noopener"
-          whileHover={{ scale: 1.03, borderColor: 'var(--accent)' }}
+          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(124,111,255,0.25)' }}
           style={{
-            display: 'inline-block', border: '1px solid var(--border2)',
-            color: 'var(--text)', padding: '10px 22px', borderRadius: 10,
-            textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500,
-            transition: 'border-color 0.2s',
+            display: 'inline-block', border: '1px solid rgba(124,111,255,0.3)',
+            background: 'linear-gradient(135deg, rgba(124,111,255,0.1), rgba(79,195,247,0.05))',
+            color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
+            textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
+            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
           View all repos on GitHub →

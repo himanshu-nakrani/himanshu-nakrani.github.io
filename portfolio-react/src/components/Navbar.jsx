@@ -30,42 +30,44 @@ export default function Navbar() {
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 2rem', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <motion.a
           href="#about"
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.08, boxShadow: '0 4px 16px rgba(124,111,255,0.4)' }}
           style={{
-            fontFamily: "'Fira Code', monospace", fontWeight: 600, fontSize: '1rem',
-            color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
-            border: '1px solid var(--accent)', padding: '5px 12px', borderRadius: 8,
+            fontFamily: "'Fira Code', monospace", fontWeight: 700, fontSize: '1rem',
+            color: '#fff', background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
+            border: '1px solid rgba(124,111,255,0.5)', padding: '6px 13px', borderRadius: 8,
             textDecoration: 'none', letterSpacing: '0.05em',
+            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
           HN
         </motion.a>
 
         {/* Desktop */}
-        <ul style={{ listStyle: 'none', display: 'flex', gap: '1.8rem', alignItems: 'center' }} className="nav-desktop">
+        <ul style={{ listStyle: 'none', display: 'flex', gap: '0.8rem', alignItems: 'center' }} className="nav-desktop">
           {links.map(l => (
             <li key={l}>
               {l === 'Contact' ? (
                 <motion.a
                   href={`#${l.toLowerCase()}`}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.06, boxShadow: '0 4px 16px rgba(124,111,255,0.3)' }}
                   style={{
-                    background: 'var(--accent)', color: '#fff',
-                    padding: '7px 18px', borderRadius: 8,
-                    textDecoration: 'none', fontSize: '0.88rem', fontWeight: 500,
+                    background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
+                    color: '#fff',
+                    padding: '8px 20px', borderRadius: 8,
+                    textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
+                    transition: 'all 0.3s',
                   }}
                 >
                   Contact
                 </motion.a>
               ) : (
-                <a
+                <motion.a
                   href={`#${l.toLowerCase()}`}
-                  style={{ color: 'var(--text2)', textDecoration: 'none', fontSize: '0.88rem', transition: 'color 0.2s' }}
-                  onMouseEnter={e => e.target.style.color = 'var(--text)'}
-                  onMouseLeave={e => e.target.style.color = 'var(--text2)'}
+                  whileHover={{ color: 'var(--accent)' }}
+                  style={{ color: 'var(--text2)', textDecoration: 'none', fontSize: '0.88rem', transition: 'color 0.3s', display: 'block', padding: '4px 8px' }}
                 >
                   {l}
-                </a>
+                </motion.a>
               )}
             </li>
           ))}
