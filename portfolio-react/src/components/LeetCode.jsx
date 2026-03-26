@@ -15,7 +15,7 @@ export default function LeetCode() {
           transition={{ duration: 0.5 }}
           style={{ flex: 1, minWidth: 200 }}
         >
-          <p style={{ fontFamily: "'Fira Code', monospace", fontSize: '1rem', color: '#ffa116', marginBottom: '0.8rem', letterSpacing: '0.05em' }}>@himanshunakrani0</p>
+          <p style={{ fontFamily: "'Fira Code', monospace", fontSize: '1rem', color: 'var(--yellow)', marginBottom: '0.8rem', letterSpacing: '0.05em' }}>@himanshunakrani0</p>
           <p style={{ color: 'var(--text2)', fontSize: '0.95rem', marginBottom: '1.6rem', lineHeight: 1.7 }}>
             Consistent problem solver — sharpening DSA skills alongside AI/ML work.
           </p>
@@ -23,10 +23,10 @@ export default function LeetCode() {
             href="https://leetcode.com/u/himanshunakrani0/"
             target="_blank"
             rel="noopener"
-            whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(255,161,22,0.25)' }}
+            whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(251,191,36,0.25)' }}
             style={{
-              display: 'inline-block', border: '1px solid rgba(255,161,22,0.3)',
-              background: 'linear-gradient(135deg, rgba(255,161,22,0.1), rgba(255,193,7,0.05))',
+              display: 'inline-block', border: '1px solid var(--yellow)',
+              background: 'linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05))',
               color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
               textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',

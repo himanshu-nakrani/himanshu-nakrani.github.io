@@ -22,7 +22,7 @@ export default function Navbar({ isDark, setIsDark }) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(5,5,8,0.85)' : 'transparent',
+        background: scrolled ? 'rgba(var(--bg-rgb), 0.85)' : 'transparent',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
         borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         transition: 'all 0.3s ease',
@@ -34,7 +34,7 @@ export default function Navbar({ isDark, setIsDark }) {
           whileHover={{ scale: 1.08, boxShadow: '0 4px 16px rgba(124,111,255,0.4)' }}
           style={{
             fontFamily: "'Fira Code', monospace", fontWeight: 700, fontSize: '1rem',
-            color: '#fff', background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
+            color: 'var(--accent-light)', background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
             border: '1px solid rgba(124,111,255,0.5)', padding: '6px 13px', borderRadius: 8,
             textDecoration: 'none', letterSpacing: '0.05em',
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -53,7 +53,7 @@ export default function Navbar({ isDark, setIsDark }) {
                   whileHover={{ scale: 1.06, boxShadow: '0 4px 16px rgba(124,111,255,0.3)' }}
                   style={{
                     background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
-                    color: '#fff',
+                    color: 'var(--accent-light)',
                     padding: '8px 20px', borderRadius: 8,
                     textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
                     transition: 'all 0.3s',

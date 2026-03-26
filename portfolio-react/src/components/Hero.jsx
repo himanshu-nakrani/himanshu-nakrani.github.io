@@ -60,7 +60,7 @@ export default function Hero() {
             whileTap={{ scale: 0.97 }}
             style={{
               background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
-              color: '#fff', padding: '13px 30px', borderRadius: 10,
+              color: 'var(--accent-light)', padding: '13px 30px', borderRadius: 10,
               textDecoration: 'none', fontWeight: 600, fontSize: '0.95rem',
               display: 'inline-block',
             }}
@@ -127,10 +127,10 @@ export default function Hero() {
             </div>
             <div style={{ display: 'flex', gap: 14 }}>
               {[
-                { href: 'https://github.com/himanshu-nakrani', label: 'GH', color: '#fff' },
+                { href: 'https://github.com/himanshu-nakrani', label: 'GH', color: 'var(--accent)' },
                 { href: 'https://www.linkedin.com/in/himanshu-nakrani/', label: 'LI', color: '#0a66c2' },
-                { href: 'https://leetcode.com/u/himanshunakrani0/', label: 'LC', color: '#ffa116' },
-                { href: 'https://www.kaggle.com/himanshunakrani', label: 'KG', color: '#20beff' },
+                { href: 'https://leetcode.com/u/himanshunakrani0/', label: 'LC', color: 'var(--yellow)' },
+                { href: 'https://www.kaggle.com/himanshunakrani', label: 'KG', color: 'var(--accent3)' },
               ].map(s => (
                 <motion.a
                   key={s.label}

@@ -37,8 +37,8 @@ function KaggleCard({ item, index }) {
           fontSize: '0.7rem', fontFamily: "'Fira Code', monospace",
           padding: '2px 9px', borderRadius: 20, border: '1px solid',
           ...(item.type === 'notebook'
-            ? { color: '#82aaff', borderColor: 'rgba(130,170,255,0.3)', background: 'rgba(130,170,255,0.08)' }
-            : { color: '#4ade80', borderColor: 'rgba(74,222,128,0.3)', background: 'rgba(74,222,128,0.08)' }),
+            ? { color: 'var(--accent3)', borderColor: 'rgba(79,195,247,0.3)', background: 'rgba(79,195,247,0.08)' }
+            : { color: 'var(--green)', borderColor: 'rgba(22,163,74,0.3)', background: 'rgba(22,163,74,0.08)' }),
         }}>
           {item.type === 'notebook' ? '📓 Notebook' : '🗂️ Dataset'}
         </span>

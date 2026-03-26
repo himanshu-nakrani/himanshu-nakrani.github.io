@@ -5,8 +5,8 @@ import Tag from './Tag'
 import { projects } from '../data'
 
 const badgeStyle = {
-  Production: { bg: 'rgba(74,222,128,0.1)', color: '#4ade80', border: 'rgba(74,222,128,0.3)' },
-  'In Progress': { bg: 'rgba(251,191,36,0.1)', color: '#fbbf24', border: 'rgba(251,191,36,0.3)' },
+  Production: { bg: 'rgba(22,163,74,0.08)', color: 'var(--green)', border: 'rgba(22,163,74,0.25)' },
+  'In Progress': { bg: 'rgba(180,83,9,0.08)', color: 'var(--yellow)', border: 'rgba(180,83,9,0.25)' },
 }
 
 function ProjectCard({ item, index }) {

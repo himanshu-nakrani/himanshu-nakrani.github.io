@@ -3,11 +3,11 @@ import { motion, useInView } from 'framer-motion'
 import Section from './Section'
 
 const links = [
-  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com', color: '#7c6fff', icon: '✉️' },
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', color: '#fff', icon: '🐙' },
+  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com', color: 'var(--accent)', icon: '✉️' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', color: 'var(--accent)', icon: '🐙' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', color: '#0a66c2', icon: '💼' },
-  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', color: '#ffa116', icon: '⚡' },
-  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', color: '#20beff', icon: '🏆' },
+  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', color: 'var(--yellow)', icon: '⚡' },
+  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', color: 'var(--accent3)', icon: '🏆' },
 ]
 
 export default function Contact() {
