@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import ThemeToggle from './ThemeToggle'
 
 const links = ['About', 'Experience', 'Projects', 'GitHub', 'Kaggle', 'Research', 'Skills', 'Contact']
 
-export default function Navbar() {
+export default function Navbar({ isDark, setIsDark }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -71,16 +72,22 @@ export default function Navbar() {
               )}
             </li>
           ))}
+          <li style={{ marginLeft: '0.8rem', paddingLeft: '0.8rem', borderLeft: '1px solid var(--border)' }}>
+            <ThemeToggle isDark={isDark} setIsDark={setIsDark} />
+          </li>
         </ul>
 
         {/* Mobile toggle */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="nav-mobile-btn"
-          style={{ background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', display: 'none' }}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <ThemeToggle isDark={isDark} setIsDark={setIsDark} />
+          <button
+            onClick={() => setOpen(!open)}
+            className="nav-mobile-btn"
+            style={{ background: 'none', border: 'none', color: 'var(--text)', cursor: 'pointer', display: 'none' }}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

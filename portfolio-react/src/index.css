@@ -20,6 +20,26 @@
   --pink: #f472b6;
 }
 
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --bg2: #f8f9fb;
+  --surface: #f0f2f7;
+  --surface2: #e8ecf3;
+  --border: #d8dce8;
+  --border2: #cfd4e4;
+  --accent: #7c6fff;
+  --accent2: #6856d8;
+  --accent3: #4fc3f7;
+  --glow: rgba(124, 111, 255, 0.12);
+  --glow2: rgba(79, 195, 247, 0.08);
+  --text: #1a1a2e;
+  --text2: #6b6b8e;
+  --green: #16a34a;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --pink: #ec4899;
+}
+
 html { scroll-behavior: smooth; }
 
 body {

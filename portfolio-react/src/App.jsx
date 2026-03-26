@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -11,9 +12,25 @@ import Skills from './components/Skills'
 import Contact from './components/Contact'
 
 export default function App() {
+  const [isDark, setIsDark] = useState(true)
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+    const shouldBeDark = savedTheme ? savedTheme === 'dark' : prefersDark
+    setIsDark(shouldBeDark)
+    document.documentElement.setAttribute('data-theme', shouldBeDark ? 'dark' : 'light')
+  }, [])
+
+  const handleThemeChange = (newIsDark) => {
+    setIsDark(newIsDark)
+    document.documentElement.setAttribute('data-theme', newIsDark ? 'dark' : 'light')
+  }
+
   return (
     <>
-      <Navbar />
+      <Navbar isDark={isDark} setIsDark={handleThemeChange} />
       <Hero />
       <Experience />
       <Projects />
