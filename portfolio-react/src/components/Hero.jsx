@@ -43,13 +43,7 @@ export default function Hero() {
 
         <motion.h1 {...fadeUp(0.2)} style={{ fontSize: 'clamp(3rem, 7vw, 5rem)', fontWeight: 800, lineHeight: 1.05, marginBottom: '1.2rem', letterSpacing: '-0.02em' }}>
           Himanshu<br />
-          <span style={{ 
-            background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%)', 
-            WebkitBackgroundClip: 'text', 
-            WebkitTextFillColor: 'transparent',
-            textShadow: '0 0 40px rgba(124, 111, 255, 0.5), 0 0 80px rgba(79, 195, 247, 0.3)',
-            filter: 'drop-shadow(0 0 20px rgba(124, 111, 255, 0.4))'
-          }}>
+          <span style={{ background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Nakrani
           </span>
         </motion.h1>
@@ -62,29 +56,26 @@ export default function Hero() {
         <motion.div {...fadeUp(0.4)} style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
           <motion.a
             href="#experience"
-            whileHover={{ scale: 1.06, boxShadow: '0 0 40px rgba(124,111,255,0.5), 0 0 80px rgba(124,111,255,0.3)' }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(124,111,255,0.4)' }}
+            whileTap={{ scale: 0.97 }}
             style={{
               background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
               color: 'var(--accent-light)', padding: '13px 30px', borderRadius: 10,
               textDecoration: 'none', fontWeight: 600, fontSize: '0.95rem',
               display: 'inline-block',
-              boxShadow: '0 0 30px rgba(124,111,255,0.3), 0 0 60px rgba(124,111,255,0.15)',
-              transition: 'all 0.3s ease',
             }}
           >
             View Work
           </motion.a>
           <motion.a
             href="#contact"
-            whileHover={{ scale: 1.06, boxShadow: '0 0 40px rgba(79,195,247,0.4), 0 0 80px rgba(79,195,247,0.2)', borderColor: 'rgba(79, 195, 247, 0.6)' }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04, borderColor: 'var(--accent)' }}
+            whileTap={{ scale: 0.97 }}
             style={{
               border: '1px solid var(--border2)', color: 'var(--text)',
               padding: '13px 30px', borderRadius: 10,
               textDecoration: 'none', fontWeight: 500, fontSize: '0.95rem',
-              display: 'inline-block', transition: 'all 0.3s ease',
-              boxShadow: '0 0 20px rgba(79,195,247,0.1)',
+              display: 'inline-block', transition: 'border-color 0.2s',
             }}
           >
             Get in Touch
@@ -93,23 +84,12 @@ export default function Hero() {
 
         <motion.div {...fadeUp(0.5)} style={{ display: 'flex', gap: '2.5rem', flexWrap: 'wrap' }}>
           {stats.map(s => (
-            <motion.div 
-              key={s.label}
-              whileHover={{ scale: 1.08 }}
-              style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
-            >
-              <div style={{ 
-                fontSize: '2rem', fontWeight: 800, 
-                background: 'linear-gradient(135deg, var(--accent), var(--accent3))', 
-                WebkitBackgroundClip: 'text', 
-                WebkitTextFillColor: 'transparent', 
-                lineHeight: 1,
-                filter: 'drop-shadow(0 0 15px rgba(124, 111, 255, 0.4))'
-              }}>
+            <div key={s.label}>
+              <div style={{ fontSize: '2rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1 }}>
                 {s.num}
               </div>
               <div style={{ fontSize: '0.72rem', color: 'var(--text2)', marginTop: 4 }}>{s.label}</div>
-            </motion.div>
+            </div>
           ))}
         </motion.div>
       </div>
@@ -122,19 +102,12 @@ export default function Hero() {
         style={{ flex: 1, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1 }}
         className="hero-avatar-wrap"
       >
-        <motion.div
-          whileHover={{ 
-            boxShadow: '0 0 60px rgba(124,111,255,0.35), 0 0 120px rgba(79,195,247,0.25), 0 0 0 2px rgba(79,195,247,0.3)',
-            border: '1px solid rgba(79, 195, 247, 0.4)'
-          }}
-          style={{
-            background: 'linear-gradient(135deg, rgba(14, 14, 26, 0.95) 0%, rgba(20, 20, 40, 0.95) 100%)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(79, 195, 247, 0.2)',
-            borderRadius: 20, overflow: 'hidden', width: '100%', maxWidth: 360,
-            boxShadow: '0 0 40px rgba(124,111,255,0.25), 0 0 80px rgba(79,195,247,0.15), inset 0 0 20px rgba(124,111,255,0.05)',
-            transition: 'all 0.3s ease',
-          }}>
+        <div style={{
+          background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+          border: '1px solid var(--border2)',
+          borderRadius: 20, overflow: 'hidden', width: '100%', maxWidth: 360,
+          boxShadow: '0 0 80px rgba(124,111,255,0.15), 0 0 0 1px rgba(124,111,255,0.1)',
+        }}>
           <div style={{ position: 'relative' }}>
             <img
               src="https://avatars.githubusercontent.com/u/82092249?v=4"
@@ -172,7 +145,7 @@ export default function Hero() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
 
       <style>{`

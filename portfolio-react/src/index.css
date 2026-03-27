@@ -20,10 +20,6 @@
   --red: #f87171;
   --pink: #f472b6;
   --accent-light: #ffffff;
-  /* New glassmorphism & neon utilities */
-  --glass-blur: 16px;
-  --glow-intense: rgba(124, 111, 255, 0.35);
-  --glow-cyan: rgba(79, 195, 247, 0.25);
 }
 
 :root[data-theme="light"] {
@@ -46,9 +42,6 @@
   --red: #b91c1c;
   --pink: #be123c;
   --accent-light: #fff;
-  --glass-blur: 12px;
-  --glow-intense: rgba(124, 111, 255, 0.15);
-  --glow-cyan: rgba(8, 145, 178, 0.1);
 }
 
 html { scroll-behavior: smooth; }
@@ -69,68 +62,3 @@ body {
 ::selection { background: rgba(124,111,255,0.3); color: var(--text); }
 
 :root[data-theme="light"]::selection { background: rgba(124,111,255,0.2); color: var(--text); }
-
-/* Glassmorphism utility classes */
-.glass {
-  background: rgba(14, 14, 26, 0.8);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid rgba(79, 195, 247, 0.1);
-}
-
-.glass-purple {
-  background: rgba(14, 14, 26, 0.8);
-  backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid rgba(124, 111, 255, 0.15);
-}
-
-/* Neon glow utilities */
-.glow-neon {
-  box-shadow: 0 0 20px var(--glow-intense), 0 0 40px rgba(124, 111, 255, 0.2);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 15px var(--glow-cyan), 0 0 30px rgba(79, 195, 247, 0.15);
-}
-
-.glow-text {
-  text-shadow: 0 0 20px rgba(124, 111, 255, 0.5), 0 0 40px rgba(124, 111, 255, 0.3);
-}
-
-/* Animations */
-@keyframes float-particle {
-  0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.4; }
-  50% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px var(--glow-intense), 0 0 40px rgba(124, 111, 255, 0.2); }
-  50% { box-shadow: 0 0 30px var(--glow-intense), 0 0 60px rgba(124, 111, 255, 0.3); }
-}
-
-@keyframes glow-pulse-cyan {
-  0%, 100% { box-shadow: 0 0 15px var(--glow-cyan), 0 0 30px rgba(79, 195, 247, 0.15); }
-  50% { box-shadow: 0 0 25px var(--glow-cyan), 0 0 50px rgba(79, 195, 247, 0.25); }
-}
-
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes magnetic-hover {
-  0% { transform: scale(1) translateY(0); }
-  100% { transform: scale(1.02) translateY(-2px); }
-}
-
-/* Floating animation class */
-.float-particle {
-  animation: float-particle 6s ease-in-out infinite;
-}
-
-.glow-pulse-animation {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-.glow-pulse-cyan-animation {
-  animation: glow-pulse-cyan 3s ease-in-out infinite;
-}

@@ -40,22 +40,20 @@ export default function Contact() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
               whileHover={{
-                scale: 1.1,
-                y: -8,
-                boxShadow: `0 0 35px ${l.color}40, 0 0 70px ${l.color}20, 0 12px 48px rgba(0,0,0,0.3)`,
+                scale: 1.08,
+                y: -6,
+                boxShadow: `0 12px 32px ${l.color}33`,
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'linear-gradient(135deg, rgba(14, 14, 26, 0.85) 0%, rgba(20, 20, 40, 0.85) 100%)',
-                backdropFilter: 'blur(12px)',
-                border: `1px solid rgba(124,111,255,0.25)`,
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: `1px solid var(--border)`,
                 color: 'var(--text)', textDecoration: 'none',
                 padding: '12px 24px', borderRadius: 12,
                 fontSize: '0.9rem', fontWeight: 600,
                 transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: `0 0 15px ${l.color}20`,
               }}
             >
               <div style={{

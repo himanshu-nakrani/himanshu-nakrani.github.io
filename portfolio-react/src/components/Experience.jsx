@@ -20,17 +20,15 @@ function TimelineCard({ item, index }) {
       {/* Dot */}
       <motion.div
         animate={{
-          boxShadow: hovered ? '0 0 30px var(--accent), 0 0 60px rgba(124,111,255,0.4), 0 0 10px rgba(79,195,247,0.3)' : '0 0 12px rgba(124,111,255,0.6), 0 0 24px rgba(124,111,255,0.3)',
-          scale: hovered ? 1.5 : 1,
+          boxShadow: hovered ? '0 0 24px var(--accent), 0 0 12px rgba(79,195,247,0.3)' : '0 0 8px rgba(124,111,255,0.5)',
+          scale: hovered ? 1.4 : 1,
         }}
         transition={{ duration: 0.3 }}
         style={{
           position: 'absolute', left: -32, top: 12,
           width: 14, height: 14, borderRadius: '50%',
-          background: 'linear-gradient(135deg, var(--accent), var(--accent2))', 
-          border: '2px solid var(--bg)',
+          background: 'var(--accent)', border: '2px solid var(--bg)',
           transition: 'transform 0.3s',
-          boxShadow: '0 0 12px rgba(124,111,255,0.6)',
         }}
       />
       <motion.div
@@ -42,12 +40,11 @@ function TimelineCard({ item, index }) {
         }}
         transition={{ duration: 0.3 }}
         style={{
-          background: hovered ? 'linear-gradient(135deg, rgba(124,111,255,0.12) 0%, rgba(79,195,247,0.08) 100%), rgba(14, 14, 26, 0.85)' : 'linear-gradient(135deg, rgba(14, 14, 26, 0.9) 0%, rgba(20, 20, 40, 0.9) 100%)',
-          backdropFilter: 'blur(12px)',
-          border: hovered ? '1px solid rgba(79, 195, 247, 0.4)' : '1px solid rgba(124,111,255,0.2)',
+          background: hovered ? 'linear-gradient(135deg, rgba(124,111,255,0.06) 0%, rgba(79,195,247,0.03) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+          border: '1px solid var(--border)',
           borderRadius: 16, padding: '1.6rem',
           transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          boxShadow: hovered ? '0 0 40px rgba(124,111,255,0.3), 0 0 80px rgba(79,195,247,0.15), 0 16px 48px rgba(0,0,0,0.3)' : '0 0 20px rgba(124,111,255,0.08), 0 4px 16px rgba(0,0,0,0.1)',
+          boxShadow: hovered ? '0 16px 48px rgba(124,111,255,0.15)' : '0 4px 16px rgba(0,0,0,0.1)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -65,11 +62,11 @@ function TimelineCard({ item, index }) {
             <p style={{ fontSize: '0.85rem', color: hovered ? 'var(--accent2)' : 'var(--accent)', fontWeight: 500, transition: 'color 0.3s' }}>{item.company} · {item.location}</p>
           </div>
           <motion.span
-            animate={{ y: hovered ? -2 : 0, boxShadow: hovered ? '0 0 20px rgba(124,111,255,0.3)' : 'none' }}
+            animate={{ y: hovered ? -2 : 0 }}
             style={{
               fontFamily: "'Fira Code', monospace", fontSize: '0.72rem',
-              color: 'var(--accent)', background: 'rgba(124,111,255,0.12)',
-              border: '1px solid rgba(124,111,255,0.4)',
+              color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
+              border: '1px solid rgba(124,111,255,0.3)',
               padding: '4px 12px', borderRadius: 20, whiteSpace: 'nowrap',
               transition: 'all 0.3s',
             }}>
