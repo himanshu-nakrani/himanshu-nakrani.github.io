@@ -22,22 +22,24 @@ export default function Navbar({ isDark, setIsDark }) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(var(--bg-rgb), 0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
+        background: scrolled ? 'linear-gradient(135deg, rgba(var(--bg-rgb), 0.92), rgba(14, 14, 26, 0.88))' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(124, 111, 255, 0.15)' : '1px solid transparent',
         transition: 'all 0.3s ease',
+        boxShadow: scrolled ? '0 0 30px rgba(124,111,255,0.08)' : 'none',
       }}
     >
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 2rem', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <motion.a
           href="#about"
-          whileHover={{ scale: 1.08, boxShadow: '0 4px 16px rgba(124,111,255,0.4)' }}
+          whileHover={{ scale: 1.1, boxShadow: '0 0 30px rgba(124,111,255,0.5), 0 0 60px rgba(124,111,255,0.3)' }}
           style={{
             fontFamily: "'Fira Code', monospace", fontWeight: 700, fontSize: '1rem',
             color: 'var(--accent-light)', background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
-            border: '1px solid rgba(124,111,255,0.5)', padding: '6px 13px', borderRadius: 8,
+            border: '1px solid rgba(124,111,255,0.6)', padding: '6px 13px', borderRadius: 8,
             textDecoration: 'none', letterSpacing: '0.05em',
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            boxShadow: '0 0 20px rgba(124,111,255,0.3)',
           }}
         >
           HN
@@ -50,13 +52,14 @@ export default function Navbar({ isDark, setIsDark }) {
               {l === 'Contact' ? (
                 <motion.a
                   href={`#${l.toLowerCase()}`}
-                  whileHover={{ scale: 1.06, boxShadow: '0 4px 16px rgba(124,111,255,0.3)' }}
+                  whileHover={{ scale: 1.08, boxShadow: '0 0 30px rgba(124,111,255,0.4), 0 0 60px rgba(124,111,255,0.2)' }}
                   style={{
                     background: 'linear-gradient(135deg, var(--accent), #5b4fff)',
                     color: 'var(--accent-light)',
                     padding: '8px 20px', borderRadius: 8,
                     textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
                     transition: 'all 0.3s',
+                    boxShadow: '0 0 15px rgba(124,111,255,0.2)',
                   }}
                 >
                   Contact
@@ -64,8 +67,8 @@ export default function Navbar({ isDark, setIsDark }) {
               ) : (
                 <motion.a
                   href={`#${l.toLowerCase()}`}
-                  whileHover={{ color: 'var(--accent)' }}
-                  style={{ color: 'var(--text2)', textDecoration: 'none', fontSize: '0.88rem', transition: 'color 0.3s', display: 'block', padding: '4px 8px' }}
+                  whileHover={{ color: 'var(--accent)', textShadow: '0 0 10px rgba(124,111,255,0.3)' }}
+                  style={{ color: 'var(--text2)', textDecoration: 'none', fontSize: '0.88rem', transition: 'all 0.3s', display: 'block', padding: '4px 8px' }}
                 >
                   {l}
                 </motion.a>
