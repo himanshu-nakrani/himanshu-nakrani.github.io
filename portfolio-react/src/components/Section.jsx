@@ -15,9 +15,10 @@ export default function Section({ id, title, alt, children }) {
       <div style={{
         position: 'absolute', top: '-100px', right: '-200px',
         width: 400, height: 400,
-        background: alt ? 'radial-gradient(circle, rgba(79,195,247,0.08), transparent)' : 'radial-gradient(circle, rgba(124,111,255,0.06), transparent)',
+        background: alt ? 'radial-gradient(circle, rgba(74,158,255,0.03), transparent)' : 'radial-gradient(circle, rgba(90,142,224,0.02), transparent)',
         pointerEvents: 'none',
         zIndex: 0,
+        filter: 'blur(50px)',
       }} />
 
       <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }} ref={ref}>
@@ -30,9 +31,7 @@ export default function Section({ id, title, alt, children }) {
             fontSize: 'clamp(1.8rem, 5vw, 2rem)',
             fontWeight: 800, marginBottom: '3rem',
             position: 'relative', display: 'inline-block', letterSpacing: '-0.02em',
-            background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: 'var(--text)',
           }}>
             {title}
             <motion.span
@@ -41,9 +40,9 @@ export default function Section({ id, title, alt, children }) {
               transition={{ duration: 0.6, delay: 0.2 }}
               style={{
                 position: 'absolute', bottom: -12, left: 0,
-                height: 3,
-                background: 'linear-gradient(90deg, var(--accent), var(--accent3), transparent)',
-                borderRadius: 2, display: 'block',
+                height: 2,
+                background: 'var(--accent)',
+                borderRadius: 1, display: 'block',
               }}
             />
           </h2>

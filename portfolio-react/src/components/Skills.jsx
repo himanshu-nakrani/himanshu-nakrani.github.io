@@ -22,26 +22,26 @@ export default function Skills() {
               onHoverStart={() => setHoveredSkill(i)}
               onHoverEnd={() => setHoveredSkill(null)}
               style={{
-                background: hoveredSkill === i ? 'linear-gradient(135deg, rgba(124,111,255,0.08) 0%, rgba(79,195,247,0.04) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: hoveredSkill === i ? '1px solid rgba(124,111,255,0.5)' : '1px solid var(--border)',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: hoveredSkill === i ? '1px solid var(--accent)' : '1px solid var(--border)',
                 borderRadius: 14, padding: '1.2rem',
-                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                transform: hoveredSkill === i ? 'translateY(-4px)' : 'translateY(0)',
-                boxShadow: hoveredSkill === i ? '0 8px 32px rgba(124,111,255,0.15)' : 'none',
+                transition: 'all 0.3s',
+                transform: hoveredSkill === i ? 'translateY(-2px)' : 'translateY(0)',
+                boxShadow: hoveredSkill === i ? '0 4px 12px rgba(74,158,255,0.08)' : '0 1px 4px rgba(0,0,0,0.05)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
               <div style={{
                 position: 'absolute', inset: 0,
-                background: hoveredSkill === i ? 'radial-gradient(circle at bottom right, rgba(79,195,247,0.1), transparent 60%)' : 'transparent',
+                background: hoveredSkill === i ? 'radial-gradient(circle at bottom right, rgba(74,158,255,0.04), transparent 60%)' : 'transparent',
                 pointerEvents: 'none',
                 transition: 'background 0.3s',
               }} />
               <p style={{
-                fontSize: '0.75rem', fontFamily: "'Fira Code', monospace", color: 'var(--accent)',
+                fontSize: '0.75rem', fontFamily: "'Fira Code', monospace", color: 'var(--text2)',
                 marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em',
-                position: 'relative', zIndex: 1,
+                position: 'relative', zIndex: 1, transition: 'color 0.3s',
               }}>
                 {s.label}
               </p>
@@ -66,9 +66,7 @@ export default function Skills() {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1.4rem', color: 'var(--text)' }}>
-            <span style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Certifications
-            </span>
+            Certifications
           </h3>
         </motion.div>
 
@@ -79,19 +77,19 @@ export default function Skills() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
-              whileHover={{ y: -6, borderColor: 'rgba(124,111,255,0.6)' }}
+              whileHover={{ y: -3, borderColor: 'var(--accent)' }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
                 border: '1px solid var(--border)',
                 borderRadius: 12, padding: '1.2rem', textAlign: 'center',
-                transition: 'all 0.3s, transform 0.3s',
+                transition: 'all 0.3s',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
               <div style={{
                 position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at center, rgba(124,111,255,0.05), transparent 70%)',
+                background: 'transparent',
                 pointerEvents: 'none',
               }} />
               <motion.div

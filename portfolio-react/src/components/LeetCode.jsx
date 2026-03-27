@@ -23,10 +23,10 @@ export default function LeetCode() {
             href="https://leetcode.com/u/himanshunakrani0/"
             target="_blank"
             rel="noopener"
-            whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(251,191,36,0.25)' }}
+            whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(0,217,255,0.3)', borderColor: 'rgba(0,217,255,0.6)' }}
             style={{
-              display: 'inline-block', border: '1px solid var(--yellow)',
-              background: 'linear-gradient(135deg, rgba(251,191,36,0.1), rgba(251,191,36,0.05))',
+              display: 'inline-block', border: '1.5px solid rgba(0,217,255,0.3)',
+              background: 'linear-gradient(135deg, rgba(0,217,255,0.08), rgba(79,122,255,0.05))',
               color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
               textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -42,7 +42,7 @@ export default function LeetCode() {
           whileHover={{ y: -8 }}
           src="https://leetcard.jacoblin.cool/himanshunakrani0?theme=dark&font=Fira%20Code&ext=heatmap&border=0&radius=12"
           alt="LeetCode Stats"
-          style={{ borderRadius: 14, maxWidth: 500, width: '100%', flex: 2, boxShadow: '0 8px 32px rgba(255,161,22,0.1)', transition: 'all 0.3s' }}
+          style={{ borderRadius: 14, maxWidth: 500, width: '100%', flex: 2, boxShadow: '0 8px 32px rgba(0,217,255,0.15), 0 0 20px rgba(0,217,255,0.1)', border: '1.5px solid rgba(0,217,255,0.3)', transition: 'all 0.3s' }}
           loading="lazy"
         />
       </div>

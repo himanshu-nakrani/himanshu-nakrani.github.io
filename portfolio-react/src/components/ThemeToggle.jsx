@@ -19,12 +19,13 @@ export default function ThemeToggle({ isDark, setIsDark }) {
         width: 44,
         height: 44,
         borderRadius: 10,
-        border: '1px solid var(--border)',
+        border: '1.5px solid rgba(0,217,255,0.3)',
         background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
         cursor: 'pointer',
         transition: 'all 0.3s',
         color: 'var(--text)',
         padding: 0,
+        boxShadow: '0 0 10px rgba(0,217,255,0.1)',
       }}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >

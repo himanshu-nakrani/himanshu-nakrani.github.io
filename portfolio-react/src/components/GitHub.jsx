@@ -24,20 +24,20 @@ export default function GitHub() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ borderColor: 'rgba(124,111,255,0.6)', y: -4 }}
+              whileHover={{ borderColor: 'rgba(0,217,255,0.6)', y: -4, boxShadow: '0 8px 24px rgba(0,217,255,0.2)' }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
+                border: '1.5px solid rgba(0,217,255,0.25)',
                 borderRadius: 14, padding: '1.2rem', textAlign: 'center',
                 transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                boxShadow: 'none',
+                boxShadow: '0 0 15px rgba(0,217,255,0.08)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
               <div style={{
                 position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at bottom right, rgba(79,195,247,0.1), transparent 70%)',
+                background: 'radial-gradient(circle at bottom right, rgba(0,217,255,0.12), transparent 70%)',
                 pointerEvents: 'none',
               }} />
               <div style={{ fontSize: '1.8rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{s.num}</div>
@@ -85,10 +85,10 @@ export default function GitHub() {
           href="https://github.com/himanshu-nakrani"
           target="_blank"
           rel="noopener"
-          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(124,111,255,0.25)' }}
+          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(0,217,255,0.3)', borderColor: 'rgba(0,217,255,0.6)' }}
           style={{
-            display: 'inline-block', border: '1px solid rgba(124,111,255,0.3)',
-            background: 'linear-gradient(135deg, rgba(124,111,255,0.1), rgba(79,195,247,0.05))',
+            display: 'inline-block', border: '1.5px solid rgba(0,217,255,0.3)',
+            background: 'linear-gradient(135deg, rgba(0,217,255,0.08), rgba(79,122,255,0.05))',
             color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
             textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',

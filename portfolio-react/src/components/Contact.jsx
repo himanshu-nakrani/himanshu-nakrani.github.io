@@ -42,12 +42,13 @@ export default function Contact() {
               whileHover={{
                 scale: 1.08,
                 y: -6,
-                boxShadow: `0 12px 32px ${l.color}33`,
+                boxShadow: `0 12px 32px rgba(0,217,255,0.3)`,
+                borderColor: 'rgba(0,217,255,0.6)',
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: `1px solid var(--border)`,
+                border: `1.5px solid rgba(0,217,255,0.3)`,
                 color: 'var(--text)', textDecoration: 'none',
                 padding: '12px 24px', borderRadius: 12,
                 fontSize: '0.9rem', fontWeight: 600,
@@ -58,7 +59,7 @@ export default function Contact() {
             >
               <div style={{
                 position: 'absolute', inset: 0,
-                background: `linear-gradient(135deg, ${l.color}15, transparent)`,
+                background: `linear-gradient(135deg, rgba(0,217,255,0.1), transparent)`,
                 opacity: 0,
                 transition: 'opacity 0.3s',
               }} />

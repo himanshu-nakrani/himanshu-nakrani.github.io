@@ -5,8 +5,8 @@ import Tag from './Tag'
 import { projects } from '../data'
 
 const badgeStyle = {
-  Production: { bg: 'rgba(22,163,74,0.08)', color: 'var(--green)', border: 'rgba(22,163,74,0.25)' },
-  'In Progress': { bg: 'rgba(180,83,9,0.08)', color: 'var(--yellow)', border: 'rgba(180,83,9,0.25)' },
+  Production: { bg: 'rgba(74,158,255,0.1)', color: 'var(--accent)', border: 'var(--border2)' },
+  'In Progress': { bg: 'rgba(107,124,255,0.1)', color: 'var(--accent2)', border: 'var(--border2)' },
 }
 
 function ProjectCard({ item, index }) {
@@ -23,13 +23,13 @@ function ProjectCard({ item, index }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       style={{
-        background: hovered ? 'linear-gradient(135deg, rgba(124,111,255,0.05) 0%, rgba(79,195,247,0.03) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-        border: `1px solid ${hovered ? 'rgba(124,111,255,0.6)' : 'var(--border)'}`,
+        background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
         borderRadius: 16, padding: '1.5rem',
         position: 'relative', cursor: 'default',
-        transform: hovered ? 'translateY(-8px)' : 'translateY(0)',
-        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s, box-shadow 0.3s',
-        boxShadow: hovered ? '0 20px 60px rgba(124,111,255,0.2)' : '0 4px 20px rgba(0,0,0,0.2)',
+        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'transform 0.3s, border-color 0.3s, box-shadow 0.3s',
+        boxShadow: hovered ? '0 8px 24px rgba(74,158,255,0.12)' : '0 2px 8px rgba(0,0,0,0.08)',
         display: 'flex', flexDirection: 'column', gap: '0.6rem',
         overflow: 'hidden',
       }}
@@ -37,7 +37,7 @@ function ProjectCard({ item, index }) {
       {/* Gradient overlay on hover */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: hovered ? 'radial-gradient(circle at top right, rgba(124,111,255,0.1), transparent 50%)' : 'transparent',
+        background: hovered ? 'radial-gradient(circle at top right, rgba(74,158,255,0.06), transparent 50%)' : 'transparent',
         pointerEvents: 'none',
         transition: 'background 0.3s',
       }} />
@@ -79,7 +79,7 @@ function ProjectCard({ item, index }) {
       
       {item.link && (
         <motion.a
-          whileHover={{ x: 4 }}
+          whileHover={{ x: 4, color: 'var(--accent2)' }}
           href={item.link}
           target="_blank"
           rel="noopener"
