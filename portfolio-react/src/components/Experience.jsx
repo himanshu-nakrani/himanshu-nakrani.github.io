@@ -20,13 +20,12 @@ function TimelineCard({ item, index }) {
       {/* Dot */}
       <motion.div
         animate={{
-          boxShadow: hovered ? '0 0 24px var(--accent), 0 0 12px rgba(0,217,255,0.5)' : '0 0 8px rgba(0,217,255,0.6)',
-          scale: hovered ? 1.4 : 1,
+          scale: hovered ? 1.2 : 1,
         }}
         transition={{ duration: 0.3 }}
         style={{
           position: 'absolute', left: -32, top: 12,
-          width: 14, height: 14, borderRadius: '50%',
+          width: 12, height: 12, borderRadius: '50%',
           background: 'var(--accent)', border: '2px solid var(--bg)',
           transition: 'transform 0.3s',
         }}
@@ -35,23 +34,23 @@ function TimelineCard({ item, index }) {
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         animate={{
-          borderColor: hovered ? 'rgba(0,217,255,0.7)' : 'rgba(0,217,255,0.3)',
-          y: hovered ? -6 : 0,
+          borderColor: hovered ? 'var(--accent)' : 'var(--border)',
+          y: hovered ? -4 : 0,
         }}
         transition={{ duration: 0.3 }}
         style={{
-          background: hovered ? 'linear-gradient(135deg, rgba(0,217,255,0.08) 0%, rgba(79,122,255,0.04) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-          border: '1.5px solid rgba(0,217,255,0.3)',
+          background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+          border: '1px solid var(--border)',
           borderRadius: 16, padding: '1.6rem',
-          transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          boxShadow: hovered ? '0 16px 48px rgba(0,217,255,0.2), 0 0 30px rgba(0,217,255,0.1)' : '0 4px 16px rgba(0,0,0,0.1), 0 0 20px rgba(0,217,255,0.08)',
+          transition: 'all 0.3s',
+          boxShadow: hovered ? '0 8px 24px rgba(74,158,255,0.1)' : '0 2px 8px rgba(0,0,0,0.08)',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
         <div style={{
           position: 'absolute', inset: 0,
-          background: hovered ? 'radial-gradient(circle at top left, rgba(0,217,255,0.12), transparent 60%)' : 'transparent',
+          background: hovered ? 'radial-gradient(circle at top left, rgba(74,158,255,0.04), transparent 60%)' : 'transparent',
           pointerEvents: 'none',
           transition: 'background 0.3s',
         }} />

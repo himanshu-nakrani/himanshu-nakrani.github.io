@@ -22,22 +22,22 @@ export default function Navbar({ isDark, setIsDark }) {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: scrolled ? 'rgba(var(--bg-rgb), 0.85)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(0,217,255,0.2)' : '1px solid transparent',
+        background: scrolled ? 'rgba(var(--bg-rgb), 0.8)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
         transition: 'all 0.3s ease',
       }}
     >
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 2rem', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <motion.a
           href="#about"
-          whileHover={{ scale: 1.08, boxShadow: '0 4px 20px rgba(0,217,255,0.5)' }}
+          whileHover={{ scale: 1.05 }}
           style={{
             fontFamily: "'Fira Code', monospace", fontWeight: 700, fontSize: '1rem',
-            color: 'var(--bg)', background: 'linear-gradient(135deg, var(--accent), var(--accent3))',
-            border: '1.5px solid rgba(0,217,255,0.6)', padding: '6px 13px', borderRadius: 8,
+            color: 'var(--accent)', background: 'transparent',
+            border: '1px solid var(--border)', padding: '6px 13px', borderRadius: 8,
             textDecoration: 'none', letterSpacing: '0.05em',
-            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transition: 'all 0.3s',
           }}
         >
           HN
@@ -50,9 +50,9 @@ export default function Navbar({ isDark, setIsDark }) {
               {l === 'Contact' ? (
                 <motion.a
                   href={`#${l.toLowerCase()}`}
-                  whileHover={{ scale: 1.06, boxShadow: '0 4px 20px rgba(0,217,255,0.4)' }}
+                  whileHover={{ scale: 1.05 }}
                   style={{
-                    background: 'linear-gradient(135deg, var(--accent), var(--accent3))',
+                    background: 'var(--accent)',
                     color: 'var(--bg)',
                     padding: '8px 20px', borderRadius: 8,
                     textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
