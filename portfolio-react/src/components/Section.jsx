@@ -15,7 +15,14 @@ export default function Section({ id, title, alt, children }) {
       <div style={{
         position: 'absolute', top: '-100px', right: '-200px',
         width: 400, height: 400,
-        background: alt ? 'radial-gradient(circle, rgba(79,195,247,0.08), transparent)' : 'radial-gradient(circle, rgba(124,111,255,0.06), transparent)',
+        background: alt ? 'radial-gradient(circle, rgba(79,195,247,0.12), transparent)' : 'radial-gradient(circle, rgba(124,111,255,0.1), transparent)',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-150px', left: '-150px',
+        width: 350, height: 350,
+        background: 'radial-gradient(circle, rgba(124,111,255,0.08), transparent)',
         pointerEvents: 'none',
         zIndex: 0,
       }} />
@@ -30,9 +37,10 @@ export default function Section({ id, title, alt, children }) {
             fontSize: 'clamp(1.8rem, 5vw, 2rem)',
             fontWeight: 800, marginBottom: '3rem',
             position: 'relative', display: 'inline-block', letterSpacing: '-0.02em',
-            background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 100%)',
+            background: 'linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent3) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(0 0 15px rgba(124, 111, 255, 0.2))',
           }}>
             {title}
             <motion.span
