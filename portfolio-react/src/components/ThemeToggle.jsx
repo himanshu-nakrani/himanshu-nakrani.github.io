@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-export default function ThemeToggle({ isDark, setIsDark }) {
+export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
   const toggleTheme = () => {
     const newTheme = !isDark
     setIsDark(newTheme)
@@ -16,16 +16,16 @@ export default function ThemeToggle({ isDark, setIsDark }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: 44,
-        height: 44,
-        borderRadius: 10,
-        border: '1.5px solid rgba(0,217,255,0.3)',
-        background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        width: compact ? 36 : 44,
+        height: compact ? 36 : 44,
+        borderRadius: compact ? 999 : 10,
+        border: compact ? '1px solid var(--border2)' : '1.5px solid rgba(0,217,255,0.3)',
+        background: compact ? 'rgba(var(--bg-rgb), 0.4)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
         cursor: 'pointer',
         transition: 'all 0.3s',
         color: 'var(--text)',
         padding: 0,
-        boxShadow: '0 0 10px rgba(0,217,255,0.1)',
+        boxShadow: compact ? 'none' : '0 0 10px rgba(0,217,255,0.1)',
       }}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >
@@ -38,9 +38,9 @@ export default function ThemeToggle({ isDark, setIsDark }) {
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         {isDark ? (
-          <span style={{ fontSize: '1.2rem' }}>☀️</span>
+          <span style={{ fontSize: compact ? '1rem' : '1.2rem' }}>☀️</span>
         ) : (
-          <span style={{ fontSize: '1.2rem' }}>🌙</span>
+          <span style={{ fontSize: compact ? '1rem' : '1.2rem' }}>🌙</span>
         )}
       </motion.div>
     </motion.button>

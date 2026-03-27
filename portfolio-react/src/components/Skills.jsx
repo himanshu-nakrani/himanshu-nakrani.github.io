@@ -10,7 +10,7 @@ export default function Skills() {
   const [hoveredSkill, setHoveredSkill] = useState(null)
 
   return (
-    <Section id="skills" title="Skills & Certifications">
+    <Section id="skills" title="Technical Stack" subtitle="Tools of the trade." alt>
       <div ref={ref}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.2rem', marginBottom: '3rem' }}>
           {skills.map((s, i) => (

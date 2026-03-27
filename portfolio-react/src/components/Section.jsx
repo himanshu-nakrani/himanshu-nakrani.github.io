@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-export default function Section({ id, title, alt, children }) {
+export default function Section({ id, title, subtitle, alt, children }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -28,12 +28,13 @@ export default function Section({ id, title, alt, children }) {
           transition={{ duration: 0.5 }}
         >
           <h2 style={{
-            fontSize: 'clamp(1.8rem, 5vw, 2rem)',
-            fontWeight: 800, marginBottom: '3rem',
-            position: 'relative', display: 'inline-block', letterSpacing: '-0.02em',
+            fontSize: 'clamp(1.8rem, 5vw, 2.35rem)',
+            fontWeight: 700, marginBottom: subtitle ? '0.5rem' : '3rem',
+            position: 'relative', display: 'inline-block', letterSpacing: '-0.03em',
             color: 'var(--text)',
           }}>
             {title}
+            {!subtitle && (
             <motion.span
               initial={{ width: 0 }}
               animate={inView ? { width: 60 } : { width: 0 }}
@@ -45,7 +46,19 @@ export default function Section({ id, title, alt, children }) {
                 borderRadius: 1, display: 'block',
               }}
             />
+            )}
           </h2>
+          {subtitle && (
+            <p style={{
+              color: 'var(--text2)',
+              fontSize: '0.95rem',
+              maxWidth: 520,
+              marginBottom: '2.5rem',
+              lineHeight: 1.6,
+            }}>
+              {subtitle}
+            </p>
+          )}
         </motion.div>
         {children}
       </div>

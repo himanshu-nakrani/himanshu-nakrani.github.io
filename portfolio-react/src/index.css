@@ -1,16 +1,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0f1119;
-  --bg2: #13161f;
-  --bg-rgb: 15, 17, 25;
-  --surface: #1a1f2e;
-  --surface2: #202836;
-  --border: #2a3142;
-  --border2: #323d50;
+  /* Aura-style: near-black canvas + purple nav dots */
+  --bg: #07080c;
+  --bg2: #0c0e14;
+  --bg-rgb: 7, 8, 12;
+  --surface: #12151c;
+  --surface2: #181c26;
+  --border: #252a36;
+  --border2: #2e3544;
   --accent: #4a9eff;
   --accent2: #6b7cff;
   --accent3: #5a8ee0;
+  --nav-dot: #a78bfa;
+  --nav-dot-glow: rgba(167, 139, 250, 0.55);
   --glow: rgba(74, 158, 255, 0.08);
   --glow2: rgba(90, 142, 224, 0.06);
   --text: #e0e6f2;
@@ -23,6 +26,8 @@
 }
 
 :root[data-theme="light"] {
+  --nav-dot: #7c3aed;
+  --nav-dot-glow: rgba(124, 58, 237, 0.4);
   --bg: #fafbfd;
   --bg2: #f3f5f9;
   --bg-rgb: 250, 251, 253;
@@ -44,7 +49,12 @@
   --accent-light: #fff;
 }
 
-html { scroll-behavior: smooth; }
+/* Avoid stacking with JS smooth scroll; programmatic nav uses scrollIntoView where needed */
+html { scroll-behavior: auto; }
+
+section[id] {
+  scroll-margin-top: 76px;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -52,6 +62,26 @@ body {
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle grain / noise (Aura-style depth) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  mix-blend-mode: overlay;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 ::-webkit-scrollbar { width: 6px; }
