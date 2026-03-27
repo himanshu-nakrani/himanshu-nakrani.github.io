@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "heatmap": "node scripts/fetch-ghchart-svg.mjs",
+    "predev": "node scripts/fetch-ghchart-svg.mjs",
+    "prebuild": "node scripts/fetch-ghchart-svg.mjs",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

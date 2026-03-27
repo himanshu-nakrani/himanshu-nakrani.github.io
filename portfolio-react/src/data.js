@@ -69,6 +69,12 @@ export const kagglePinned = [
   { type: 'notebook', medal: null, title: 'CrewAI Multi-Agent Blog Generator', desc: 'Multi-agent system using CrewAI framework to autonomously generate blog content — showcasing AI agent orchestration.', votes: 2, link: 'https://www.kaggle.com/code/himanshunakrani/crewai-multi-ai-agent-blog-generator' },
 ]
 
+/**
+ * Optional YYYY-MM-DD → activity count for the Kaggle heatmap grid in `Kaggle.jsx`.
+ * Kaggle has no public contribution API like GitHub/ghchart — add dates here manually if you want the grid filled.
+ */
+export const kaggleContributionMap = {}
+
 export const skills = [
   { label: 'AI / ML', items: ['LLMs', 'RAG', 'Fine-tuning', 'LoRA/PEFT', 'Prompt Engineering', 'LangChain', 'Google ADK', 'AI Agents', 'OpenAI API'] },
   { label: 'Backend', items: ['FastAPI', 'ASP.NET Core', 'REST APIs', 'SQLAlchemy', 'Microservices'] },

@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Section from './Section'
-import { kagglePinned } from '../data'
+import { kaggleContributionMap, kagglePinned } from '../data'
+import KaggleHeatmap from './KaggleHeatmap'
 
 function KaggleCard({ item, index }) {
   const ref = useRef(null)
@@ -125,6 +126,39 @@ export default function Kaggle() {
           ))}
         </div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.22 }}
+          style={{ marginBottom: '2rem' }}
+        >
+          <p
+            style={{
+              fontSize: '0.72rem',
+              color: 'var(--text2)',
+              fontFamily: "'Fira Code', monospace",
+              letterSpacing: '0.12em',
+              marginBottom: 10,
+              textTransform: 'uppercase',
+            }}
+          >
+            Activity heatmap
+          </p>
+          <div
+            className="kaggle-heatmap-wrap"
+            style={{
+              borderRadius: 14,
+              border: '1px solid var(--border)',
+              overflow: 'auto',
+              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              padding: '14px 16px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04)',
+            }}
+          >
+            <KaggleHeatmap contributionMap={kaggleContributionMap} />
+          </div>
+        </motion.div>
+
         <p style={{ fontSize: '0.78rem', color: 'var(--text2)', fontFamily: "'Fira Code', monospace", textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '1.2rem' }}>Pinned Work</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -149,6 +183,7 @@ export default function Kaggle() {
       </div>
       <style>{`
         @media (max-width: 600px) { .kag-stats-grid { grid-template-columns: repeat(2,1fr) !important; } }
+        .kaggle-heatmap-wrap { -webkit-overflow-scrolling: touch; }
       `}</style>
     </Section>
   )

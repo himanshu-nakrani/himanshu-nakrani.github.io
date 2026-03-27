@@ -2,6 +2,9 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Section from './Section'
 
+/** Public mirror (no PAT). The default vercel.app instance is often 503; "eight" may require PAT_1. */
+const README_STATS = 'https://github-readme-stats-phi.vercel.app'
+
 const ghStats = [
   { num: '19', label: 'Public Repos' },
   { num: '5', label: 'Followers' },
@@ -46,6 +49,49 @@ export default function GitHub() {
           ))}
         </div>
 
+        {/* Contribution heatmap (last ~1 year) — SVG from ghchart */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.28 }}
+          style={{ marginBottom: '2rem' }}
+        >
+          <p
+            style={{
+              fontSize: '0.72rem',
+              color: 'var(--text2)',
+              fontFamily: "'Fira Code', monospace",
+              letterSpacing: '0.12em',
+              marginBottom: 10,
+              textTransform: 'uppercase',
+            }}
+          >
+            Contribution heatmap
+          </p>
+          <div
+            className="gh-heatmap-wrap"
+            style={{
+              borderRadius: 14,
+              border: '1px solid var(--border)',
+              overflow: 'auto',
+              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              padding: '14px 16px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04)',
+            }}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
+              alt="GitHub contributions in the last year (activity heat map)"
+              className="gh-heatmap-img"
+              style={{ display: 'block', width: '100%', minWidth: 640, height: 'auto' }}
+              loading="lazy"
+            />
+          </div>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text2)', marginTop: 8, opacity: 0.85 }}>
+            Daily commit activity (public contributions). GitHub-style green ramp on dark cells.
+          </p>
+        </motion.div>
+
         {/* Charts */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -54,13 +100,13 @@ export default function GitHub() {
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}
         >
           <img
-            src="https://github-readme-stats.vercel.app/api?username=himanshu-nakrani&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&icon_color=b39dff&text_color=eeeef8&ring_color=7c6fff"
+            src={`${README_STATS}/api?username=himanshu-nakrani&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&icon_color=b39dff&text_color=eeeef8&ring_color=7c6fff`}
             alt="GitHub Stats"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
           />
           <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&text_color=eeeef8"
+            src={`${README_STATS}/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&text_color=eeeef8`}
             alt="Top Languages"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
@@ -99,6 +145,8 @@ export default function GitHub() {
       </div>
       <style>{`
         @media (max-width: 600px) { .gh-stats-grid { grid-template-columns: repeat(2,1fr) !important; } }
+        .gh-heatmap-wrap { -webkit-overflow-scrolling: touch; }
+        .gh-heatmap-img { filter: saturate(1.06) contrast(1.04); }
       `}</style>
     </Section>
   )
