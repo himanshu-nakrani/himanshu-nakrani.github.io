@@ -17,27 +17,27 @@ export default function Research() {
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.12 }}
-            whileHover={{ borderColor: 'rgba(124,111,255,0.6)', y: -6 }}
+            whileHover={{ borderColor: 'rgba(0,217,255,0.6)', y: -6, boxShadow: '0 12px 36px rgba(0,217,255,0.15)' }}
             style={{
               background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-              border: '1px solid var(--border)', borderRadius: 16, padding: '1.6rem',
+              border: '1.5px solid rgba(0,217,255,0.25)', borderRadius: 16, padding: '1.6rem',
               transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-              boxShadow: 'none',
+              boxShadow: '0 0 15px rgba(0,217,255,0.08)',
               position: 'relative',
               overflow: 'hidden',
             }}
           >
             <div style={{
               position: 'absolute', inset: 0,
-              background: 'radial-gradient(circle at top left, rgba(124,111,255,0.05), transparent 60%)',
+              background: 'radial-gradient(circle at top left, rgba(0,217,255,0.08), transparent 60%)',
               pointerEvents: 'none',
             }} />
             <motion.span
               animate={{ y: 0 }}
               style={{
                 fontFamily: "'Fira Code', monospace", fontSize: '0.72rem',
-                color: 'var(--accent)', background: 'rgba(124,111,255,0.12)',
-                border: '1px solid rgba(124,111,255,0.4)',
+                color: 'var(--accent)', background: 'rgba(0,217,255,0.12)',
+                border: '1px solid rgba(0,217,255,0.5)',
                 padding: '4px 11px', borderRadius: 20, display: 'inline-block', marginBottom: '0.9rem',
                 position: 'relative', zIndex: 1,
                 transition: 'all 0.3s',

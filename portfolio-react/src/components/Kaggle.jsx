@@ -20,14 +20,14 @@ function KaggleCard({ item, index }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       style={{
-        background: hovered ? 'linear-gradient(135deg, rgba(32,190,255,0.08) 0%, rgba(79,195,247,0.04) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-        border: `1px solid ${hovered ? 'rgba(32,190,255,0.6)' : 'var(--border)'}`,
+        background: hovered ? 'linear-gradient(135deg, rgba(0,217,255,0.1) 0%, rgba(79,122,255,0.05) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        border: `1.5px solid ${hovered ? 'rgba(0,217,255,0.6)' : 'rgba(0,217,255,0.25)'}`,
         borderRadius: 14, padding: '1.2rem',
         textDecoration: 'none', color: 'var(--text)',
         display: 'flex', flexDirection: 'column', gap: '0.5rem',
         transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
         transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        boxShadow: hovered ? '0 12px 40px rgba(32,190,255,0.15)' : '0 4px 16px rgba(0,0,0,0.1)',
+        boxShadow: hovered ? '0 12px 40px rgba(0,217,255,0.2)' : '0 4px 16px rgba(0,0,0,0.1), 0 0 15px rgba(0,217,255,0.08)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -69,14 +69,14 @@ export default function Kaggle() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ borderColor: 'rgba(32,190,255,0.6)', y: -4 }}
+              whileHover={{ borderColor: 'rgba(0,217,255,0.6)', y: -4, boxShadow: '0 8px 24px rgba(0,217,255,0.15)' }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)', borderRadius: 16,
+                border: '1.5px solid rgba(0,217,255,0.25)', borderRadius: 16,
                 padding: '1.4rem', flex: 1, minWidth: 240,
                 display: 'flex', gap: '1rem', alignItems: 'flex-start',
                 transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                boxShadow: 'none',
+                boxShadow: '0 0 15px rgba(0,217,255,0.08)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -107,15 +107,16 @@ export default function Kaggle() {
               whileHover={{ y: -3 }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', textAlign: 'center',
+                border: '1.5px solid rgba(0,217,255,0.25)', borderRadius: 12, padding: '1rem', textAlign: 'center',
                 transition: 'all 0.3s',
                 position: 'relative',
                 overflow: 'hidden',
+                boxShadow: '0 0 15px rgba(0,217,255,0.08)',
               }}
             >
               <div style={{
                 position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at center, rgba(79,195,247,0.05), transparent 70%)',
+                background: 'radial-gradient(circle at center, rgba(0,217,255,0.1), transparent 70%)',
                 pointerEvents: 'none',
               }} />
               <div style={{ fontSize: '1.7rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent3), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{num}</div>
@@ -134,10 +135,10 @@ export default function Kaggle() {
           href="https://www.kaggle.com/himanshunakrani"
           target="_blank"
           rel="noopener"
-          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(32,190,255,0.25)' }}
+          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(0,217,255,0.3)', borderColor: 'rgba(0,217,255,0.6)' }}
           style={{
-            display: 'inline-block', border: '1px solid rgba(32,190,255,0.3)',
-            background: 'linear-gradient(135deg, rgba(32,190,255,0.1), rgba(79,195,247,0.05))',
+            display: 'inline-block', border: '1.5px solid rgba(0,217,255,0.3)',
+            background: 'linear-gradient(135deg, rgba(0,217,255,0.08), rgba(79,122,255,0.05))',
             color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
             textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',

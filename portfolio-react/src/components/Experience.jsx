@@ -20,7 +20,7 @@ function TimelineCard({ item, index }) {
       {/* Dot */}
       <motion.div
         animate={{
-          boxShadow: hovered ? '0 0 24px var(--accent), 0 0 12px rgba(79,195,247,0.3)' : '0 0 8px rgba(124,111,255,0.5)',
+          boxShadow: hovered ? '0 0 24px var(--accent), 0 0 12px rgba(0,217,255,0.5)' : '0 0 8px rgba(0,217,255,0.6)',
           scale: hovered ? 1.4 : 1,
         }}
         transition={{ duration: 0.3 }}
@@ -35,38 +35,38 @@ function TimelineCard({ item, index }) {
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         animate={{
-          borderColor: hovered ? 'rgba(124,111,255,0.6)' : 'var(--border)',
+          borderColor: hovered ? 'rgba(0,217,255,0.7)' : 'rgba(0,217,255,0.3)',
           y: hovered ? -6 : 0,
         }}
         transition={{ duration: 0.3 }}
         style={{
-          background: hovered ? 'linear-gradient(135deg, rgba(124,111,255,0.06) 0%, rgba(79,195,247,0.03) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-          border: '1px solid var(--border)',
+          background: hovered ? 'linear-gradient(135deg, rgba(0,217,255,0.08) 0%, rgba(79,122,255,0.04) 100%), linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)' : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+          border: '1.5px solid rgba(0,217,255,0.3)',
           borderRadius: 16, padding: '1.6rem',
           transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-          boxShadow: hovered ? '0 16px 48px rgba(124,111,255,0.15)' : '0 4px 16px rgba(0,0,0,0.1)',
+          boxShadow: hovered ? '0 16px 48px rgba(0,217,255,0.2), 0 0 30px rgba(0,217,255,0.1)' : '0 4px 16px rgba(0,0,0,0.1), 0 0 20px rgba(0,217,255,0.08)',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
         <div style={{
           position: 'absolute', inset: 0,
-          background: hovered ? 'radial-gradient(circle at top left, rgba(124,111,255,0.08), transparent 60%)' : 'transparent',
+          background: hovered ? 'radial-gradient(circle at top left, rgba(0,217,255,0.12), transparent 60%)' : 'transparent',
           pointerEvents: 'none',
           transition: 'background 0.3s',
         }} />
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.2rem', flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
           <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 3, background: hovered ? 'linear-gradient(135deg, var(--text), var(--accent))' : 'transparent', WebkitBackgroundClip: hovered ? 'text' : 'unset', WebkitTextFillColor: hovered ? 'transparent' : 'unset', transition: 'all 0.3s' }}>{item.role}</h3>
-            <p style={{ fontSize: '0.85rem', color: hovered ? 'var(--accent2)' : 'var(--accent)', fontWeight: 500, transition: 'color 0.3s' }}>{item.company} · {item.location}</p>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: 3, background: hovered ? 'linear-gradient(135deg, var(--accent), var(--accent3))' : 'transparent', WebkitBackgroundClip: hovered ? 'text' : 'unset', WebkitTextFillColor: hovered ? 'transparent' : 'unset', transition: 'all 0.3s' }}>{item.role}</h3>
+            <p style={{ fontSize: '0.85rem', color: hovered ? 'var(--accent)' : 'var(--accent3)', fontWeight: 500, transition: 'color 0.3s' }}>{item.company} · {item.location}</p>
           </div>
           <motion.span
             animate={{ y: hovered ? -2 : 0 }}
             style={{
               fontFamily: "'Fira Code', monospace", fontSize: '0.72rem',
-              color: 'var(--accent)', background: 'rgba(124,111,255,0.1)',
-              border: '1px solid rgba(124,111,255,0.3)',
+              color: 'var(--accent)', background: 'rgba(0,217,255,0.12)',
+              border: '1px solid rgba(0,217,255,0.5)',
               padding: '4px 12px', borderRadius: 20, whiteSpace: 'nowrap',
               transition: 'all 0.3s',
             }}>
@@ -110,7 +110,7 @@ export default function Experience() {
   return (
     <Section id="experience" title="Experience">
       <div style={{ position: 'relative', paddingLeft: '2rem' }}>
-        <div style={{ position: 'absolute', left: 0, top: 8, bottom: 0, width: 2, background: 'linear-gradient(to bottom, var(--accent), transparent)' }} />
+        <div style={{ position: 'absolute', left: 0, top: 8, bottom: 0, width: 2, background: 'linear-gradient(to bottom, var(--accent), rgba(0,217,255,0.2))', boxShadow: '0 0 15px var(--accent)' }} />
         {experience.map((item, i) => <TimelineCard key={i} item={item} index={i} />)}
       </div>
     </Section>
