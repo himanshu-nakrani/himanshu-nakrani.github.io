@@ -22,7 +22,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0, 0, 0, 0.7)',
+              background: 'var(--modal-backdrop)',
               backdropFilter: 'blur(4px)',
               zIndex: 999,
             }}
@@ -34,6 +34,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="exp-modal-overlay"
             style={{
               position: 'fixed',
               inset: 0,
@@ -41,36 +42,38 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
               alignItems: 'center',
               justifyContent: 'center',
               zIndex: 1000,
-              padding: '2rem',
+              padding: 'max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left))',
               pointerEvents: 'auto',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div
+              className="exp-modal-shell"
               style={{
                 width: '100%',
                 maxWidth: 1000,
-                maxHeight: '90vh',
+                maxHeight: 'min(90vh, 100dvh - 2rem)',
                 display: 'flex',
-                background: 'rgba(18, 21, 28, 0.5)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(167, 139, 250, 0.2)',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: '1px solid var(--border)',
                 borderRadius: 24,
                 overflow: 'hidden',
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                boxShadow: 'var(--shadow-md)',
               }}
             >
               {/* Left side - Large visual area with details */}
               <div
+                className="exp-modal-main"
                 style={{
                   flex: 1,
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: '2.5rem',
-                  background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.06), rgba(74, 158, 255, 0.03))',
-                  borderRight: '1px solid rgba(167, 139, 250, 0.15)',
+                  padding: 'clamp(1.25rem, 4vw, 2.5rem)',
+                  background:
+                    'linear-gradient(135deg, color-mix(in srgb, var(--nav-dot) 9%, var(--surface)), color-mix(in srgb, var(--accent) 5%, var(--surface2)))',
+                  borderRight: '1px solid var(--border)',
                   overflowY: 'auto',
+                  minWidth: 0,
                 }}
               >
                 <button
@@ -189,15 +192,18 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
 
               {/* Right sidebar - Technologies */}
               <div
+                className="exp-modal-sidebar"
                 style={{
                   width: 300,
-                  padding: '2.5rem 2rem',
+                  flexShrink: 0,
+                  padding: 'clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2rem)',
                   background: 'var(--surface2)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2rem',
                   overflowY: 'auto',
                   borderLeft: '1px solid var(--border)',
+                  minWidth: 0,
                 }}
               >
                 <div>
@@ -246,10 +252,8 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <div
                       style={{
                         padding: '0.75rem',
-                        background: 'rgba(167, 139, 250, 0.08)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
-                        border: '1px solid rgba(167, 139, 250, 0.2)',
+                        background: 'color-mix(in srgb, var(--nav-dot) 12%, var(--surface))',
+                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}
@@ -262,10 +266,8 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <div
                       style={{
                         padding: '0.75rem',
-                        background: 'rgba(74, 158, 255, 0.08)',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)',
-                        border: '1px solid rgba(74, 158, 255, 0.2)',
+                        background: 'color-mix(in srgb, var(--accent) 11%, var(--surface))',
+                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}

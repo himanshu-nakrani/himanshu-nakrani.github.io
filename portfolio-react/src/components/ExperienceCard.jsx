@@ -2,36 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
-function extractKeyMetrics(bullets) {
-  const metrics = []
-  const keywordPatterns = [
-    { regex: /(\d+%\+?)/g, label: 'metric' },
-    { regex: /(Alpha Copilot|WealthAI|Agent Forge)/g, label: 'product' },
-  ]
-
-  bullets.forEach((bullet) => {
-    keywordPatterns.forEach(({ regex }) => {
-      const matches = bullet.match(regex)
-      if (matches) {
-        matches.forEach((m) => {
-          if (!metrics.some((x) => x === m)) {
-            metrics.push(m)
-          }
-        })
-      }
-    })
-  })
-
-  return metrics.slice(0, 2)
-}
-
-function highlightBullets(html) {
-  return html.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
-}
-
 export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
 
@@ -178,16 +148,14 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
 
   const shellStyle = {
     position: 'relative',
-    borderRadius: 20,
+    borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',
     border: '1px solid',
-    borderColor: hovered ? 'rgba(167, 139, 250, 0.35)' : 'rgba(167, 139, 250, 0.15)',
-    background: 'rgba(18, 21, 28, 0.4)',
-    backdropFilter: 'blur(12px)',
-    WebkitBackdropFilter: 'blur(12px)',
-    boxShadow: hovered ? '0 8px 32px rgba(74, 158, 255, 0.15)' : '0 2px 8px rgba(0, 0, 0, 0.2)',
-    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease, background 0.35s ease',
-    transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+    borderColor: hovered ? 'var(--border2)' : 'var(--border)',
+    background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+    boxShadow: hovered ? 'var(--shadow-md)' : 'var(--shadow-sm)',
+    transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+    transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
     cursor: onCardClick ? 'pointer' : 'default',
   }
 

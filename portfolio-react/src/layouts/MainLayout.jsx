@@ -55,7 +55,7 @@ export default function MainLayout({ isDark, setIsDark }) {
         transition={{ duration: 0.5 }}
         style={{
           textAlign: 'center',
-          padding: '3rem 2rem',
+          padding: '2.75rem max(var(--page-pad-x), env(safe-area-inset-right))  max(2.75rem, env(safe-area-inset-bottom)) max(var(--page-pad-x), env(safe-area-inset-left))',
           color: 'var(--text2)',
           fontSize: '0.82rem',
           borderTop: '1px solid var(--border)',
@@ -63,7 +63,7 @@ export default function MainLayout({ isDark, setIsDark }) {
           position: 'relative',
         }}
       >
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
           <p style={{ marginBottom: '1rem' }}>
             © 2025 Himanshu Nakrani ·{' '}
             <motion.a
@@ -80,7 +80,7 @@ export default function MainLayout({ isDark, setIsDark }) {
               himanshu-nakrani
             </motion.a>
           </p>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text2)', opacity: 0.6 }}>
+          <p className="footer-note">
             Crafted with passion for AI, LLMs, and scalable systems.
           </p>
         </div>

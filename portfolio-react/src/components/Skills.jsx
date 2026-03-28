@@ -21,15 +21,14 @@ export default function Skills() {
               transition={{ duration: 0.4, delay: i * 0.07 }}
               onHoverStart={() => setHoveredSkill(i)}
               onHoverEnd={() => setHoveredSkill(null)}
+              className="mvp2-card"
               style={{
-                background: 'rgba(18, 21, 28, 0.4)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: hoveredSkill === i ? '1px solid rgba(167, 139, 250, 0.35)' : '1px solid rgba(167, 139, 250, 0.15)',
-                borderRadius: 14, padding: '1.2rem',
-                transition: 'all 0.3s',
+                border: hoveredSkill === i ? '1px solid var(--accent)' : '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)',
+                padding: '1.2rem',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
                 transform: hoveredSkill === i ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: hoveredSkill === i ? '0 8px 24px rgba(74, 158, 255, 0.15)' : '0 2px 8px rgba(0,0,0,0.2)',
+                boxShadow: hoveredSkill === i ? 'var(--shadow-md)' : 'var(--shadow-sm)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -74,13 +73,13 @@ export default function Skills() {
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
               whileHover={{ y: -3, borderColor: 'var(--accent)' }}
+              className="mvp2-card"
               style={{
-                background: 'rgba(18, 21, 28, 0.4)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(167, 139, 250, 0.15)',
-                borderRadius: 12, padding: '1.2rem', textAlign: 'center',
-                transition: 'all 0.3s',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '1.2rem',
+                textAlign: 'center',
+                transition: 'border-color 0.2s ease, transform 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden',
               }}

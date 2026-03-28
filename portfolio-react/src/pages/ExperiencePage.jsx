@@ -2,24 +2,19 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ExperienceCard from '../components/ExperienceCard'
 import ExperienceDetailModal from '../components/ExperienceDetailModal'
+import PageHeader from '../components/PageHeader'
 import { experience } from '../data'
 
 export default function ExperiencePage() {
   const [selectedExperience, setSelectedExperience] = useState(null)
 
   return (
-    <section style={{ padding: '110px 2rem 80px', maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{ marginBottom: '2.25rem' }}>
-        <p style={{ color: 'var(--nav-dot)', fontFamily: "'Fira Code', monospace", fontSize: '0.72rem', letterSpacing: '0.14em', marginBottom: 10 }}>
-          EXPERIENCE LOG
-        </p>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 2.85rem)', lineHeight: 1.1, marginBottom: '0.75rem', fontWeight: 700, letterSpacing: '-0.03em' }}>
-          Career timeline
-        </h1>
-        <p style={{ color: 'var(--text2)', maxWidth: 640, fontSize: '1rem', lineHeight: 1.65 }}>
-          Enterprise AI software — RAG, LLM backends, and production systems at scale.
-        </p>
-      </div>
+    <section className="mvp2-page">
+      <PageHeader
+        kicker="Experience log"
+        title="Career timeline"
+        description="Enterprise AI software — RAG, LLM backends, and production systems at scale."
+      />
 
       <div style={{ position: 'relative', paddingLeft: '2.25rem' }}>
         <div
@@ -38,7 +33,7 @@ export default function ExperiencePage() {
             <div key={`${item.company}-${item.role}-${item.period}`} style={{ position: 'relative' }}>
               <motion.div
                 initial={false}
-                whileHover={{ scale: 1.12 }}
+                whileHover={{ scale: 1.06 }}
                 style={{
                   position: 'absolute',
                   left: -34,

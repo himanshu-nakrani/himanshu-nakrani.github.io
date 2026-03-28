@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useMemo } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin } from 'lucide-react'
 
 const stats = [
@@ -27,56 +28,69 @@ const linkStyle = {
   transition: 'color 0.2s ease, border-color 0.2s ease',
 }
 
-const Sparkle = ({ delay = 0, x = 0, y = 0 }) => (
+const Sparkle = ({ delay = 0, repeatDelay = 0.9, x = 0, y = 0, size = 2.5 }) => (
   <motion.div
     animate={{
-      opacity: [0, 1, 0],
-      scale: [0, 1, 0],
+      opacity: [0.2, 1, 0.2],
+      scale: [0.4, 1.2, 0.4],
     }}
     transition={{
-      duration: 2,
+      duration: 1.35,
       delay,
       repeat: Infinity,
-      repeatDelay: Math.random() * 2 + 2,
+      repeatDelay,
+      ease: 'easeInOut',
     }}
     style={{
       position: 'absolute',
       left: `${x}%`,
       top: `${y}%`,
-      width: 2,
-      height: 2,
+      width: size,
+      height: size,
       borderRadius: '50%',
-      background: 'radial-gradient(circle, rgba(167, 139, 250, 0.8), rgba(167, 139, 250, 0))',
+      zIndex: 0,
+      background: 'radial-gradient(circle closest-side, var(--nav-dot), transparent)',
       pointerEvents: 'none',
-      boxShadow: '0 0 6px rgba(167, 139, 250, 0.6)',
+      boxShadow: '0 0 10px var(--nav-dot), 0 0 22px var(--nav-dot)',
+      filter: 'brightness(1.2)',
     }}
   />
 )
 
 export default function Hero() {
-  const sparkles = Array.from({ length: 120 }, (_, i) => ({
-    id: i,
-    delay: (i * 0.025) % 3,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-  }))
+  const reduceMotion = useReducedMotion()
+  const sparkles = useMemo(
+    () =>
+      Array.from({ length: 200 }, (_, i) => ({
+        id: i,
+        delay: (i * 0.018) % 2.5,
+        repeatDelay: 0.6 + ((i * 17) % 12) / 10,
+        x: (i * 47 + (i % 7) * 13) % 100,
+        y: (i * 23 + (i % 5) * 19) % 100,
+        size: 2 + (i % 5) * 0.45,
+      })),
+    [],
+  )
 
   return (
     <section
       id="about"
       style={{
-        minHeight: 'min(100vh, 900px)',
+        minHeight: 'min(100dvh, 900px)',
         display: 'flex',
         alignItems: 'center',
-        padding: '96px 2rem 64px',
-        maxWidth: 1100,
+        padding: '96px var(--page-pad-x) max(2rem, env(safe-area-inset-bottom))',
+        maxWidth: 'var(--page-max)',
         margin: '0 auto',
-        gap: 'clamp(2rem, 5vw, 4rem)',
+        gap: 'clamp(1.5rem, 5vw, 4rem)',
         position: 'relative',
       }}
     >
-      {sparkles.map((s) => <Sparkle key={s.id} delay={s.delay} x={s.x} y={s.y} />)}
-      <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
+      {!reduceMotion &&
+        sparkles.map((s) => (
+          <Sparkle key={s.id} delay={s.delay} repeatDelay={s.repeatDelay} x={s.x} y={s.y} size={s.size} />
+        ))}
+      <div className="hero-copy" style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
         <motion.div {...fadeUp(0.06)}>
           <span
             style={{
@@ -249,18 +263,33 @@ export default function Hero() {
                 alt="Himanshu Nakrani"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.4 }}
-                style={{ width: '100%', height: 340, objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+                style={{
+                  width: '100%',
+                  height: 'max(220px, min(340px, 72vw))',
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  display: 'block',
+                }}
               />
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.1) 100%)',
+                  background: 'var(--hero-img-scrim)',
+                  pointerEvents: 'none',
                 }}
               />
             </div>
-            <div style={{ padding: '1.5rem' }}>
-              <p style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 6, letterSpacing: '-0.02em' }}>
+            <div style={{ padding: 'clamp(1rem, 4vw, 1.5rem)' }}>
+              <p
+                style={{
+                  fontWeight: 700,
+                  fontSize: 'clamp(1rem, 3.5vw, 1.1rem)',
+                  marginBottom: 6,
+                  letterSpacing: '-0.02em',
+                  color: 'var(--text)',
+                }}
+              >
                 Himanshu Nakrani
               </p>
               <p style={{ fontSize: '0.78rem', color: 'var(--accent)', marginBottom: 6, fontWeight: 600 }}>
@@ -324,8 +353,17 @@ export default function Hero() {
 
       <style>{`
         @media (max-width: 768px) {
-          #about { flex-direction: column !important; padding-top: 88px !important; align-items: stretch !important; }
-          .hero-avatar-wrap { width: 100% !important; max-width: 400px; margin: 0 auto; }
+          #about {
+            flex-direction: column !important;
+            padding-top: max(88px, env(safe-area-inset-top)) !important;
+            align-items: stretch !important;
+            min-height: min(100dvh, 920px) !important;
+          }
+          .hero-copy { width: 100%; }
+          .hero-avatar-wrap { width: 100% !important; max-width: min(400px, 100%) !important; margin: 0 auto; }
+        }
+        @media (max-width: 480px) {
+          #about { padding-left: max(var(--page-pad-x), env(safe-area-inset-left)) !important; padding-right: max(var(--page-pad-x), env(safe-area-inset-right)) !important; }
         }
       `}</style>
     </section>

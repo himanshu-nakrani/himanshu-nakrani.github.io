@@ -7,11 +7,11 @@ export default function Section({ id, title, subtitle, alt, children }) {
 
   return (
     <section id={id} style={{
-      padding: '90px 2rem', background: alt ? 'var(--bg2)' : 'var(--bg)',
+      padding: 'var(--section-pad-y) var(--page-pad-x)', background: alt ? 'var(--bg2)' : 'var(--bg)',
       position: 'relative',
       overflow: 'hidden',
     }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }} ref={ref}>
+      <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', position: 'relative', zIndex: 1 }} ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}

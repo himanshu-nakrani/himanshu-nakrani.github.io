@@ -67,11 +67,11 @@ export default function Navbar({ isDark, setIsDark }) {
         left: 0,
         right: 0,
         zIndex: 100,
-        padding: '12px max(16px, env(safe-area-inset-left)) 12px max(16px, env(safe-area-inset-right))',
+        padding: 'max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left))',
         pointerEvents: 'none',
       }}
     >
-      <div style={{ maxWidth: 1120, margin: '0 auto', pointerEvents: 'auto' }}>
+      <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', pointerEvents: 'auto' }}>
         <motion.div
           initial={reduceMotion ? false : { y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -206,14 +206,14 @@ export default function Navbar({ isDark, setIsDark }) {
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}
-              whileHover={{ borderColor: 'rgba(255,255,255,0.22)', background: 'rgba(255,255,255,0.04)' }}
+              whileHover={{ borderColor: 'var(--ghost-hover-border)', background: 'var(--ghost-hover-bg)' }}
               whileTap={{ scale: 0.98 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
               style={{
                 display: 'inline-block',
-                border: '1px solid rgba(255,255,255,0.12)',
+                border: '1px solid var(--ghost-border)',
                 color: 'var(--text)',
-                background: 'transparent',
+                background: 'var(--ghost-bg)',
                 padding: '8px 16px',
                 borderRadius: 9999,
                 textDecoration: 'none',
@@ -237,8 +237,8 @@ export default function Navbar({ isDark, setIsDark }) {
                 display: 'none',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 40,
-                height: 40,
+                width: 44,
+                height: 44,
                 borderRadius: 9999,
                 border: '1px solid var(--border2)',
                 background: 'rgba(var(--bg-rgb), 0.35)',
@@ -278,16 +278,19 @@ export default function Navbar({ isDark, setIsDark }) {
                       onClick={(event) => handleNavClick(item, event)}
                       whileHover={{ x: 2 }}
                       style={{
-                        display: 'block',
-                        padding: item.isContact ? '12px 14px' : '10px 12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: item.isContact ? 'center' : 'flex-start',
+                        padding: item.isContact ? '12px 14px' : '12px 12px',
                         borderRadius: item.isContact ? 9999 : 10,
                         color: item.isContact ? 'var(--text)' : 'var(--text2)',
                         textDecoration: 'none',
                         fontSize: '0.9rem',
                         fontWeight: item.isContact ? 600 : 500,
-                        background: item.isContact ? 'rgba(255,255,255,0.06)' : 'transparent',
-                        border: item.isContact ? '1px solid rgba(255,255,255,0.12)' : 'none',
+                        background: item.isContact ? 'var(--pill-contact-mobile-bg)' : 'transparent',
+                        border: item.isContact ? '1px solid var(--ghost-border)' : 'none',
                         textAlign: item.isContact ? 'center' : 'left',
+                        minHeight: item.isContact ? 48 : 44,
                       }}
                     >
                       {item.label}

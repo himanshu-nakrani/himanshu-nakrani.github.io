@@ -47,16 +47,16 @@ export default function Contact() {
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'rgba(18, 21, 28, 0.4)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                border: '1px solid rgba(167, 139, 250, 0.15)',
+                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+                border: '1px solid var(--border)',
                 color: 'var(--text)', textDecoration: 'none',
-                padding: '12px 24px', borderRadius: 12,
+                padding: '12px 18px', borderRadius: 12,
                 fontSize: '0.9rem', fontWeight: 600,
+                boxShadow: 'var(--shadow-sm)',
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden',
+                minHeight: 44,
               }}
             >
               <span style={{ position: 'relative', zIndex: 1, fontSize: '1rem' }}>{l.icon}</span>

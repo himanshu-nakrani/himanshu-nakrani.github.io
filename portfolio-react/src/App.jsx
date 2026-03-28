@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import GravityCursor from './components/GravityCursor'
+import { useCustomCursorAllowed } from './hooks/useCustomCursorAllowed'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -10,16 +11,16 @@ import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
 
 export default function App() {
-  const [isDark, setIsDark] = useState(true)
-
-  useEffect(() => {
+  const [isDark, setIsDark] = useState(() => {
     const savedTheme = localStorage.getItem('theme')
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    return savedTheme ? savedTheme === 'dark' : prefersDark
+  })
+  const showCustomCursor = useCustomCursorAllowed()
 
-    const shouldBeDark = savedTheme ? savedTheme === 'dark' : prefersDark
-    setIsDark(shouldBeDark)
-    document.documentElement.setAttribute('data-theme', shouldBeDark ? 'dark' : 'light')
-  }, [])
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+  }, [isDark])
 
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <>
-      <GravityCursor />
+      {showCustomCursor ? <GravityCursor /> : null}
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>

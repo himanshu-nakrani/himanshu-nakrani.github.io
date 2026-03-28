@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
+import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import { projects } from '../data'
 
@@ -24,18 +25,12 @@ export default function ProjectsPage() {
   )
 
   return (
-    <section style={{ padding: '110px 2rem 80px', maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{ marginBottom: '1.8rem' }}>
-        <p style={{ color: 'var(--nav-dot)', fontFamily: "'Fira Code', monospace", fontSize: '0.72rem', letterSpacing: '0.14em', marginBottom: 10 }}>
-          PORTFOLIO
-        </p>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 2.85rem)', lineHeight: 1.1, marginBottom: '0.75rem', fontWeight: 700, letterSpacing: '-0.03em' }}>
-          Selected Works
-        </h1>
-        <p style={{ color: 'var(--text2)', maxWidth: 640, fontSize: '1rem', lineHeight: 1.65 }}>
-          Engineering high-dimensional solutions for complex real-world problems — production LLMs, RAG, and ML systems.
-        </p>
-      </div>
+    <section className="mvp2-page">
+      <PageHeader
+        kicker="Portfolio"
+        title="Selected Works"
+        description="Engineering high-dimensional solutions for complex real-world problems — production LLMs, RAG, and ML systems."
+      />
 
       <div style={{ display: 'grid', gap: '0.9rem', marginBottom: '1.2rem' }}>
         <input
@@ -47,15 +42,17 @@ export default function ProjectsPage() {
             border: '1px solid var(--border)',
             background: 'var(--surface)',
             color: 'var(--text)',
-            borderRadius: 10,
+            borderRadius: 'var(--radius-sm)',
             padding: '12px 14px',
             outline: 'none',
+            fontSize: '0.9rem',
           }}
         />
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {allTags.map((tag) => (
             <button
               key={tag}
+              type="button"
               onClick={() => setActiveTag(tag)}
               style={{
                 border: '1px solid',
@@ -83,40 +80,52 @@ export default function ProjectsPage() {
         {filteredProjects.map((item) => (
           <motion.article
             key={item.title}
-            whileHover={{ y: -4 }}
+            whileHover={{ y: -2 }}
+            className="mvp2-card"
             style={{
-              border: '1px solid rgba(167, 139, 250, 0.15)',
-              borderRadius: 14,
               padding: '1.2rem',
-              background: 'rgba(18, 21, 28, 0.4)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.7rem',
+              transition: 'box-shadow 0.2s ease, transform 0.2s ease',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', gap: 10 }}>
               <span style={{ fontSize: '1.4rem' }}>{item.icon}</span>
               {item.badge && (
-                <span style={{ fontSize: '0.68rem', color: 'var(--accent)', border: '1px solid var(--border2)', borderRadius: 20, padding: '4px 10px' }}>
+                <span
+                  style={{
+                    fontSize: '0.68rem',
+                    color: 'var(--accent)',
+                    border: '1px solid var(--border2)',
+                    borderRadius: 20,
+                    padding: '4px 10px',
+                  }}
+                >
                   {item.badge}
                 </span>
               )}
             </div>
-            <h3 style={{ fontSize: '1rem' }}>{item.title}</h3>
+            <h3 style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '-0.02em' }}>{item.title}</h3>
             <p style={{ color: 'var(--text2)', fontSize: '0.84rem', lineHeight: 1.6, flex: 1 }}>{item.desc}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {item.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+              {item.tags.map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
             </div>
             {item.link && (
               <a
                 href={item.link}
                 target="_blank"
                 rel="noopener"
-                style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '0.8rem', fontFamily: "'Fira Code', monospace" }}
+                style={{
+                  color: 'var(--accent)',
+                  textDecoration: 'none',
+                  fontSize: '0.8rem',
+                  fontFamily: "'Fira Code', monospace",
+                }}
               >
-View repository →
+                View repository →
               </a>
             )}
           </motion.article>
@@ -125,4 +134,3 @@ View repository →
     </section>
   )
 }
-
