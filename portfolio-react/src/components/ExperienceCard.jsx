@@ -2,6 +2,29 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
+function extractKeyMetrics(bullets) {
+  const metrics = []
+  const keywordPatterns = [
+    { regex: /(\d+%\+?)/g, label: 'metric' },
+    { regex: /(Alpha Copilot|WealthAI|Agent Forge)/g, label: 'product' },
+  ]
+
+  bullets.forEach((bullet) => {
+    keywordPatterns.forEach(({ regex }) => {
+      const matches = bullet.match(regex)
+      if (matches) {
+        matches.forEach((m) => {
+          if (!metrics.some((x) => x === m)) {
+            metrics.push(m)
+          }
+        })
+      }
+    })
+  })
+
+  return metrics.slice(0, 2)
+}
+
 function highlightBullets(html) {
   return html.replace(
     /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
@@ -9,7 +32,7 @@ function highlightBullets(html) {
   )
 }
 
-export default function ExperienceCard({ item, index = 0, animateEntry = true }) {
+export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
 
   const inner = (
@@ -39,7 +62,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
             marginBottom: '1.15rem',
           }}
         >
-          <div style={{ minWidth: 0 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <h3
               style={{
                 fontSize: '1.08rem',
@@ -89,49 +112,51 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
               padding: '6px 14px',
               borderRadius: 9999,
               whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             {item.period}
           </span>
         </div>
 
-        <div
-          style={{
-            borderLeft: '2px solid rgba(74, 158, 255, 0.28)',
-            marginBottom: '1.15rem',
-            paddingLeft: '1rem',
-            marginLeft: 2,
-          }}
-        >
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {item.bullets.map((b, i) => (
-              <li
-                key={i}
-                style={{
-                  position: 'relative',
-                  paddingLeft: 14,
-                  paddingBottom: i === item.bullets.length - 1 ? 0 : 10,
-                  color: 'var(--text2)',
-                  fontSize: '0.875rem',
-                  lineHeight: 1.65,
-                }}
-              >
-                <span
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: '0.55em',
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                  }}
-                />
-                <span dangerouslySetInnerHTML={{ __html: highlightBullets(b) }} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        {item.description && (
+          <p
+            style={{
+              color: 'var(--text2)',
+              fontSize: '0.9rem',
+              lineHeight: 1.65,
+              marginBottom: '1.15rem',
+            }}
+          >
+            {item.description}
+          </p>
+        )}
+
+        {onCardClick && (
+          <button
+            onClick={onCardClick}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              marginTop: 8,
+              fontSize: '0.8rem',
+              color: 'var(--accent)',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'opacity 0.25s ease',
+              opacity: hovered ? 1 : 0.8,
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.opacity = '1'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.opacity = hovered ? '1' : '0.8'
+            }}
+          >
+            View all details →
+          </button>
+        )}
 
         <div
           style={{
@@ -158,9 +183,10 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
     border: '1px solid',
     borderColor: hovered ? 'rgba(167, 139, 250, 0.35)' : 'var(--border)',
     background: 'linear-gradient(155deg, var(--surface) 0%, var(--surface2) 52%, rgba(var(--bg-rgb), 0.4) 100%)',
-    boxShadow: hovered ? '0 6px 20px rgba(0, 0, 0, 0.1)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
-    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease',
-    transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+    boxShadow: hovered ? '0 8px 28px rgba(74, 158, 255, 0.12)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
+    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease, cursor 0.25s ease',
+    transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+    cursor: onCardClick ? 'pointer' : 'default',
   }
 
   if (animateEntry) {
@@ -179,12 +205,19 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
   }
 
   return (
-    <article
+    <motion.div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onCardClick}
+      animate={animateEntry ? 'show' : 'hidden'}
+      initial="hidden"
+      variants={{
+        hidden: { opacity: 0, x: -20 },
+        show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+      }}
       style={shellStyle}
     >
       {inner}
-    </article>
+    </motion.div>
   )
 }

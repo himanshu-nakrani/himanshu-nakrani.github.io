@@ -5,6 +5,7 @@ export const experience = [
     location: 'Hyderabad, India',
     period: 'Jan 2023 – Present',
     progression: 'Software Development Intern → Associate 2 → Senior Associate',
+    description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 100+ users) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
     bullets: [
       'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data',
       'Engineered FastAPI + SQLAlchemy backend with advanced caching, cutting response time by 75% (25–30s → 6–8s)',
@@ -41,6 +42,7 @@ export const experience = [
     company: 'Technocolabs Software Inc.',
     location: 'Remote',
     period: 'Jun 2022 – Jul 2022',
+    description: 'Developed CNN-based music skip prediction model achieving 87% accuracy. Executed end-to-end ML pipeline from data preprocessing through production API deployment.',
     bullets: [
       'Built CNN-based Spotify Skip Action Predictor achieving 87% accuracy in real-time prediction',
       'End-to-end ML pipeline: data preprocessing, feature engineering, model training, and API deployment',

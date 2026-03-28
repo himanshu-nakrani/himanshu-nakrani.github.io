@@ -179,83 +179,110 @@ export default function Hero() {
         style={{ flex: 1, display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1, minWidth: 0 }}
         className="hero-avatar-wrap"
       >
-        <div
-          style={{
-            background: 'linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%)',
-            border: '1px solid var(--border)',
-            borderRadius: 16,
-            overflow: 'hidden',
-            width: '100%',
-            maxWidth: 340,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-          }}
-        >
-          <div style={{ position: 'relative' }}>
-            <img
-              src="https://avatars.githubusercontent.com/u/82092249?v=4"
-              alt="Himanshu Nakrani"
-              style={{ width: '100%', height: 228, objectFit: 'cover', objectPosition: 'top', display: 'block' }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to bottom, transparent 50%, var(--surface) 100%)',
-              }}
-            />
-          </div>
-          <div style={{ padding: '1.1rem 1.25rem 1.25rem' }}>
-            <p style={{ fontWeight: 700, fontSize: '1rem', marginBottom: 4, letterSpacing: '-0.02em' }}>
-              Himanshu Nakrani
-            </p>
-            <p style={{ fontSize: '0.78rem', color: 'var(--nav-dot)', marginBottom: 4 }}>
-              Senior Associate · AI Software Developer
-            </p>
-            <p style={{ fontSize: '0.74rem', color: 'var(--text2)', marginBottom: '0.75rem', lineHeight: 1.45 }}>
-              State Street Corporation · Hyderabad, India
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: '0.75rem' }}>
-              {['LLMs', 'RAG', 'Text-to-SQL', 'Fine-tuning'].map((b) => (
-                <span
-                  key={b}
-                  style={{
-                    fontSize: '0.62rem',
-                    background: 'rgba(var(--bg-rgb), 0.5)',
-                    border: '1px solid var(--border)',
-                    color: 'var(--text2)',
-                    padding: '3px 9px',
-                    borderRadius: 9999,
-                    letterSpacing: '0.03em',
-                  }}
-                >
-                  {b}
-                </span>
-              ))}
+        <div style={{ position: 'relative', width: '100%', maxWidth: 340 }}>
+          <motion.div
+            animate={{
+              boxShadow: [
+                '0 0 20px rgba(167, 139, 250, 0.15)',
+                '0 0 40px rgba(167, 139, 250, 0.25)',
+                '0 0 20px rgba(167, 139, 250, 0.15)',
+              ],
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute',
+              inset: -8,
+              borderRadius: 20,
+              background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(74, 158, 255, 0.1))',
+              zIndex: -1,
+            }}
+          />
+
+          <div
+            style={{
+              background: 'linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%)',
+              border: '1px solid rgba(167, 139, 250, 0.3)',
+              borderRadius: 20,
+              overflow: 'hidden',
+              width: '100%',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            <div style={{ position: 'relative', overflow: 'hidden' }}>
+              <motion.img
+                src="/himanshu.jpg"
+                alt="Himanshu Nakrani"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+                style={{ width: '100%', height: 340, objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.1) 100%)',
+                }}
+              />
             </div>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              {[
-                { href: 'https://github.com/himanshu-nakrani', label: 'GH' },
-                { href: 'https://www.linkedin.com/in/himanshu-nakrani/', label: 'LI' },
-                { href: 'https://leetcode.com/u/himanshunakrani0/', label: 'LC' },
-                { href: 'https://www.kaggle.com/himanshunakrani', label: 'KG' },
-              ].map((s) => (
-                <motion.a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ color: 'var(--nav-dot)' }}
-                  style={{
-                    color: 'var(--text2)',
-                    textDecoration: 'none',
-                    fontSize: '0.68rem',
-                    fontFamily: "'Fira Code', monospace",
-                    fontWeight: 600,
-                  }}
-                >
-                  {s.label}
-                </motion.a>
-              ))}
+            <div style={{ padding: '1.5rem' }}>
+              <p style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: 6, letterSpacing: '-0.02em' }}>
+                Himanshu Nakrani
+              </p>
+              <p style={{ fontSize: '0.78rem', color: 'var(--accent)', marginBottom: 6, fontWeight: 600 }}>
+                Senior Associate · AI Software Developer
+              </p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text2)', marginBottom: '1rem', lineHeight: 1.5 }}>
+                State Street Corporation · Hyderabad, India
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: '1rem' }}>
+                {['LLMs', 'RAG', 'Text-to-SQL', 'Fine-tuning'].map((b) => (
+                  <motion.span
+                    key={b}
+                    whileHover={{ y: -2 }}
+                    style={{
+                      fontSize: '0.65rem',
+                      background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(74, 158, 255, 0.05))',
+                      border: '1px solid rgba(167, 139, 250, 0.25)',
+                      color: 'var(--text2)',
+                      padding: '4px 10px',
+                      borderRadius: 9999,
+                      letterSpacing: '0.03em',
+                      fontWeight: 500,
+                      cursor: 'default',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {b}
+                  </motion.span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                {[
+                  { href: 'https://github.com/himanshu-nakrani', label: 'GitHub' },
+                  { href: 'https://www.linkedin.com/in/himanshu-nakrani/', label: 'LinkedIn' },
+                  { href: 'https://leetcode.com/u/himanshunakrani0/', label: 'LeetCode' },
+                  { href: 'https://www.kaggle.com/himanshunakrani', label: 'Kaggle' },
+                ].map((s) => (
+                  <motion.a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ x: 2, color: 'var(--accent)' }}
+                    style={{
+                      color: 'var(--text2)',
+                      textDecoration: 'none',
+                      fontSize: '0.7rem',
+                      fontFamily: "'Fira Code', monospace",
+                      fontWeight: 600,
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    {s.label}
+                  </motion.a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
