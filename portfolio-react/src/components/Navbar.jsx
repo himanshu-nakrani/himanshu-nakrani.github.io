@@ -87,9 +87,7 @@ export default function Navbar({ isDark, setIsDark }) {
             background: pillBg,
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: scrolled
-              ? '0 8px 32px rgba(0,0,0,0.14), inset 0 1px 0 rgba(255,255,255,0.04)'
-              : '0 4px 24px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.04)',
+            boxShadow: scrolled ? '0 1px 3px rgba(0,0,0,0.08)' : '0 1px 2px rgba(0,0,0,0.04)',
             transition: 'background 0.25s ease, box-shadow 0.25s ease',
           }}
         >
@@ -113,7 +111,6 @@ export default function Navbar({ isDark, setIsDark }) {
                 height: 8,
                 borderRadius: '50%',
                 background: 'var(--nav-dot)',
-                boxShadow: '0 0 14px var(--nav-dot-glow)',
                 flexShrink: 0,
               }}
             />
@@ -185,7 +182,6 @@ export default function Navbar({ isDark, setIsDark }) {
                             height: 5,
                             borderRadius: '50%',
                             background: 'var(--nav-dot)',
-                            boxShadow: '0 0 10px var(--nav-dot-glow)',
                           }}
                         />
                       )}
@@ -271,7 +267,7 @@ export default function Navbar({ isDark, setIsDark }) {
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
                 overflow: 'hidden',
-                boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
               }}
             >
               <ul style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>

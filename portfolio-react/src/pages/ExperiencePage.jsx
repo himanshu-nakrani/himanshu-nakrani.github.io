@@ -26,8 +26,7 @@ export default function ExperiencePage() {
             bottom: 12,
             width: 2,
             borderRadius: 2,
-            background: 'linear-gradient(to bottom, var(--nav-dot), var(--accent) 35%, rgba(74, 158, 255, 0.12))',
-            boxShadow: '0 0 20px rgba(167, 139, 250, 0.12)',
+            background: 'linear-gradient(to bottom, var(--nav-dot), var(--accent) 35%, var(--border))',
           }}
         />
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
@@ -45,7 +44,7 @@ export default function ExperiencePage() {
                   borderRadius: '50%',
                   background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                   border: '3px solid var(--bg)',
-                  boxShadow: '0 0 0 4px rgba(167, 139, 250, 0.15), 0 0 18px rgba(74, 158, 255, 0.35)',
+                  boxShadow: '0 0 0 2px var(--bg)',
                   zIndex: 2,
                 }}
               />

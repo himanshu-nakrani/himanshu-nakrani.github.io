@@ -27,21 +27,13 @@ function ProjectCard({ item, index }) {
         border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
         borderRadius: 16, padding: '1.5rem',
         position: 'relative', cursor: 'default',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'transform 0.3s, border-color 0.3s, box-shadow 0.3s',
-        boxShadow: hovered ? '0 8px 24px rgba(74,158,255,0.12)' : '0 2px 8px rgba(0,0,0,0.08)',
+        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+        transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.06)',
         display: 'flex', flexDirection: 'column', gap: '0.6rem',
         overflow: 'hidden',
       }}
     >
-      {/* Gradient overlay on hover */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: hovered ? 'radial-gradient(circle at top right, rgba(74,158,255,0.06), transparent 50%)' : 'transparent',
-        pointerEvents: 'none',
-        transition: 'background 0.3s',
-      }} />
-      
       {item.badge && (
         <motion.span
           animate={{ y: hovered ? -2 : 0 }}

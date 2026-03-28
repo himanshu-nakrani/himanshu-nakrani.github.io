@@ -17,21 +17,16 @@ export default function Research() {
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.12 }}
-            whileHover={{ borderColor: 'rgba(0,217,255,0.6)', y: -6, boxShadow: '0 12px 36px rgba(0,217,255,0.15)' }}
+            whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
             style={{
               background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-              border: '1.5px solid rgba(0,217,255,0.25)', borderRadius: 16, padding: '1.6rem',
-              transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-              boxShadow: '0 0 15px rgba(0,217,255,0.08)',
+              border: '1px solid var(--border)', borderRadius: 16, padding: '1.6rem',
+              transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
               position: 'relative',
               overflow: 'hidden',
             }}
           >
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'radial-gradient(circle at top left, rgba(0,217,255,0.08), transparent 60%)',
-              pointerEvents: 'none',
-            }} />
             <motion.span
               animate={{ y: 0 }}
               style={{

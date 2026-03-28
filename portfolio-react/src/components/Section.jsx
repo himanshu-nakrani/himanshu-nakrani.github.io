@@ -11,16 +11,6 @@ export default function Section({ id, title, subtitle, alt, children }) {
       position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Decorative gradient blur */}
-      <div style={{
-        position: 'absolute', top: '-100px', right: '-200px',
-        width: 400, height: 400,
-        background: alt ? 'radial-gradient(circle, rgba(74,158,255,0.03), transparent)' : 'radial-gradient(circle, rgba(90,142,224,0.02), transparent)',
-        pointerEvents: 'none',
-        zIndex: 0,
-        filter: 'blur(50px)',
-      }} />
-
       <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }} ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

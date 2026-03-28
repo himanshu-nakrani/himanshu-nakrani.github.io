@@ -27,17 +27,11 @@ export default function Skills() {
                 borderRadius: 14, padding: '1.2rem',
                 transition: 'all 0.3s',
                 transform: hoveredSkill === i ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: hoveredSkill === i ? '0 4px 12px rgba(74,158,255,0.08)' : '0 1px 4px rgba(0,0,0,0.05)',
+                boxShadow: hoveredSkill === i ? '0 4px 12px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.05)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: hoveredSkill === i ? 'radial-gradient(circle at bottom right, rgba(74,158,255,0.04), transparent 60%)' : 'transparent',
-                pointerEvents: 'none',
-                transition: 'background 0.3s',
-              }} />
               <p style={{
                 fontSize: '0.75rem', fontFamily: "'Fira Code', monospace", color: 'var(--text2)',
                 marginBottom: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em',

@@ -40,29 +40,23 @@ export default function Contact() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
               whileHover={{
-                scale: 1.08,
-                y: -6,
-                boxShadow: `0 12px 32px rgba(0,217,255,0.3)`,
-                borderColor: 'rgba(0,217,255,0.6)',
+                scale: 1.02,
+                y: -2,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                borderColor: 'var(--border2)',
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: `1.5px solid rgba(0,217,255,0.3)`,
+                border: '1px solid var(--border)',
                 color: 'var(--text)', textDecoration: 'none',
                 padding: '12px 24px', borderRadius: 12,
                 fontSize: '0.9rem', fontWeight: 600,
-                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: `linear-gradient(135deg, rgba(0,217,255,0.1), transparent)`,
-                opacity: 0,
-                transition: 'opacity 0.3s',
-              }} />
               <span style={{ position: 'relative', zIndex: 1, fontSize: '1rem' }}>{l.icon}</span>
               <span style={{ position: 'relative', zIndex: 1 }}>{l.label}</span>
             </motion.a>

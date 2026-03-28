@@ -25,7 +25,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
         transition: 'all 0.3s',
         color: 'var(--text)',
         padding: 0,
-        boxShadow: compact ? 'none' : '0 0 10px rgba(0,217,255,0.1)',
+        boxShadow: 'none',
       }}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >

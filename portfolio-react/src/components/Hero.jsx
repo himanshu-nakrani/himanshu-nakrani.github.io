@@ -20,15 +20,6 @@ const fadeUp = (delay = 0) => ({
 export default function Hero() {
   return (
     <section id="about" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '100px 2rem 60px', maxWidth: 1100, margin: '0 auto', gap: '4rem', position: 'relative' }}>
-      <motion.div
-        animate={{ y: [0, 24, 0], x: [0, 16, 0] }}
-        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ position: 'fixed', top: '12%', left: '8%', width: 420, height: 420, background: 'radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0, filter: 'blur(48px)' }} />
-      <motion.div
-        animate={{ y: [0, -20, 0], x: [0, -12, 0] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ position: 'fixed', top: '38%', right: '6%', width: 380, height: 380, background: 'radial-gradient(circle, rgba(74,158,255,0.05) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0, filter: 'blur(48px)' }} />
-
       <div style={{ flex: 1, position: 'relative', zIndex: 1 }}>
         <motion.div {...fadeUp(0.08)}>
           <span
@@ -50,7 +41,6 @@ export default function Hero() {
                 height: 7,
                 borderRadius: '50%',
                 background: 'var(--nav-dot)',
-                boxShadow: '0 0 14px var(--nav-dot-glow)',
               }}
             />
             Generative AI Engineer · State Street
@@ -96,7 +86,7 @@ export default function Hero() {
               textDecoration: 'none',
               fontWeight: 600,
               fontSize: '0.9rem',
-              boxShadow: '0 4px 24px rgba(0,0,0,0.25)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
             }}
           >
             View case studies
@@ -148,7 +138,7 @@ export default function Hero() {
           background: 'linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%)',
           border: '1px solid var(--border)',
           borderRadius: 20, overflow: 'hidden', width: '100%', maxWidth: 360,
-          boxShadow: '0 24px 48px rgba(0,0,0,0.35)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
         }}>
           <div style={{ position: 'relative' }}>
             <img

@@ -59,7 +59,7 @@ export default function MainLayout({ isDark, setIsDark }) {
           color: 'var(--text2)',
           fontSize: '0.82rem',
           borderTop: '1px solid var(--border)',
-          background: 'linear-gradient(to bottom, transparent, rgba(124,111,255,0.03))',
+          background: 'var(--bg)',
           position: 'relative',
         }}
       >

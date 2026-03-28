@@ -27,22 +27,17 @@ export default function GitHub() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ borderColor: 'rgba(0,217,255,0.6)', y: -4, boxShadow: '0 8px 24px rgba(0,217,255,0.2)' }}
+              whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
               style={{
                 background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1.5px solid rgba(0,217,255,0.25)',
+                border: '1px solid var(--border)',
                 borderRadius: 14, padding: '1.2rem', textAlign: 'center',
-                transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                boxShadow: '0 0 15px rgba(0,217,255,0.08)',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
             >
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(circle at bottom right, rgba(0,217,255,0.12), transparent 70%)',
-                pointerEvents: 'none',
-              }} />
               <div style={{ fontSize: '1.8rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{s.num}</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text2)', marginTop: 4, position: 'relative', zIndex: 1 }}>{s.label}</div>
             </motion.div>
@@ -76,13 +71,12 @@ export default function GitHub() {
               overflow: 'auto',
               background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
               padding: '14px 16px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
             }}
           >
             <img
               src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
               alt="GitHub contributions in the last year (activity heat map)"
-              className="gh-heatmap-img"
               style={{ display: 'block', width: '100%', minWidth: 640, height: 'auto' }}
               loading="lazy"
             />
@@ -131,10 +125,10 @@ export default function GitHub() {
           href="https://github.com/himanshu-nakrani"
           target="_blank"
           rel="noopener"
-          whileHover={{ scale: 1.06, boxShadow: '0 8px 24px rgba(0,217,255,0.3)', borderColor: 'rgba(0,217,255,0.6)' }}
+          whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
           style={{
-            display: 'inline-block', border: '1.5px solid rgba(0,217,255,0.3)',
-            background: 'linear-gradient(135deg, rgba(0,217,255,0.08), rgba(79,122,255,0.05))',
+            display: 'inline-block', border: '1px solid var(--border)',
+            background: 'var(--surface)',
             color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
             textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
@@ -146,7 +140,6 @@ export default function GitHub() {
       <style>{`
         @media (max-width: 600px) { .gh-stats-grid { grid-template-columns: repeat(2,1fr) !important; } }
         .gh-heatmap-wrap { -webkit-overflow-scrolling: touch; }
-        .gh-heatmap-img { filter: saturate(1.06) contrast(1.04); }
       `}</style>
     </Section>
   )

@@ -28,22 +28,6 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
         }}
       />
 
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: -40,
-          right: -40,
-          width: 180,
-          height: 180,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          opacity: hovered ? 1 : 0.6,
-          transition: 'opacity 0.35s ease',
-        }}
-      />
-
       <div style={{ position: 'relative', zIndex: 1, padding: '1.5rem 1.5rem 1.45rem' }}>
         <div
           style={{
@@ -105,8 +89,6 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
               padding: '6px 14px',
               borderRadius: 9999,
               whiteSpace: 'nowrap',
-              boxShadow: hovered ? '0 0 20px rgba(167, 139, 250, 0.15)' : 'none',
-              transition: 'box-shadow 0.3s ease',
             }}
           >
             {item.period}
@@ -143,7 +125,6 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
                     height: 5,
                     borderRadius: '50%',
                     background: 'var(--accent)',
-                    boxShadow: '0 0 8px rgba(74, 158, 255, 0.45)',
                   }}
                 />
                 <span dangerouslySetInnerHTML={{ __html: highlightBullets(b) }} />
@@ -177,9 +158,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
     border: '1px solid',
     borderColor: hovered ? 'rgba(167, 139, 250, 0.35)' : 'var(--border)',
     background: 'linear-gradient(155deg, var(--surface) 0%, var(--surface2) 52%, rgba(var(--bg-rgb), 0.4) 100%)',
-    boxShadow: hovered
-      ? '0 12px 40px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(167, 139, 250, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
-      : '0 4px 20px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+    boxShadow: hovered ? '0 6px 20px rgba(0, 0, 0, 0.1)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
     transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease',
     transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
   }

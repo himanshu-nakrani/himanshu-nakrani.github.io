@@ -13,9 +13,6 @@
   --accent2: #6b7cff;
   --accent3: #5a8ee0;
   --nav-dot: #a78bfa;
-  --nav-dot-glow: rgba(167, 139, 250, 0.55);
-  --glow: rgba(74, 158, 255, 0.08);
-  --glow2: rgba(90, 142, 224, 0.06);
   --text: #e0e6f2;
   --text2: #8b96b0;
   --green: #4ade80;
@@ -27,7 +24,6 @@
 
 :root[data-theme="light"] {
   --nav-dot: #7c3aed;
-  --nav-dot-glow: rgba(124, 58, 237, 0.4);
   --bg: #fafbfd;
   --bg2: #f3f5f9;
   --bg-rgb: 250, 251, 253;
@@ -38,8 +34,6 @@
   --accent: #3b82d6;
   --accent2: #5a67d8;
   --accent3: #4a90d9;
-  --glow: rgba(59, 130, 214, 0.06);
-  --glow2: rgba(74, 144, 217, 0.05);
   --text: #0f172a;
   --text2: #627090;
   --green: #15803d;
@@ -72,7 +66,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
+  opacity: 0.2;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
