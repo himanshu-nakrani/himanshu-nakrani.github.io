@@ -2,6 +2,29 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
+function extractKeyMetrics(bullets) {
+  const metrics = []
+  const keywordPatterns = [
+    { regex: /(\d+%\+?)/g, label: 'metric' },
+    { regex: /(Alpha Copilot|WealthAI|Agent Forge)/g, label: 'product' },
+  ]
+
+  bullets.forEach((bullet) => {
+    keywordPatterns.forEach(({ regex }) => {
+      const matches = bullet.match(regex)
+      if (matches) {
+        matches.forEach((m) => {
+          if (!metrics.some((x) => x === m)) {
+            metrics.push(m)
+          }
+        })
+      }
+    })
+  })
+
+  return metrics.slice(0, 2)
+}
+
 function highlightBullets(html) {
   return html.replace(
     /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
@@ -11,6 +34,9 @@ function highlightBullets(html) {
 
 export default function ExperienceCard({ item, index = 0, animateEntry = true }) {
   const [hovered, setHovered] = useState(false)
+  const keyMetrics = extractKeyMetrics(item.bullets)
+  const displayBullets = item.bullets.slice(0, 3)
+  const hiddenCount = Math.max(0, item.bullets.length - 3)
 
   const inner = (
     <>
@@ -39,7 +65,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
             marginBottom: '1.15rem',
           }}
         >
-          <div style={{ minWidth: 0 }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
             <h3
               style={{
                 fontSize: '1.08rem',
@@ -89,11 +115,41 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
               padding: '6px 14px',
               borderRadius: 9999,
               whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             {item.period}
           </span>
         </div>
+
+        {keyMetrics.length > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.75rem',
+              marginBottom: '1rem',
+              flexWrap: 'wrap',
+            }}
+          >
+            {keyMetrics.map((metric) => (
+              <div
+                key={metric}
+                style={{
+                  padding: '6px 12px',
+                  background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(74, 158, 255, 0.1))',
+                  border: '1px solid rgba(167, 139, 250, 0.25)',
+                  borderRadius: 8,
+                  fontSize: '0.8rem',
+                  fontWeight: 600,
+                  color: 'var(--accent)',
+                  display: 'inline-block',
+                }}
+              >
+                {metric}
+              </div>
+            ))}
+          </div>
+        )}
 
         <div
           style={{
@@ -104,16 +160,16 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
           }}
         >
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {item.bullets.map((b, i) => (
+            {displayBullets.map((b, i) => (
               <li
                 key={i}
                 style={{
                   position: 'relative',
                   paddingLeft: 14,
-                  paddingBottom: i === item.bullets.length - 1 ? 0 : 10,
+                  paddingBottom: 8,
                   color: 'var(--text2)',
                   fontSize: '0.875rem',
-                  lineHeight: 1.65,
+                  lineHeight: 1.55,
                 }}
               >
                 <span
@@ -131,6 +187,20 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
               </li>
             ))}
           </ul>
+
+          {hiddenCount > 0 && (
+            <p
+              style={{
+                fontSize: '0.8rem',
+                color: 'var(--accent)',
+                fontWeight: 500,
+                marginTop: 8,
+                paddingLeft: 14,
+              }}
+            >
+              +{hiddenCount} more achievement{hiddenCount > 1 ? 's' : ''}
+            </p>
+          )}
         </div>
 
         <div
@@ -158,9 +228,9 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
     border: '1px solid',
     borderColor: hovered ? 'rgba(167, 139, 250, 0.35)' : 'var(--border)',
     background: 'linear-gradient(155deg, var(--surface) 0%, var(--surface2) 52%, rgba(var(--bg-rgb), 0.4) 100%)',
-    boxShadow: hovered ? '0 6px 20px rgba(0, 0, 0, 0.1)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
+    boxShadow: hovered ? '0 8px 28px rgba(74, 158, 255, 0.12)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
     transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease',
-    transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+    transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
   }
 
   if (animateEntry) {
