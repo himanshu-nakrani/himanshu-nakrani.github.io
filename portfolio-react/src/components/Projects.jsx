@@ -81,7 +81,7 @@ function ProjectCard({ item, index }) {
             transition: 'color 0.2s',
           }}
         >
-          View on GitHub →
+View on GitHub →
         </motion.a>
       )}
     </motion.div>

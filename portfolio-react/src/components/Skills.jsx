@@ -22,12 +22,14 @@ export default function Skills() {
               onHoverStart={() => setHoveredSkill(i)}
               onHoverEnd={() => setHoveredSkill(null)}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: hoveredSkill === i ? '1px solid var(--accent)' : '1px solid var(--border)',
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: hoveredSkill === i ? '1px solid rgba(167, 139, 250, 0.35)' : '1px solid rgba(167, 139, 250, 0.15)',
                 borderRadius: 14, padding: '1.2rem',
                 transition: 'all 0.3s',
                 transform: hoveredSkill === i ? 'translateY(-2px)' : 'translateY(0)',
-                boxShadow: hoveredSkill === i ? '0 4px 12px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.05)',
+                boxShadow: hoveredSkill === i ? '0 8px 24px rgba(74, 158, 255, 0.15)' : '0 2px 8px rgba(0,0,0,0.2)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -73,8 +75,10 @@ export default function Skills() {
               transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
               whileHover={{ y: -3, borderColor: 'var(--accent)' }}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(167, 139, 250, 0.15)',
                 borderRadius: 12, padding: '1.2rem', textAlign: 'center',
                 transition: 'all 0.3s',
                 position: 'relative',

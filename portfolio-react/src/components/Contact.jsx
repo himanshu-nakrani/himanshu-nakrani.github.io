@@ -47,8 +47,10 @@ export default function Contact() {
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(167, 139, 250, 0.15)',
                 color: 'var(--text)', textDecoration: 'none',
                 padding: '12px 24px', borderRadius: 12,
                 fontSize: '0.9rem', fontWeight: 600,

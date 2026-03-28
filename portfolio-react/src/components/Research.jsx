@@ -19,10 +19,12 @@ export default function Research() {
             transition={{ duration: 0.5, delay: i * 0.12 }}
             whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
             style={{
-              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-              border: '1px solid var(--border)', borderRadius: 16, padding: '1.6rem',
+              background: 'rgba(18, 21, 28, 0.4)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(167, 139, 250, 0.15)', borderRadius: 16, padding: '1.6rem',
               transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -56,7 +58,7 @@ export default function Research() {
                   gap: 4, position: 'relative', zIndex: 1, transition: 'color 0.2s',
                 }}
               >
-                📄 View on IEEE Xplore →
+📄 View on IEEE Xplore →
               </motion.a>
             )}
           </motion.div>

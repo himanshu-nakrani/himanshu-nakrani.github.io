@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import GravityCursor from './components/GravityCursor'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -26,17 +27,20 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/experience" element={<ExperiencePage />} />
-          <Route path="/profiles" element={<ProfilesPage />} />
-          <Route path="/research" element={<ResearchPage />} />
-          <Route path="/skills" element={<SkillsPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <GravityCursor />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/profiles" element={<ProfilesPage />} />
+            <Route path="/research" element={<ResearchPage />} />
+            <Route path="/skills" element={<SkillsPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }

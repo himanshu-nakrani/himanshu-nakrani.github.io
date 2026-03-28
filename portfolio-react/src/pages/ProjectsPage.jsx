@@ -85,10 +85,12 @@ export default function ProjectsPage() {
             key={item.title}
             whileHover={{ y: -4 }}
             style={{
-              border: '1px solid var(--border)',
+              border: '1px solid rgba(167, 139, 250, 0.15)',
               borderRadius: 14,
               padding: '1.2rem',
-              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              background: 'rgba(18, 21, 28, 0.4)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               display: 'flex',
               flexDirection: 'column',
               gap: '0.7rem',
@@ -114,7 +116,7 @@ export default function ProjectsPage() {
                 rel="noopener"
                 style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '0.8rem', fontFamily: "'Fira Code', monospace" }}
               >
-                View repository →
+View repository →
               </a>
             )}
           </motion.article>

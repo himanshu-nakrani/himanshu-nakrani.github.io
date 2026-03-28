@@ -21,14 +21,16 @@ function KaggleCard({ item, index }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       style={{
-        background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-        border: `1px solid ${hovered ? 'var(--border2)' : 'var(--border)'}`,
+        background: 'rgba(18, 21, 28, 0.4)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: `1px solid ${hovered ? 'rgba(167, 139, 250, 0.35)' : 'rgba(167, 139, 250, 0.15)'}`,
         borderRadius: 14, padding: '1.2rem',
         textDecoration: 'none', color: 'var(--text)',
         display: 'flex', flexDirection: 'column', gap: '0.5rem',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
         transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.06)',
+        boxShadow: hovered ? '0 8px 24px rgba(74, 158, 255, 0.15)' : '0 2px 8px rgba(0,0,0,0.2)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -72,12 +74,14 @@ export default function Kaggle() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)', borderRadius: 16,
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(167, 139, 250, 0.15)', borderRadius: 16,
                 padding: '1.4rem', flex: 1, minWidth: 240,
                 display: 'flex', gap: '1rem', alignItems: 'flex-start',
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -107,12 +111,14 @@ export default function Kaggle() {
               transition={{ duration: 0.4, delay: 0.2 + i * 0.07 }}
               whileHover={{ y: -3 }}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', textAlign: 'center',
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(167, 139, 250, 0.15)', borderRadius: 12, padding: '1rem', textAlign: 'center',
                 transition: 'transform 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               }}
             >
               <div style={{ fontSize: '1.7rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent3), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{num}</div>
@@ -143,11 +149,13 @@ export default function Kaggle() {
             className="kaggle-heatmap-wrap"
             style={{
               borderRadius: 14,
-              border: '1px solid var(--border)',
+              border: '1px solid rgba(167, 139, 250, 0.15)',
               overflow: 'auto',
-              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              background: 'rgba(18, 21, 28, 0.4)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               padding: '14px 16px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
             }}
           >
             <KaggleHeatmap contributionMap={kaggleContributionMap} />
@@ -173,7 +181,7 @@ export default function Kaggle() {
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          View full Kaggle profile →
+View full Kaggle profile →
         </motion.a>
       </div>
       <style>{`

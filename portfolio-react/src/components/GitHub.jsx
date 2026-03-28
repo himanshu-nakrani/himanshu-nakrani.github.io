@@ -29,11 +29,13 @@ export default function GitHub() {
               transition={{ duration: 0.4, delay: i * 0.08 }}
               whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
+                background: 'rgba(18, 21, 28, 0.4)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(167, 139, 250, 0.15)',
                 borderRadius: 14, padding: '1.2rem', textAlign: 'center',
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                 position: 'relative',
                 overflow: 'hidden',
               }}
@@ -67,11 +69,13 @@ export default function GitHub() {
             className="gh-heatmap-wrap"
             style={{
               borderRadius: 14,
-              border: '1px solid var(--border)',
+              border: '1px solid rgba(167, 139, 250, 0.15)',
               overflow: 'auto',
-              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              background: 'rgba(18, 21, 28, 0.4)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               padding: '14px 16px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
             }}
           >
             <img
@@ -134,7 +138,7 @@ export default function GitHub() {
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          View all repos on GitHub →
+View all repos on GitHub →
         </motion.a>
       </div>
       <style>{`
