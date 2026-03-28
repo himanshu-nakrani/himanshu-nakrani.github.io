@@ -138,7 +138,7 @@ export default function GitHub() {
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          View all repos on GitHub →
+<span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>View all repos on GitHub <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor' }} /><span style={{ width: 6, height: 6, borderRadius: '50%', border: '1px solid currentColor', display: 'inline-block' }} /></span>
         </motion.a>
       </div>
       <style>{`

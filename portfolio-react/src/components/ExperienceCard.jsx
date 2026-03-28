@@ -154,7 +154,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
               e.target.style.opacity = hovered ? '1' : '0.8'
             }}
           >
-            View all details →
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>View all details <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor' }} /><span style={{ width: 6, height: 6, borderRadius: '50%', border: '1px solid currentColor', display: 'inline-block' }} /></span>
           </button>
         )}
 

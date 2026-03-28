@@ -81,7 +81,7 @@ function ProjectCard({ item, index }) {
             transition: 'color 0.2s',
           }}
         >
-          View on GitHub →
+<span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>View on GitHub <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor' }} /><span style={{ width: 6, height: 6, borderRadius: '50%', border: '1px solid currentColor', display: 'inline-block' }} /></span>
         </motion.a>
       )}
     </motion.div>

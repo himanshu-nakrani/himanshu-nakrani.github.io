@@ -27,7 +27,40 @@ const linkStyle = {
   transition: 'color 0.2s ease, border-color 0.2s ease',
 }
 
+const Sparkle = ({ delay = 0, x = 0, y = 0 }) => (
+  <motion.div
+    animate={{
+      opacity: [0, 1, 0],
+      scale: [0, 1, 0],
+    }}
+    transition={{
+      duration: 2,
+      delay,
+      repeat: Infinity,
+      repeatDelay: Math.random() * 2 + 2,
+    }}
+    style={{
+      position: 'absolute',
+      left: `${x}%`,
+      top: `${y}%`,
+      width: 2,
+      height: 2,
+      borderRadius: '50%',
+      background: 'radial-gradient(circle, rgba(167, 139, 250, 0.8), rgba(167, 139, 250, 0))',
+      pointerEvents: 'none',
+      boxShadow: '0 0 6px rgba(167, 139, 250, 0.6)',
+    }}
+  />
+)
+
 export default function Hero() {
+  const sparkles = Array.from({ length: 12 }, (_, i) => ({
+    id: i,
+    delay: (i * 0.15) % 3,
+    x: 20 + Math.random() * 60,
+    y: 10 + Math.random() * 50,
+  }))
+
   return (
     <section
       id="about"
@@ -42,6 +75,7 @@ export default function Hero() {
         position: 'relative',
       }}
     >
+      {sparkles.map((s) => <Sparkle key={s.id} delay={s.delay} x={s.x} y={s.y} />)}
       <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
         <motion.div {...fadeUp(0.06)}>
           <span
