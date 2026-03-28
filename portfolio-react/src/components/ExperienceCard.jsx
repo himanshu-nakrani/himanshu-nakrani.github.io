@@ -34,8 +34,6 @@ function highlightBullets(html) {
 
 export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
-  const displayBullets = item.bullets.slice(0, 2)
-  const hiddenCount = Math.max(0, item.bullets.length - 2)
 
   const inner = (
     <>
@@ -121,70 +119,44 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
           </span>
         </div>
 
-        <div
-          style={{
-            borderLeft: '2px solid rgba(74, 158, 255, 0.28)',
-            marginBottom: '1.15rem',
-            paddingLeft: '1rem',
-            marginLeft: 2,
-          }}
-        >
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-            {displayBullets.map((b, i) => (
-              <li
-                key={i}
-                style={{
-                  position: 'relative',
-                  paddingLeft: 14,
-                  paddingBottom: 12,
-                  color: 'var(--text2)',
-                  fontSize: '0.875rem',
-                  lineHeight: 1.65,
-                }}
-              >
-                <span
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: '0.55em',
-                    width: 5,
-                    height: 5,
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                  }}
-                />
-                <span dangerouslySetInnerHTML={{ __html: highlightBullets(b) }} />
-              </li>
-            ))}
-          </ul>
+        {item.description && (
+          <p
+            style={{
+              color: 'var(--text2)',
+              fontSize: '0.9rem',
+              lineHeight: 1.65,
+              marginBottom: '1.15rem',
+            }}
+          >
+            {item.description}
+          </p>
+        )}
 
-          {hiddenCount > 0 && onCardClick && (
-            <button
-              onClick={onCardClick}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                marginTop: 8,
-                paddingLeft: 14,
-                fontSize: '0.8rem',
-                color: 'var(--accent)',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'opacity 0.25s ease',
-                opacity: hovered ? 1 : 0.8,
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.opacity = '1'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.opacity = hovered ? '1' : '0.8'
-              }}
-            >
-              + {hiddenCount} more details
-            </button>
-          )}
-        </div>
+        {onCardClick && (
+          <button
+            onClick={onCardClick}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              marginTop: 8,
+              fontSize: '0.8rem',
+              color: 'var(--accent)',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'opacity 0.25s ease',
+              opacity: hovered ? 1 : 0.8,
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.opacity = '1'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.opacity = hovered ? '1' : '0.8'
+            }}
+          >
+            View all details →
+          </button>
+        )}
 
         <div
           style={{
