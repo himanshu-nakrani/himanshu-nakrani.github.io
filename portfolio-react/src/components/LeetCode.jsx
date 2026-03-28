@@ -42,7 +42,7 @@ export default function LeetCode() {
           whileHover={{ y: -8 }}
           src="https://leetcard.jacoblin.cool/himanshunakrani0?theme=dark&font=Fira%20Code&ext=heatmap&border=0&radius=12"
           alt="LeetCode Stats"
-          style={{ borderRadius: 14, maxWidth: 500, width: '100%', flex: 2, boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: '1px solid var(--border)', transition: 'box-shadow 0.2s ease' }}
+          style={{ borderRadius: 14, maxWidth: 500, width: '100%', flex: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.2)', border: '1px solid rgba(167, 139, 250, 0.15)', transition: 'box-shadow 0.2s ease' }}
           loading="lazy"
         />
       </div>

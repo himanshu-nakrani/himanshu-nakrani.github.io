@@ -52,8 +52,10 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                 maxWidth: 1000,
                 maxHeight: '90vh',
                 display: 'flex',
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
+                background: 'rgba(18, 21, 28, 0.5)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: '1px solid rgba(167, 139, 250, 0.2)',
                 borderRadius: 24,
                 overflow: 'hidden',
                 boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
@@ -66,8 +68,8 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '2.5rem',
-                  background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.08), rgba(74, 158, 255, 0.05))',
-                  borderRight: '1px solid var(--border)',
+                  background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.06), rgba(74, 158, 255, 0.03))',
+                  borderRight: '1px solid rgba(167, 139, 250, 0.15)',
                   overflowY: 'auto',
                 }}
               >
@@ -244,7 +246,9 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <div
                       style={{
                         padding: '0.75rem',
-                        background: 'rgba(167, 139, 250, 0.1)',
+                        background: 'rgba(167, 139, 250, 0.08)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
                         border: '1px solid rgba(167, 139, 250, 0.2)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
@@ -258,7 +262,9 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <div
                       style={{
                         padding: '0.75rem',
-                        background: 'rgba(74, 158, 255, 0.1)',
+                        background: 'rgba(74, 158, 255, 0.08)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
                         border: '1px solid rgba(74, 158, 255, 0.2)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
