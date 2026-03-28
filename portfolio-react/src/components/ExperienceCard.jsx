@@ -32,11 +32,9 @@ function highlightBullets(html) {
   )
 }
 
-export default function ExperienceCard({ item, index = 0, animateEntry = true }) {
+export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
-  const [expanded, setExpanded] = useState(false)
-  const keyMetrics = extractKeyMetrics(item.bullets)
-  const displayBullets = expanded ? item.bullets : item.bullets.slice(0, 2)
+  const displayBullets = item.bullets.slice(0, 2)
   const hiddenCount = Math.max(0, item.bullets.length - 2)
 
   const inner = (
@@ -160,9 +158,9 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
             ))}
           </ul>
 
-          {hiddenCount > 0 && (
+          {hiddenCount > 0 && onCardClick && (
             <button
-              onClick={() => setExpanded(!expanded)}
+              onClick={onCardClick}
               style={{
                 background: 'none',
                 border: 'none',
@@ -183,7 +181,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
                 e.target.style.opacity = hovered ? '1' : '0.8'
               }}
             >
-              {expanded ? '- Show less' : `+ ${hiddenCount} more`}
+              + {hiddenCount} more details
             </button>
           )}
         </div>
@@ -214,8 +212,9 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
     borderColor: hovered ? 'rgba(167, 139, 250, 0.35)' : 'var(--border)',
     background: 'linear-gradient(155deg, var(--surface) 0%, var(--surface2) 52%, rgba(var(--bg-rgb), 0.4) 100%)',
     boxShadow: hovered ? '0 8px 28px rgba(74, 158, 255, 0.12)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
-    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease',
+    transition: 'border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease, cursor 0.25s ease',
     transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
+    cursor: onCardClick ? 'pointer' : 'default',
   }
 
   if (animateEntry) {
@@ -234,12 +233,19 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
   }
 
   return (
-    <article
+    <motion.div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onCardClick}
+      animate={animateEntry ? 'show' : 'hidden'}
+      initial="hidden"
+      variants={{
+        hidden: { opacity: 0, x: -20 },
+        show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+      }}
       style={shellStyle}
     >
       {inner}
-    </article>
+    </motion.div>
   )
 }

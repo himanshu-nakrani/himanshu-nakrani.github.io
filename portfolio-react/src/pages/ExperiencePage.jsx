@@ -1,8 +1,12 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ExperienceCard from '../components/ExperienceCard'
+import ExperienceDetailModal from '../components/ExperienceDetailModal'
 import { experience } from '../data'
 
 export default function ExperiencePage() {
+  const [selectedExperience, setSelectedExperience] = useState(null)
+
   return (
     <section style={{ padding: '110px 2rem 80px', maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ marginBottom: '2.25rem' }}>
@@ -48,10 +52,21 @@ export default function ExperiencePage() {
                   zIndex: 2,
                 }}
               />
-              <ExperienceCard item={item} index={i} animateEntry />
+              <ExperienceCard
+                item={item}
+                index={i}
+                animateEntry
+                onCardClick={() => setSelectedExperience(item)}
+              />
             </div>
           ))}
         </div>
+
+        <ExperienceDetailModal
+          item={selectedExperience}
+          isOpen={!!selectedExperience}
+          onClose={() => setSelectedExperience(null)}
+        />
       </div>
     </section>
   )
