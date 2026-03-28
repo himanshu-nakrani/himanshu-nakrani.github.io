@@ -54,11 +54,11 @@ const Sparkle = ({ delay = 0, x = 0, y = 0 }) => (
 )
 
 export default function Hero() {
-  const sparkles = Array.from({ length: 12 }, (_, i) => ({
+  const sparkles = Array.from({ length: 120 }, (_, i) => ({
     id: i,
-    delay: (i * 0.15) % 3,
-    x: 20 + Math.random() * 60,
-    y: 10 + Math.random() * 50,
+    delay: (i * 0.025) % 3,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
   }))
 
   return (

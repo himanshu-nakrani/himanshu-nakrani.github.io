@@ -58,7 +58,7 @@ export default function Research() {
                   gap: 4, position: 'relative', zIndex: 1, transition: 'color 0.2s',
                 }}
               >
-<span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>📄 View on IEEE Xplore <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor' }} /><span style={{ width: 6, height: 6, borderRadius: '50%', border: '1px solid currentColor', display: 'inline-block' }} /></span>
+📄 View on IEEE Xplore →
               </motion.a>
             )}
           </motion.div>

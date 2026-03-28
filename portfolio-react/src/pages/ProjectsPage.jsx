@@ -116,7 +116,7 @@ export default function ProjectsPage() {
                 rel="noopener"
                 style={{ color: 'var(--accent)', textDecoration: 'none', fontSize: '0.8rem', fontFamily: "'Fira Code', monospace" }}
               >
-<span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>View repository <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor' }} /><span style={{ width: 6, height: 6, borderRadius: '50%', border: '1px solid currentColor', display: 'inline-block' }} /></span>
+View repository →
               </a>
             )}
           </motion.article>
