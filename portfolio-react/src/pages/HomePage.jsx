@@ -13,39 +13,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <section
-        style={{
-          padding: '40px 2rem 20px',
-          maxWidth: 1100,
-          margin: '0 auto',
-        }}
-      >
-        <div
-          style={{
-            border: '1px solid var(--border)',
-            borderRadius: 16,
-            background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-            padding: '1.3rem',
-            display: 'grid',
-            gap: '1rem',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          }}
-        >
-          {[
-            ['2+ Years', 'Production AI engineering'],
-            ['100+', 'Users impacted internally'],
-            ['75%', 'Latency reduction delivered'],
-            ['2', 'Research publications'],
-          ].map(([value, label]) => (
-            <div key={label}>
-              <p style={{ color: 'var(--accent)', fontSize: '1.35rem', fontWeight: 800 }}>{value}</p>
-              <p style={{ color: 'var(--text2)', fontSize: '0.82rem' }}>{label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      <section style={{ padding: '70px 2rem', maxWidth: 1100, margin: '0 auto' }}>
+      <section style={{ padding: '56px 2rem 70px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '1rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
           <div>
             <p style={{ color: 'var(--nav-dot)', fontFamily: "'Fira Code', monospace", fontSize: '0.72rem', letterSpacing: '0.14em', marginBottom: 8 }}>WORK</p>
