@@ -34,9 +34,10 @@ function highlightBullets(html) {
 
 export default function ExperienceCard({ item, index = 0, animateEntry = true }) {
   const [hovered, setHovered] = useState(false)
+  const [expanded, setExpanded] = useState(false)
   const keyMetrics = extractKeyMetrics(item.bullets)
-  const displayBullets = item.bullets.slice(0, 3)
-  const hiddenCount = Math.max(0, item.bullets.length - 3)
+  const displayBullets = expanded ? item.bullets : item.bullets.slice(0, 2)
+  const hiddenCount = Math.max(0, item.bullets.length - 2)
 
   const inner = (
     <>
@@ -122,35 +123,6 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
           </span>
         </div>
 
-        {keyMetrics.length > 0 && (
-          <div
-            style={{
-              display: 'flex',
-              gap: '0.75rem',
-              marginBottom: '1rem',
-              flexWrap: 'wrap',
-            }}
-          >
-            {keyMetrics.map((metric) => (
-              <div
-                key={metric}
-                style={{
-                  padding: '6px 12px',
-                  background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(74, 158, 255, 0.1))',
-                  border: '1px solid rgba(167, 139, 250, 0.25)',
-                  borderRadius: 8,
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  color: 'var(--accent)',
-                  display: 'inline-block',
-                }}
-              >
-                {metric}
-              </div>
-            ))}
-          </div>
-        )}
-
         <div
           style={{
             borderLeft: '2px solid rgba(74, 158, 255, 0.28)',
@@ -166,10 +138,10 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
                 style={{
                   position: 'relative',
                   paddingLeft: 14,
-                  paddingBottom: 8,
+                  paddingBottom: 12,
                   color: 'var(--text2)',
                   fontSize: '0.875rem',
-                  lineHeight: 1.55,
+                  lineHeight: 1.65,
                 }}
               >
                 <span
@@ -189,17 +161,30 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true })
           </ul>
 
           {hiddenCount > 0 && (
-            <p
+            <button
+              onClick={() => setExpanded(!expanded)}
               style={{
-                fontSize: '0.8rem',
-                color: 'var(--accent)',
-                fontWeight: 500,
+                background: 'none',
+                border: 'none',
+                padding: 0,
                 marginTop: 8,
                 paddingLeft: 14,
+                fontSize: '0.8rem',
+                color: 'var(--accent)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'opacity 0.25s ease',
+                opacity: hovered ? 1 : 0.8,
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.opacity = '1'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.opacity = hovered ? '1' : '0.8'
               }}
             >
-              +{hiddenCount} more achievement{hiddenCount > 1 ? 's' : ''}
-            </p>
+              {expanded ? '- Show less' : `+ ${hiddenCount} more`}
+            </button>
           )}
         </div>
 
