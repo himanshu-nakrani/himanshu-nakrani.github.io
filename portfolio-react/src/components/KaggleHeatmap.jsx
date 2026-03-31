@@ -5,13 +5,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 /** GitHub dark-mode style greens (empty + 4 levels). */
 const LEVEL_FILL = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
 
-function pad2(n) {
-  return String(n).padStart(2, '0')
-}
-
-function toKey(d) {
-  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`
-}
+import { pad2, toKey } from './KaggleHeatmapUtils.js'
 
 /**
  * @param {Record<string, number>} contributionMap — YYYY-MM-DD → activity count (e.g. kernels/datasets that day)
