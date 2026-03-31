@@ -1,11 +1,20 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Tag from './Tag'
 
-function highlightBullets(html) {
-  return html.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
+function highlightBullets(text) {
+  const regex = /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g
+  const parts = text.split(regex)
+
+  return parts.map((part, i) => {
+    if (part.match(regex)) {
+      return (
+        <strong key={i} style={{ color: 'var(--accent2)' }}>
+          {part}
+        </strong>
+      )
+    }
+    return part
+  })
 }
 
 export default function ExperienceDetailModal({ item, isOpen, onClose }) {
@@ -183,7 +192,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                             background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                           }}
                         />
-                        <span dangerouslySetInnerHTML={{ __html: highlightBullets(bullet) }} />
+                        <span>{highlightBullets(bullet)}</span>
                       </li>
                     ))}
                   </ul>
