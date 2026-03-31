@@ -1,7 +1,9 @@
 import { useLayoutEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { useIsMobile } from './hooks/useIsMobile'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
+import MobileAllInOnePage from './pages/MobileAllInOnePage'
 import ProjectsPage from './pages/ProjectsPage'
 import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
@@ -29,15 +31,27 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/experience" element={<ExperiencePage />} />
-            <Route path="/profiles" element={<ProfilesPage />} />
-            <Route path="/research" element={<ResearchPage />} />
-            <Route path="/skills" element={<SkillsPage />} />
+            <Route path="/" element={<MobileAwareHome />} />
+            <Route path="/projects" element={<MobileAwareRoute component={ProjectsPage} />} />
+            <Route path="/experience" element={<MobileAwareRoute component={ExperiencePage} />} />
+            <Route path="/profiles" element={<MobileAwareRoute component={ProfilesPage} />} />
+            <Route path="/research" element={<MobileAwareRoute component={ResearchPage} />} />
+            <Route path="/skills" element={<MobileAwareRoute component={SkillsPage} />} />
           </Route>
         </Routes>
       </BrowserRouter>
     </>
   )
+}
+
+// Component that shows single page on mobile, regular home on desktop
+function MobileAwareHome() {
+  const isMobile = useIsMobile()
+  return isMobile ? <MobileAllInOnePage /> : <HomePage />
+}
+
+// Component that redirects to home on mobile, shows page on desktop
+function MobileAwareRoute({ component: Component }) {
+  const isMobile = useIsMobile()
+  return isMobile ? <Navigate to="/" replace /> : <Component />
 }
