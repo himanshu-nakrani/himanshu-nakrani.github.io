@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 
 /**
  * Custom cursor: single dot using theme accent (--nav-dot).
- * Exponential smoothing (frame-rate independent). RAF runs only while the dot
- * is catching up to the pointer — idle = zero CPU. Pauses when tab is hidden.
+ * Optimized for low-end CPUs with CSS transforms and minimal RAF usage.
+ * RAF runs only while the dot is catching up to the pointer — idle = zero CPU. Pauses when tab is hidden.
  */
 export default function GravityCursor() {
   const cursorDotRef = useRef(null)
@@ -15,17 +15,21 @@ export default function GravityCursor() {
   const lastTime = useRef(0)
   const hasPointer = useRef(false)
 
-  /** Higher = snappier. ~22–28 matches prior feel. */
-  const smoothness = 24
+  /** Lower = smoother. 10-12 for smooth movement. */
+  const smoothness = 11
 
   /** Stop animating when within this distance of the target (px). */
-  const snapEpsilon = 0.35
+  const snapEpsilon = 0.15
+
+  /** Throttle updates to reduce CPU load */
+  const minFrameTime = 1000 / 60 // 60fps max
 
   useEffect(() => {
     const setTransform = (x, y) => {
       const el = cursorDotRef.current
       if (!el) return
-      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`
+      // Use translate3d for GPU acceleration
+      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -50%)`
     }
 
     const tick = (time) => {
@@ -35,14 +39,22 @@ export default function GravityCursor() {
       }
 
       const prev = lastTime.current
+      
+      // Throttle to max 60fps to reduce CPU usage
+      if (prev && (time - prev) < minFrameTime) {
+        rafId.current = requestAnimationFrame(tick)
+        return
+      }
+      
       lastTime.current = time
-      /* prev === 0: new burst after idle / tab wake — avoid dt=0 or stale clock gap */
       const dt = prev ? Math.min((time - prev) / 1000, 0.1) : 1 / 60
 
       const mx = mouseX.current
       const my = mouseY.current
+      
+      // Smooth exponential interpolation
       const t = 1 - Math.exp(-smoothness * dt)
-
+      
       dotX.current += (mx - dotX.current) * t
       dotY.current += (my - dotY.current) * t
 
@@ -113,8 +125,8 @@ export default function GravityCursor() {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 7,
-          height: 7,
+          width: 6,
+          height: 6,
           borderRadius: '50%',
           background: 'var(--nav-dot)',
           pointerEvents: 'none',

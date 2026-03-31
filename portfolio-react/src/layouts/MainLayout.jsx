@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import ScrollProgress from '../components/ScrollProgress'
+import ParticleBackground from '../components/ParticleBackground'
+import SEO from '../components/SEO'
 
 export default function MainLayout({ isDark, setIsDark }) {
   const location = useLocation()
@@ -35,6 +38,9 @@ export default function MainLayout({ isDark, setIsDark }) {
 
   return (
     <>
+      <SEO />
+      <ScrollProgress />
+      <ParticleBackground />
       <Navbar isDark={isDark} setIsDark={setIsDark} />
 
       <AnimatePresence initial={false}>

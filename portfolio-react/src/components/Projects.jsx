@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Section from './Section'
 import Tag from './Tag'
+import ProjectDetailModal from './ProjectDetailModal'
 import { projects } from '../data'
 
 const badgeStyle = {
@@ -9,7 +10,7 @@ const badgeStyle = {
   'In Progress': { bg: 'rgba(107,124,255,0.1)', color: 'var(--accent2)', border: 'var(--border2)' },
 }
 
-function ProjectCard({ item, index }) {
+function ProjectCard({ item, index, onClick }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const [hovered, setHovered] = useState(false)
@@ -22,11 +23,12 @@ function ProjectCard({ item, index }) {
       transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
+      onClick={onClick}
       style={{
         background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
         border: `1px solid ${hovered ? 'var(--accent)' : 'var(--border)'}`,
         borderRadius: 16, padding: '1.5rem',
-        position: 'relative', cursor: 'default',
+        position: 'relative', cursor: 'pointer',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
         transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
         boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.06)',
@@ -89,11 +91,29 @@ View on GitHub →
 }
 
 export default function Projects() {
+  const [selectedProject, setSelectedProject] = useState(null)
+
   return (
-    <Section id="projects" title="Projects" alt>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.4rem' }}>
-        {projects.map((p, i) => <ProjectCard key={i} item={p} index={i} />)}
-      </div>
-    </Section>
+    <>
+      <Section id="projects" title="Projects" alt>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.4rem' }}>
+          {projects.map((p, i) => (
+            <ProjectCard 
+              key={i} 
+              item={p} 
+              index={i} 
+              onClick={() => setSelectedProject(p)}
+            />
+          ))}
+        </div>
+      </Section>
+      
+      {selectedProject && (
+        <ProjectDetailModal 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} 
+        />
+      )}
+    </>
   )
 }
