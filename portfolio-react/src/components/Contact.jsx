@@ -1,70 +1,100 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
 import Section from './Section'
 
 const links = [
-  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com', color: 'var(--accent)', icon: '✉️' },
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', color: 'var(--accent)', icon: '🐙' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', color: '#0a66c2', icon: '💼' },
-  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', color: 'var(--yellow)', icon: '⚡' },
-  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', color: 'var(--accent3)', icon: '🏆' },
+  { label: 'Email', href: 'mailto:himanshunakrani0@gmail.com' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
+  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/' },
+  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani' },
 ]
 
 export default function Contact() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
-
   return (
     <Section id="contact" title="Get in Touch" alt>
-      <div ref={ref} style={{ textAlign: 'center', position: 'relative' }}>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
+      <div style={{ textAlign: 'center', position: 'relative' }}>
+        {/* Subtle background accent */}
+        <div
           style={{
-            color: 'var(--text2)', fontSize: '1.05rem', marginBottom: '2.5rem',
-            maxWidth: 520, margin: '0 auto 2.5rem', lineHeight: 1.7,
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '60%',
+            height: '60%',
+            background: 'radial-gradient(circle, rgba(107, 155, 209, 0.06) 0%, transparent 70%)',
+            pointerEvents: 'none',
+            filter: 'blur(80px)',
+          }}
+        />
+        
+        <p
+          style={{
+            color: 'var(--text2)', 
+            fontSize: 'clamp(1rem, 3vw, 1.125rem)', 
+            marginBottom: '3rem',
+            maxWidth: 520, 
+            margin: '0 auto 3rem', 
+            lineHeight: 1.8,
+            fontWeight: 400,
+            position: 'relative',
+            zIndex: 1,
+            padding: '0 1rem',
           }}
         >
           Open to interesting problems in AI, LLMs, and building things that matter.
-        </motion.p>
+        </p>
 
-        <div style={{ display: 'flex', gap: '1.2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: 'clamp(1.25rem, 4vw, 2rem)', 
+          justifyContent: 'center', 
+          flexWrap: 'wrap',
+          position: 'relative',
+          zIndex: 1,
+          padding: '0 1rem',
+        }}>
           {links.map((l, i) => (
-            <motion.a
+            <a
               key={l.label}
               href={l.href}
               target={l.href.startsWith('mailto') ? undefined : '_blank'}
               rel="noopener"
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{
-                scale: 1.02,
-                y: -2,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                borderColor: 'var(--border2)',
-              }}
               style={{
-                display: 'flex', alignItems: 'center', gap: 8,
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
-                color: 'var(--text)', textDecoration: 'none',
-                padding: '12px 18px', borderRadius: 12,
-                fontSize: '0.9rem', fontWeight: 600,
-                boxShadow: 'var(--shadow-sm)',
-                transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: 44,
+                color: 'var(--text)',
+                textDecoration: 'none',
+                fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
+                fontWeight: 400,
+                borderBottom: '1px solid transparent',
+                transition: 'border-color 0.2s ease, color 0.2s ease',
+                opacity: 0,
+                animation: `fadeIn 0.5s ease forwards ${i * 0.1}s`,
+                padding: '0.5rem 0',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'transparent'
+                e.currentTarget.style.color = 'var(--text)'
               }}
             >
-              <span style={{ position: 'relative', zIndex: 1, fontSize: '1rem' }}>{l.icon}</span>
-              <span style={{ position: 'relative', zIndex: 1 }}>{l.label}</span>
-            </motion.a>
+              {l.label}
+            </a>
           ))}
         </div>
       </div>
+      
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </Section>
   )
 }
