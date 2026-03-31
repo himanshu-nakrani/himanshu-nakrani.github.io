@@ -1,82 +1,83 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* MVP2 / Aura reference (ai-engineer-portfolio-90.aura.build): editorial dark canvas + violet accent */
-  --bg: #07080c;
-  --bg2: #0c0e14;
-  --bg-rgb: 7, 8, 12;
-  --surface: #12151c;
-  --surface2: #181c26;
-  --border: #252a36;
-  --border2: #2e3544;
-  --accent: #4a9eff;
-  --accent2: #6b7cff;
-  --accent3: #5a8ee0;
-  --nav-dot: #a78bfa;
-  --text: #e0e6f2;
-  --text2: #8b96b0;
-  --green: #4ade80;
-  --yellow: #fbbf24;
-  --red: #f87171;
-  --pink: #f472b6;
+  /* Minimalist Dark Mode - Deep matte black with soft off-white text */
+  --bg: #0a0a0a;
+  --bg2: #0a0a0a;
+  --bg-rgb: 10, 10, 10;
+  --surface: #0a0a0a;
+  --surface2: #0a0a0a;
+  --border: #2a2a2a;
+  --border2: #3a3a3a;
+  --accent: #6b9bd1;
+  --accent2: #6b9bd1;
+  --accent3: #6b9bd1;
+  --nav-dot: #6b9bd1;
+  --text: #e0e0e0;
+  --text2: #999999;
+  --green: #6b9bd1;
+  --yellow: #6b9bd1;
+  --red: #6b9bd1;
+  --pink: #6b9bd1;
   --accent-light: #ffffff;
 
-  /* Layout & rhythm */
+  /* Layout & rhythm - Increased whitespace */
   --page-max: 1120px;
-  --page-pad-x: clamp(1rem, 4vw, 2rem);
-  --page-pad-top: clamp(5.5rem, 11vw, 7rem);
-  --section-pad-y: clamp(3.5rem, 8vw, 5.5rem);
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --page-pad-x: clamp(2rem, 6vw, 4rem);
+  --page-pad-top: clamp(6rem, 12vw, 8rem);
+  --section-pad-y: clamp(5rem, 10vw, 8rem);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --shadow-sm: none;
+  --shadow-md: none;
 
-  /* Ghost / outline controls (dark: light ink on dark canvas) */
-  --ghost-border: rgba(255, 255, 255, 0.14);
-  --ghost-bg: rgba(255, 255, 255, 0.04);
-  --ghost-hover-border: rgba(255, 255, 255, 0.22);
-  --ghost-hover-bg: rgba(255, 255, 255, 0.07);
-  --pill-contact-mobile-bg: rgba(255, 255, 255, 0.06);
+  /* Ghost / outline controls */
+  --ghost-border: rgba(255, 255, 255, 0.1);
+  --ghost-bg: transparent;
+  --ghost-hover-border: rgba(255, 255, 255, 0.2);
+  --ghost-hover-bg: transparent;
+  --pill-contact-mobile-bg: transparent;
 
   /* Image / overlay */
-  --hero-img-scrim: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.12) 100%);
-  --grain-opacity: 0.2;
-  --modal-backdrop: rgba(0, 0, 0, 0.72);
+  --hero-img-scrim: none;
+  --grain-opacity: 0;
+  --modal-backdrop: rgba(0, 0, 0, 0.85);
 }
 
 :root[data-theme="light"] {
-  --nav-dot: #6d28d9;
-  --bg: #f6f8fc;
-  --bg2: #eef2f8;
-  --bg-rgb: 246, 248, 252;
-  --surface: #ffffff;
-  --surface2: #f1f4fa;
-  --border: #c5d0e0;
-  --border2: #b4c2d6;
-  --accent: #2563eb;
-  --accent2: #4f46e5;
-  --accent3: #1d4ed8;
-  --text: #0f172a;
-  --text2: #475569;
-  --green: #15803d;
-  --yellow: #b45309;
-  --red: #b91c1c;
-  --pink: #be123c;
+  /* Minimalist Light Mode - Off-white background with deep charcoal text */
+  --nav-dot: #6b9bd1;
+  --bg: #fafafa;
+  --bg2: #fafafa;
+  --bg-rgb: 250, 250, 250;
+  --surface: #fafafa;
+  --surface2: #fafafa;
+  --border: #e0e0e0;
+  --border2: #d0d0d0;
+  --accent: #5a8ac6;
+  --accent2: #5a8ac6;
+  --accent3: #5a8ac6;
+  --text: #1a1a1a;
+  --text2: #666666;
+  --green: #5a8ac6;
+  --yellow: #5a8ac6;
+  --red: #5a8ac6;
+  --pink: #5a8ac6;
   --accent-light: #fff;
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: none;
+  --shadow-md: none;
 
-  --ghost-border: color-mix(in srgb, var(--text) 16%, transparent);
-  --ghost-bg: color-mix(in srgb, var(--text) 4%, transparent);
-  --ghost-hover-border: color-mix(in srgb, var(--text) 28%, transparent);
-  --ghost-hover-bg: color-mix(in srgb, var(--text) 8%, transparent);
-  --pill-contact-mobile-bg: color-mix(in srgb, var(--text) 6%, transparent);
+  --ghost-border: rgba(0, 0, 0, 0.1);
+  --ghost-bg: transparent;
+  --ghost-hover-border: rgba(0, 0, 0, 0.2);
+  --ghost-hover-bg: transparent;
+  --pill-contact-mobile-bg: transparent;
 
-  --hero-img-scrim: linear-gradient(to bottom, transparent 45%, color-mix(in srgb, var(--text) 12%, transparent) 100%);
-  --grain-opacity: 0.07;
-  --modal-backdrop: color-mix(in srgb, var(--text) 42%, transparent);
+  --hero-img-scrim: none;
+  --grain-opacity: 0;
+  --modal-backdrop: rgba(0, 0, 0, 0.85);
 }
 
 /* Avoid stacking with JS smooth scroll; programmatic nav uses scrollIntoView where needed */
@@ -104,27 +105,10 @@ body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
   position: relative;
-}
-
-/* Subtle grain / noise (Aura-style depth) */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 180px 180px;
-  mix-blend-mode: overlay;
-}
-
-:root[data-theme="light"] body::before {
-  mix-blend-mode: multiply;
+  font-weight: 400;
 }
 
 #root {
@@ -141,54 +125,52 @@ body::before {
 
 :root[data-theme="light"]::selection { background: rgba(124,111,255,0.2); color: var(--text); }
 
-/* MVP2: shared page shell + cards (Aura-aligned) */
+/* Minimalist page shell */
 .mvp2-page {
-  padding: var(--page-pad-top) var(--page-pad-x) max(3rem, calc(env(safe-area-inset-bottom, 0px) + 2rem));
+  padding: var(--page-pad-top) var(--page-pad-x) max(4rem, calc(env(safe-area-inset-bottom, 0px) + 3rem));
   max-width: var(--page-max);
   margin: 0 auto;
 }
 
 .mvp2-kicker {
-  color: var(--nav-dot);
-  font-family: 'Fira Code', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  margin-bottom: 0.65rem;
+  color: var(--text2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .mvp2-page-title {
-  font-size: clamp(2rem, 5vw, 2.85rem);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
   line-height: 1.1;
-  margin-bottom: 0.75rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 
 .mvp2-page-lede {
   color: var(--text2);
   max-width: 40rem;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-weight: 400;
 }
 
 .mvp2-card {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
-  box-shadow: var(--shadow-sm);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-/* Footer secondary line: readable in both themes (avoid washing out in light mode) */
+/* Footer secondary line */
 .footer-note {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--text2);
-  opacity: 0.72;
-}
-
-:root[data-theme="light"] .footer-note {
-  opacity: 0.92;
+  font-weight: 400;
 }
 
 /* Experience detail modal: stack on narrow screens */

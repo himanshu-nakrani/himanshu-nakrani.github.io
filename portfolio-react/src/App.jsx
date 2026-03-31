@@ -1,9 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import GravityCursor from './components/GravityCursor'
-import TerminalEasterEgg from './components/TerminalEasterEgg'
-import KonamiCode from './components/KonamiCode'
-import { useCustomCursorAllowed } from './hooks/useCustomCursorAllowed'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -11,8 +7,6 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
-import BlogPage from './pages/BlogPage'
-import BlogPostPage from './pages/BlogPostPage'
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => {
@@ -20,7 +14,6 @@ export default function App() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     return savedTheme ? savedTheme === 'dark' : prefersDark
   })
-  const showCustomCursor = useCustomCursorAllowed()
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
@@ -33,9 +26,6 @@ export default function App() {
 
   return (
     <>
-      {showCustomCursor ? <GravityCursor /> : null}
-      <TerminalEasterEgg />
-      <KonamiCode />
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
@@ -45,8 +35,6 @@ export default function App() {
             <Route path="/profiles" element={<ProfilesPage />} />
             <Route path="/research" element={<ResearchPage />} />
             <Route path="/skills" element={<SkillsPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:id" element={<BlogPostPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
