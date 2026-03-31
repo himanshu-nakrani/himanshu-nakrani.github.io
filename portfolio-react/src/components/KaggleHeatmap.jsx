@@ -25,15 +25,15 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
     const firstSunday = new Date(lastSunday)
     firstSunday.setDate(lastSunday.getDate() - 52 * 7)
 
+    const cell = new Date(firstSunday)
     const flatCounts = []
     for (let w = 0; w < 53; w++) {
       for (let d = 0; d < 7; d++) {
-        const cell = new Date(firstSunday)
-        cell.setDate(firstSunday.getDate() + w * 7 + d)
         const raw = contributionMap[toKey(cell)]
         const future = cell > end
         const c = future ? 0 : typeof raw === 'number' && raw > 0 ? raw : 0
         flatCounts.push({ c, future })
+        cell.setDate(cell.getDate() + 1)
       }
     }
 
@@ -45,10 +45,9 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
 
     const rects = []
     let idx = 0
+    cell.setTime(firstSunday.getTime())
     for (let w = 0; w < 53; w++) {
       for (let d = 0; d < 7; d++) {
-        const cell = new Date(firstSunday)
-        cell.setDate(firstSunday.getDate() + w * 7 + d)
         const { c, future } = flatCounts[idx]
         const lvl = levelFor(c, future)
         rects.push({
@@ -60,19 +59,20 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
           score: future ? -1 : c,
         })
         idx++
+        cell.setDate(cell.getDate() + 1)
       }
     }
 
     const monthLabels = []
     let prevM = -1
+    cell.setTime(firstSunday.getTime())
     for (let w = 0; w < 53; w++) {
-      const cell = new Date(firstSunday)
-      cell.setDate(firstSunday.getDate() + w * 7)
       const m = cell.getMonth()
       if (m !== prevM) {
         prevM = m
         monthLabels.push({ x: 27 + w * 12, label: MONTHS[m] })
       }
+      cell.setDate(cell.getDate() + 7)
     }
 
     // Rows: d=0 Sun … d=6 Sat (matches ghchart). Mon/Wed/Fri row indices 1,3,5.
