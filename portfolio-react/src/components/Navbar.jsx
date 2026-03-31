@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -9,11 +10,11 @@ const MotionNavLink = motion(NavLink)
 
 const navLinks = [
   { label: 'About', to: '/#about' },
-  { label: 'Experience', to: '/experience' },
-  { label: 'Projects', to: '/projects' },
-  { label: 'Profiles', to: '/profiles' },
-  { label: 'Research', to: '/research' },
-  { label: 'Skills', to: '/skills' },
+  { label: 'Experience', to: '/experience', mobileHash: '#experience' },
+  { label: 'Projects', to: '/projects', mobileHash: '#projects' },
+  { label: 'Profiles', to: '/profiles', mobileHash: '#profiles' },
+  { label: 'Research', to: '/research', mobileHash: '#research' },
+  { label: 'Skills', to: '/skills', mobileHash: '#skills' },
 ]
 
 const contactItem = { label: 'Contact', to: '/#contact' }
@@ -25,6 +26,7 @@ export default function Navbar({ isDark, setIsDark }) {
   const [open, setOpen] = useState(false)
   const location = useLocation()
   const reduceMotion = useReducedMotion()
+  const isMobile = useIsMobile()
 
   const isPageActive = (label) => {
     if (label === 'Projects') return location.pathname === '/projects'
@@ -32,7 +34,6 @@ export default function Navbar({ isDark, setIsDark }) {
     if (label === 'Profiles') return location.pathname === '/profiles'
     if (label === 'Research') return location.pathname === '/research'
     if (label === 'Skills') return location.pathname === '/skills'
-    if (label === 'Blog') return location.pathname.startsWith('/blog')
     if (label === 'About') return location.pathname === '/'
     return false
   }
@@ -45,6 +46,18 @@ export default function Navbar({ isDark, setIsDark }) {
 
   const handleNavClick = (item, event) => {
     setOpen(false)
+    
+    // On mobile, use hash navigation for smooth scrolling
+    if (isMobile && item.mobileHash) {
+      event.preventDefault()
+      const id = item.mobileHash.replace('#', '')
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      return
+    }
+    
     if (!item.to.startsWith('/#')) return
     if (location.pathname !== '/') return
 
