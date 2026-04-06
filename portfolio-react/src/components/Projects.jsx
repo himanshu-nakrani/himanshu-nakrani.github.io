@@ -71,21 +71,39 @@ function ProjectCard({ item, index, onClick }) {
         {item.tags.map(t => <Tag key={t}>{t}</Tag>)}
       </div>
       
-      {item.link && (
-        <motion.a
-          whileHover={{ x: 4, color: 'var(--accent2)' }}
-          href={item.link}
-          target="_blank"
-          rel="noopener"
-          style={{
-            fontSize: '0.78rem', color: 'var(--accent)', textDecoration: 'none',
-            fontFamily: "'Fira Code', monospace", marginTop: 4, position: 'relative', zIndex: 1,
-            transition: 'color 0.2s',
-          }}
-        >
-View on GitHub →
-        </motion.a>
-      )}
+      <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', position: 'relative', zIndex: 1, marginTop: 4 }}>
+        {item.link && (
+          <motion.a
+            whileHover={{ x: 4, color: 'var(--accent2)' }}
+            href={item.link}
+            target="_blank"
+            rel="noopener"
+            style={{
+              fontSize: '0.78rem', color: 'var(--accent)', textDecoration: 'none',
+              fontFamily: "'Fira Code', monospace",
+              transition: 'color 0.2s',
+            }}
+          >
+            View on GitHub →
+          </motion.a>
+        )}
+        {item.liveLink && (
+          <motion.a
+            whileHover={{ x: 4, color: 'var(--accent2)' }}
+            href={item.liveLink}
+            target="_blank"
+            rel="noopener"
+            onClick={e => e.stopPropagation()}
+            style={{
+              fontSize: '0.78rem', color: 'var(--accent2)', textDecoration: 'none',
+              fontFamily: "'Fira Code', monospace",
+              transition: 'color 0.2s',
+            }}
+          >
+            Live Demo →
+          </motion.a>
+        )}
+      </div>
     </motion.div>
   )
 }

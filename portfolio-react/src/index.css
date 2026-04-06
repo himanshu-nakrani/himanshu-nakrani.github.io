@@ -1,14 +1,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Minimalist Dark Mode - Deep matte black with soft off-white text */
-  --bg: #0a0a0a;
-  --bg2: #0a0a0a;
-  --bg-rgb: 10, 10, 10;
-  --surface: #0a0a0a;
-  --surface2: #0a0a0a;
-  --border: #2a2a2a;
-  --border2: #3a3a3a;
+  /* Dark Grey Mode */
+  --bg: #1a1a1a;
+  --bg2: #1a1a1a;
+  --bg-rgb: 26, 26, 26;
+  --surface: #222222;
+  --surface2: #2a2a2a;
+  --border: #333333;
+  --border2: #444444;
   --accent: #6b9bd1;
   --accent2: #6b9bd1;
   --accent3: #6b9bd1;
@@ -43,6 +43,16 @@
   --hero-img-scrim: none;
   --grain-opacity: 0;
   --modal-backdrop: rgba(0, 0, 0, 0.85);
+}
+
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --bg2: #1a1a1a;
+  --bg-rgb: 26, 26, 26;
+  --surface: #222222;
+  --surface2: #2a2a2a;
+  --border: #333333;
+  --border2: #444444;
 }
 
 :root[data-theme="light"] {
