@@ -4,8 +4,7 @@ function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
       className="hero-photo"
       style={{
         width: size,
-        height: size,
-        borderRadius: '50%',
+        borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
         flexShrink: 0,
         border: '2px solid var(--border2)',
@@ -19,11 +18,9 @@ function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
         alt={alt}
         loading="lazy"
         width={size}
-        height={size}
         style={{
           width: '100%',
-          height: '100%',
-          objectFit: 'cover',
+          height: 'auto',
           display: 'block',
         }}
       />
@@ -217,7 +214,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={280} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
 
       <style>{`
         @keyframes fadeInUp {
@@ -239,7 +236,7 @@ export default function Hero() {
             min-height: min(100dvh, 920px) !important;
           }
           .hero-copy { width: 100%; }
-          .hero-photo { width: 180px !important; height: 180px !important; align-self: center; order: -1; }
+          .hero-photo { width: 216px !important; height: auto !important; align-self: center; order: -1; }
         }
         @media (max-width: 480px) {
           #about { 
