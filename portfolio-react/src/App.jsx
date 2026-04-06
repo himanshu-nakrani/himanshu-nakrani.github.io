@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useIsMobile } from './hooks/useIsMobile'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
@@ -9,6 +9,14 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
+
+const mobileRouteMap = {
+  '/projects':   'projects',
+  '/experience': 'experience',
+  '/profiles':   'profiles',
+  '/research':   'research',
+  '/skills':     'skills',
+}
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => {
@@ -32,11 +40,11 @@ export default function App() {
         <Routes>
           <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
             <Route path="/" element={<MobileAwareHome />} />
-            <Route path="/projects" element={<MobileAwareRoute component={ProjectsPage} />} />
-            <Route path="/experience" element={<MobileAwareRoute component={ExperiencePage} />} />
-            <Route path="/profiles" element={<MobileAwareRoute component={ProfilesPage} />} />
-            <Route path="/research" element={<MobileAwareRoute component={ResearchPage} />} />
-            <Route path="/skills" element={<MobileAwareRoute component={SkillsPage} />} />
+            <Route path="/projects"   element={<MobileAwareRoute component={ProjectsPage}   sectionId="projects"   />} />
+            <Route path="/experience" element={<MobileAwareRoute component={ExperiencePage} sectionId="experience" />} />
+            <Route path="/profiles"   element={<MobileAwareRoute component={ProfilesPage}   sectionId="profiles"   />} />
+            <Route path="/research"   element={<MobileAwareRoute component={ResearchPage}   sectionId="research"   />} />
+            <Route path="/skills"     element={<MobileAwareRoute component={SkillsPage}     sectionId="skills"     />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -51,7 +59,7 @@ function MobileAwareHome() {
 }
 
 // Component that redirects to home on mobile, shows page on desktop
-function MobileAwareRoute({ component: Component }) {
+function MobileAwareRoute({ component: Component, sectionId }) {
   const isMobile = useIsMobile()
-  return isMobile ? <Navigate to="/" replace /> : <Component />
+  return isMobile ? <MobileAllInOnePage scrollToSection={sectionId} /> : <Component />
 }

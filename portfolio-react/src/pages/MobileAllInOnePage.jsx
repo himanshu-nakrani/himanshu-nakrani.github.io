@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Hero from '../components/Hero'
 import AboutBrief from '../components/AboutBrief'
 import TechStack from '../components/TechStack'
@@ -13,7 +14,15 @@ import Skills from '../components/Skills'
 import Projects from '../components/Projects'
 import { experience } from '../data'
 
-export default function MobileAllInOnePage() {
+export default function MobileAllInOnePage({ scrollToSection }) {
+  useEffect(() => {
+    if (!scrollToSection) return
+    requestAnimationFrame(() => {
+      const el = document.getElementById(scrollToSection)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [scrollToSection])
+
   return (
     <>
       <Hero />
