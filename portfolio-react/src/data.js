@@ -127,6 +127,15 @@ export const projects = [
     ],
   },
   { 
+    icon: '📚', 
+    title: 'Document QA', 
+    desc: 'Document question-answering system using LLMs and retrieval techniques to extract precise answers from uploaded documents.', 
+    tags: ['Python', 'LLM', 'RAG'], 
+    badge: null, 
+    link: 'https://github.com/himanshu-nakrani/document-qa',
+    liveLink: 'https://document-qa-two.vercel.app/',
+  },
+  { 
     icon: '🛡️', 
     title: 'Intrusion Detection System', 
     desc: 'ML-based network intrusion detection on KDD Cup 1999 dataset (4.9M records), achieving 94% accuracy across DoS, Probe, R2L, and U2R attacks.', 
@@ -160,15 +169,6 @@ export const projects = [
     tags: ['Python', 'Regression', 'Jupyter'], 
     badge: null, 
     link: 'https://github.com/himanshu-nakrani/Gold-price-prediction' 
-  },
-  { 
-    icon: '📚', 
-    title: 'Document QA', 
-    desc: 'Document question-answering system using LLMs and retrieval techniques to extract precise answers from uploaded documents.', 
-    tags: ['Python', 'LLM', 'RAG'], 
-    badge: null, 
-    link: 'https://github.com/himanshu-nakrani/document-qa',
-    liveLink: 'https://document-qa-two.vercel.app/',
   },
 ]
 
