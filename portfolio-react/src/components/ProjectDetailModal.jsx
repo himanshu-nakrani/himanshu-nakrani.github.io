@@ -185,6 +185,30 @@ export default function ProjectDetailModal({ project, onClose }) {
                 <ExternalLink size={16} />
               </motion.a>
             )}
+            {project.liveLink && (
+              <motion.a
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href={project.liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  background: 'var(--accent2)',
+                  color: 'white',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: 12,
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.9rem',
+                }}
+              >
+                Live Demo
+                <ExternalLink size={16} />
+              </motion.a>
+            )}
           </div>
         </motion.div>
       </motion.div>

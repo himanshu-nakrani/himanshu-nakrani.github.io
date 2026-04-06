@@ -4,7 +4,7 @@ export const experience = [
     company: 'State Street Corporation',
     location: 'Hyderabad, India',
     period: 'Jan 2023 – Present',
-    progression: 'Software Development Intern → Associate 2 → Senior Associate',
+    progression: 'Software Development Intern → Associate 2 → Senior Associate → Emerging Lead',
     description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 100+ users) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
     bullets: [
       'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data',
@@ -127,6 +127,15 @@ export const projects = [
     ],
   },
   { 
+    icon: '📚', 
+    title: 'Document QA', 
+    desc: 'Document question-answering system using LLMs and retrieval techniques to extract precise answers from uploaded documents.', 
+    tags: ['Python', 'LLM', 'RAG'], 
+    badge: null, 
+    link: 'https://github.com/himanshu-nakrani/document-qa',
+    liveLink: 'https://document-qa-two.vercel.app/',
+  },
+  { 
     icon: '🛡️', 
     title: 'Intrusion Detection System', 
     desc: 'ML-based network intrusion detection on KDD Cup 1999 dataset (4.9M records), achieving 94% accuracy across DoS, Probe, R2L, and U2R attacks.', 
@@ -161,14 +170,6 @@ export const projects = [
     badge: null, 
     link: 'https://github.com/himanshu-nakrani/Gold-price-prediction' 
   },
-  { 
-    icon: '📚', 
-    title: 'Document QA', 
-    desc: 'Document question-answering system using LLMs and retrieval techniques to extract precise answers from uploaded documents.', 
-    tags: ['Python', 'LLM', 'RAG'], 
-    badge: null, 
-    link: 'https://github.com/himanshu-nakrani/document-qa' 
-  },
 ]
 
 export const kagglePinned = [
@@ -187,12 +188,42 @@ export const kagglePinned = [
 export const kaggleContributionMap = {}
 
 export const skills = [
-  { label: 'AI / ML', items: ['LLMs', 'RAG', 'Fine-tuning', 'LoRA/PEFT', 'Prompt Engineering', 'LangChain', 'Google ADK', 'AI Agents', 'OpenAI API'] },
-  { label: 'Backend', items: ['FastAPI', 'ASP.NET Core', 'REST APIs', 'SQLAlchemy', 'Microservices'] },
-  { label: 'Languages', items: ['Python', 'Java', 'SQL', 'C/C++', 'C#', 'TypeScript', 'Shell/Perl'] },
-  { label: 'Cloud & DevOps', items: ['Azure', 'AWS', 'OCI', 'Databricks', 'Azure OpenAI Studio', 'CI/CD'] },
-  { label: 'Databases', items: ['PostgreSQL', 'pgvector', 'SQLite', 'Vector DBs', 'Semantic Search'] },
-  { label: 'ML / Deep Learning', items: ['CNNs', 'LSTM', 'Computer Vision', 'XGBoost', 'Random Forest', 'Model Deployment'] },
+  {
+    label: 'AI & LLMs',
+    icon: '🤖',
+    color: 'var(--accent)',
+    items: ['LLMs', 'RAG', 'Fine-tuning', 'LoRA/PEFT', 'Prompt Engineering', 'AI Agents', 'OpenAI API', 'Azure OpenAI', 'LangChain', 'Google ADK'],
+  },
+  {
+    label: 'Machine Learning',
+    icon: '🧠',
+    color: 'var(--accent2)',
+    items: ['CNNs', 'LSTM', 'XGBoost', 'Random Forest', 'Feature Engineering', 'Model Deployment', 'scikit-learn', 'TensorFlow'],
+  },
+  {
+    label: 'Backend & APIs',
+    icon: '⚙️',
+    color: 'var(--accent3)',
+    items: ['FastAPI', 'ASP.NET Core', 'REST APIs', 'SQLAlchemy', 'WebSocket', 'Microservices'],
+  },
+  {
+    label: 'Languages',
+    icon: '💻',
+    color: 'var(--nav-dot)',
+    items: ['Python', 'SQL', 'TypeScript', 'Java', 'C#', 'C/C++', 'Shell/Perl'],
+  },
+  {
+    label: 'Data & Databases',
+    icon: '🗄️',
+    color: 'var(--green)',
+    items: ['PostgreSQL', 'pgvector', 'SQLite', 'Vector DBs', 'Semantic Search', 'Redis', 'Pandas', 'NumPy'],
+  },
+  {
+    label: 'Cloud & DevOps',
+    icon: '☁️',
+    color: 'var(--accent)',
+    items: ['Azure', 'AWS', 'OCI', 'Databricks', 'CI/CD', 'Docker', 'Azure OpenAI Studio'],
+  },
 ]
 
 export const publications = [

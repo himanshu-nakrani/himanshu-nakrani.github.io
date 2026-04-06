@@ -1,24 +1,24 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Minimalist Dark Mode - Deep matte black with soft off-white text */
-  --bg: #0a0a0a;
-  --bg2: #0a0a0a;
-  --bg-rgb: 10, 10, 10;
-  --surface: #0a0a0a;
-  --surface2: #0a0a0a;
-  --border: #2a2a2a;
-  --border2: #3a3a3a;
+  /* Dark Grey Mode */
+  --bg: #1a1a1a;
+  --bg2: #1a1a1a;
+  --bg-rgb: 26, 26, 26;
+  --surface: #222222;
+  --surface2: #2a2a2a;
+  --border: #333333;
+  --border2: #444444;
   --accent: #6b9bd1;
   --accent2: #6b9bd1;
   --accent3: #6b9bd1;
   --nav-dot: #6b9bd1;
   --text: #e0e0e0;
   --text2: #999999;
-  --green: #6b9bd1;
-  --yellow: #6b9bd1;
-  --red: #6b9bd1;
-  --pink: #6b9bd1;
+  --green:  #4ade80;
+  --yellow: #facc15;
+  --red:    #f87171;
+  --pink:   #f472b6;
   --accent-light: #ffffff;
 
   /* Layout & rhythm - Increased whitespace */
@@ -26,11 +26,11 @@
   --page-pad-x: clamp(2rem, 6vw, 4rem);
   --page-pad-top: clamp(6rem, 12vw, 8rem);
   --section-pad-y: clamp(5rem, 10vw, 8rem);
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --shadow-sm: none;
-  --shadow-md: none;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.14);
 
   /* Ghost / outline controls */
   --ghost-border: rgba(255, 255, 255, 0.1);
@@ -45,14 +45,24 @@
   --modal-backdrop: rgba(0, 0, 0, 0.85);
 }
 
+:root[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --bg2: #1a1a1a;
+  --bg-rgb: 26, 26, 26;
+  --surface: #222222;
+  --surface2: #2a2a2a;
+  --border: #333333;
+  --border2: #444444;
+}
+
 :root[data-theme="light"] {
   /* Minimalist Light Mode - Off-white background with deep charcoal text */
   --nav-dot: #6b9bd1;
   --bg: #fafafa;
   --bg2: #fafafa;
   --bg-rgb: 250, 250, 250;
-  --surface: #fafafa;
-  --surface2: #fafafa;
+  --surface: #ffffff;
+  --surface2: #f4f4f5;
   --border: #e0e0e0;
   --border2: #d0d0d0;
   --accent: #5a8ac6;
@@ -60,14 +70,14 @@
   --accent3: #5a8ac6;
   --text: #1a1a1a;
   --text2: #666666;
-  --green: #5a8ac6;
-  --yellow: #5a8ac6;
-  --red: #5a8ac6;
-  --pink: #5a8ac6;
+  --green:  #16a34a;
+  --yellow: #ca8a04;
+  --red:    #dc2626;
+  --pink:   #db2777;
   --accent-light: #fff;
 
-  --shadow-sm: none;
-  --shadow-md: none;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
 
   --ghost-border: rgba(0, 0, 0, 0.1);
   --ghost-bg: transparent;
@@ -157,6 +167,7 @@ body {
   font-size: 1.05rem;
   line-height: 1.7;
   font-weight: 400;
+  margin-top: 0.5rem;
 }
 
 .mvp2-card {
@@ -193,3 +204,20 @@ body {
   }
 }
 
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface2) 50%,
+    var(--surface) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--radius-sm);
+}

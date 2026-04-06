@@ -1,3 +1,33 @@
+function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
+  return (
+    <div
+      className="hero-photo"
+      style={{
+        width: size,
+        borderRadius: 'var(--radius-lg)',
+        overflow: 'hidden',
+        flexShrink: 0,
+        border: '2px solid var(--border2)',
+        position: 'relative',
+        zIndex: 1,
+        ...extraStyle,
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        width={size}
+        style={{
+          width: '100%',
+          height: 'auto',
+          display: 'block',
+        }}
+      />
+    </div>
+  )
+}
+
 const stats = [
   { num: '2+', label: 'Years exp.' },
   { num: '100+', label: 'Users served' },
@@ -184,6 +214,8 @@ export default function Hero() {
         </div>
       </div>
 
+      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+
       <style>{`
         @keyframes fadeInUp {
           from {
@@ -204,6 +236,7 @@ export default function Hero() {
             min-height: min(100dvh, 920px) !important;
           }
           .hero-copy { width: 100%; }
+          .hero-photo { width: 216px !important; height: auto !important; align-self: center; order: -1; }
         }
         @media (max-width: 480px) {
           #about { 
