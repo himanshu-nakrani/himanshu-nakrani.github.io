@@ -13,6 +13,7 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
+import { getColorTheme, applyColorTheme } from './lib/colorTheme'
 
 const mobileRouteMap = {
   '/projects':   'projects',
@@ -32,6 +33,7 @@ export default function App() {
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    applyColorTheme(getColorTheme())
   }, [isDark])
 
   const handleThemeChange = (newIsDark) => {
