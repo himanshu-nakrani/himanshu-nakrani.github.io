@@ -70,8 +70,8 @@ export default function Navbar({ isDark, setIsDark }) {
     }
   }
 
-  const pillBg = scrolled ? 'rgba(var(--bg-rgb), 0.82)' : 'rgba(var(--bg-rgb), 0.58)'
-  const pillBorder = '1px solid var(--border)'
+  const pillBg = scrolled ? 'color-mix(in srgb, var(--surface2) 86%, transparent)' : 'color-mix(in srgb, var(--surface) 70%, transparent)'
+  const pillBorder = '1px solid color-mix(in srgb, var(--border2) 82%, transparent)'
 
   return (
     <header
@@ -99,9 +99,9 @@ export default function Navbar({ isDark, setIsDark }) {
             borderRadius: 9999,
             border: pillBorder,
             background: pillBg,
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: scrolled ? '0 1px 3px rgba(0,0,0,0.08)' : '0 1px 2px rgba(0,0,0,0.04)',
+            backdropFilter: 'blur(18px)',
+            WebkitBackdropFilter: 'blur(18px)',
+            boxShadow: scrolled ? 'var(--shadow-md)' : 'var(--shadow-sm)',
             transition: 'background 0.25s ease, box-shadow 0.25s ease',
           }}
         >
@@ -130,81 +130,77 @@ export default function Navbar({ isDark, setIsDark }) {
             />
             <span
               style={{
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '0.875rem',
                 letterSpacing: '0.08em',
                 color: 'var(--text)',
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--font-display)',
               }}
             >
               HN.AI
             </span>
           </MotionNavLink>
 
-          <ul
-            className="nav-desktop nav-pill-links"
-            style={{
-              listStyle: 'none',
-              display: 'flex',
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 2,
-              margin: 0,
-              padding: '0 4px',
-              minWidth: 0,
-              overflowX: 'auto',
-            }}
-          >
-            {navLinks.map((item) => {
-              const active = isPageActive(item.label)
-              return (
-                <li key={item.label} style={{ flexShrink: 0 }}>
-                  <MotionNavLink
-                    to={item.to}
-                    whileHover={{ color: 'var(--text)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={(event) => handleNavClick(item, event)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start',
-                      minWidth: 52,
-                      padding: '4px 8px 2px',
-                      textDecoration: 'none',
-                      fontSize: '0.8125rem',
-                      fontWeight: 500,
-                      color: active ? 'var(--text)' : 'var(--text2)',
-                      transition: 'color 0.2s ease',
-                    }}
-                  >
-                    <span style={{ lineHeight: 1.2 }}>{item.label}</span>
-                    <span
+          <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
+            <ul
+              className="nav-pill-links"
+              style={{
+                listStyle: 'none',
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 2,
+                margin: 0,
+                padding: '0 4px',
+                minWidth: 0,
+                overflowX: 'auto',
+              }}
+            >
+              {navLinks.map((item) => {
+                const active = isPageActive(item.label)
+                return (
+                  <li key={item.label} style={{ flexShrink: 0 }}>
+                    <MotionNavLink
+                      to={item.to}
+                      whileHover={{ color: 'var(--text)' }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={(event) => handleNavClick(item, event)}
+                      aria-current={active ? 'page' : undefined}
                       style={{
-                        height: 12,
                         display: 'flex',
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        width: '100%',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        minWidth: 52,
+                        padding: active ? '4px 12px' : '4px 8px 2px',
+                        textDecoration: 'none',
+                        fontSize: '0.8125rem',
+                        fontWeight: 500,
+                        color: active ? 'var(--text)' : 'var(--text2)',
+                        transition: 'color 0.2s ease',
+                        background: active ? 'color-mix(in srgb, var(--accent) 10%, transparent)' : 'transparent',
+                        borderRadius: active ? 9999 : undefined,
                       }}
                     >
-                      {active && (
+                      <span style={{ lineHeight: 1.2 }}>{item.label}</span>
+                      {!active && (
                         <span
                           style={{
-                            width: 5,
-                            height: 5,
-                            borderRadius: '50%',
-                            background: 'var(--nav-dot)',
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                            justifyContent: 'center',
+                            width: '100%',
                           }}
                         />
                       )}
-                    </span>
-                  </MotionNavLink>
-                </li>
-              )
-            })}
-          </ul>
+                    </MotionNavLink>
+                  </li>
+                )
+              })}
+            </ul>
+          </nav>
 
           <div
             className="nav-desktop"
@@ -247,6 +243,8 @@ export default function Navbar({ isDark, setIsDark }) {
               onClick={() => setOpen(!open)}
               className="nav-mobile-btn"
               aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              aria-controls="mobile-nav-menu"
               style={{
                 display: 'none',
                 alignItems: 'center',
@@ -284,7 +282,7 @@ export default function Navbar({ isDark, setIsDark }) {
                 boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
               }}
             >
-              <ul style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <ul id="mobile-nav-menu" role="list" aria-label="Navigation links" style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {navItems.map((item) => (
                   <li key={item.label}>
                     <MotionNavLink

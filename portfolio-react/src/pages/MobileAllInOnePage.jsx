@@ -1,8 +1,12 @@
 import { useEffect } from 'react'
 import Hero from '../components/Hero'
+import ProofBar from '../components/ProofBar'
+import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
+import ArchitectureSnapshotCard from '../components/ArchitectureSnapshotCard'
+import CurrentFocus from '../components/CurrentFocus'
+import AvailabilityCtaPanel from '../components/AvailabilityCtaPanel'
 import AboutBrief from '../components/AboutBrief'
 import TechStack from '../components/TechStack'
-import LiveMetricsDashboard from '../components/LiveMetricsDashboard'
 import Section from '../components/Section'
 import Contact from '../components/Contact'
 import ExperienceCard from '../components/ExperienceCard'
@@ -12,7 +16,14 @@ import LeetCode from '../components/LeetCode'
 import Research from '../components/Research'
 import Skills from '../components/Skills'
 import Projects from '../components/Projects'
-import { experience } from '../data'
+import {
+  experience,
+  featuredHighlights,
+  proofLinks,
+  architecturePipeline,
+  currentFocusItems,
+  availabilityStatus,
+} from '../data'
 
 export default function MobileAllInOnePage({ scrollToSection }) {
   useEffect(() => {
@@ -26,7 +37,23 @@ export default function MobileAllInOnePage({ scrollToSection }) {
   return (
     <>
       <Hero />
-      
+
+      <section style={{ padding: '1rem 0' }}>
+        <ProofBar links={proofLinks} />
+      </section>
+
+      <Section id="highlights" title="Highlights" subtitle="High-signal proof points from production work and research">
+        <FeaturedHighlightsRail highlights={featuredHighlights} />
+      </Section>
+
+      <Section id="architecture" title="Architecture" subtitle="A representative production AI pipeline">
+        <ArchitectureSnapshotCard pipeline={architecturePipeline} />
+      </Section>
+
+      <Section id="focus" title="Current Focus" subtitle="What I'm researching, building, and optimizing right now">
+        <CurrentFocus items={currentFocusItems} />
+      </Section>
+
       <Section id="about" title="What I Do" subtitle="Focused on building production-ready AI systems that solve real problems">
         <AboutBrief />
       </Section>
@@ -92,10 +119,10 @@ export default function MobileAllInOnePage({ scrollToSection }) {
       </Section>
 
       <Research />
-      
-      <Section id="metrics" title="Live Activity" subtitle="Real-time stats from GitHub, Kaggle, and LeetCode" alt>
-        <LiveMetricsDashboard />
-      </Section>
+
+      <section style={{ padding: '4rem 0' }}>
+        <AvailabilityCtaPanel status={availabilityStatus} />
+      </section>
 
       <Contact />
     </>
