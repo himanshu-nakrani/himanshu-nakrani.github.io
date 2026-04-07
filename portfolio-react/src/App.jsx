@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
 import MainLayout from './layouts/MainLayout'
@@ -52,6 +53,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
       <Analytics />
+      <SpeedInsights />
     </>
   )
 }
