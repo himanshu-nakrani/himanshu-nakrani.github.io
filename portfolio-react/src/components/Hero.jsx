@@ -50,19 +50,6 @@ export default function Hero() {
         position: 'relative',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          top: '-6%',
-          left: '-5%',
-          width: '44%',
-          height: '46%',
-          background: 'radial-gradient(circle, color-mix(in srgb, var(--accent2) 26%, transparent) 0%, transparent 72%)',
-          pointerEvents: 'none',
-          filter: 'blur(72px)',
-        }}
-      />
-      
       <div className="hero-copy" style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
         <div>
           <span
@@ -95,13 +82,13 @@ export default function Hero() {
         </div>
 
         <h1
-            style={{
+          style={{
             fontSize: 'clamp(2.75rem, 7vw, 4.4rem)',
             fontFamily: 'var(--font-display)',
-            fontWeight: 700,
+            fontWeight: 'var(--display-weight)',
             lineHeight: 1.02,
             marginBottom: '1.6rem',
-            letterSpacing: '-0.03em',
+            letterSpacing: 'var(--display-tracking)',
             color: 'var(--text)',
             textWrap: 'balance',
           }}
@@ -177,7 +164,7 @@ export default function Hero() {
                 style={{
                   fontSize: 'clamp(1.25rem, 4vw, 2rem)',
                   fontFamily: 'var(--font-display)',
-                  fontWeight: 700,
+                  fontWeight: 'var(--display-weight)',
                   lineHeight: 1,
                   color: 'var(--text)',
                   fontVariantNumeric: 'tabular-nums',

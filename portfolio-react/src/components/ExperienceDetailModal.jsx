@@ -35,6 +35,9 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="exp-modal-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${item.role} details`}
             style={{
               position: 'fixed',
               inset: 0,
@@ -130,7 +133,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <span style={{ opacity: 0.5, margin: '0 0.5rem' }}>·</span>
                     {item.period}
                   </p>
-                  {item.progression && (
+                  {item.progression && !(item.progressionSteps && item.progressionSteps.length > 0) && (
                     <p
                       style={{
                         fontSize: '0.8rem',
@@ -141,6 +144,40 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     >
                       {item.progression}
                     </p>
+                  )}
+                  {item.progressionSteps && item.progressionSteps.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: '0.75rem' }}>
+                      {item.progressionSteps.map((step, idx) => {
+                        const isCurrent = step === item.currentRoleStep || (!item.currentRoleStep && idx === item.progressionSteps.length - 1)
+                        return (
+                          <span
+                            key={step}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 5,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: '0.67rem',
+                                color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
+                                border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
+                                background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                                borderRadius: 9999,
+                                padding: '4px 8px',
+                                fontFamily: 'var(--font-mono)',
+                                fontWeight: isCurrent ? 600 : 500,
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {step}
+                            </span>
+                            {idx < item.progressionSteps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+                          </span>
+                        )
+                      })}
+                    </div>
                   )}
                 </div>
 

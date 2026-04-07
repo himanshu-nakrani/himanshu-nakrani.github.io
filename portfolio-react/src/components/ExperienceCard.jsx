@@ -2,6 +2,54 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
+function ProgressionRail({ steps = [], currentStep }) {
+  if (!steps.length) return null
+
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 6,
+          alignItems: 'center',
+        }}
+      >
+        {steps.map((step, idx) => {
+          const isCurrent = step === currentStep || (!currentStep && idx === steps.length - 1)
+          return (
+            <span
+              key={step}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '0.68rem',
+                  color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
+                  border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
+                  background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                  borderRadius: 9999,
+                  padding: '4px 9px',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: isCurrent ? 600 : 500,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {step}
+              </span>
+              {idx < steps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+            </span>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
 
@@ -45,18 +93,21 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
             >
               {item.role}
             </h3>
-            {item.progression && (
+            {item.progression && !item.progressionSteps?.length && (
               <p
                 style={{
                   fontSize: '0.74rem',
                   color: 'var(--text2)',
-                  fontFamily: "'Fira Code', monospace",
+                  fontFamily: 'var(--font-mono)',
                   marginBottom: 8,
                   lineHeight: 1.5,
                 }}
               >
                 {item.progression}
               </p>
+            )}
+            {item.progressionSteps && (
+              <ProgressionRail steps={item.progressionSteps} currentStep={item.currentRoleStep} />
             )}
             <p
               style={{

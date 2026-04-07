@@ -10,9 +10,9 @@ export default function Section({ id, title, subtitle, alt, children }) {
           <h2 style={{
             fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
             fontFamily: 'var(--font-display)',
-            fontWeight: 700,
+            fontWeight: 'var(--section-title-weight)',
             marginBottom: subtitle ? '1rem' : '3rem',
-            letterSpacing: '-0.03em',
+            letterSpacing: 'var(--section-title-tracking)',
             color: 'var(--text)',
           }}>
             {title}
