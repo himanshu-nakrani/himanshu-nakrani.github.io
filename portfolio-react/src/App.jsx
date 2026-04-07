@@ -1,5 +1,8 @@
 import { useLayoutEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
+
 import { useIsMobile } from './hooks/useIsMobile'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
@@ -27,11 +30,11 @@ export default function App() {
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
-    document.documentElement.setAttribute('data-theme', newIsDark ? 'dark' : 'light')
   }
 
   return (
@@ -48,6 +51,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Analytics />
     </>
   )
 }

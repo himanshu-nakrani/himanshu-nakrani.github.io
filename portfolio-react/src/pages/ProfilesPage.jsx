@@ -1,6 +1,7 @@
 import GitHub from '../components/GitHub'
 import Kaggle from '../components/Kaggle'
 import LeetCode from '../components/LeetCode'
+import LiveMetricsDashboard from '../components/LiveMetricsDashboard'
 import PageHeader from '../components/PageHeader'
 import Research from '../components/Research'
 
@@ -15,6 +16,7 @@ export default function ProfilesPage() {
           marginBottom="0"
         />
       </section>
+      <LiveMetricsDashboard />
       <GitHub />
       <Kaggle />
       <LeetCode />

@@ -171,6 +171,13 @@ function ProjectCard({ item, index, onClick }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={onClick}
+      tabIndex={0}
+      role="button"
+      aria-label={"View details for " + item.title}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') onClick()
+        if (e.key === ' ') { e.preventDefault(); onClick() }
+      }}
       style={{
         borderRadius: 16,
         border: `1px solid ${hovered ? 'var(--border2)' : 'var(--border)'}`,
@@ -233,19 +240,28 @@ function ProjectCard({ item, index, onClick }) {
 
 function FilterBar({ query, onQueryChange, activeFilter, onFilterChange, activeTag, onTagChange, allTags, resultCount, totalCount }) {
   return (
-    <div style={{
-      border: '1px solid var(--border)',
-      borderRadius: 12,
-      background: 'var(--surface)',
-      padding: '0.875rem 1rem',
-      marginBottom: '1.5rem',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '0.75rem',
-    }}>
+    <div
+      role="search"
+      aria-label="Filter and search projects"
+      style={{
+        border: '1px solid var(--border)',
+        borderRadius: 12,
+        background: 'var(--surface)',
+        padding: '0.875rem 1rem',
+        marginBottom: '1.5rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.75rem',
+      }}
+    >
       {/* Search row with result count */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <label htmlFor="project-search" className="sr-only">Search projects</label>
         <input
+          id="project-search"
+          type="search"
+          aria-label="Search projects"
+          aria-describedby="project-count"
           placeholder="Search projects..."
           value={query}
           onChange={e => onQueryChange(e.target.value)}
@@ -261,25 +277,38 @@ function FilterBar({ query, onQueryChange, activeFilter, onFilterChange, activeT
             boxSizing: 'border-box',
           }}
         />
-        <span style={{ fontSize: '0.78rem', color: 'var(--text2)', opacity: 0.6, whiteSpace: 'nowrap', flexShrink: 0 }}>
-          {resultCount} of {totalCount}
+        <span
+          id="project-count"
+          aria-live="polite"
+          aria-atomic="true"
+          style={{ fontSize: '0.78rem', color: 'var(--text2)', opacity: 0.6, whiteSpace: 'nowrap', flexShrink: 0 }}
+        >
+          {resultCount} of {totalCount} projects
         </span>
       </div>
 
       {/* Filter pills row */}
       <div className="filter-pills-row" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <div className="filter-status-pills" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
-            <button key={f} onClick={() => onFilterChange(f)} style={{
-              background: activeFilter === f ? 'var(--accent)' : 'var(--surface2)',
-              color: activeFilter === f ? 'white' : 'var(--text2)',
-              border: '1px solid var(--border)',
-              borderRadius: 20, padding: '5px 13px',
-              fontSize: '0.75rem', fontWeight: 600,
-              cursor: 'pointer', transition: 'all 0.2s',
-            }}>{f}</button>
-          ))}
-        </div>
+        <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
+          <legend className="sr-only">Filter by status</legend>
+          <div className="filter-status-pills" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
+              <button
+                key={f}
+                aria-pressed={activeFilter === f}
+                onClick={() => onFilterChange(f)}
+                style={{
+                  background: activeFilter === f ? 'var(--accent)' : 'var(--surface2)',
+                  color: activeFilter === f ? 'white' : 'var(--text2)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 20, padding: '5px 13px',
+                  fontSize: '0.75rem', fontWeight: 600,
+                  cursor: 'pointer', transition: 'all 0.2s',
+                }}
+              >{f}</button>
+            ))}
+          </div>
+        </fieldset>
 
         <div style={{ width: 1, height: 20, background: 'var(--border)', flexShrink: 0 }} className="filter-divider" />
 

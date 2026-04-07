@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ExternalLink, Github, TrendingUp, Users, Zap } from 'lucide-react'
 import Tag from './Tag'
@@ -8,8 +9,42 @@ const metricIcons = {
   efficiency: Zap,
 }
 
-export default function ProjectDetailModal({ project, onClose }) {
+const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+
+export default function ProjectDetailModal({ project, onClose, triggerRef }) {
+  const modalRef = useRef(null)
+
+  // Move focus into modal when it opens
+  useEffect(() => {
+    if (!project) return
+    requestAnimationFrame(() => modalRef.current?.focus())
+  }, [project])
+
   if (!project) return null
+
+  function handleKeyDown(e) {
+    if (e.key === 'Escape') {
+      onClose()
+      return
+    }
+    if (e.key === 'Tab') {
+      const focusable = Array.from(modalRef.current.querySelectorAll(FOCUSABLE))
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  }
+
+  function handleClose() {
+    onClose()
+    triggerRef?.current?.focus()
+  }
 
   return (
     <AnimatePresence>
@@ -17,7 +52,7 @@ export default function ProjectDetailModal({ project, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose}
+        onClick={handleClose}
         style={{
           position: 'fixed',
           inset: 0,
@@ -31,10 +66,13 @@ export default function ProjectDetailModal({ project, onClose }) {
           overflowY: 'auto',
         }}
       >
-        <motion.div
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          tabIndex={-1}
+          ref={modalRef}
+          onKeyDown={handleKeyDown}
           onClick={(e) => e.stopPropagation()}
           style={{
             background: 'var(--surface)',
@@ -45,13 +83,14 @@ export default function ProjectDetailModal({ project, onClose }) {
             overflowY: 'auto',
             border: '1px solid var(--border)',
             boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+            outline: 'none',
           }}
         >
           <div style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 10, borderBottom: '1px solid var(--border)', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span style={{ fontSize: '2rem' }}>{project.icon}</span>
+              <span style={{ fontSize: '2rem' }} aria-hidden="true">{project.icon}</span>
               <div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>{project.title}</h2>
+                <h2 id="modal-title" style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>{project.title}</h2>
                 {project.badge && (
                   <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontFamily: "'Fira Code', monospace" }}>
                     ● {project.badge}
@@ -62,7 +101,8 @@ export default function ProjectDetailModal({ project, onClose }) {
             <motion.button
               whileHover={{ scale: 1.1, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
-              onClick={onClose}
+              aria-label="Close dialog"
+              onClick={handleClose}
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -125,7 +165,7 @@ export default function ProjectDetailModal({ project, onClose }) {
                       transition={{ delay: i * 0.1 }}
                       style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}
                     >
-                      <span style={{ color: 'var(--accent)', fontSize: '1.2rem', lineHeight: 1 }}>✓</span>
+                      <span style={{ color: 'var(--accent)', fontSize: '1.2rem', lineHeight: 1 }} aria-hidden="true">✓</span>
                       <span style={{ color: 'var(--text2)', fontSize: '0.9rem', lineHeight: 1.6 }}>{feature}</span>
                     </motion.li>
                   ))}
@@ -160,57 +200,59 @@ export default function ProjectDetailModal({ project, onClose }) {
               </div>
             )}
 
-            {project.link && (
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  background: 'var(--accent)',
-                  color: 'white',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: 12,
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                }}
-              >
-                <Github size={18} />
-                View on GitHub
-                <ExternalLink size={16} />
-              </motion.a>
-            )}
-            {project.liveLink && (
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                href={project.liveLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  background: 'var(--accent2)',
-                  color: 'white',
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: 12,
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                }}
-              >
-                Live Demo
-                <ExternalLink size={16} />
-              </motion.a>
-            )}
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              {project.link && (
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    background: 'var(--accent)',
+                    color: 'white',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: 12,
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  <Github size={18} />
+                  View on GitHub
+                  <ExternalLink size={16} />
+                </motion.a>
+              )}
+              {project.liveLink && (
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    background: 'var(--accent2)',
+                    color: 'white',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: 12,
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  Live Demo
+                  <ExternalLink size={16} />
+                </motion.a>
+              )}
+            </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </AnimatePresence>
   )
