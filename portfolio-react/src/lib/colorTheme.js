@@ -1,5 +1,6 @@
 export const COLOR_THEME_KEY = 'color-theme'
 export const COLOR_THEME_ATTR = 'data-color-theme'
+export const DEFAULT_COLOR_THEME = 'editorial'
 
 export const COLOR_THEMES = [
   {
@@ -131,8 +132,8 @@ export const COLOR_THEMES = [
 ]
 
 export function getColorTheme() {
-  if (typeof window === 'undefined') return 'editorial'
-  return localStorage.getItem(COLOR_THEME_KEY) || 'editorial'
+  if (typeof window === 'undefined') return DEFAULT_COLOR_THEME
+  return localStorage.getItem(COLOR_THEME_KEY) || DEFAULT_COLOR_THEME
 }
 
 export function applyColorTheme(themeId) {

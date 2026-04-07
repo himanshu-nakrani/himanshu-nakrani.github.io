@@ -48,7 +48,7 @@ export default function GitHub() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
-  const [colorTheme, setColorTheme] = useState(getColorTheme)
+  const [colorTheme, setColorTheme] = useState(() => getColorTheme())
   const [isDark, setIsDark] = useState(
     () => document.documentElement.getAttribute('data-theme') !== 'light'
   )
