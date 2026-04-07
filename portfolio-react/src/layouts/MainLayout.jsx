@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
+import AmbientAtmosphere from '../components/AmbientAtmosphere'
 import Navbar from '../components/Navbar'
 import SEO from '../components/SEO'
 import SkipLink from '../components/SkipLink'
-import ParticleBackground from '../components/ParticleBackground'
 
-export default function MainLayout({ isDark, setIsDark }) {
+export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode }) {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
 
@@ -36,47 +36,53 @@ export default function MainLayout({ isDark, setIsDark }) {
     <>
       <SkipLink targetId="main-content" />
       <SEO />
-      <ParticleBackground />
-      <header role="banner">
-        <Navbar isDark={isDark} setIsDark={setIsDark} />
-      </header>
+      <div className="app-shell">
+        <AmbientAtmosphere enableAnimation intensity="subtle" />
+        <div className="app-shell-content">
+          <Navbar
+            isDark={isDark}
+            setIsDark={setIsDark}
+            styleMode={styleMode}
+            setStyleMode={setStyleMode}
+          />
 
-      <main id="main-content">
-        <Outlet />
-      </main>
+          <main id="main-content">
+            <Outlet />
+          </main>
 
-      <footer
-        role="contentinfo"
-        style={{
-          textAlign: 'center',
-          padding: '4rem max(var(--page-pad-x), env(safe-area-inset-right)) max(4rem, env(safe-area-inset-bottom)) max(var(--page-pad-x), env(safe-area-inset-left))',
-          color: 'var(--text2)',
-          fontSize: '0.875rem',
-          background: 'var(--bg)',
-          position: 'relative',
-        }}
-      >
-        <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
-          <p style={{ marginBottom: '1rem' }}>
-            © 2025 Himanshu Nakrani ·{' '}
-            <a
-              href="https://github.com/himanshu-nakrani"
-              target="_blank"
-              rel="noopener"
-              style={{
-                color: 'var(--accent)',
-                textDecoration: 'none',
-              }}
-            >
-              himanshu-nakrani
-            </a>
-          </p>
-          <p className="footer-note">
-            Crafted with passion for AI, LLMs, and scalable systems.
-          </p>
+          <footer
+            role="contentinfo"
+            style={{
+              textAlign: 'center',
+              padding: '4rem max(var(--page-pad-x), env(safe-area-inset-right)) max(4rem, env(safe-area-inset-bottom)) max(var(--page-pad-x), env(safe-area-inset-left))',
+              color: 'var(--text2)',
+              fontSize: '0.875rem',
+              background: 'transparent',
+              position: 'relative',
+            }}
+          >
+            <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
+              <p style={{ marginBottom: '1rem' }}>
+                © 2025 Himanshu Nakrani ·{' '}
+                <a
+                  href="https://github.com/himanshu-nakrani"
+                  target="_blank"
+                  rel="noopener"
+                  style={{
+                    color: 'var(--accent)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  himanshu-nakrani
+                </a>
+              </p>
+              <p className="footer-note">
+                Crafted with passion for AI, LLMs, and scalable systems.
+              </p>
+            </div>
+          </footer>
         </div>
-      </footer>
+      </div>
     </>
   )
 }
-

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import StyleModeSelector from './StyleModeSelector'
 import { useIsMobile } from '../hooks/useIsMobile'
 
 import { NavLink, useLocation } from 'react-router-dom'
@@ -21,7 +22,7 @@ const contactItem = { label: 'Contact', to: '/#contact' }
 
 const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
-export default function Navbar({ isDark, setIsDark }) {
+export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const location = useLocation()
@@ -46,18 +47,18 @@ export default function Navbar({ isDark, setIsDark }) {
 
   const handleNavClick = (item, event) => {
     setOpen(false)
-    
+
     // On mobile, use hash navigation for smooth scrolling
     if (isMobile && item.mobileHash) {
       event.preventDefault()
       const id = item.mobileHash.replace('#', '')
       const element = document.getElementById(id)
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
       }
       return
     }
-    
+
     if (!item.to.startsWith('/#')) return
     if (location.pathname !== '/') return
 
@@ -213,6 +214,7 @@ export default function Navbar({ isDark, setIsDark }) {
               borderLeft: '1px solid var(--border)',
             }}
           >
+            <StyleModeSelector styleMode={styleMode} setStyleMode={setStyleMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}
@@ -258,6 +260,7 @@ export default function Navbar({ isDark, setIsDark }) {
                 cursor: 'pointer',
               }}
             >
+              <span className="sr-only">{open ? 'Close navigation menu' : 'Open navigation menu'}</span>
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
@@ -282,6 +285,9 @@ export default function Navbar({ isDark, setIsDark }) {
                 boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
               }}
             >
+              <div style={{ padding: '12px 14px 0' }}>
+                <StyleModeSelector styleMode={styleMode} setStyleMode={setStyleMode} />
+              </div>
               <ul id="mobile-nav-menu" role="list" aria-label="Navigation links" style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {navItems.map((item) => (
                   <li key={item.label}>
@@ -318,6 +324,17 @@ export default function Navbar({ isDark, setIsDark }) {
       <style>{`
         .nav-pill-links::-webkit-scrollbar { display: none; }
         .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }

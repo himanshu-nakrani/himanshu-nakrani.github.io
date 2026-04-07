@@ -5,6 +5,13 @@ export const experience = [
     location: 'Hyderabad, India',
     period: 'Jan 2023 – Present',
     progression: 'Software Development Intern → Associate 2 → Senior Associate → Emerging Lead',
+    progressionSteps: [
+      'Software Development Intern',
+      'Associate 2',
+      'Senior Associate',
+      'Emerging Lead',
+    ],
+    currentRoleStep: 'Emerging Lead',
     description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 100+ users) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
     bullets: [
       'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data',

@@ -14,20 +14,6 @@ export default function Contact() {
       <div style={{ textAlign: 'center', position: 'relative' }}>
         <div
           style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '60%',
-            height: '60%',
-            background: 'radial-gradient(circle, color-mix(in srgb, var(--accent2) 18%, transparent) 0%, transparent 72%)',
-            pointerEvents: 'none',
-            filter: 'blur(80px)',
-          }}
-        />
-
-        <div
-          style={{
             position: 'relative',
             zIndex: 1,
             borderRadius: 24,
@@ -118,7 +104,7 @@ export default function Contact() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 42px;
+          min-height: 44px;
           padding: 0.52rem 0.95rem;
           border-radius: 999px;
           border: 1px solid var(--ghost-border);
