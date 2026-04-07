@@ -27,11 +27,11 @@ export default function App() {
 
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
-    document.documentElement.setAttribute('data-theme', newIsDark ? 'dark' : 'light')
   }
 
   return (

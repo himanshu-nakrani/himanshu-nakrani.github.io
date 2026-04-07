@@ -3,6 +3,8 @@ import { useReducedMotion } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import SEO from '../components/SEO'
+import SkipLink from '../components/SkipLink'
+import ParticleBackground from '../components/ParticleBackground'
 
 export default function MainLayout({ isDark, setIsDark }) {
   const location = useLocation()
@@ -32,14 +34,19 @@ export default function MainLayout({ isDark, setIsDark }) {
 
   return (
     <>
+      <SkipLink targetId="main-content" />
       <SEO />
-      <Navbar isDark={isDark} setIsDark={setIsDark} />
+      <ParticleBackground />
+      <header role="banner">
+        <Navbar isDark={isDark} setIsDark={setIsDark} />
+      </header>
 
-      <main>
+      <main id="main-content">
         <Outlet />
       </main>
 
       <footer
+        role="contentinfo"
         style={{
           textAlign: 'center',
           padding: '4rem max(var(--page-pad-x), env(safe-area-inset-right)) max(4rem, env(safe-area-inset-bottom)) max(var(--page-pad-x), env(safe-area-inset-left))',

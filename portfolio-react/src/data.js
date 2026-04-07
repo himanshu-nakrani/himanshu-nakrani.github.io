@@ -317,3 +317,85 @@ export const testimonials = [
     avatar: '👤',
   },
 ]
+
+export const featuredHighlights = [
+  {
+    id: 'alpha-copilot',
+    icon: '🤖',
+    category: 'Production AI',
+    headline: 'Alpha Copilot — LLM system serving 100+ users',
+    subtext: 'Text-to-SQL + RAG pipeline deployed at State Street Corporation',
+    metric: '100+ users',
+  },
+  {
+    id: 'latency',
+    icon: '⚡',
+    category: 'Performance',
+    headline: '75% query latency reduction',
+    subtext: 'Optimized retrieval pipeline via hybrid search and prompt caching',
+    metric: '75% faster',
+  },
+  {
+    id: 'research',
+    icon: '📄',
+    category: 'Research',
+    headline: 'IEEE published — Text-to-SQL & Graph-of-Thoughts',
+    subtext: 'Peer-reviewed research on structured query generation with LLMs',
+    metric: '2 publications',
+  },
+]
+
+export const proofLinks = [
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '24 repos' },
+  { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', sublabel: 'Expert' },
+  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', sublabel: '180 solved' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
+  { label: 'Research', href: '#research' },
+  { label: 'Resume', href: '/resume.pdf' },
+]
+
+export const architecturePipeline = {
+  title: 'Production RAG / Text-to-SQL Pipeline',
+  stages: [
+    { id: 'ingest',   label: 'Ingestion',            icon: '📥', detail: 'Document parsing, chunking, embedding' },
+    { id: 'retrieve', label: 'Retrieval',             icon: '🔍', detail: 'Hybrid vector + keyword search' },
+    { id: 'prompt',   label: 'Prompt Orchestration',  icon: '🧠', detail: 'Chain-of-thought, few-shot, routing' },
+    { id: 'eval',     label: 'Evaluation',            icon: '✅', detail: 'Faithfulness, relevance, latency checks' },
+    { id: 'deliver',  label: 'Delivery',              icon: '🚀', detail: 'API response, UI rendering, caching' },
+  ],
+  connections: [
+    ['ingest', 'retrieve'],
+    ['retrieve', 'prompt'],
+    ['prompt', 'eval'],
+    ['eval', 'deliver'],
+  ],
+}
+
+export const currentFocusItems = [
+  {
+    area: 'Researching',
+    description: 'Agentic evaluation frameworks — measuring multi-step LLM reasoning quality at scale',
+    tags: ['LLM Evals', 'Agents'],
+  },
+  {
+    area: 'Building',
+    description: 'Agent Forge v2 — composable multi-agent orchestration with structured tool use',
+    tags: ['Multi-Agent', 'Tool Use'],
+  },
+  {
+    area: 'Optimizing',
+    description: 'Retrieval latency in hybrid RAG — exploring late interaction models and re-ranking',
+    tags: ['RAG', 'Latency'],
+  },
+]
+
+export const availabilityStatus = {
+  available: true,
+  statusLabel: 'Open to opportunities',
+  description: 'Looking for senior AI/ML engineering roles where I can build production LLM systems that matter. Open to full-time and select consulting.',
+  actions: [
+    { label: 'Send an email', href: 'mailto:himanshunakrani0@gmail.com', variant: 'primary' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', variant: 'ghost' },
+    { label: 'Resume', href: '/resume.pdf', variant: 'ghost' },
+  ],
+}

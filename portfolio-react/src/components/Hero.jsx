@@ -124,48 +124,14 @@ export default function Hero() {
         <div
           style={{
             display: 'flex',
-            gap: 'clamp(1.5rem, 4vw, 2rem)',
+            gap: 'clamp(1rem, 3vw, 1.25rem)',
             flexWrap: 'wrap',
             alignItems: 'center',
             marginBottom: '4rem',
           }}
         >
-          <a
-            href="https://github.com/himanshu-nakrani"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: 'var(--text)',
-              textDecoration: 'none',
-              fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
-              fontWeight: 400,
-              borderBottom: '1px solid transparent',
-              transition: 'border-color 0.2s ease',
-              padding: '0.5rem 0',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/himanshu-nakrani/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: 'var(--text)',
-              textDecoration: 'none',
-              fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
-              fontWeight: 400,
-              borderBottom: '1px solid transparent',
-              transition: 'border-color 0.2s ease',
-              padding: '0.5rem 0',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
-          >
-            LinkedIn
-          </a>
+          <a href="/projects" className="btn btn--primary">View Projects</a>
+          <a href="/resume.pdf" className="btn btn--ghost" target="_blank" rel="noopener">Resume</a>
         </div>
 
         <div
@@ -178,11 +144,11 @@ export default function Hero() {
           }}
         >
           {stats.map((s, i) => (
-            <div 
+            <div
               key={s.label}
+              className="hero-stat"
               style={{
-                opacity: 0,
-                animation: `fadeInUp 0.6s ease forwards ${i * 0.1}s`,
+                '--stat-delay': `${i * 0.1}s`,
                 minWidth: 'min-content',
               }}
             >
@@ -214,7 +180,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani, Generative AI Engineer" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
 
       <style>{`
         @keyframes fadeInUp {
@@ -225,6 +191,23 @@ export default function Hero() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        .hero-stat {
+          opacity: 0;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .hero-stat {
+            animation: fadeInUp 0.6s ease forwards var(--stat-delay, 0s);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .hero-stat {
+            opacity: 1;
+            transform: none;
           }
         }
         
