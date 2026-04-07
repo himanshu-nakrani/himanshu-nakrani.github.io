@@ -14,17 +14,26 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
         justifyContent: 'center',
         width: compact ? 36 : 44,
         height: compact ? 36 : 44,
-        borderRadius: 0,
-        border: '1px solid var(--border)',
-        background: 'transparent',
+        borderRadius: 999,
+        border: '1px solid var(--ghost-border)',
+        background: 'var(--ghost-bg)',
         cursor: 'pointer',
         color: 'var(--text)',
         padding: 0,
-        transition: 'border-color 0.2s ease',
+        boxShadow: 'var(--shadow-sm)',
+        transition: 'border-color 0.2s ease, background 0.2s ease, transform 0.2s ease',
       }}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text)'}
-      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = 'var(--ghost-hover-border)'
+        e.currentTarget.style.background = 'var(--ghost-hover-bg)'
+        e.currentTarget.style.transform = 'translateY(-1px)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'var(--ghost-border)'
+        e.currentTarget.style.background = 'var(--ghost-bg)'
+        e.currentTarget.style.transform = 'translateY(0)'
+      }}
     >
       <span style={{ fontSize: compact ? '0.875rem' : '1rem' }}>
         {isDark ? '☀' : '☾'}

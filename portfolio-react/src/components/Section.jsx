@@ -8,10 +8,11 @@ export default function Section({ id, title, subtitle, alt, children }) {
       <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
         <div>
           <h2 style={{
-            fontSize: 'clamp(2rem, 5vw, 2.75rem)',
-            fontWeight: 600, 
+            fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 700,
             marginBottom: subtitle ? '1rem' : '3rem',
-            letterSpacing: '-0.02em',
+            letterSpacing: '-0.03em',
             color: 'var(--text)',
           }}>
             {title}
@@ -19,11 +20,11 @@ export default function Section({ id, title, subtitle, alt, children }) {
           {subtitle && (
             <p style={{
               color: 'var(--text2)',
-              fontSize: '1.0625rem',
+              fontSize: '1.05rem',
               maxWidth: 600,
               marginBottom: '3rem',
               lineHeight: 1.7,
-              fontWeight: 400,
+              fontWeight: 500,
             }}>
               {subtitle}
             </p>

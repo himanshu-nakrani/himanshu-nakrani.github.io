@@ -50,17 +50,16 @@ export default function Hero() {
         position: 'relative',
       }}
     >
-      {/* Subtle background accent */}
       <div
         style={{
           position: 'absolute',
-          top: '10%',
-          left: '-10%',
-          width: '40%',
-          height: '40%',
-          background: 'radial-gradient(circle, rgba(107, 155, 209, 0.08) 0%, transparent 70%)',
+          top: '-6%',
+          left: '-5%',
+          width: '44%',
+          height: '46%',
+          background: 'radial-gradient(circle, color-mix(in srgb, var(--accent2) 26%, transparent) 0%, transparent 72%)',
           pointerEvents: 'none',
-          filter: 'blur(60px)',
+          filter: 'blur(72px)',
         }}
       />
       
@@ -69,9 +68,9 @@ export default function Hero() {
           <span
             style={{
               display: 'inline-block',
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.875rem',
-              letterSpacing: '0.02em',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.8rem',
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--text2)',
               marginBottom: '2rem',
@@ -96,13 +95,15 @@ export default function Hero() {
         </div>
 
         <h1
-          style={{
-            fontSize: 'clamp(2.5rem, 7vw, 4rem)',
-            fontWeight: 600,
-            lineHeight: 1.1,
-            marginBottom: '2rem',
-            letterSpacing: '-0.02em',
+            style={{
+            fontSize: 'clamp(2.75rem, 7vw, 4.4rem)',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 700,
+            lineHeight: 1.02,
+            marginBottom: '1.6rem',
+            letterSpacing: '-0.03em',
             color: 'var(--text)',
+            textWrap: 'balance',
           }}
         >
           Himanshu Nakrani
@@ -113,8 +114,8 @@ export default function Hero() {
             fontSize: '1.125rem',
             color: 'var(--text2)',
             maxWidth: '36rem',
-            marginBottom: '3rem',
-            lineHeight: 1.8,
+            marginBottom: '2.2rem',
+            lineHeight: 1.75,
             fontWeight: 400,
           }}
         >
@@ -124,47 +125,33 @@ export default function Hero() {
         <div
           style={{
             display: 'flex',
-            gap: 'clamp(1.5rem, 4vw, 2rem)',
+            gap: '0.85rem',
             flexWrap: 'wrap',
             alignItems: 'center',
-            marginBottom: '4rem',
+            marginBottom: '3.25rem',
           }}
         >
           <a
             href="https://github.com/himanshu-nakrani"
             target="_blank"
             rel="noopener noreferrer"
+            className="hero-cta hero-cta-primary"
             style={{
-              color: 'var(--text)',
               textDecoration: 'none',
-              fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
-              fontWeight: 400,
-              borderBottom: '1px solid transparent',
-              transition: 'border-color 0.2s ease',
-              padding: '0.5rem 0',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
           >
-            GitHub
+            Explore Projects
           </a>
           <a
             href="https://www.linkedin.com/in/himanshu-nakrani/"
             target="_blank"
             rel="noopener noreferrer"
+            className="hero-cta hero-cta-secondary"
             style={{
-              color: 'var(--text)',
               textDecoration: 'none',
-              fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
-              fontWeight: 400,
-              borderBottom: '1px solid transparent',
-              transition: 'border-color 0.2s ease',
-              padding: '0.5rem 0',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--text)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
           >
-            LinkedIn
+            Connect on LinkedIn
           </a>
         </div>
 
@@ -174,7 +161,7 @@ export default function Hero() {
             gap: 'clamp(1.5rem, 4vw, 3rem)',
             flexWrap: 'wrap',
             paddingTop: 'clamp(2rem, 4vw, 3rem)',
-            borderTop: '1px solid var(--border)',
+            borderTop: '1px solid color-mix(in srgb, var(--border2) 80%, transparent)',
           }}
         >
           {stats.map((s, i) => (
@@ -189,7 +176,8 @@ export default function Hero() {
               <div
                 style={{
                   fontSize: 'clamp(1.25rem, 4vw, 2rem)',
-                  fontWeight: 600,
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 700,
                   lineHeight: 1,
                   color: 'var(--text)',
                   fontVariantNumeric: 'tabular-nums',
@@ -202,7 +190,8 @@ export default function Hero() {
                 style={{
                   fontSize: 'clamp(0.75rem, 2vw, 0.8125rem)',
                   color: 'var(--text2)',
-                  letterSpacing: '0.02em',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
                   fontWeight: 400,
                   whiteSpace: 'nowrap',
                 }}
@@ -217,6 +206,38 @@ export default function Hero() {
       <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
 
       <style>{`
+        .hero-cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          padding: 0.7rem 1.2rem;
+          border-radius: 999px;
+          font-size: 0.88rem;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+          border: 1px solid transparent;
+          box-shadow: var(--shadow-sm);
+        }
+        .hero-cta-primary {
+          background: var(--gradient-accent);
+          color: #f8fbff;
+          border-color: color-mix(in srgb, var(--accent2) 70%, transparent);
+        }
+        .hero-cta-primary:hover {
+          transform: translateY(-1px);
+          filter: saturate(1.06) brightness(1.04);
+        }
+        .hero-cta-secondary {
+          color: var(--text);
+          border-color: var(--ghost-border);
+          background: color-mix(in srgb, var(--surface2) 58%, transparent);
+        }
+        .hero-cta-secondary:hover {
+          border-color: var(--ghost-hover-border);
+          background: var(--ghost-hover-bg);
+          transform: translateY(-1px);
+        }
         @keyframes fadeInUp {
           from {
             opacity: 0;
@@ -237,6 +258,7 @@ export default function Hero() {
           }
           .hero-copy { width: 100%; }
           .hero-photo { width: 216px !important; height: auto !important; align-self: center; order: -1; }
+          .hero-cta { width: 100%; }
         }
         @media (max-width: 480px) {
           #about { 

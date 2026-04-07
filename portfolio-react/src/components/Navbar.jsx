@@ -70,8 +70,8 @@ export default function Navbar({ isDark, setIsDark }) {
     }
   }
 
-  const pillBg = scrolled ? 'rgba(var(--bg-rgb), 0.82)' : 'rgba(var(--bg-rgb), 0.58)'
-  const pillBorder = '1px solid var(--border)'
+  const pillBg = scrolled ? 'color-mix(in srgb, var(--surface2) 86%, transparent)' : 'color-mix(in srgb, var(--surface) 70%, transparent)'
+  const pillBorder = '1px solid color-mix(in srgb, var(--border2) 82%, transparent)'
 
   return (
     <header
@@ -99,9 +99,9 @@ export default function Navbar({ isDark, setIsDark }) {
             borderRadius: 9999,
             border: pillBorder,
             background: pillBg,
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow: scrolled ? '0 1px 3px rgba(0,0,0,0.08)' : '0 1px 2px rgba(0,0,0,0.04)',
+            backdropFilter: 'blur(18px)',
+            WebkitBackdropFilter: 'blur(18px)',
+            boxShadow: scrolled ? 'var(--shadow-md)' : 'var(--shadow-sm)',
             transition: 'background 0.25s ease, box-shadow 0.25s ease',
           }}
         >
@@ -130,11 +130,11 @@ export default function Navbar({ isDark, setIsDark }) {
             />
             <span
               style={{
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: '0.875rem',
                 letterSpacing: '0.08em',
                 color: 'var(--text)',
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--font-display)',
               }}
             >
               HN.AI
