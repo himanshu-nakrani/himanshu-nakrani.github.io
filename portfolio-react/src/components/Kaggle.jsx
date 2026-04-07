@@ -45,7 +45,7 @@ function KaggleCard({ item, index }) {
         </span>
         {item.medal && <span style={{ fontSize: '1rem' }}>{item.medal}</span>}
       </div>
-      <h4 style={{ fontSize: '0.9rem', fontWeight: 600, lineHeight: 1.35 }}>{item.title}</h4>
+      <h3 style={{ fontSize: '0.9rem', fontWeight: 600, lineHeight: 1.35 }}>{item.title}</h3>
       <p style={{ fontSize: '0.8rem', color: 'var(--text2)', lineHeight: 1.5, flex: 1 }}>{item.desc}</p>
       <span style={{ fontSize: '0.72rem', color: 'var(--accent3)', fontFamily: "'Fira Code', monospace" }}>▲ {item.votes} upvotes</span>
     </motion.a>

@@ -59,24 +59,10 @@ export default function Contact() {
               href={l.href}
               target={l.href.startsWith('mailto') ? undefined : '_blank'}
               rel="noopener"
+              className="contact-link"
               style={{
-                color: 'var(--text)',
-                textDecoration: 'none',
-                fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
-                fontWeight: 400,
-                borderBottom: '1px solid transparent',
-                transition: 'border-color 0.2s ease, color 0.2s ease',
                 opacity: 0,
                 animation: `fadeIn 0.5s ease forwards ${i * 0.1}s`,
-                padding: '0.5rem 0',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent)'
-                e.currentTarget.style.color = 'var(--accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'transparent'
-                e.currentTarget.style.color = 'var(--text)'
               }}
             >
               {l.label}

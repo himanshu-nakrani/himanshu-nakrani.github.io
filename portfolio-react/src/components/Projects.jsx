@@ -10,14 +10,14 @@ const badgeStyle = {
   'In Progress': { bg: 'rgba(107,124,255,0.1)', color: 'var(--accent2)', border: 'var(--border2)' },
 }
 
-function ProjectCard({ item, index, onClick }) {
+function ProjectCard({ item, index, onClick, cardRef }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const [hovered, setHovered] = useState(false)
 
   return (
     <motion.div
-      ref={ref}
+      ref={(el) => { ref.current = el; if (cardRef) cardRef.current = el }}
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: (index % 3) * 0.1 }}
@@ -110,6 +110,12 @@ function ProjectCard({ item, index, onClick }) {
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
+  const triggerRef = useRef(null)
+
+  function openModal(project) {
+    if (!project) return
+    setSelectedProject(project)
+  }
 
   return (
     <>
@@ -120,7 +126,8 @@ export default function Projects() {
               key={i} 
               item={p} 
               index={i} 
-              onClick={() => setSelectedProject(p)}
+              onClick={() => openModal(p)}
+              cardRef={triggerRef}
             />
           ))}
         </div>
@@ -129,7 +136,8 @@ export default function Projects() {
       {selectedProject && (
         <ProjectDetailModal 
           project={selectedProject} 
-          onClose={() => setSelectedProject(null)} 
+          onClose={() => setSelectedProject(null)}
+          triggerRef={triggerRef}
         />
       )}
     </>
