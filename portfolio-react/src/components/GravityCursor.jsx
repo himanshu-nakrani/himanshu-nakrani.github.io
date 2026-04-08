@@ -1,96 +1,90 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Custom cursor: single dot using theme accent (--nav-dot).
- * Optimized for low-end CPUs with CSS transforms and minimal RAF usage.
- * RAF runs only while the dot is catching up to the pointer — idle = zero CPU. Pauses when tab is hidden.
+ * Custom cursor: lowercase "a" glyph that follows the pointer with smooth
+ * exponential lag. Color tracks --nav-dot so it matches every theme/style-mode.
+ * RAF only runs while the cursor is catching up — zero CPU at rest.
  */
 export default function GravityCursor() {
-  const cursorDotRef = useRef(null)
+  const cursorRef = useRef(null)
   const mouseX = useRef(0)
   const mouseY = useRef(0)
-  const dotX = useRef(0)
-  const dotY = useRef(0)
+  const curX = useRef(0)
+  const curY = useRef(0)
   const rafId = useRef(0)
   const lastTime = useRef(0)
   const hasPointer = useRef(false)
+  const isHovering = useRef(false)
 
-  /** Lower = smoother. 10-12 for smooth movement. */
-  const smoothness = 11
-
-  /** Stop animating when within this distance of the target (px). */
-  const snapEpsilon = 0.15
-
-  /** Throttle updates to reduce CPU load */
-  const minFrameTime = 1000 / 60 // 60fps max
+  /** Smoothness factor — higher = snappier, lower = more lag */
+  const smoothness = 14
+  /** Stop animating when within this distance (px²) */
+  const snapEpsilonSq = 0.04
 
   useEffect(() => {
-    const setTransform = (x, y) => {
-      const el = cursorDotRef.current
-      if (!el) return
-      // Use translate3d for GPU acceleration
-      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -50%)`
+    const el = cursorRef.current
+    if (!el) return
+
+    const setPos = (x, y) => {
+      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -60%)`
     }
 
     const tick = (time) => {
-      if (document.hidden) {
-        rafId.current = 0
-        return
-      }
+      if (document.hidden) { rafId.current = 0; return }
 
-      const prev = lastTime.current
-      
-      // Throttle to max 60fps to reduce CPU usage
-      if (prev && (time - prev) < minFrameTime) {
-        rafId.current = requestAnimationFrame(tick)
-        return
-      }
-      
+      const dt = lastTime.current ? Math.min((time - lastTime.current) / 1000, 0.1) : 1 / 60
       lastTime.current = time
-      const dt = prev ? Math.min((time - prev) / 1000, 0.1) : 1 / 60
 
-      const mx = mouseX.current
-      const my = mouseY.current
-      
-      // Smooth exponential interpolation
       const t = 1 - Math.exp(-smoothness * dt)
-      
-      dotX.current += (mx - dotX.current) * t
-      dotY.current += (my - dotY.current) * t
+      curX.current += (mouseX.current - curX.current) * t
+      curY.current += (mouseY.current - curY.current) * t
 
-      const dx = mx - dotX.current
-      const dy = my - dotY.current
-      const errSq = dx * dx + dy * dy
+      const dx = mouseX.current - curX.current
+      const dy = mouseY.current - curY.current
 
-      if (errSq < snapEpsilon * snapEpsilon) {
-        dotX.current = mx
-        dotY.current = my
-        setTransform(mx, my)
+      if (dx * dx + dy * dy < snapEpsilonSq) {
+        curX.current = mouseX.current
+        curY.current = mouseY.current
+        setPos(curX.current, curY.current)
         rafId.current = 0
         return
       }
 
-      setTransform(dotX.current, dotY.current)
+      setPos(curX.current, curY.current)
       rafId.current = requestAnimationFrame(tick)
     }
 
-    const ensureLoop = () => {
+    const startLoop = () => {
       if (document.hidden || rafId.current) return
       lastTime.current = 0
       rafId.current = requestAnimationFrame(tick)
     }
 
-    const handleMouseMove = (e) => {
+    const onMove = (e) => {
       mouseX.current = e.clientX
       mouseY.current = e.clientY
       if (!hasPointer.current) {
         hasPointer.current = true
-        dotX.current = e.clientX
-        dotY.current = e.clientY
-        setTransform(e.clientX, e.clientY)
+        curX.current = e.clientX
+        curY.current = e.clientY
+        setPos(e.clientX, e.clientY)
+        el.style.opacity = '1'
         return
       }
-      ensureLoop()
+      startLoop()
+    }
+
+    const onOver = (e) => {
+      const target = e.target.closest('a, button, [role="button"], input, textarea, select, label, [tabindex]')
+      if (target && !isHovering.current) {
+        isHovering.current = true
+        el.style.fontSize = '1.15rem'
+        el.style.opacity = '0.7'
+      } else if (!target && isHovering.current) {
+        isHovering.current = false
+        el.style.fontSize = '1rem'
+        el.style.opacity = '1'
+      }
     }
 
     const onVisibility = () => {
@@ -101,11 +95,13 @@ export default function GravityCursor() {
       }
     }
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('mousemove', onMove, { passive: true })
+    window.addEventListener('mouseover', onOver, { passive: true })
     document.addEventListener('visibilitychange', onVisibility)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseover', onOver)
       document.removeEventListener('visibilitychange', onVisibility)
       if (rafId.current) cancelAnimationFrame(rafId.current)
     }
@@ -114,29 +110,40 @@ export default function GravityCursor() {
   return (
     <>
       <style>{`
-        * {
-          cursor: none !important;
+        @media (pointer: fine) {
+          *, *::before, *::after { cursor: none !important; }
         }
       `}</style>
 
       <div
-        ref={cursorDotRef}
+        ref={cursorRef}
+        aria-hidden="true"
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 6,
-          height: 6,
-          borderRadius: '50%',
-          background: 'var(--nav-dot)',
           pointerEvents: 'none',
           zIndex: 10000,
-          transform: 'translate3d(0, 0, 0) translate(-50%, -50%)',
+          opacity: 0,
+          transform: 'translate3d(0,0,0) translate(-50%,-60%)',
           willChange: 'transform',
           backfaceVisibility: 'hidden',
           contain: 'layout style paint',
+          /* smooth scale/opacity transitions */
+          transition: 'font-size 0.18s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s ease',
+          /* glyph styling */
+          fontFamily: 'var(--font-display)',
+          fontSize: '1rem',
+          fontWeight: 700,
+          lineHeight: 1,
+          color: 'var(--nav-dot)',
+          userSelect: 'none',
+          /* subtle glow matching accent */
+          textShadow: '0 0 8px color-mix(in srgb, var(--nav-dot) 60%, transparent)',
         }}
-      />
+      >
+        a
+      </div>
     </>
   )
 }
