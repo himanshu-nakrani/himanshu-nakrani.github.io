@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * Custom cursor: lowercase "a" glyph that follows the pointer with smooth
- * exponential lag. Color tracks --nav-dot so it matches every theme/style-mode.
- * RAF only runs while the cursor is catching up — zero CPU at rest.
+ * Custom cursor: large dot using theme accent (--nav-dot).
+ * Color automatically matches every theme/style-mode.
+ * RAF only runs while catching up to pointer — zero CPU at rest.
  */
 export default function GravityCursor() {
   const cursorRef = useRef(null)
@@ -14,11 +14,9 @@ export default function GravityCursor() {
   const rafId = useRef(0)
   const lastTime = useRef(0)
   const hasPointer = useRef(false)
-  const isHovering = useRef(false)
 
-  /** Smoothness factor — higher = snappier, lower = more lag */
+  /** Higher = snappier, lower = more lag */
   const smoothness = 14
-  /** Stop animating when within this distance (px²) */
   const snapEpsilonSq = 0.04
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export default function GravityCursor() {
     if (!el) return
 
     const setPos = (x, y) => {
-      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -60%)`
+      el.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) translate(-50%, -50%)`
     }
 
     const tick = (time) => {
@@ -75,14 +73,14 @@ export default function GravityCursor() {
     }
 
     const onOver = (e) => {
-      const target = e.target.closest('a, button, [role="button"], input, textarea, select, label, [tabindex]')
-      if (target && !isHovering.current) {
-        isHovering.current = true
-        el.style.fontSize = '1.15rem'
-        el.style.opacity = '0.7'
-      } else if (!target && isHovering.current) {
-        isHovering.current = false
-        el.style.fontSize = '1rem'
+      const interactive = e.target.closest('a, button, [role="button"], input, textarea, select, label, [tabindex]')
+      if (interactive) {
+        el.style.width = '18px'
+        el.style.height = '18px'
+        el.style.opacity = '0.5'
+      } else {
+        el.style.width = '12px'
+        el.style.height = '12px'
         el.style.opacity = '1'
       }
     }
@@ -122,28 +120,21 @@ export default function GravityCursor() {
           position: 'fixed',
           top: 0,
           left: 0,
+          width: '12px',
+          height: '12px',
+          borderRadius: '50%',
+          background: 'var(--nav-dot)',
+          boxShadow: '0 0 10px color-mix(in srgb, var(--nav-dot) 70%, transparent)',
           pointerEvents: 'none',
           zIndex: 10000,
           opacity: 0,
-          transform: 'translate3d(0,0,0) translate(-50%,-60%)',
+          transform: 'translate3d(0,0,0) translate(-50%,-50%)',
           willChange: 'transform',
           backfaceVisibility: 'hidden',
           contain: 'layout style paint',
-          /* smooth scale/opacity transitions */
-          transition: 'font-size 0.18s cubic-bezier(0.34,1.56,0.64,1), opacity 0.18s ease',
-          /* glyph styling */
-          fontFamily: 'var(--font-display)',
-          fontSize: '1rem',
-          fontWeight: 700,
-          lineHeight: 1,
-          color: 'var(--nav-dot)',
-          userSelect: 'none',
-          /* subtle glow matching accent */
-          textShadow: '0 0 8px color-mix(in srgb, var(--nav-dot) 60%, transparent)',
+          transition: 'width 0.2s cubic-bezier(0.34,1.56,0.64,1), height 0.2s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease',
         }}
-      >
-        a
-      </div>
+      />
     </>
   )
 }
