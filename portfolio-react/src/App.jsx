@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
 import { applyStyleMode, applyTheme, getPreferredStyleMode, getPreferredTheme, STYLE_MODE_STORAGE_KEY, THEME_STORAGE_KEY } from './lib/theme'
+import GravityCursor from './components/GravityCursor'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import MobileAllInOnePage from './pages/MobileAllInOnePage'
@@ -40,6 +41,7 @@ export default function App() {
 
   return (
     <>
+      <GravityCursor />
       <BrowserRouter>
         <Routes>
           <Route
