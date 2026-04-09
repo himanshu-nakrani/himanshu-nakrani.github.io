@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
   return (
     <div
@@ -93,7 +95,7 @@ export default function Hero() {
             textWrap: 'balance',
           }}
         >
-          Himanshu Nakrani
+          <span className="hero-name-gradient">Himanshu Nakrani</span>
         </h1>
 
         <p
@@ -118,17 +120,15 @@ export default function Hero() {
             marginBottom: '3.25rem',
           }}
         >
-          <a
-            href="https://github.com/himanshu-nakrani"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/projects"
             className="hero-cta hero-cta-primary"
             style={{
               textDecoration: 'none',
             }}
           >
             Explore Projects
-          </a>
+          </Link>
           <a
             href="https://www.linkedin.com/in/himanshu-nakrani/"
             target="_blank"
@@ -224,6 +224,12 @@ export default function Hero() {
           border-color: var(--ghost-hover-border);
           background: var(--ghost-hover-bg);
           transform: translateY(-1px);
+        }
+        .hero-name-gradient {
+          background: var(--gradient-accent);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         @keyframes fadeInUp {
           from {

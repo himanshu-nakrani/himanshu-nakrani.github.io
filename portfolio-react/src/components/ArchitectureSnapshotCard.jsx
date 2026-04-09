@@ -94,13 +94,20 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
         }
       `}</style>
 
+      <div style={{
+        background: 'var(--surface)',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-lg, 16px)',
+        padding: 'clamp(1.2rem, 3vw, 2rem)',
+      }}>
       <h3 style={{
-        fontSize: '1rem',
         fontWeight: 600,
         color: 'var(--text2, var(--muted))',
         textTransform: 'uppercase',
         letterSpacing: '0.08em',
-        marginBottom: '1rem',
+        marginBottom: '1.25rem',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.8rem',
       }}>
         {pipeline.title}
       </h3>
@@ -130,6 +137,7 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
             )}
           </React.Fragment>
         ))}
+      </div>
       </div>
     </section>
   )
