@@ -28,6 +28,9 @@ export default function ThemeSelector() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Change theme"
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
         style={{
           background: 'var(--surface2)',
           border: '1px solid var(--border)',
@@ -66,10 +69,11 @@ export default function ThemeSelector() {
             <div style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--text2)' }}>
               Choose Theme
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <div role="menu" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {themes.map((theme) => (
                 <motion.button
                   key={theme.id}
+                  role="menuitem"
                   whileHover={{ x: 4 }}
                   onClick={() => applyTheme(theme)}
                   style={{
