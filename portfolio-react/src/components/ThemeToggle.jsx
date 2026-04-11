@@ -8,6 +8,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
   return (
     <button
       onClick={toggleTheme}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -35,7 +36,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
         e.currentTarget.style.transform = 'translateY(0)'
       }}
     >
-      <span style={{ fontSize: compact ? '0.875rem' : '1rem' }}>
+      <span aria-hidden="true" style={{ fontSize: compact ? '0.875rem' : '1rem' }}>
         {isDark ? '☀' : '☾'}
       </span>
     </button>

@@ -28,6 +28,9 @@ export default function ThemeSelector() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Change theme"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
         style={{
           background: 'var(--surface2)',
           border: '1px solid var(--border)',
@@ -41,7 +44,7 @@ export default function ThemeSelector() {
         }}
         title="Change theme"
       >
-        <Palette size={18} />
+        <Palette size={18} aria-hidden="true" />
       </motion.button>
 
       <AnimatePresence>
@@ -72,6 +75,7 @@ export default function ThemeSelector() {
                   key={theme.id}
                   whileHover={{ x: 4 }}
                   onClick={() => applyTheme(theme)}
+                  aria-pressed={currentTheme === theme.id}
                   style={{
                     background: currentTheme === theme.id ? 'var(--surface2)' : 'transparent',
                     border: `1px solid ${currentTheme === theme.id ? 'var(--accent)' : 'transparent'}`,
