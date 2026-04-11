@@ -1,0 +1,3 @@
+## 2024-05-24 - Theme Controls Accessibility
+**Learning:** Icon-only interactive elements like theme switchers (`ThemeToggle`) and custom dropdowns (`ThemeSelector`) in this app frequently lack proper structural ARIA attributes. A common pattern observed is the missing `aria-label` on buttons holding only icon characters (like ☀/☾) or SVGs (like `<Palette />`), and missing `aria-haspopup`/`aria-expanded` and `aria-pressed` states on custom menu structures.
+**Action:** When adding or reviewing custom icon buttons or select menus, always explicitly define `aria-label`, correctly set `aria-expanded` on triggers, and use `aria-pressed` or `aria-selected` for the active item.
