@@ -4,10 +4,7 @@ import { Github, TrendingUp, Award, Code, GitCommit, Star } from 'lucide-react'
 
 function SkeletonCard({ rows = 3 }) {
   return (
-    <div style={{
-      background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-      border: '1px solid var(--border)',
-      borderRadius: 16,
+    <div className="glass-card" style={{
       padding: '1.5rem',
       overflow: 'hidden',
     }}>
@@ -102,10 +99,8 @@ export default function LiveMetricsDashboard() {
                 exit={{ opacity: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4 }}
+                className="glass-card"
                 style={{
-                  background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 16,
                   padding: '1.5rem',
                   position: 'relative',
                   overflow: 'hidden',

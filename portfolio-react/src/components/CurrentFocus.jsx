@@ -13,9 +13,9 @@ export default function CurrentFocus({ items, lastUpdated }) {
 
         .focus-item {
           padding: 1rem 1.25rem;
-          background: var(--card-bg, var(--bg2));
-          border: 1px solid var(--border);
           border-radius: var(--radius-md, 10px);
+          position: relative;
+          overflow: hidden;
         }
 
         .focus-area {
@@ -60,7 +60,7 @@ export default function CurrentFocus({ items, lastUpdated }) {
 
       <ul className="focus-list">
         {items.map(item => (
-          <li key={item.area} className="focus-item">
+          <li key={item.area} className="focus-item glass-card">
             <strong className="focus-area">{item.area}</strong>
             <p className="focus-description">{item.description}</p>
             {item.tags && item.tags.length > 0 && (

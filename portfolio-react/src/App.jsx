@@ -6,7 +6,6 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
 import { applyStyleMode, applyTheme, getPreferredStyleMode, getPreferredTheme, STYLE_MODE_STORAGE_KEY, THEME_STORAGE_KEY } from './lib/theme'
-import GravityCursor from './components/GravityCursor'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import MobileAllInOnePage from './pages/MobileAllInOnePage'
@@ -15,6 +14,8 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
+import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
+import SpotlightCardDemo from './components/ui/spotlight-card-demo'
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -41,9 +42,10 @@ export default function App() {
 
   return (
     <>
-      <GravityCursor />
       <BrowserRouter>
         <Routes>
+          <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
+          <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
           <Route
             element={
               <MainLayout

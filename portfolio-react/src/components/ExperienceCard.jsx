@@ -199,14 +199,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
 
   const shellStyle = {
     position: 'relative',
-    borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',
-    border: '1px solid',
-    borderColor: hovered ? 'var(--border2)' : 'var(--border)',
-    background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-    boxShadow: hovered ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-    transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-    transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
     cursor: onCardClick ? 'pointer' : 'default',
   }
 
@@ -218,6 +211,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
         transition={{ duration: 0.45, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
+        className="glass-card"
         style={shellStyle}
       >
         {inner}
@@ -236,6 +230,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
         hidden: { opacity: 0, x: -20 },
         show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
       }}
+      className="glass-card"
       style={shellStyle}
     >
       {inner}

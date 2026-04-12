@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { ChevronDown } from 'lucide-react'
 
 function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
   return (
@@ -20,11 +21,7 @@ function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
         alt={alt}
         loading="lazy"
         width={size}
-        style={{
-          width: '100%',
-          height: 'auto',
-          display: 'block',
-        }}
+        style={{ width: '100%', height: 'auto', display: 'block' }}
       />
     </div>
   )
@@ -36,6 +33,21 @@ const stats = [
   { num: '75%', label: 'Latency cut' },
   { num: '2', label: 'Publications' },
 ]
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
+}
+
+const fadeScale = {
+  hidden: { opacity: 0, scale: 0.92 },
+  show: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } },
+}
 
 export default function Hero() {
   return (
@@ -52,8 +64,14 @@ export default function Hero() {
         position: 'relative',
       }}
     >
-      <div className="hero-copy" style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
-        <div>
+      <motion.div
+        className="hero-copy"
+        style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1 }}
+        variants={stagger}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={fadeUp}>
           <span
             style={{
               display: 'inline-block',
@@ -81,9 +99,10 @@ export default function Hero() {
             />
             Generative AI Engineer
           </span>
-        </div>
+        </motion.div>
 
-        <h1
+        <motion.h1
+          variants={fadeUp}
           style={{
             fontSize: 'clamp(2.75rem, 7vw, 4.4rem)',
             fontFamily: 'var(--font-display)',
@@ -95,10 +114,11 @@ export default function Hero() {
             textWrap: 'balance',
           }}
         >
-          <span className="hero-name-gradient">Himanshu Nakrani</span>
-        </h1>
+          Himanshu Nakrani
+        </motion.h1>
 
-        <p
+        <motion.p
+          variants={fadeUp}
           style={{
             fontSize: '1.125rem',
             color: 'var(--text2)',
@@ -109,9 +129,10 @@ export default function Hero() {
           }}
         >
           Production AI engineer focused on LLMs, RAG, and Text-to-SQL—from research ideas to systems used by real users.
-        </p>
+        </motion.p>
 
-        <div
+        <motion.div
+          variants={fadeUp}
           style={{
             display: 'flex',
             gap: '0.85rem',
@@ -120,29 +141,28 @@ export default function Hero() {
             marginBottom: '3.25rem',
           }}
         >
-          <Link
-            to="/projects"
-            className="hero-cta hero-cta-primary"
-            style={{
-              textDecoration: 'none',
-            }}
+          <a
+            href="https://github.com/himanshu-nakrani"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-cta hero-cta-primary glass-btn-primary"
+            style={{ textDecoration: 'none' }}
           >
-            Explore Projects
-          </Link>
+            <span style={{ position: 'relative', zIndex: 1 }}>Explore Projects</span>
+          </a>
           <a
             href="https://www.linkedin.com/in/himanshu-nakrani/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hero-cta hero-cta-secondary"
-            style={{
-              textDecoration: 'none',
-            }}
+            className="hero-cta hero-cta-secondary glass-btn"
+            style={{ textDecoration: 'none' }}
           >
-            Connect on LinkedIn
+            <span style={{ position: 'relative', zIndex: 1 }}>Connect on LinkedIn</span>
           </a>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
+          variants={fadeUp}
           style={{
             display: 'flex',
             gap: 'clamp(1.5rem, 4vw, 3rem)',
@@ -152,13 +172,10 @@ export default function Hero() {
           }}
         >
           {stats.map((s, i) => (
-            <div 
+            <motion.div
               key={s.label}
-              style={{
-                opacity: 0,
-                animation: `fadeInUp 0.6s ease forwards ${i * 0.1}s`,
-                minWidth: 'min-content',
-              }}
+              variants={fadeUp}
+              style={{ minWidth: 'min-content' }}
             >
               <div
                 style={{
@@ -185,12 +202,43 @@ export default function Hero() {
               >
                 {s.label}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+      <motion.div variants={fadeScale} initial="hidden" animate="show">
+        <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 0.8 }}
+        style={{
+          position: 'absolute',
+          bottom: 'clamp(1.5rem, 4vw, 2.5rem)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.4rem',
+          color: 'var(--text2)',
+          zIndex: 2,
+        }}
+      >
+        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500 }}>
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown size={18} style={{ opacity: 0.6 }} />
+        </motion.div>
+      </motion.div>
 
       <style>{`
         .hero-cta {
@@ -203,13 +251,17 @@ export default function Hero() {
           font-size: 0.88rem;
           font-weight: 600;
           letter-spacing: 0.01em;
-          border: 1px solid transparent;
-          box-shadow: var(--shadow-sm);
+          position: relative;
+          overflow: hidden;
         }
-        .hero-cta-primary {
-          background: var(--gradient-accent);
-          color: #f8fbff;
-          border-color: color-mix(in srgb, var(--accent2) 70%, transparent);
+        .hero-cta-primary { color: #f8fbff; }
+        .hero-cta-primary::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(174deg, rgba(255,255,255,0.22) 0%, transparent 50%);
+          pointer-events: none;
         }
         .hero-cta-primary:hover {
           transform: translateY(-1px);
@@ -225,23 +277,6 @@ export default function Hero() {
           background: var(--ghost-hover-bg);
           transform: translateY(-1px);
         }
-        .hero-name-gradient {
-          background: var(--gradient-accent);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
         @media (max-width: 768px) {
           #about {
             flex-direction: column !important;
@@ -254,9 +289,9 @@ export default function Hero() {
           .hero-cta { width: 100%; }
         }
         @media (max-width: 480px) {
-          #about { 
-            padding-left: max(var(--page-pad-x), env(safe-area-inset-left)) !important; 
-            padding-right: max(var(--page-pad-x), env(safe-area-inset-right)) !important; 
+          #about {
+            padding-left: max(var(--page-pad-x), env(safe-area-inset-left)) !important;
+            padding-right: max(var(--page-pad-x), env(safe-area-inset-right)) !important;
           }
         }
       `}</style>

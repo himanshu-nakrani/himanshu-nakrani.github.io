@@ -51,17 +51,14 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="exp-modal-shell"
+              className="exp-modal-shell glass-card"
               style={{
                 width: '100%',
                 maxWidth: 1000,
                 maxHeight: 'min(90vh, 100dvh - 2rem)',
                 display: 'flex',
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
                 borderRadius: 24,
                 overflow: 'hidden',
-                boxShadow: 'var(--shadow-md)',
               }}
             >
               {/* Left side - Large visual area with details */}
@@ -234,12 +231,12 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                   width: 300,
                   flexShrink: 0,
                   padding: 'clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2rem)',
-                  background: 'var(--surface2)',
+                  background: 'color-mix(in srgb, var(--surface2) 70%, transparent)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2rem',
                   overflowY: 'auto',
-                  borderLeft: '1px solid var(--border)',
+                  borderLeft: '1px solid var(--glass-border)',
                   minWidth: 0,
                 }}
               >
@@ -287,30 +284,28 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     }}
                   >
                     <div
+                      className="glass-card"
                       style={{
                         padding: '0.75rem',
-                        background: 'color-mix(in srgb, var(--nav-dot) 12%, var(--surface))',
-                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}
                     >
-                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem' }}>Total Achievements</p>
-                      <p style={{ color: 'var(--accent)', fontWeight: 600, margin: 0, fontSize: '1.2rem' }}>
+                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem', position: 'relative', zIndex: 1 }}>Total Achievements</p>
+                      <p style={{ color: 'var(--accent)', fontWeight: 600, margin: 0, fontSize: '1.2rem', position: 'relative', zIndex: 1 }}>
                         {item.bullets.length}
                       </p>
                     </div>
                     <div
+                      className="glass-card"
                       style={{
                         padding: '0.75rem',
-                        background: 'color-mix(in srgb, var(--accent) 11%, var(--surface))',
-                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}
                     >
-                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem' }}>Tech Stack</p>
-                      <p style={{ color: 'var(--accent3)', fontWeight: 600, margin: 0, fontSize: '1.2rem' }}>
+                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem', position: 'relative', zIndex: 1 }}>Tech Stack</p>
+                      <p style={{ color: 'var(--accent3)', fontWeight: 600, margin: 0, fontSize: '1.2rem', position: 'relative', zIndex: 1 }}>
                         {item.tags.length}
                       </p>
                     </div>
