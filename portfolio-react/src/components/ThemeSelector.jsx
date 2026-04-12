@@ -75,7 +75,7 @@ export default function ThemeSelector() {
                   key={theme.id}
                   whileHover={{ x: 4 }}
                   onClick={() => applyTheme(theme)}
-                  aria-pressed={currentTheme === theme.id}
+                  aria-current={currentTheme === theme.id ? 'true' : undefined}
                   style={{
                     background: currentTheme === theme.id ? 'var(--surface2)' : 'transparent',
                     border: `1px solid ${currentTheme === theme.id ? 'var(--accent)' : 'transparent'}`,
