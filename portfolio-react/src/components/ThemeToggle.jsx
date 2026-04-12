@@ -8,6 +8,8 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
   return (
     <button
       onClick={toggleTheme}
+      aria-label="Dark mode"
+      aria-pressed={isDark}
       style={{
         display: 'flex',
         alignItems: 'center',

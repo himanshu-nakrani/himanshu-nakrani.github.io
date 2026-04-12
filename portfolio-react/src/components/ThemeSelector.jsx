@@ -28,6 +28,9 @@ export default function ThemeSelector() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
+        aria-label="Change theme"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
         style={{
           background: 'var(--surface2)',
           border: '1px solid var(--border)',
