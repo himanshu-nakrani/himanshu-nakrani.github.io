@@ -1,0 +1,3 @@
+## 2026-04-12 - ARIA requirements for Icon-only Buttons
+**Learning:** In this application, simply adding a `title` attribute to icon-only buttons (like `ThemeToggle` and `ThemeSelector`) is insufficient for accessibility. While `title` provides a tooltip on hover, screen readers require an explicit `aria-label` to announce the button's purpose, along with appropriate ARIA states (e.g., `aria-pressed`, `aria-expanded`, `aria-haspopup`) to communicate the component's current mode or interaction capability.
+**Action:** When creating or reviewing icon-only interactive elements, always pair `title` (or tooltip) with an explicit `aria-label` and the relevant state attributes.
