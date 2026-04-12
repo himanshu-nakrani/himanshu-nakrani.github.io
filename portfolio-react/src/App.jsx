@@ -2,6 +2,7 @@ import { useLayoutEffect, useState } from 'react'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
 import { applyStyleMode, applyTheme, getPreferredStyleMode, getPreferredTheme, STYLE_MODE_STORAGE_KEY, THEME_STORAGE_KEY } from './lib/theme'
@@ -65,6 +66,7 @@ export default function App() {
         </Routes>
       </BrowserRouter>
       <Analytics />
+      <SpeedInsights />
     </>
   )
 }

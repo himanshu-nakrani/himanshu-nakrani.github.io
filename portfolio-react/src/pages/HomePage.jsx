@@ -1,6 +1,8 @@
 import Hero from '../components/Hero'
 import ProofBar from '../components/ProofBar'
 import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
+import FeaturedProjects from '../components/FeaturedProjects'
+import Testimonials from '../components/Testimonials'
 import ArchitectureSnapshotCard from '../components/ArchitectureSnapshotCard'
 import CurrentFocus from '../components/CurrentFocus'
 import TechStack from '../components/TechStack'
@@ -8,6 +10,8 @@ import AvailabilityCtaPanel from '../components/AvailabilityCtaPanel'
 import Contact from '../components/Contact'
 import Section from '../components/Section'
 import {
+  projects,
+  testimonials,
   featuredHighlights,
   proofLinks,
   architecturePipeline,
@@ -28,8 +32,16 @@ export default function HomePage() {
         <FeaturedHighlightsRail highlights={featuredHighlights} />
       </Section>
 
+      <Section id="featured-projects" title="Featured Projects" subtitle="Production systems and open-source work" alt>
+        <FeaturedProjects projects={projects} />
+      </Section>
+
       <Section id="architecture" title="Architecture" subtitle="A representative production AI pipeline">
         <ArchitectureSnapshotCard pipeline={architecturePipeline} />
+      </Section>
+
+      <Section id="testimonials" title="What People Say" subtitle="Feedback from colleagues and stakeholders" alt>
+        <Testimonials testimonials={testimonials} />
       </Section>
 
       <Section id="focus" title="Current Focus" subtitle="What I'm researching, building, and optimizing right now">

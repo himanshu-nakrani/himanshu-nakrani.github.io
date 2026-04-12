@@ -58,17 +58,6 @@ export default function CurrentFocus({ items, lastUpdated }) {
         }
       `}</style>
 
-      <h3 style={{
-        fontSize: '1rem',
-        fontWeight: 600,
-        color: 'var(--text2, var(--muted))',
-        textTransform: 'uppercase',
-        letterSpacing: '0.08em',
-        marginBottom: '1rem',
-      }}>
-        What I&apos;m working on
-      </h3>
-
       <ul className="focus-list">
         {items.map(item => (
           <li key={item.area} className="focus-item glass-card">

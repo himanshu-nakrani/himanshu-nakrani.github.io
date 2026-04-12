@@ -263,9 +263,20 @@ export default function Hero() {
           background: linear-gradient(174deg, rgba(255,255,255,0.22) 0%, transparent 50%);
           pointer-events: none;
         }
-        .hero-cta-primary:hover { transform: translateY(-1px); }
-        .hero-cta-secondary { color: var(--text); }
-        .hero-cta-secondary:hover { transform: translateY(-1px); }
+        .hero-cta-primary:hover {
+          transform: translateY(-1px);
+          filter: saturate(1.06) brightness(1.04);
+        }
+        .hero-cta-secondary {
+          color: var(--text);
+          border-color: var(--ghost-border);
+          background: color-mix(in srgb, var(--surface2) 58%, transparent);
+        }
+        .hero-cta-secondary:hover {
+          border-color: var(--ghost-hover-border);
+          background: var(--ghost-hover-bg);
+          transform: translateY(-1px);
+        }
         @media (max-width: 768px) {
           #about {
             flex-direction: column !important;
