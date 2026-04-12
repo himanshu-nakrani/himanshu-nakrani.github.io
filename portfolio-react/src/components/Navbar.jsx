@@ -71,8 +71,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
     }
   }
 
-  const pillBg = scrolled ? 'color-mix(in srgb, var(--surface2) 86%, transparent)' : 'color-mix(in srgb, var(--surface) 70%, transparent)'
-  const pillBorder = '1px solid color-mix(in srgb, var(--border2) 82%, transparent)'
+  const pillBorder = '1px solid var(--glass-border)'
 
   return (
     <header
@@ -91,6 +90,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
           initial={reduceMotion ? false : { y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+          className="glass-nav"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -98,12 +98,9 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
             minHeight: 52,
             padding: '6px 8px 6px 14px',
             borderRadius: 9999,
-            border: pillBorder,
-            background: pillBg,
-            backdropFilter: 'blur(18px)',
-            WebkitBackdropFilter: 'blur(18px)',
-            boxShadow: scrolled ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-            transition: 'background 0.25s ease, box-shadow 0.25s ease',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'box-shadow 0.25s ease',
           }}
         >
           <MotionNavLink
@@ -218,23 +215,24 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}
-              whileHover={{ borderColor: 'var(--ghost-hover-border)', background: 'var(--ghost-hover-bg)' }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
+              className="glass-btn"
               style={{
                 display: 'inline-block',
-                border: '1px solid var(--ghost-border)',
                 color: 'var(--text)',
-                background: 'var(--ghost-bg)',
                 padding: '8px 16px',
                 borderRadius: 9999,
                 textDecoration: 'none',
                 fontSize: '0.8125rem',
                 fontWeight: 600,
                 whiteSpace: 'nowrap',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              Contact
+              <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
             </MotionNavLink>
           </div>
 
@@ -243,7 +241,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
             <button
               type="button"
               onClick={() => setOpen(!open)}
-              className="nav-mobile-btn"
+              className="nav-mobile-btn glass-btn"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-nav-menu"
@@ -254,10 +252,10 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
                 width: 44,
                 height: 44,
                 borderRadius: 9999,
-                border: '1px solid var(--border2)',
-                background: 'rgba(var(--bg-rgb), 0.35)',
                 color: 'var(--text)',
                 cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
               <span className="sr-only">{open ? 'Close navigation menu' : 'Open navigation menu'}</span>
@@ -273,16 +271,12 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.18 }}
-              className="nav-mobile-only"
+              className="nav-mobile-only glass"
               style={{
                 marginTop: 10,
                 borderRadius: 16,
-                border: pillBorder,
-                background: 'rgba(var(--bg-rgb), 0.92)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
                 overflow: 'hidden',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+                position: 'relative',
               }}
             >
               <div style={{ padding: '12px 14px 0' }}>

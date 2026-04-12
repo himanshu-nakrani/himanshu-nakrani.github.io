@@ -74,19 +74,17 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
           ref={modalRef}
           onKeyDown={handleKeyDown}
           onClick={(e) => e.stopPropagation()}
+          className="glass-card"
           style={{
-            background: 'var(--surface)',
             borderRadius: 24,
             maxWidth: 900,
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            border: '1px solid var(--border)',
-            boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
             outline: 'none',
           }}
         >
-          <div style={{ position: 'sticky', top: 0, background: 'var(--surface)', zIndex: 10, borderBottom: '1px solid var(--border)', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ position: 'sticky', top: 0, background: 'color-mix(in srgb, var(--surface) 85%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', zIndex: 10, borderBottom: '1px solid var(--glass-border)', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ fontSize: '2rem' }} aria-hidden="true">{project.icon}</span>
               <div>
@@ -134,9 +132,8 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                       <motion.div
                         key={i}
                         whileHover={{ y: -4 }}
+                        className="glass-card"
                         style={{
-                          background: 'var(--surface2)',
-                          border: '1px solid var(--border)',
                           borderRadius: 12,
                           padding: '1rem',
                         }}
@@ -187,7 +184,7 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>Challenges & Solutions</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {project.challenges.map((item, i) => (
-                    <div key={i} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: 12, padding: '1rem' }}>
+                    <div key={i} className="glass-card" style={{ borderRadius: 12, padding: '1rem' }}>
                       <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>
                         {item.challenge}
                       </div>
@@ -208,22 +205,26 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="glass-btn-primary"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    background: 'var(--accent)',
                     color: 'white',
                     padding: '0.75rem 1.5rem',
                     borderRadius: 12,
                     textDecoration: 'none',
                     fontWeight: 600,
                     fontSize: '0.9rem',
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  <Github size={18} />
-                  View on GitHub
-                  <ExternalLink size={16} />
+                  <span style={{ position: 'relative', zIndex: 1, display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Github size={18} />
+                    View on GitHub
+                    <ExternalLink size={16} />
+                  </span>
                 </motion.a>
               )}
               {project.liveLink && (
@@ -233,21 +234,25 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                   href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="glass-btn"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    background: 'var(--accent2)',
-                    color: 'white',
+                    color: 'var(--text)',
                     padding: '0.75rem 1.5rem',
                     borderRadius: 12,
                     textDecoration: 'none',
                     fontWeight: 600,
                     fontSize: '0.9rem',
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  Live Demo
-                  <ExternalLink size={16} />
+                  <span style={{ position: 'relative', zIndex: 1, display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                    Live Demo
+                    <ExternalLink size={16} />
+                  </span>
                 </motion.a>
               )}
             </div>

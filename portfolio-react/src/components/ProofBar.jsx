@@ -1,69 +1,94 @@
 import React from 'react'
+import { Github, Award, Code2, Linkedin, BookOpen, FileText } from 'lucide-react'
 
-/**
- * ProofBar — minimal horizontal nav bar of labeled external profile links.
- * @param {{ links: Array<{ label: string, href: string, sublabel?: string, icon?: string }> }} props
- */
+const iconMap = {
+  GitHub: Github,
+  Kaggle: Award,
+  LeetCode: Code2,
+  LinkedIn: Linkedin,
+  Research: BookOpen,
+  Resume: FileText,
+}
+
 export default function ProofBar({ links = [] }) {
   return (
     <nav
       aria-label="External profiles and proof links"
+      className="glass"
       style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        gap: '0.25rem',
-        padding: '0.625rem 1rem',
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
+        gap: '0.5rem',
+        padding: '0.75rem 1.25rem',
+        borderRadius: 0,
+        borderLeft: 'none',
+        borderRight: 'none',
         fontSize: '0.8125rem',
         color: 'var(--text2)',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {links.map((link, i) => (
-        <React.Fragment key={link.label}>
+      {links.map((link) => {
+        const Icon = iconMap[link.label]
+        const isResume = link.label === 'Resume'
+        return (
           <a
+            key={link.label}
             href={link.href}
-            target="_blank"
+            target={link.href.startsWith('#') || link.href.startsWith('/') ? undefined : '_blank'}
             rel="noopener noreferrer"
             aria-label={link.sublabel ? `${link.label}, ${link.sublabel}` : link.label}
+            className={isResume ? 'glass-btn-primary' : ''}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.3rem',
-              padding: '0.25rem 0.5rem',
-              borderRadius: 'var(--radius-sm)',
-              color: 'var(--text2)',
+              gap: '0.35rem',
+              padding: isResume ? '0.35rem 0.85rem' : '0.3rem 0.65rem',
+              borderRadius: 9999,
+              color: isResume ? '#fff' : 'var(--text2)',
               textDecoration: 'none',
-              transition: 'color 0.15s ease, background 0.15s ease',
+              fontSize: '0.8rem',
+              fontWeight: isResume ? 600 : 500,
+              transition: 'color 0.18s ease, background 0.18s ease, transform 0.18s ease',
+              position: 'relative',
+              overflow: 'hidden',
             }}
-            onFocus={e => { e.currentTarget.style.color = 'var(--accent)' }}
-            onBlur={e => { e.currentTarget.style.color = 'var(--text2)' }}
-            onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)' }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'var(--text2)' }}
+            onMouseEnter={e => {
+              if (!isResume) {
+                e.currentTarget.style.color = 'var(--accent)'
+                e.currentTarget.style.background = 'var(--glass-bg)'
+                e.currentTarget.style.transform = 'translateY(-1px)'
+              }
+            }}
+            onMouseLeave={e => {
+              if (!isResume) {
+                e.currentTarget.style.color = 'var(--text2)'
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.transform = 'translateY(0)'
+              }
+            }}
           >
-            <span>{link.label}</span>
+            {Icon && <Icon size={14} style={{ position: 'relative', zIndex: 1, opacity: 0.8 }} />}
+            <span style={{ position: 'relative', zIndex: 1 }}>{link.label}</span>
             {link.sublabel && (
               <span
-                className="proof-sublabel"
                 style={{
-                  fontSize: '0.7rem',
-                  opacity: 0.7,
+                  fontSize: '0.68rem',
+                  opacity: 0.6,
                   fontWeight: 500,
+                  position: 'relative',
+                  zIndex: 1,
                 }}
               >
                 {link.sublabel}
               </span>
             )}
           </a>
-          {i < links.length - 1 && (
-            <span aria-hidden="true" className="proof-sep" style={{ opacity: 0.35, userSelect: 'none' }}>
-              ·
-            </span>
-          )}
-        </React.Fragment>
-      ))}
+        )
+      })}
     </nav>
   )
 }
