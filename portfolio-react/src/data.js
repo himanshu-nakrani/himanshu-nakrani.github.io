@@ -353,7 +353,7 @@ export const featuredHighlights = [
 ]
 
 export const proofLinks = [
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '24 repos' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '25 repos' },
   { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', sublabel: 'Expert' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', sublabel: '180 solved' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },

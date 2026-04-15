@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Github, TrendingUp, Award, Code, GitCommit, Star } from 'lucide-react'
+import { Github, TrendingUp, Award, Code, Star, Users } from 'lucide-react'
 
 function SkeletonCard({ rows = 3 }) {
   return (
@@ -29,7 +29,7 @@ function SkeletonCard({ rows = 3 }) {
 export default function LiveMetricsDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [metrics, setMetrics] = useState({
-    github: { repos: 0, stars: 0, commits: 0 },
+    github: { repos: 0, stars: 0, followers: 0 },
     kaggle: { rank: 0, medals: 0, votes: 0 },
     leetcode: { solved: 0, ranking: 0 },
   })
@@ -38,8 +38,8 @@ export default function LiveMetricsDashboard() {
     // Simulate loading metrics with animation
     const timer = setTimeout(() => {
       setMetrics({
-        github: { repos: 24, stars: 156, commits: 1240 },
-        kaggle: { rank: 'Expert', medals: 5, votes: 869 },
+        github: { repos: 25, stars: 1, followers: 6 },
+        kaggle: { rank: 'Expert', medals: 24, votes: 869 },
         leetcode: { solved: 180, ranking: '~150k' },
       })
       setIsLoading(false)
@@ -55,7 +55,7 @@ export default function LiveMetricsDashboard() {
       stats: [
         { label: 'Public Repos', value: metrics.github.repos, icon: Code },
         { label: 'Total Stars', value: metrics.github.stars, icon: Star },
-        { label: 'Commits (2024)', value: metrics.github.commits, icon: GitCommit },
+        { label: 'Followers', value: metrics.github.followers, icon: Users },
       ],
     },
     {
