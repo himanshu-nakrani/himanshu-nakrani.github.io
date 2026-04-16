@@ -99,7 +99,7 @@ export default function Kaggle() {
 
         {/* Stats row */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.8rem', marginBottom: '2.5rem' }} className="kag-stats-grid">
-          {[['59', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['51', 'Followers']].map(([num, label], i) => (
+          {[['59', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['52', 'Followers']].map(([num, label], i) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, scale: 0.9 }}
