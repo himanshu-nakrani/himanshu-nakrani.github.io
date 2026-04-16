@@ -38,8 +38,8 @@ export default function LiveMetricsDashboard() {
     // Simulate loading metrics with animation
     const timer = setTimeout(() => {
       setMetrics({
-        github: { repos: 24, stars: 156, commits: 1240 },
-        kaggle: { rank: 'Expert', medals: 5, votes: 869 },
+        github: { repos: 26, stars: 156, commits: 1240 },
+        kaggle: { rank: 'Expert', medals: 5, votes: 881 },
         leetcode: { solved: 180, ranking: '~150k' },
       })
       setIsLoading(false)
