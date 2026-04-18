@@ -26,6 +26,8 @@ export default function TechStackVisualization({ skills }) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setFilterCategory(cat)}
+            aria-label={`Filter by ${cat === 'all' ? 'all categories' : cat}`}
+            aria-pressed={filterCategory === cat}
             style={{
               background: filterCategory === cat ? 'var(--accent)' : 'var(--surface2)',
               color: filterCategory === cat ? 'white' : 'var(--text2)',
