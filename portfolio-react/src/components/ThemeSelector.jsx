@@ -73,6 +73,7 @@ export default function ThemeSelector() {
               {themes.map((theme) => (
                 <motion.button
                   key={theme.id}
+                  aria-pressed={currentTheme === theme.id}
                   whileHover={{ x: 4 }}
                   onClick={() => applyTheme(theme)}
                   style={{
