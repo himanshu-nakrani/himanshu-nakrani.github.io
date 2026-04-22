@@ -80,8 +80,9 @@ export default function SkillsPage() {
       />
 
       {/* Filter pills */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.75rem' }}>
+      <div role="group" aria-label="Filter technologies" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.75rem' }}>
         <button
+          aria-pressed={!activeGroup}
           onClick={() => setActiveGroup(null)}
           style={{
             background: !activeGroup ? 'var(--accent)' : 'var(--surface2)',
@@ -97,6 +98,7 @@ export default function SkillsPage() {
         {skills.map((s) => (
           <button
             key={s.label}
+            aria-pressed={activeGroup === s.label}
             onClick={() => setActiveGroup(activeGroup === s.label ? null : s.label)}
             style={{
               background: activeGroup === s.label ? s.color : 'var(--surface2)',
