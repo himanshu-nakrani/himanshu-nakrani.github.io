@@ -7,6 +7,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       aria-label="Dark mode"
       aria-pressed={isDark}
