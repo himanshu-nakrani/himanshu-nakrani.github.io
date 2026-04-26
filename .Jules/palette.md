@@ -1,5 +1,7 @@
 ## 2026-04-12 - ARIA requirements for Icon-only Buttons
 **Learning:** In this application, simply adding a `title` attribute to icon-only buttons (like `ThemeToggle` and `ThemeSelector`) is insufficient for accessibility. While `title` provides a tooltip on hover, screen readers require an explicit `aria-label` to announce the button's purpose, along with appropriate ARIA states (e.g., `aria-pressed`, `aria-expanded`, `aria-haspopup`) to communicate the component's current mode or interaction capability.
-**Action:** When creating or reviewing icon-only interactive elements, always pair `title` (or tooltip) with an explicit `aria-label` and the relevant state attributes.## 2024-05-24 - Motion.div Accessibility Conversions
+**Action:** When creating or reviewing icon-only interactive elements, always pair `title` (or tooltip) with an explicit `aria-label` and the relevant state attributes.
+
+## 2024-05-24 - Motion.div Accessibility Conversions
 **Learning:** In Framer Motion, it's common to find interactive elements built as `motion.div`. Changing them to semantic `motion.button` improves accessibility (enabling keyboard navigation and screen reader support) but often causes visual layout regressions because standard button elements have default center alignment and inline-block behavior.
 **Action:** When converting `motion.div` to `motion.button`, always ensure `textAlign: 'left'` and `width: '100%'` (or equivalent Tailwind classes like `text-left w-full`) are applied to maintain the original layout flow while gaining the accessibility benefits.
