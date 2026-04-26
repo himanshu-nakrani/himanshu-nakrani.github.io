@@ -25,19 +25,38 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
     const firstSunday = new Date(lastSunday)
     firstSunday.setDate(lastSunday.getDate() - 52 * 7)
 
-    const flatCounts = []
+    // ⚡ Bolt Optimization: Use a single Date object to avoid ~800 unnecessary allocations
+    const cell = new Date(firstSunday)
+    const flatData = []
+    let maxC = 1
+
+    const monthLabels = []
+    let prevM = -1
+
     for (let w = 0; w < 53; w++) {
       for (let d = 0; d < 7; d++) {
-        const cell = new Date(firstSunday)
-        cell.setDate(firstSunday.getDate() + w * 7 + d)
-        const raw = contributionMap[toKey(cell)]
+        const dateKey = toKey(cell)
+        const raw = contributionMap[dateKey]
         const future = cell > end
         const c = future ? 0 : typeof raw === 'number' && raw > 0 ? raw : 0
-        flatCounts.push({ c, future })
+
+        if (c > maxC) maxC = c
+
+        flatData.push({ c, future, date: dateKey })
+
+        if (d === 0) { // On Sunday (start of week), check if we need a new month label
+          const m = cell.getMonth()
+          if (m !== prevM) {
+            prevM = m
+            monthLabels.push({ x: 27 + w * 12, label: MONTHS[m] })
+          }
+        }
+
+        // Advance to the next day
+        cell.setDate(cell.getDate() + 1)
       }
     }
 
-    const maxC = Math.max(1, ...flatCounts.map(({ c, future }) => (future ? 0 : c)))
     const levelFor = (c, future) => {
       if (future || c <= 0) return 0
       return Math.min(4, Math.ceil((4 * c) / maxC))
@@ -47,31 +66,17 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
     let idx = 0
     for (let w = 0; w < 53; w++) {
       for (let d = 0; d < 7; d++) {
-        const cell = new Date(firstSunday)
-        cell.setDate(firstSunday.getDate() + w * 7 + d)
-        const { c, future } = flatCounts[idx]
+        const { c, future, date } = flatData[idx]
         const lvl = levelFor(c, future)
         rects.push({
           key: `${w}-${d}`,
           x: 27 + w * 12,
           y: 20 + d * 12,
-          fill: LEVEL_FILL[future ? 0 : lvl],
-          date: toKey(cell),
+          fill: LEVEL_FILL[lvl],
+          date,
           score: future ? -1 : c,
         })
         idx++
-      }
-    }
-
-    const monthLabels = []
-    let prevM = -1
-    for (let w = 0; w < 53; w++) {
-      const cell = new Date(firstSunday)
-      cell.setDate(firstSunday.getDate() + w * 7)
-      const m = cell.getMonth()
-      if (m !== prevM) {
-        prevM = m
-        monthLabels.push({ x: 27 + w * 12, label: MONTHS[m] })
       }
     }
 
