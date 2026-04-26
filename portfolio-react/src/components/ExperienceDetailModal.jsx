@@ -1,12 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Tag from './Tag'
-
-function highlightBullets(html) {
-  return html.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
-}
+import HighlightedText from './HighlightedText'
 
 export default function ExperienceDetailModal({ item, isOpen, onClose }) {
   return (
@@ -217,7 +211,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                             background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                           }}
                         />
-                        <span dangerouslySetInnerHTML={{ __html: highlightBullets(bullet) }} />
+                        <HighlightedText text={bullet} />
                       </li>
                     ))}
                   </ul>
