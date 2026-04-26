@@ -25,6 +25,7 @@ export default function TechStackVisualization({ skills }) {
       >
         {['all', ...skills.map(s => s.label)].map((cat) => (
           <motion.button
+            type="button"
             key={cat}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
