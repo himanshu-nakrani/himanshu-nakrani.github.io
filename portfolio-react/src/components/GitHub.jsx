@@ -94,13 +94,13 @@ export default function GitHub() {
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}
         >
           <img
-            src={`${README_STATS}/api?username=himanshu-nakrani&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&icon_color=b39dff&text_color=eeeef8&ring_color=7c6fff`}
+            src={`${README_STATS}/api?username=himanshu-nakrani&show_icons=true&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&icon_color=b39dff&text_color=eeeef8&ring_color=7c6fff`}
             alt="GitHub Stats"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
           />
           <img
-            src={`${README_STATS}/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=tokyonight&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&text_color=eeeef8`}
+            src={`${README_STATS}/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&text_color=eeeef8`}
             alt="Top Languages"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
@@ -114,7 +114,7 @@ export default function GitHub() {
           style={{ marginBottom: '1.5rem' }}
         >
           <img
-            src="https://github-readme-streak-stats.herokuapp.com/?user=himanshu-nakrani&theme=tokyonight&hide_border=true&background=0e0e1a&ring=7c6fff&fire=b39dff&currStreakLabel=7c6fff&sideLabels=eeeef8&dates=9999bb"
+            src="https://github-readme-streak-stats.herokuapp.com/?user=himanshu-nakrani&theme=gruvbox_light&hide_border=true&background=0e0e1a&ring=7c6fff&fire=b39dff&currStreakLabel=7c6fff&sideLabels=eeeef8&dates=9999bb"
             alt="GitHub Streak"
             style={{ borderRadius: 12, width: '100%', maxWidth: 600 }}
             loading="lazy"
