@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Palette } from 'lucide-react'
 
@@ -14,6 +14,41 @@ const themes = [
 export default function ThemeSelector() {
   const [isOpen, setIsOpen] = useState(false)
   const [currentTheme, setCurrentTheme] = useState('default')
+  const dropdownRef = useRef(null)
+  const triggerRef = useRef(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      // Focus the first theme button when opened
+      const firstButton = dropdownRef.current?.querySelector('button')
+      firstButton?.focus()
+    } else if (isOpen === false && document.activeElement && dropdownRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus()
+    }
+  }, [isOpen])
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      setIsOpen(false)
+      triggerRef.current?.focus()
+      return
+    }
+
+    if (!dropdownRef.current) return
+
+    const buttons = Array.from(dropdownRef.current.querySelectorAll('button'))
+    const currentIndex = buttons.indexOf(document.activeElement)
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      const nextIndex = (currentIndex + 1) % buttons.length
+      buttons[nextIndex]?.focus()
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      const prevIndex = (currentIndex - 1 + buttons.length) % buttons.length
+      buttons[prevIndex]?.focus()
+    }
+  }
 
   const applyTheme = (theme) => {
     document.documentElement.style.setProperty('--accent', theme.primary)
@@ -25,12 +60,15 @@ export default function ThemeSelector() {
   return (
     <div style={{ position: 'relative' }}>
       <motion.button
+        ref={triggerRef}
+        type="button"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Change theme"
         aria-expanded={isOpen}
         aria-haspopup="true"
+        aria-controls={isOpen ? "theme-selector-dropdown" : undefined}
         style={{
           background: 'var(--surface2)',
           border: '1px solid var(--border)',
@@ -50,6 +88,10 @@ export default function ThemeSelector() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="theme-selector-dropdown"
+            ref={dropdownRef}
+            onKeyDown={handleKeyDown}
+            role="menu"
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -73,6 +115,8 @@ export default function ThemeSelector() {
               {themes.map((theme) => (
                 <motion.button
                   key={theme.id}
+                  type="button"
+                  role="menuitem"
                   whileHover={{ x: 4 }}
                   onClick={() => applyTheme(theme)}
                   style={{
