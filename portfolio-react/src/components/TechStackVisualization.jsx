@@ -70,6 +70,7 @@ export default function TechStackVisualization({ skills }) {
 
                   return (
                     <motion.button
+                      type="button"
                       key={tech}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ 
