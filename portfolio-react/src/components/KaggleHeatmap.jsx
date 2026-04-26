@@ -72,7 +72,7 @@ export default function KaggleHeatmap({ contributionMap = {} }) {
           key: `${w}-${d}`,
           x: 27 + w * 12,
           y: 20 + d * 12,
-          fill: LEVEL_FILL[future ? 0 : lvl],
+          fill: LEVEL_FILL[lvl],
           date,
           score: future ? -1 : c,
         })
