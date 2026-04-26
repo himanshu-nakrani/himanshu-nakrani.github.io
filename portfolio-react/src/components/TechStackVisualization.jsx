@@ -22,6 +22,7 @@ export default function TechStackVisualization({ skills }) {
       <div role="group" aria-label="Filter technologies" style={{ marginBottom: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
         {['all', ...skills.map(s => s.label)].map((cat) => (
           <motion.button
+            type="button"
             key={cat}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
