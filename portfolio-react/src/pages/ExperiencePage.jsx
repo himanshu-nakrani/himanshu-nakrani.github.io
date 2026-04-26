@@ -2,14 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tag from '../components/Tag'
 import PageHeader from '../components/PageHeader'
+import HighlightedText from '../components/HighlightedText'
 import { experience } from '../data'
-
-function highlightText(text) {
-  return text.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%|100\+)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
-}
 
 function ExperienceEntry({ item, index }) {
   const [open, setOpen] = useState(index === 0)
@@ -166,7 +160,7 @@ function ExperienceEntry({ item, index }) {
                           width: 6, height: 6, borderRadius: '50%',
                           background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                         }} />
-                        <span dangerouslySetInnerHTML={{ __html: highlightText(bullet) }} />
+                        <HighlightedText text={bullet} />
                       </li>
                     ))}
                   </ul>
