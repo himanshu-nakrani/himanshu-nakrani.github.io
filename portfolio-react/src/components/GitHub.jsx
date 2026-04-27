@@ -124,7 +124,7 @@ export default function GitHub() {
         <motion.a
           href="https://github.com/himanshu-nakrani"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
           style={{
             display: 'inline-block', border: '1px solid var(--border)',

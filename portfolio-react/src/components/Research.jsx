@@ -59,7 +59,7 @@ export default function Research({ embedded = false }) {
               whileHover={{ x: 4 }}
               href={p.link}
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               style={{
                 fontSize: '0.78rem',
                 color: 'var(--accent)',

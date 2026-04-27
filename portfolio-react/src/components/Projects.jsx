@@ -108,7 +108,7 @@ function ProjectCard({ item, index, onClick, cardRef }) {
             whileHover={{ x: 4, color: 'var(--accent2)' }}
             href={item.link}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
             style={{
               fontSize: '0.78rem', color: 'var(--accent)', textDecoration: 'none',
@@ -124,7 +124,7 @@ function ProjectCard({ item, index, onClick, cardRef }) {
             whileHover={{ x: 4, color: 'var(--accent2)' }}
             href={item.liveLink}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}
             style={{
               fontSize: '0.78rem', color: 'var(--accent2)', textDecoration: 'none',
