@@ -114,7 +114,7 @@ export default function FeaturedHighlightsRail({ highlights }) {
                 key={highlight.id}
                 href={highlight.link}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 aria-label={`${highlight.headline} (opens in new tab)`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >

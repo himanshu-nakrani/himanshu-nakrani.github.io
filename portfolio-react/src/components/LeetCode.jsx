@@ -22,7 +22,7 @@ export default function LeetCode() {
           <motion.a
             href="https://leetcode.com/u/himanshunakrani0/"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
             style={{
               display: 'inline-block', border: '1px solid var(--border)',
