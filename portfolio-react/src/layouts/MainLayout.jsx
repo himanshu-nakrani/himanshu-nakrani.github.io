@@ -135,7 +135,7 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
                         key={label}
                         href={href}
                         target={href.startsWith('mailto') || href.startsWith('/') ? undefined : '_blank'}
-                        rel="noopener noreferrer"
+                        rel={href.startsWith('mailto') || href.startsWith('/') ? undefined : 'noopener noreferrer'}
                         aria-label={label}
                         className="glass-btn"
                         style={{
