@@ -135,12 +135,12 @@ function ProjectModal({ project, onClose }) {
                 {/* Action links */}
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
                   {project.link && (
-                    <a href={project.link} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.6rem 1.3rem', borderRadius: 10, background: 'var(--accent)', color: 'white', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.6rem 1.3rem', borderRadius: 10, background: 'var(--accent)', color: 'white', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
                       GitHub ↗
                     </a>
                   )}
                   {project.liveLink && (
-                    <a href={project.liveLink} target="_blank" rel="noopener" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.6rem 1.3rem', borderRadius: 10, background: 'var(--accent2)', color: 'white', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
+                    <a href={project.liveLink} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.6rem 1.3rem', borderRadius: 10, background: 'var(--accent2)', color: 'white', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600 }}>
                       Live Demo ↗
                     </a>
                   )}
