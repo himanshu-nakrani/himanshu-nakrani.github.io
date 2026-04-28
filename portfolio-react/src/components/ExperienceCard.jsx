@@ -155,6 +155,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
 
         {onCardClick && (
           <button
+            aria-label={`View details for ${item.role} at ${item.company}`}
             onClick={onCardClick}
             style={{
               background: 'none',
