@@ -75,7 +75,7 @@ export default function Contact() {
                 key={l.label}
                 href={l.href}
                 target={l.href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener noreferrer"
+                rel={l.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
                 className="contact-pill-link"
                 style={{
                   opacity: 0,
