@@ -62,8 +62,8 @@ export default function Kaggle() {
         {/* Tier cards */}
         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem', width: '100%' }}>
           {[
-            { title: 'Datasets Expert', rank: '1,240', total: '8,780', highest: '241', silver: 3, bronze: 4 },
-            { title: 'Notebooks Expert', rank: '3,034', total: '60,181', highest: '479', silver: 1, bronze: 16 },
+            { title: 'Datasets Expert', rank: '1,211', total: '9,360', highest: '241', silver: 3, bronze: 4 },
+            { title: 'Notebooks Expert', rank: '2,815', total: '61,511', highest: '479', silver: 1, bronze: 16 },
           ].map((tier, i) => (
             <motion.div
               key={tier.title}
@@ -99,7 +99,7 @@ export default function Kaggle() {
 
         {/* Stats row */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.8rem', marginBottom: '2.5rem' }} className="kag-stats-grid">
-          {[['59', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['52', 'Followers']].map(([num, label], i) => (
+          {[['74', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['53', 'Followers']].map(([num, label], i) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, scale: 0.9 }}

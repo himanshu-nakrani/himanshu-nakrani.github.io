@@ -6,8 +6,8 @@ import Section from './Section'
 const README_STATS = 'https://github-readme-stats-phi.vercel.app'
 
 const ghStats = [
-  { num: '26', label: 'Public Repos' },
-  { num: '6', label: 'Followers' },
+  { num: '31', label: 'Public Repos' },
+  { num: '7', label: 'Followers' },
   { num: '2021', label: 'Member Since' },
   { num: 'Python', label: 'Primary Language' },
 ]
