@@ -36,6 +36,8 @@ function ExperienceEntry({ item, index }) {
       {/* Header — always visible */}
       <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={"experience-content-" + index}
         style={{
           width: '100%', background: 'none', border: 'none', cursor: 'pointer',
           padding: '1.4rem 1.6rem', textAlign: 'left',
@@ -115,6 +117,7 @@ function ExperienceEntry({ item, index }) {
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
+            id={"experience-content-" + index}
             key="content"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
