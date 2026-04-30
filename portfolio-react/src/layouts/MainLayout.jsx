@@ -26,7 +26,7 @@ const footerSocials = [
 
 const builtWith = ['React', 'Vite', 'Framer Motion', 'Vercel']
 
-export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode }) {
+export default function MainLayout({ isDark, setIsDark }) {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
 
@@ -62,8 +62,6 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
           <Navbar
             isDark={isDark}
             setIsDark={setIsDark}
-            styleMode={styleMode}
-            setStyleMode={setStyleMode}
           />
 
           <main id="main-content">
@@ -77,7 +75,7 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
             className="glass"
             style={{
               padding: 'clamp(3rem, 8vw, 4.5rem) max(var(--page-pad-x), env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(var(--page-pad-x), env(safe-area-inset-left))',
-              color: 'var(--text2)',
+              color: 'var(--color-text-muted)',
               fontSize: '0.875rem',
               position: 'relative',
               overflow: 'hidden',
@@ -96,18 +94,18 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
               }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--nav-dot)' }} />
-                    <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text)', fontFamily: 'var(--font-display)' }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent)' }} />
+                    <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
                       HN.AI
                     </span>
                   </div>
-                  <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: 280, color: 'var(--text2)' }}>
+                  <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: 280, color: 'var(--color-text-muted)' }}>
                     Building production AI systems that turn research into real-world impact.
                   </p>
                 </div>
 
                 <div>
-                  <h4 style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', color: 'var(--text)' }}>
+                  <h4 style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', color: 'var(--color-text)' }}>
                     Navigation
                   </h4>
                   <nav aria-label="Footer navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -115,9 +113,9 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
                       <a
                         key={item.label}
                         href={item.href}
-                        style={{ color: 'var(--text2)', textDecoration: 'none', fontSize: '0.85rem', transition: 'color 0.15s ease' }}
-                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)' }}
-                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--text2)' }}
+                        style={{ color: 'var(--color-text-muted)', textDecoration: 'none', fontSize: '0.85rem', transition: 'color 0.15s ease' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-accent)' }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
                       >
                         {item.label}
                       </a>
@@ -126,7 +124,7 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
                 </div>
 
                 <div>
-                  <h4 style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', color: 'var(--text)' }}>
+                  <h4 style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', color: 'var(--color-text)' }}>
                     Connect
                   </h4>
                   <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
@@ -145,7 +143,7 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: 'var(--text2)',
+                          color: 'var(--color-text-muted)',
                           textDecoration: 'none',
                           position: 'relative',
                           overflow: 'hidden',
@@ -159,7 +157,7 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
               </div>
 
               <div style={{
-                borderTop: '1px solid var(--glass-border)',
+                borderTop: '1px solid var(--color-border)',
                 paddingTop: '1.5rem',
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -179,9 +177,9 @@ export default function MainLayout({ isDark, setIsDark, styleMode, setStyleMode 
                         fontSize: '0.68rem',
                         padding: '2px 8px',
                         borderRadius: 9999,
-                        border: '1px solid var(--glass-border)',
-                        background: 'var(--glass-bg)',
-                        color: 'var(--text2)',
+                        border: '1px solid var(--color-border)',
+                        background: 'var(--color-surface)',
+                        color: 'var(--color-text-muted)',
                       }}
                     >
                       {tech}

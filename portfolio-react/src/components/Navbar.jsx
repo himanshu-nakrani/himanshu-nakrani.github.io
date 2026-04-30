@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
-import StyleModeSelector from './StyleModeSelector'
 import { useIsMobile } from '../hooks/useIsMobile'
 
 import { NavLink, useLocation } from 'react-router-dom'
@@ -22,7 +21,7 @@ const contactItem = { label: 'Contact', to: '/#contact' }
 
 const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
-export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
+export default function Navbar({ isDark, setIsDark }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const location = useLocation()
@@ -122,7 +121,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                background: 'var(--nav-dot)',
+                background: 'var(--color-accent)',
                 flexShrink: 0,
               }}
             />
@@ -131,7 +130,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
                 fontWeight: 700,
                 fontSize: '0.875rem',
                 letterSpacing: '0.08em',
-                color: 'var(--text)',
+                color: 'var(--color-text)',
                 fontFamily: 'var(--font-display)',
               }}
             >
@@ -211,7 +210,6 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
               borderLeft: '1px solid var(--border)',
             }}
           >
-            <StyleModeSelector styleMode={styleMode} setStyleMode={setStyleMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}
@@ -279,9 +277,6 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
                 position: 'relative',
               }}
             >
-              <div style={{ padding: '12px 14px 0' }}>
-                <StyleModeSelector styleMode={styleMode} setStyleMode={setStyleMode} />
-              </div>
               <ul id="mobile-nav-menu" role="list" aria-label="Navigation links" style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {navItems.map((item) => (
                   <li key={item.label}>

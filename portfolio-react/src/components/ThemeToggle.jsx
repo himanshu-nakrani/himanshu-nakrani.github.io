@@ -18,28 +18,28 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
         width: compact ? 36 : 44,
         height: compact ? 36 : 44,
         borderRadius: 999,
-        border: '1px solid var(--ghost-border)',
-        background: 'var(--ghost-bg)',
+        border: '1px solid var(--color-border)',
+        background: 'color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))',
         cursor: 'pointer',
-        color: 'var(--text)',
+        color: 'var(--color-text)',
         padding: 0,
         boxShadow: 'var(--shadow-sm)',
-        transition: 'border-color 0.2s ease, background 0.2s ease, transform 0.2s ease',
+        transition: 'border-color var(--motion-duration-base) var(--motion-ease), background var(--motion-duration-base) var(--motion-ease), transform var(--motion-duration-base) var(--motion-ease)',
       }}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = 'var(--ghost-hover-border)'
-        e.currentTarget.style.background = 'var(--ghost-hover-bg)'
+        e.currentTarget.style.borderColor = 'var(--color-accent)'
+        e.currentTarget.style.background = 'color-mix(in srgb, var(--color-accent) 24%, var(--color-surface))'
         e.currentTarget.style.transform = 'translateY(-1px)'
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'var(--ghost-border)'
-        e.currentTarget.style.background = 'var(--ghost-bg)'
+        e.currentTarget.style.borderColor = 'var(--color-border)'
+        e.currentTarget.style.background = 'color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))'
         e.currentTarget.style.transform = 'translateY(0)'
       }}
     >
       <span style={{ fontSize: compact ? '0.875rem' : '1rem' }}>
-        {isDark ? '☀' : '☾'}
+        {isDark ? '☀️' : '🌙'}
       </span>
     </button>
   )

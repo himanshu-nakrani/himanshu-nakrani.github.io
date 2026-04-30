@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
-import { applyStyleMode, applyTheme, getPreferredStyleMode, getPreferredTheme, STYLE_MODE_STORAGE_KEY, THEME_STORAGE_KEY } from './lib/theme'
+import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import MobileAllInOnePage from './pages/MobileAllInOnePage'
@@ -14,30 +14,20 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
+import StyleguidePage from './pages/StyleguidePage'
 import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
 import SpotlightCardDemo from './components/ui/spotlight-card-demo'
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
-  const [styleMode, setStyleMode] = useState(() => getPreferredStyleMode())
 
   useLayoutEffect(() => {
     applyTheme(isDark ? 'dark' : 'light')
   }, [isDark])
 
-  useLayoutEffect(() => {
-    applyStyleMode(styleMode)
-  }, [styleMode])
-
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
     localStorage.setItem(THEME_STORAGE_KEY, newIsDark ? 'dark' : 'light')
-  }
-
-  const handleStyleModeChange = (nextMode) => {
-    const resolvedMode = applyStyleMode(nextMode)
-    setStyleMode(resolvedMode)
-    localStorage.setItem(STYLE_MODE_STORAGE_KEY, resolvedMode)
   }
 
   return (
@@ -46,13 +36,12 @@ export default function App() {
         <Routes>
           <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
           <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
+          <Route path="/styleguide" element={<StyleguidePage />} />
           <Route
             element={
               <MainLayout
                 isDark={isDark}
                 setIsDark={handleThemeChange}
-                styleMode={styleMode}
-                setStyleMode={handleStyleModeChange}
               />
             }
           >
