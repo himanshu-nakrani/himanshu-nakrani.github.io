@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
@@ -14,7 +14,14 @@ export default function TechStackVisualization({ skills }) {
   const [selectedTech, setSelectedTech] = useState(null)
   const [filterCategory, setFilterCategory] = useState('all')
 
-  const relatedTechs = selectedTech ? techRelations[selectedTech] || [] : []
+  // ⚡ Bolt: Optimize relatedTechs lookup (O(1) Set instead of O(n) Array)
+  const { relatedTechs, relatedTechsSet } = useMemo(() => {
+    const arr = selectedTech ? techRelations[selectedTech] || [] : []
+    return { relatedTechs: arr, relatedTechsSet: new Set(arr) }
+  }, [selectedTech])
+
+  // ⚡ Bolt: Memoize categories calculation to prevent array recreation on every render
+  const categories = useMemo(() => ['all', ...skills.map(s => s.label)], [skills])
 
   return (
     <div>
@@ -23,7 +30,7 @@ export default function TechStackVisualization({ skills }) {
         aria-label="Filter technologies"
         style={{ marginBottom: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}
       >
-        {['all', ...skills.map(s => s.label)].map((cat) => (
+        {categories.map((cat) => (
           <motion.button
             type="button"
             key={cat}
@@ -65,7 +72,8 @@ export default function TechStackVisualization({ skills }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {category.items.map((tech, techIndex) => {
                   const isSelected = selectedTech === tech
-                  const isRelated = relatedTechs.includes(tech)
+                  // ⚡ Bolt: Use O(1) Set lookup instead of O(n) array .includes()
+                  const isRelated = relatedTechsSet.has(tech)
                   const shouldHighlight = !selectedTech || isSelected || isRelated
 
                   return (
