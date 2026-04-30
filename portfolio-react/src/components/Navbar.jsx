@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import StyleModeSelector from './StyleModeSelector'
+import ThemeSelector from './ThemeSelector'
 import { useIsMobile } from '../hooks/useIsMobile'
 
 import { NavLink, useLocation } from 'react-router-dom'
@@ -211,6 +212,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
               borderLeft: '1px solid var(--border)',
             }}
           >
+            <ThemeSelector />
             <StyleModeSelector styleMode={styleMode} setStyleMode={setStyleMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
@@ -237,6 +239,7 @@ export default function Navbar({ isDark, setIsDark, styleMode, setStyleMode }) {
           </div>
 
           <div className="nav-mobile-only" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+            <ThemeSelector />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <button
               type="button"

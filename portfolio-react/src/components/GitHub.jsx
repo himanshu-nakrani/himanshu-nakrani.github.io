@@ -1,6 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Section from './Section'
+import { COLOR_THEMES, getColorTheme, COLOR_THEME_ATTR } from '../lib/colorTheme'
 
 /** Public mirror (no PAT). The default vercel.app instance is often 503; "eight" may require PAT_1. */
 const README_STATS = 'https://github-readme-stats-phi.vercel.app'
@@ -12,9 +13,62 @@ const ghStats = [
   { num: 'Python', label: 'Primary Language' },
 ]
 
+function getThemeColors(colorThemeId, isDark) {
+  const theme = COLOR_THEMES.find((t) => t.id === colorThemeId) || COLOR_THEMES[2]
+  return isDark ? theme.stats.dark : theme.stats.light
+}
+
+function buildStatsUrl(username, colorThemeId, isDark) {
+  const c = getThemeColors(colorThemeId, isDark)
+  return (
+    `${README_STATS}/api?username=${username}&show_icons=true&hide_border=true` +
+    `&bg_color=${c.bg}&title_color=${c.title}&icon_color=${c.icon}&text_color=${c.text}&ring_color=${c.ring}`
+  )
+}
+
+function buildLangsUrl(username, colorThemeId, isDark) {
+  const c = getThemeColors(colorThemeId, isDark)
+  return (
+    `${README_STATS}/api/top-langs/?username=${username}&layout=compact&hide_border=true` +
+    `&bg_color=${c.bg}&title_color=${c.title}&text_color=${c.text}`
+  )
+}
+
+function buildStreakUrl(username, colorThemeId, isDark) {
+  const c = getThemeColors(colorThemeId, isDark)
+  const s = c.streak
+  return (
+    `https://github-readme-streak-stats.herokuapp.com/?user=${username}&hide_border=true` +
+    `&background=${s.background}&ring=${s.ring}&fire=${s.fire}` +
+    `&currStreakLabel=${s.currStreakLabel}&sideLabels=${s.sideLabels}&dates=${s.dates}`
+  )
+}
+
 export default function GitHub() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+
+  const [colorTheme, setColorTheme] = useState(() => getColorTheme())
+  const [isDark, setIsDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') !== 'light'
+  )
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.getAttribute('data-theme') !== 'light')
+      const attr = document.documentElement.getAttribute(COLOR_THEME_ATTR)
+      if (attr) setColorTheme(attr)
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', COLOR_THEME_ATTR],
+    })
+    return () => observer.disconnect()
+  }, [])
+
+  const statsUrl = buildStatsUrl('himanshu-nakrani', colorTheme, isDark)
+  const langsUrl = buildLangsUrl('himanshu-nakrani', colorTheme, isDark)
+  const streakUrl = buildStreakUrl('himanshu-nakrani', colorTheme, isDark)
 
   return (
     <Section id="github" title="GitHub Activity" alt>
@@ -94,13 +148,13 @@ export default function GitHub() {
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}
         >
           <img
-            src={`${README_STATS}/api?username=himanshu-nakrani&show_icons=true&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&icon_color=b39dff&text_color=eeeef8&ring_color=7c6fff`}
+            src={statsUrl}
             alt="GitHub Stats"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
           />
           <img
-            src={`${README_STATS}/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=7c6fff&text_color=eeeef8`}
+            src={langsUrl}
             alt="Top Languages"
             style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
             loading="lazy"
@@ -114,7 +168,7 @@ export default function GitHub() {
           style={{ marginBottom: '1.5rem' }}
         >
           <img
-            src="https://github-readme-streak-stats.herokuapp.com/?user=himanshu-nakrani&theme=gruvbox_light&hide_border=true&background=0e0e1a&ring=7c6fff&fire=b39dff&currStreakLabel=7c6fff&sideLabels=eeeef8&dates=9999bb"
+            src={streakUrl}
             alt="GitHub Streak"
             style={{ borderRadius: 12, width: '100%', maxWidth: 600 }}
             loading="lazy"

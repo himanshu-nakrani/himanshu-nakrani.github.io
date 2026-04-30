@@ -1,21 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Palette } from 'lucide-react'
-
-const themes = [
-  { id: 'default', name: 'Default', primary: '#4a9eff', secondary: '#6b7cff' },
-  { id: 'purple', name: 'Purple Dream', primary: '#a78bfa', secondary: '#c084fc' },
-  { id: 'green', name: 'Forest', primary: '#10b981', secondary: '#34d399' },
-  { id: 'orange', name: 'Sunset', primary: '#f59e0b', secondary: '#fb923c' },
-  { id: 'pink', name: 'Sakura', primary: '#ec4899', secondary: '#f472b6' },
-  { id: 'cyan', name: 'Ocean', primary: '#06b6d4', secondary: '#22d3ee' },
-]
+import { COLOR_THEMES, getColorTheme, applyColorTheme } from '../lib/colorTheme'
 
 export default function ThemeSelector() {
   const [isOpen, setIsOpen] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState('default')
+  const [currentTheme, setCurrentTheme] = useState(getColorTheme)
   const dropdownRef = useRef(null)
   const triggerRef = useRef(null)
+
+  useEffect(() => {
+    applyColorTheme(currentTheme)
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
@@ -50,9 +46,8 @@ export default function ThemeSelector() {
     }
   }
 
-  const applyTheme = (theme) => {
-    document.documentElement.style.setProperty('--accent', theme.primary)
-    document.documentElement.style.setProperty('--accent2', theme.secondary)
+  const selectTheme = (theme) => {
+    applyColorTheme(theme.id)
     setCurrentTheme(theme.id)
     setIsOpen(false)
   }
@@ -68,7 +63,7 @@ export default function ThemeSelector() {
         aria-label="Change theme"
         aria-expanded={isOpen}
         aria-haspopup="true"
-        aria-controls={isOpen ? "theme-selector-dropdown" : undefined}
+        aria-controls={isOpen ? 'theme-selector-dropdown' : undefined}
         style={{
           background: 'var(--surface2)',
           border: '1px solid var(--border)',
@@ -112,13 +107,13 @@ export default function ThemeSelector() {
               Choose Theme
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {themes.map((theme) => (
+              {COLOR_THEMES.map((theme) => (
                 <motion.button
                   key={theme.id}
                   type="button"
                   role="menuitem"
                   whileHover={{ x: 4 }}
-                  onClick={() => applyTheme(theme)}
+                  onClick={() => selectTheme(theme)}
                   style={{
                     background: currentTheme === theme.id ? 'var(--surface2)' : 'transparent',
                     border: `1px solid ${currentTheme === theme.id ? 'var(--accent)' : 'transparent'}`,
@@ -136,7 +131,10 @@ export default function ThemeSelector() {
                     <div style={{ width: 16, height: 16, borderRadius: 4, background: theme.primary }} />
                     <div style={{ width: 16, height: 16, borderRadius: 4, background: theme.secondary }} />
                   </div>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text)' }}>{theme.name}</span>
+                  <div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text)' }}>{theme.name}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text2)' }}>{theme.description}</div>
+                  </div>
                 </motion.button>
               ))}
             </div>

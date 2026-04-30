@@ -16,6 +16,7 @@ import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
 import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
 import SpotlightCardDemo from './components/ui/spotlight-card-demo'
+import { getColorTheme, applyColorTheme } from './lib/colorTheme'
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -23,6 +24,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     applyTheme(isDark ? 'dark' : 'light')
+    applyColorTheme(getColorTheme())
   }, [isDark])
 
   useLayoutEffect(() => {
