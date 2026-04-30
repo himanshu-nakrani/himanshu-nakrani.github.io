@@ -1,4 +1,4 @@
-@import './tokens.css';
+@import './styles/tokens.css';
 
 @tailwind base;
 @tailwind components;
@@ -157,7 +157,13 @@ section[id] {
 }
 
 .eyebrow {
-  @apply kicker;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-4);
 }
 
 .display {
@@ -170,7 +176,12 @@ section[id] {
 }
 
 .mvp2-page-title {
-  @apply display;
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: var(--space-6);
 }
 
@@ -183,7 +194,11 @@ section[id] {
 }
 
 .mvp2-page-lede {
-  @apply lead;
+  font-size: var(--text-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+  max-width: 40rem;
 }
 
 /* ============================================
@@ -490,9 +505,12 @@ section[id] {
 }
 
 .glass-nav {
-  @apply glass;
+  position: relative;
+  background: var(--glass-bg);
   backdrop-filter: blur(28px) saturate(var(--glass-saturation));
   -webkit-backdrop-filter: blur(28px) saturate(var(--glass-saturation));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* ============================================
