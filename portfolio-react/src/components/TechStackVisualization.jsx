@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
@@ -14,18 +14,31 @@ export default function TechStackVisualization({ skills }) {
   const [selectedTech, setSelectedTech] = useState(null)
   const [filterCategory, setFilterCategory] = useState('all')
 
-  const allTechs = skills.flatMap(s => s.items)
-  const relatedTechs = selectedTech ? techRelations[selectedTech] || [] : []
+  // ⚡ Bolt: Optimize relatedTechs lookup (O(1) Set instead of O(n) Array)
+  const { relatedTechs, relatedTechsSet } = useMemo(() => {
+    const arr = selectedTech ? techRelations[selectedTech] || [] : []
+    return { relatedTechs: arr, relatedTechsSet: new Set(arr) }
+  }, [selectedTech])
+
+  // ⚡ Bolt: Memoize categories calculation to prevent array recreation on every render
+  const categories = useMemo(() => ['all', ...skills.map(s => s.label)], [skills])
 
   return (
     <div>
-      <div style={{ marginBottom: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-        {['all', ...skills.map(s => s.label)].map((cat) => (
+      <div
+        role="group"
+        aria-label="Filter technologies"
+        style={{ marginBottom: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}
+      >
+        {categories.map((cat) => (
           <motion.button
+            type="button"
             key={cat}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setFilterCategory(cat)}
+            aria-pressed={filterCategory === cat}
+            aria-label={`Filter by ${cat}`}
             style={{
               background: filterCategory === cat ? 'var(--accent)' : 'var(--surface2)',
               color: filterCategory === cat ? 'white' : 'var(--text2)',
@@ -59,11 +72,13 @@ export default function TechStackVisualization({ skills }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {category.items.map((tech, techIndex) => {
                   const isSelected = selectedTech === tech
-                  const isRelated = relatedTechs.includes(tech)
+                  // ⚡ Bolt: Use O(1) Set lookup instead of O(n) array .includes()
+                  const isRelated = relatedTechsSet.has(tech)
                   const shouldHighlight = !selectedTech || isSelected || isRelated
 
                   return (
-                    <motion.div
+                    <motion.button
+                      type="button"
                       key={tech}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ 
@@ -74,6 +89,7 @@ export default function TechStackVisualization({ skills }) {
                       transition={{ delay: catIndex * 0.1 + techIndex * 0.05 }}
                       whileHover={{ x: 4 }}
                       onClick={() => setSelectedTech(isSelected ? null : tech)}
+                      aria-pressed={isSelected}
                       style={{
                         background: isSelected ? 'var(--accent)' : 'var(--surface2)',
                         color: isSelected ? 'white' : 'var(--text)',
@@ -83,6 +99,8 @@ export default function TechStackVisualization({ skills }) {
                         cursor: 'pointer',
                         transition: 'all 0.3s',
                         position: 'relative',
+                        textAlign: 'left',
+                        width: '100%',
                       }}
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -106,7 +124,7 @@ export default function TechStackVisualization({ skills }) {
                           }}
                         />
                       )}
-                    </motion.div>
+                    </motion.button>
                   )
                 })}
               </div>

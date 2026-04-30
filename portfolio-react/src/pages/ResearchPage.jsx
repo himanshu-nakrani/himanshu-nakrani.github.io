@@ -73,7 +73,7 @@ function PaperCard({ pub, index }) {
             whileHover={{ x: 4 }}
             href={pub.link}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               fontSize: '0.78rem', color: 'var(--accent)', textDecoration: 'none',

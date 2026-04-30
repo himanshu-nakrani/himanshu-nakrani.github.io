@@ -14,7 +14,7 @@ function KaggleCard({ item, index }) {
       ref={ref}
       href={item.link}
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.45, delay: (index % 3) * 0.08 }}
@@ -99,7 +99,7 @@ export default function Kaggle() {
 
         {/* Stats row */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.8rem', marginBottom: '2.5rem' }} className="kag-stats-grid">
-          {[['59', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['51', 'Followers']].map(([num, label], i) => (
+          {[['59', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['52', 'Followers']].map(([num, label], i) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -163,7 +163,7 @@ export default function Kaggle() {
         <motion.a
           href="https://www.kaggle.com/himanshunakrani"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
           style={{
             display: 'inline-block', border: '1px solid var(--border)',

@@ -1,12 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Tag from './Tag'
-
-function highlightBullets(html) {
-  return html.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
-}
+import HighlightedText from './HighlightedText'
 
 export default function ExperienceDetailModal({ item, isOpen, onClose }) {
   return (
@@ -35,6 +29,9 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="exp-modal-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${item.role} details`}
             style={{
               position: 'fixed',
               inset: 0,
@@ -48,17 +45,14 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div
-              className="exp-modal-shell"
+              className="exp-modal-shell glass-card"
               style={{
                 width: '100%',
                 maxWidth: 1000,
                 maxHeight: 'min(90vh, 100dvh - 2rem)',
                 display: 'flex',
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
                 borderRadius: 24,
                 overflow: 'hidden',
-                boxShadow: 'var(--shadow-md)',
               }}
             >
               {/* Left side - Large visual area with details */}
@@ -130,7 +124,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     <span style={{ opacity: 0.5, margin: '0 0.5rem' }}>·</span>
                     {item.period}
                   </p>
-                  {item.progression && (
+                  {item.progression && !(item.progressionSteps && item.progressionSteps.length > 0) && (
                     <p
                       style={{
                         fontSize: '0.8rem',
@@ -141,6 +135,40 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     >
                       {item.progression}
                     </p>
+                  )}
+                  {item.progressionSteps && item.progressionSteps.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: '0.75rem' }}>
+                      {item.progressionSteps.map((step, idx) => {
+                        const isCurrent = step === item.currentRoleStep || (!item.currentRoleStep && idx === item.progressionSteps.length - 1)
+                        return (
+                          <span
+                            key={step}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: 5,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: '0.67rem',
+                                color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
+                                border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
+                                background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                                borderRadius: 9999,
+                                padding: '4px 8px',
+                                fontFamily: 'var(--font-mono)',
+                                fontWeight: isCurrent ? 600 : 500,
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {step}
+                            </span>
+                            {idx < item.progressionSteps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+                          </span>
+                        )
+                      })}
+                    </div>
                   )}
                 </div>
 
@@ -183,7 +211,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                             background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                           }}
                         />
-                        <span dangerouslySetInnerHTML={{ __html: highlightBullets(bullet) }} />
+                        <HighlightedText text={bullet} />
                       </li>
                     ))}
                   </ul>
@@ -197,12 +225,12 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                   width: 300,
                   flexShrink: 0,
                   padding: 'clamp(1.25rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2rem)',
-                  background: 'var(--surface2)',
+                  background: 'color-mix(in srgb, var(--surface2) 70%, transparent)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2rem',
                   overflowY: 'auto',
-                  borderLeft: '1px solid var(--border)',
+                  borderLeft: '1px solid var(--glass-border)',
                   minWidth: 0,
                 }}
               >
@@ -250,30 +278,28 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
                     }}
                   >
                     <div
+                      className="glass-card"
                       style={{
                         padding: '0.75rem',
-                        background: 'color-mix(in srgb, var(--nav-dot) 12%, var(--surface))',
-                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}
                     >
-                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem' }}>Total Achievements</p>
-                      <p style={{ color: 'var(--accent)', fontWeight: 600, margin: 0, fontSize: '1.2rem' }}>
+                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem', position: 'relative', zIndex: 1 }}>Total Achievements</p>
+                      <p style={{ color: 'var(--accent)', fontWeight: 600, margin: 0, fontSize: '1.2rem', position: 'relative', zIndex: 1 }}>
                         {item.bullets.length}
                       </p>
                     </div>
                     <div
+                      className="glass-card"
                       style={{
                         padding: '0.75rem',
-                        background: 'color-mix(in srgb, var(--accent) 11%, var(--surface))',
-                        border: '1px solid var(--border)',
                         borderRadius: 8,
                         fontSize: '0.85rem',
                       }}
                     >
-                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem' }}>Tech Stack</p>
-                      <p style={{ color: 'var(--accent3)', fontWeight: 600, margin: 0, fontSize: '1.2rem' }}>
+                      <p style={{ color: 'var(--text2)', margin: 0, marginBottom: '0.25rem', position: 'relative', zIndex: 1 }}>Tech Stack</p>
+                      <p style={{ color: 'var(--accent3)', fontWeight: 600, margin: 0, fontSize: '1.2rem', position: 'relative', zIndex: 1 }}>
                         {item.tags.length}
                       </p>
                     </div>

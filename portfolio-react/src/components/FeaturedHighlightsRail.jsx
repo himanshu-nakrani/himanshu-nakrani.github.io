@@ -16,14 +16,13 @@
  */
 
 const cardStyle = {
-  background: 'var(--surface)',
-  border: '1px solid var(--border)',
-  borderRadius: 'var(--radius-md)',
   padding: '1.25rem',
   display: 'flex',
   flexDirection: 'column',
   gap: '0.5rem',
   height: '100%',
+  position: 'relative',
+  overflow: 'hidden',
 }
 
 function CardInner({ highlight }) {
@@ -115,11 +114,11 @@ export default function FeaturedHighlightsRail({ highlights }) {
                 key={highlight.id}
                 href={highlight.link}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 aria-label={`${highlight.headline} (opens in new tab)`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                <article className="interactive-card highlights-card" style={cardStyle}>
+                <article className="interactive-card highlights-card glass-card" style={cardStyle}>
                   <CardInner highlight={highlight} />
                 </article>
               </a>
@@ -129,7 +128,7 @@ export default function FeaturedHighlightsRail({ highlights }) {
           return (
             <article
               key={highlight.id}
-              className="interactive-card highlights-card"
+              className="interactive-card highlights-card glass-card"
               style={cardStyle}
             >
               <CardInner highlight={highlight} />

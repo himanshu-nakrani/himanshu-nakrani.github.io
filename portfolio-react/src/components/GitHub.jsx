@@ -7,8 +7,8 @@ import { COLOR_THEMES, getColorTheme, COLOR_THEME_ATTR } from '../lib/colorTheme
 const README_STATS = 'https://github-readme-stats-phi.vercel.app'
 
 const ghStats = [
-  { num: '19', label: 'Public Repos' },
-  { num: '5', label: 'Followers' },
+  { num: '26', label: 'Public Repos' },
+  { num: '6', label: 'Followers' },
   { num: '2021', label: 'Member Since' },
   { num: 'Python', label: 'Primary Language' },
 ]
@@ -178,7 +178,7 @@ export default function GitHub() {
         <motion.a
           href="https://github.com/himanshu-nakrani"
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
           style={{
             display: 'inline-block', border: '1px solid var(--border)',

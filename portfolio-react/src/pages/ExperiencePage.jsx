@@ -2,17 +2,13 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Tag from '../components/Tag'
 import PageHeader from '../components/PageHeader'
+import HighlightedText from '../components/HighlightedText'
 import { experience } from '../data'
-
-function highlightText(text) {
-  return text.replace(
-    /(Alpha Copilot|WealthAI|Agent Forge|75%|25%|95%\+|87%|40%|100\+)/g,
-    '<strong style="color:var(--accent2)">$1</strong>',
-  )
-}
 
 function ExperienceEntry({ item, index }) {
   const [open, setOpen] = useState(index === 0)
+
+  const progressionSteps = item.progressionSteps || []
 
   return (
     <motion.div
@@ -40,6 +36,8 @@ function ExperienceEntry({ item, index }) {
       {/* Header — always visible */}
       <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-controls={"experience-content-" + index}
         style={{
           width: '100%', background: 'none', border: 'none', cursor: 'pointer',
           padding: '1.4rem 1.6rem', textAlign: 'left',
@@ -50,13 +48,47 @@ function ExperienceEntry({ item, index }) {
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text)', marginBottom: 4, lineHeight: 1.3 }}>
             {item.role}
           </h3>
-          {item.progression && (
+          {item.progression && progressionSteps.length === 0 && (
             <p style={{
               fontSize: '0.72rem', color: 'var(--accent)', fontFamily: "'Fira Code', monospace",
               marginBottom: 6, lineHeight: 1.5,
             }}>
               {item.progression}
             </p>
+          )}
+          {progressionSteps.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+              {progressionSteps.map((step, idx) => {
+                const isCurrent = step === item.currentRoleStep || (!item.currentRoleStep && idx === progressionSteps.length - 1)
+                return (
+                  <span
+                    key={step}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 5,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '0.66rem',
+                        color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
+                        border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
+                        background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                        borderRadius: 9999,
+                        padding: '4px 8px',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: isCurrent ? 600 : 500,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {step}
+                    </span>
+                    {idx < progressionSteps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+                  </span>
+                )
+              })}
+            </div>
           )}
           <p style={{ fontSize: '0.86rem', color: 'var(--text2)', fontWeight: 500 }}>
             {item.company}
@@ -85,6 +117,7 @@ function ExperienceEntry({ item, index }) {
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
+            id={"experience-content-" + index}
             key="content"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -130,7 +163,7 @@ function ExperienceEntry({ item, index }) {
                           width: 6, height: 6, borderRadius: '50%',
                           background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
                         }} />
-                        <span dangerouslySetInnerHTML={{ __html: highlightText(bullet) }} />
+                        <HighlightedText text={bullet} />
                       </li>
                     ))}
                   </ul>

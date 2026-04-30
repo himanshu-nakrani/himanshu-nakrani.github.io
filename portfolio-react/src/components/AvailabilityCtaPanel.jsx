@@ -4,11 +4,13 @@ export default function AvailabilityCtaPanel({ status = availabilityStatus }) {
   return (
     <section
       aria-label="Availability and contact"
+      className="glass"
       style={{
         textAlign: 'center',
         padding: 'clamp(3rem, 8vw, 5rem) var(--page-pad-x)',
-        background: 'color-mix(in srgb, var(--accent) 5%, var(--surface))',
-        borderTop: '1px solid var(--border)',
+        borderRadius: 0,
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <span

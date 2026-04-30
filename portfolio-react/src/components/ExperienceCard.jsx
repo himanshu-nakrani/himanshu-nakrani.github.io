@@ -2,6 +2,54 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
+function ProgressionRail({ steps = [], currentStep }) {
+  if (!steps.length) return null
+
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 6,
+          alignItems: 'center',
+        }}
+      >
+        {steps.map((step, idx) => {
+          const isCurrent = step === currentStep || (!currentStep && idx === steps.length - 1)
+          return (
+            <span
+              key={step}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '0.68rem',
+                  color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
+                  border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
+                  background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                  borderRadius: 9999,
+                  padding: '4px 9px',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: isCurrent ? 600 : 500,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {step}
+              </span>
+              {idx < steps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+            </span>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function ExperienceCard({ item, index = 0, animateEntry = true, onCardClick = null }) {
   const [hovered, setHovered] = useState(false)
 
@@ -45,18 +93,21 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
             >
               {item.role}
             </h3>
-            {item.progression && (
+            {item.progression && !item.progressionSteps?.length && (
               <p
                 style={{
                   fontSize: '0.74rem',
                   color: 'var(--text2)',
-                  fontFamily: "'Fira Code', monospace",
+                  fontFamily: 'var(--font-mono)',
                   marginBottom: 8,
                   lineHeight: 1.5,
                 }}
               >
                 {item.progression}
               </p>
+            )}
+            {item.progressionSteps && (
+              <ProgressionRail steps={item.progressionSteps} currentStep={item.currentRoleStep} />
             )}
             <p
               style={{
@@ -104,6 +155,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
 
         {onCardClick && (
           <button
+            aria-label={`View all details for ${item.role} at ${item.company}`}
             onClick={onCardClick}
             style={{
               background: 'none',
@@ -148,14 +200,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
 
   const shellStyle = {
     position: 'relative',
-    borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',
-    border: '1px solid',
-    borderColor: hovered ? 'var(--border2)' : 'var(--border)',
-    background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-    boxShadow: hovered ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-    transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
-    transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
     cursor: onCardClick ? 'pointer' : 'default',
   }
 
@@ -167,6 +212,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
         transition={{ duration: 0.45, delay: index * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
+        className="glass-card"
         style={shellStyle}
       >
         {inner}
@@ -185,6 +231,7 @@ export default function ExperienceCard({ item, index = 0, animateEntry = true, o
         hidden: { opacity: 0, x: -20 },
         show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
       }}
+      className="glass-card"
       style={shellStyle}
     >
       {inner}

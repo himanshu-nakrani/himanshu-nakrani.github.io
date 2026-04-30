@@ -12,28 +12,12 @@ export default function Contact() {
   return (
     <Section id="contact" title="Get in Touch" alt>
       <div style={{ textAlign: 'center', position: 'relative' }}>
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '60%',
-            height: '60%',
-            background: 'radial-gradient(circle, color-mix(in srgb, var(--accent2) 18%, transparent) 0%, transparent 72%)',
-            pointerEvents: 'none',
-            filter: 'blur(80px)',
-          }}
-        />
-
-        <div
+          <div
+          className="glass-card"
           style={{
             position: 'relative',
             zIndex: 1,
             borderRadius: 24,
-            border: '1px solid color-mix(in srgb, var(--border2) 88%, transparent)',
-            background: 'var(--card-gradient)',
-            boxShadow: 'var(--shadow-md)',
             padding: 'clamp(1.4rem, 4vw, 2.2rem)',
             maxWidth: 860,
             margin: '0 auto',
@@ -91,7 +75,7 @@ export default function Contact() {
                 key={l.label}
                 href={l.href}
                 target={l.href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener"
+                rel={l.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
                 className="contact-pill-link"
                 style={{
                   opacity: 0,
@@ -118,22 +102,52 @@ export default function Contact() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 42px;
+          min-height: 44px;
           padding: 0.52rem 0.95rem;
           border-radius: 999px;
-          border: 1px solid var(--ghost-border);
-          background: var(--ghost-bg);
+          border: 1px solid var(--glass-border);
+          background:
+            linear-gradient(
+              145deg,
+              color-mix(in srgb, var(--surface2) 60%, transparent) 0%,
+              color-mix(in srgb, var(--surface) 48%, transparent) 100%
+            );
+          backdrop-filter: blur(16px) saturate(var(--glass-saturation));
+          -webkit-backdrop-filter: blur(16px) saturate(var(--glass-saturation));
+          box-shadow:
+            0 2px 12px color-mix(in srgb, var(--glass-shadow) 40%, transparent),
+            inset 0 1px 0 var(--glass-specular);
           color: var(--text);
           text-decoration: none;
           font-size: 0.84rem;
           font-weight: 600;
           letter-spacing: 0.01em;
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                      box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                      border-color 0.22s ease;
+        }
+        .contact-pill-link::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(174deg, var(--glass-highlight) 0%, transparent 50%);
+          pointer-events: none;
+          opacity: 0.5;
+          transition: opacity 0.22s ease;
         }
         .contact-pill-link:hover {
-          border-color: var(--ghost-hover-border);
-          background: var(--ghost-hover-bg);
+          border-color: color-mix(in srgb, var(--accent) 35%, var(--glass-border));
           color: var(--accent2);
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow:
+            0 6px 20px color-mix(in srgb, var(--glass-shadow) 60%, transparent),
+            inset 0 1px 0 var(--glass-specular);
+        }
+        .contact-pill-link:hover::before {
+          opacity: 1;
         }
       `}</style>
     </Section>

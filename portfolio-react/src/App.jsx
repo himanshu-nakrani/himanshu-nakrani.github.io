@@ -1,10 +1,11 @@
 import { useLayoutEffect, useState } from 'react'
 
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { useIsMobile } from './hooks/useIsMobile'
+import { applyStyleMode, applyTheme, getPreferredStyleMode, getPreferredTheme, STYLE_MODE_STORAGE_KEY, THEME_STORAGE_KEY } from './lib/theme'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
 import MobileAllInOnePage from './pages/MobileAllInOnePage'
@@ -13,38 +14,50 @@ import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
+import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
+import SpotlightCardDemo from './components/ui/spotlight-card-demo'
 import { getColorTheme, applyColorTheme } from './lib/colorTheme'
 
-const mobileRouteMap = {
-  '/projects':   'projects',
-  '/experience': 'experience',
-  '/profiles':   'profiles',
-  '/research':   'research',
-  '/skills':     'skills',
-}
-
 export default function App() {
-  const [isDark, setIsDark] = useState(() => {
-    const savedTheme = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    return savedTheme ? savedTheme === 'dark' : prefersDark
-  })
+  const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
+  const [styleMode, setStyleMode] = useState(() => getPreferredStyleMode())
 
   useLayoutEffect(() => {
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    applyTheme(isDark ? 'dark' : 'light')
     applyColorTheme(getColorTheme())
   }, [isDark])
 
+  useLayoutEffect(() => {
+    applyStyleMode(styleMode)
+  }, [styleMode])
+
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
+    localStorage.setItem(THEME_STORAGE_KEY, newIsDark ? 'dark' : 'light')
+  }
+
+  const handleStyleModeChange = (nextMode) => {
+    const resolvedMode = applyStyleMode(nextMode)
+    setStyleMode(resolvedMode)
+    localStorage.setItem(STYLE_MODE_STORAGE_KEY, resolvedMode)
   }
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<MainLayout isDark={isDark} setIsDark={handleThemeChange} />}>
+          <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
+          <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
+          <Route
+            element={
+              <MainLayout
+                isDark={isDark}
+                setIsDark={handleThemeChange}
+                styleMode={styleMode}
+                setStyleMode={handleStyleModeChange}
+              />
+            }
+          >
             <Route path="/" element={<MobileAwareHome />} />
             <Route path="/projects"   element={<MobileAwareRoute component={ProjectsPage}   sectionId="projects"   />} />
             <Route path="/experience" element={<MobileAwareRoute component={ExperiencePage} sectionId="experience" />} />
@@ -67,7 +80,10 @@ function MobileAwareHome() {
 }
 
 // Component that redirects to home on mobile, shows page on desktop
-function MobileAwareRoute({ component: Component, sectionId }) {
+function MobileAwareRoute({ component, sectionId }) {
   const isMobile = useIsMobile()
-  return isMobile ? <MobileAllInOnePage scrollToSection={sectionId} /> : <Component />
+  if (isMobile) return <MobileAllInOnePage scrollToSection={sectionId} />
+
+  const RouteComponent = component
+  return <RouteComponent />
 }

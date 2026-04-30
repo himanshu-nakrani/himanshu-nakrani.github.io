@@ -1,18 +1,28 @@
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+
 export default function Section({ id, title, subtitle, alt, children }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+
   return (
     <section id={id} style={{
-      padding: 'var(--section-pad-y) var(--page-pad-x)', 
+      padding: 'var(--section-pad-y) var(--page-pad-x)',
       background: alt ? 'var(--bg2)' : 'var(--bg)',
       position: 'relative',
     }}>
-      <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
-        <div>
+      <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           <h2 style={{
             fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
             fontFamily: 'var(--font-display)',
-            fontWeight: 700,
+            fontWeight: 'var(--section-title-weight)',
             marginBottom: subtitle ? '1rem' : '3rem',
-            letterSpacing: '-0.03em',
+            letterSpacing: 'var(--section-title-tracking)',
             color: 'var(--text)',
           }}>
             {title}
@@ -29,8 +39,14 @@ export default function Section({ id, title, subtitle, alt, children }) {
               {subtitle}
             </p>
           )}
-        </div>
-        {children}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          {children}
+        </motion.div>
       </div>
     </section>
   )
