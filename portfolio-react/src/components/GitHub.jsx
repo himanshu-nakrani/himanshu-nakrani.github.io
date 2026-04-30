@@ -27,10 +27,10 @@ export default function GitHub() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.4, delay: i * 0.08 }}
-              whileHover={{ borderColor: 'var(--border2)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+              whileHover={{ borderColor: 'var(--color-accent)', y: -2, boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
               style={{
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid var(--border)',
+                background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+                border: '1px solid var(--color-border)',
                 borderRadius: 14, padding: '1.2rem', textAlign: 'center',
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
                 boxShadow: 'var(--shadow-sm)',
@@ -38,8 +38,8 @@ export default function GitHub() {
                 overflow: 'hidden',
               }}
             >
-              <div style={{ fontSize: '1.8rem', fontWeight: 800, background: 'linear-gradient(135deg, var(--accent), var(--accent3))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', position: 'relative', zIndex: 1 }}>{s.num}</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text2)', marginTop: 4, position: 'relative', zIndex: 1 }}>{s.label}</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--color-accent)', position: 'relative', zIndex: 1 }}>{s.num}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: 4, position: 'relative', zIndex: 1 }}>{s.label}</div>
             </motion.div>
           ))}
         </div>
@@ -54,7 +54,7 @@ export default function GitHub() {
           <p
             style={{
               fontSize: '0.72rem',
-              color: 'var(--text2)',
+              color: 'var(--color-text-muted)',
               fontFamily: "'Fira Code', monospace",
               letterSpacing: '0.12em',
               marginBottom: 10,
@@ -67,9 +67,9 @@ export default function GitHub() {
             className="gh-heatmap-wrap"
             style={{
               borderRadius: 14,
-              border: '1px solid var(--border)',
+              border: '1px solid var(--color-border)',
               overflow: 'auto',
-              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+              background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
               padding: '14px 16px',
               boxShadow: 'var(--shadow-sm)',
             }}
@@ -81,7 +81,7 @@ export default function GitHub() {
               loading="lazy"
             />
           </div>
-          <p style={{ fontSize: '0.72rem', color: 'var(--text2)', marginTop: 8, opacity: 0.85 }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', marginTop: 8, opacity: 0.85 }}>
             Daily commit activity (public contributions). GitHub-style green ramp on dark cells.
           </p>
         </motion.div>
@@ -125,16 +125,16 @@ export default function GitHub() {
           href="https://github.com/himanshu-nakrani"
           target="_blank"
           rel="noopener noreferrer"
-          whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--border2)' }}
+          whileHover={{ scale: 1.02, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', borderColor: 'var(--color-accent)' }}
           style={{
-            display: 'inline-block', border: '1px solid var(--border)',
-            background: 'var(--surface)',
-            color: 'var(--text)', padding: '11px 24px', borderRadius: 10,
+            display: 'inline-block', border: '1px solid var(--color-border)',
+            background: 'var(--color-surface)',
+            color: 'var(--color-text)', padding: '11px 24px', borderRadius: 10,
             textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600,
             transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-View all repos on GitHub →
+View all repos on GitHub
         </motion.a>
       </div>
       <style>{`
