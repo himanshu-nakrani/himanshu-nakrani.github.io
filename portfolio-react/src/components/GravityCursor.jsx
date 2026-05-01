@@ -4,8 +4,13 @@ import { useEffect, useRef } from 'react'
  * Custom cursor: large dot using theme accent (--nav-dot).
  * Color automatically matches every theme/style-mode.
  * RAF only runs while catching up to pointer — zero CPU at rest.
+ * Disabled entirely when prefers-reduced-motion is set.
  */
 export default function GravityCursor() {
+  // Honour prefers-reduced-motion: disable the custom cursor entirely
+  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return null
+  }
   const cursorRef = useRef(null)
   const mouseX = useRef(0)
   const mouseY = useRef(0)

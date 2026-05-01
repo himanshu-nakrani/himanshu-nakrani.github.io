@@ -513,6 +513,109 @@ section[id] {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
+/* Card surface — slightly elevated glass panel */
+.glass-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(12px) saturate(var(--glass-saturation));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--motion-duration-base) var(--motion-ease),
+    box-shadow var(--motion-duration-base) var(--motion-ease),
+    transform var(--motion-duration-base) var(--motion-ease-out);
+}
+
+.glass-card:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 30%, var(--glass-border));
+  box-shadow: var(--shadow-md);
+}
+
+/* Ghost button — outlined with glass fill */
+.glass-btn {
+  position: relative;
+  background: color-mix(in srgb, var(--color-surface) 55%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    border-color var(--motion-duration-base) var(--motion-ease),
+    background var(--motion-duration-base) var(--motion-ease),
+    transform var(--motion-duration-base) var(--motion-ease-out);
+}
+
+.glass-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(174deg, rgba(255, 255, 255, 0.12) 0%, transparent 52%);
+  pointer-events: none;
+}
+
+.glass-btn:hover {
+  border-color: var(--ghost-hover-border);
+  background: var(--ghost-hover-bg);
+  transform: translateY(-1px);
+}
+
+/* Primary filled button — accent background with shimmer */
+.glass-btn-primary {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-accent) 85%, transparent) 0%,
+    color-mix(in srgb, var(--color-accent) 68%, #6b9fff) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  border-radius: var(--radius-pill);
+  box-shadow:
+    0 4px 20px color-mix(in srgb, var(--color-accent) 30%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition:
+    transform var(--motion-duration-base) var(--motion-ease-out),
+    box-shadow var(--motion-duration-base) var(--motion-ease-out),
+    filter var(--motion-duration-base) var(--motion-ease);
+}
+
+.glass-btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(174deg, rgba(255, 255, 255, 0.22) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.glass-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 28px color-mix(in srgb, var(--color-accent) 42%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  filter: saturate(1.05) brightness(1.04);
+}
+
+/* ============================================
+   FOOTER NAVIGATION LINK
+   ============================================ */
+
+.footer-nav-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color var(--motion-duration-fast) var(--motion-ease);
+}
+
+.footer-nav-link:hover,
+.footer-nav-link:focus-visible {
+  color: var(--color-accent);
+}
+
 /* ============================================
    RESPONSIVE TYPOGRAPHY TWEAKS
    ============================================ */

@@ -140,6 +140,53 @@
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-blur: 24px;
   --glass-saturation: 1.8;
+
+  /* ========================================
+     COMPONENT SHORTHAND ALIASES
+     (legacy tokens consumed by components)
+     Maps semantic --color-* names to the
+     short vars used throughout JSX files.
+     ======================================== */
+
+  /* Text */
+  --text:  var(--color-text);
+  --text2: var(--color-text-muted);
+  --text3: var(--color-text-subtle);
+
+  /* Backgrounds / Surfaces */
+  --bg:       var(--color-bg);
+  --bg2:      var(--color-surface);
+  --surface:  var(--color-surface);
+  --surface2: var(--color-surface-raised);
+
+  /* Borders */
+  --border:  var(--color-border);
+  --border2: var(--color-border-strong);
+
+  /* Accent */
+  --accent:  var(--color-accent);
+  --accent2: color-mix(in srgb, var(--color-accent) 70%, #6b9fff);
+  --accent3: color-mix(in srgb, var(--color-accent) 50%, #b06aff);
+
+  /* Ghost button states */
+  --ghost-border:       var(--color-border-strong);
+  --ghost-hover-border: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  --ghost-hover-bg:     color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+
+  /* Mobile nav contact pill */
+  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
+
+  /* Cursor accent (GravityCursor --nav-dot) */
+  --nav-dot: var(--color-accent);
+
+  /* Layout max-width alias used in JSX */
+  --page-max: var(--container);
+
+  /* Display / heading typography aliases */
+  --display-weight:           var(--font-weight-bold);
+  --display-tracking:         var(--letter-spacing-tight);
+  --section-title-weight:     var(--font-weight-bold);
+  --section-title-tracking:   var(--letter-spacing-tight);
   
   /* ========================================
      AMBIENT ATMOSPHERE
@@ -200,6 +247,10 @@
   
   --glass-bg: rgba(255, 255, 255, 0.45);
   --glass-border: rgba(255, 255, 255, 0.60);
+
+  /* Ghost / pill states adjusted for light bg */
+  --ghost-hover-bg: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
 }
 
 /* ========================================
