@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 
 function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
@@ -16,11 +16,14 @@ function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
         ...extraStyle,
       }}
     >
+      {/* Above-the-fold: eager load, explicit height prevents layout shift */}
       <img
         src={src}
         alt={alt}
-        loading="lazy"
+        loading="eager"
+        fetchPriority="high"
         width={size}
+        height={size}
         style={{ width: '100%', height: 'auto', display: 'block' }}
       />
     </div>
@@ -34,22 +37,21 @@ const stats = [
   { num: '2', label: 'Publications' },
 ]
 
-const stagger = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-}
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } },
-}
-
-const fadeScale = {
-  hidden: { opacity: 0, scale: 0.92 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } },
-}
-
 export default function Hero() {
+  const reduceMotion = useReducedMotion()
+
+  const stagger = reduceMotion
+    ? { hidden: {}, show: {} }
+    : { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } } }
+
+  const fadeUp = reduceMotion
+    ? { hidden: {}, show: {} }
+    : { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } } }
+
+  const fadeScale = reduceMotion
+    ? { hidden: {}, show: {} }
+    : { hidden: { opacity: 0, scale: 0.92 }, show: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } } }
+
   return (
     <section
       id="about"
@@ -213,9 +215,9 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.8 }}
+        transition={reduceMotion ? {} : { delay: 1.8, duration: 0.8 }}
         style={{
           position: 'absolute',
           bottom: 'clamp(1.5rem, 4vw, 2.5rem)',
@@ -233,8 +235,8 @@ export default function Hero() {
           Scroll
         </span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          animate={reduceMotion ? {} : { y: [0, 6, 0] }}
+          transition={reduceMotion ? {} : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ChevronDown size={18} style={{ opacity: 0.6 }} />
         </motion.div>

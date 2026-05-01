@@ -37,7 +37,12 @@ export default function MainLayout({ isDark, setIsDark }) {
       const scrollToTarget = () => {
         const el = document.getElementById(id)
         if (!el) return
-        el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' })
+        const navbarHeight = parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue('--navbar-height') || '76',
+          10
+        )
+        const top = el.getBoundingClientRect().top + window.scrollY - navbarHeight - 8
+        window.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' })
       }
       // Paint route first, then scroll (double rAF — faster than setTimeout)
       let raf2 = 0
@@ -113,9 +118,7 @@ export default function MainLayout({ isDark, setIsDark }) {
                       <a
                         key={item.label}
                         href={item.href}
-                        style={{ color: 'var(--color-text-muted)', textDecoration: 'none', fontSize: '0.85rem', transition: 'color 0.15s ease' }}
-                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-accent)' }}
-                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
+                        className="footer-nav-link"
                       >
                         {item.label}
                       </a>

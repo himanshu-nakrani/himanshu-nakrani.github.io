@@ -4,11 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
-import { useIsMobile } from './hooks/useIsMobile'
 import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
-import MobileAllInOnePage from './pages/MobileAllInOnePage'
 import ProjectsPage from './pages/ProjectsPage'
 import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
@@ -45,12 +43,12 @@ export default function App() {
               />
             }
           >
-            <Route path="/" element={<MobileAwareHome />} />
-            <Route path="/projects"   element={<MobileAwareRoute component={ProjectsPage}   sectionId="projects"   />} />
-            <Route path="/experience" element={<MobileAwareRoute component={ExperiencePage} sectionId="experience" />} />
-            <Route path="/profiles"   element={<MobileAwareRoute component={ProfilesPage}   sectionId="profiles"   />} />
-            <Route path="/research"   element={<MobileAwareRoute component={ResearchPage}   sectionId="research"   />} />
-            <Route path="/skills"     element={<MobileAwareRoute component={SkillsPage}     sectionId="skills"     />} />
+            <Route path="/"           element={<HomePage />} />
+            <Route path="/projects"   element={<ProjectsPage />} />
+            <Route path="/experience" element={<ExperiencePage />} />
+            <Route path="/profiles"   element={<ProfilesPage />} />
+            <Route path="/research"   element={<ResearchPage />} />
+            <Route path="/skills"     element={<SkillsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -58,19 +56,4 @@ export default function App() {
       <SpeedInsights />
     </>
   )
-}
-
-// Component that shows single page on mobile, regular home on desktop
-function MobileAwareHome() {
-  const isMobile = useIsMobile()
-  return isMobile ? <MobileAllInOnePage /> : <HomePage />
-}
-
-// Component that redirects to home on mobile, shows page on desktop
-function MobileAwareRoute({ component, sectionId }) {
-  const isMobile = useIsMobile()
-  if (isMobile) return <MobileAllInOnePage scrollToSection={sectionId} />
-
-  const RouteComponent = component
-  return <RouteComponent />
 }
