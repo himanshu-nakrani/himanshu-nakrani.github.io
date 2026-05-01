@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Tag from './Tag'
 
@@ -15,6 +15,7 @@ export default function TechStackVisualization({ skills }) {
   const [filterCategory, setFilterCategory] = useState('all')
 
   const relatedTechs = selectedTech ? techRelations[selectedTech] || [] : []
+  const relatedTechsSet = useMemo(() => new Set(relatedTechs), [relatedTechs])
 
   return (
     <div>
@@ -65,7 +66,7 @@ export default function TechStackVisualization({ skills }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {category.items.map((tech, techIndex) => {
                   const isSelected = selectedTech === tech
-                  const isRelated = relatedTechs.includes(tech)
+                  const isRelated = relatedTechsSet.has(tech)
                   const shouldHighlight = !selectedTech || isSelected || isRelated
 
                   return (
