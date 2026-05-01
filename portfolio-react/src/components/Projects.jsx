@@ -33,7 +33,7 @@ function ProjectCard({ item, index, onClick, cardRef }) {
   const isFeatured = item.badge === 'Production'
 
   return (
-    <motion.div
+    <motion.article
       ref={(el) => { ref.current = el; if (cardRef) cardRef.current = el }}
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -41,6 +41,10 @@ function ProjectCard({ item, index, onClick, cardRef }) {
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open details for ${item.title}`}
       className="glass-card"
       style={{
         padding: '1.5rem',
@@ -156,13 +160,14 @@ function ProjectCard({ item, index, onClick, cardRef }) {
           }}
         />
       )}
-    </motion.div>
+    </motion.article>
   )
 }
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
-  const triggerRef = useRef(null)
+  // Store one ref per card keyed by project title to fix the shared-ref bug
+  const cardRefs = useRef({})
 
   return (
     <>
@@ -170,11 +175,11 @@ export default function Projects() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.4rem' }}>
           {projects.map((p, i) => (
             <ProjectCard
-              key={i}
+              key={p.title}
               item={p}
               index={i}
               onClick={() => setSelectedProject(p)}
-              cardRef={triggerRef}
+              cardRef={{ get current() { return cardRefs.current[p.title] }, set current(el) { cardRefs.current[p.title] = el } }}
             />
           ))}
         </div>
@@ -184,7 +189,7 @@ export default function Projects() {
         <ProjectDetailModal
           project={selectedProject}
           onClose={() => setSelectedProject(null)}
-          triggerRef={triggerRef}
+          triggerRef={{ current: cardRefs.current[selectedProject.title] }}
         />
       )}
     </>

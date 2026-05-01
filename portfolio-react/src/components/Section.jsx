@@ -1,9 +1,27 @@
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 
 export default function Section({ id, title, subtitle, alt, children }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const reduceMotion = useReducedMotion()
+
+  // When reduceMotion is true, bypass animation entirely — no layout shift
+  const headerAnim = reduceMotion
+    ? { initial: false, animate: {} }
+    : {
+        initial: { opacity: 0, y: 32 },
+        animate: inView ? { opacity: 1, y: 0 } : {},
+        transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
+      }
+
+  const bodyAnim = reduceMotion
+    ? { initial: false, animate: {} }
+    : {
+        initial: { opacity: 0, y: 40 },
+        animate: inView ? { opacity: 1, y: 0 } : {},
+        transition: { duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] },
+      }
 
   return (
     <section id={id} style={{
@@ -12,11 +30,7 @@ export default function Section({ id, title, subtitle, alt, children }) {
       position: 'relative',
     }}>
       <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        >
+        <motion.div {...headerAnim}>
           <h2 style={{
             fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
             fontFamily: 'var(--font-display)',
@@ -40,11 +54,7 @@ export default function Section({ id, title, subtitle, alt, children }) {
             </p>
           )}
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-        >
+        <motion.div {...bodyAnim}>
           {children}
         </motion.div>
       </div>

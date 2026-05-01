@@ -1,0 +1,301 @@
+/* ============================================
+   DESIGN TOKENS SYSTEM - Single Source of Truth
+   ============================================
+   
+   This file defines all semantic design tokens consumed
+   by components. It consolidates the previous 6-mode system
+   into 2 themes (light/dark) with optional accent variants.
+   
+   Token Hierarchy:
+   1. Primitives (raw 12-step scales) - never in components
+   2. Semantic tokens (surfaces, text, borders, accent) - what components use
+   3. Typography & motion (sized utilities)
+   4. Layout & spacing (rhythm)
+*/
+
+:root {
+  /* ========================================
+     SEMANTIC COLOR TOKENS (2-tier system)
+     ======================================== */
+  
+  /* Surfaces (5 levels of depth) */
+  --color-bg: #0b0d10;              /* page background */
+  --color-surface: #13161b;         /* card/elevated element */
+  --color-surface-raised: #1a1e25;  /* hover state, modals */
+  --color-surface-elev: #1d2d45;    /* highest elevation */
+  
+  /* Borders (2 weights) */
+  --color-border: #262b33;          /* default, inactive */
+  --color-border-strong: #3d4452;   /* active, focused */
+  
+  /* Text (3 contrast levels) */
+  --color-text: #ece7dc;            /* primary, warm cream */
+  --color-text-muted: #a0a8b8;      /* secondary content */
+  --color-text-subtle: #6b7280;     /* tertiary, captions */
+  
+  /* Accent (brand color) */
+  --color-accent: #d4a24c;          /* warm amber */
+  --color-accent-fg: #0b0d10;       /* text on accent bg */
+  
+  /* Semantic status colors */
+  --color-success: #4ade80;
+  --color-warning: #facc15;
+  --color-danger: #f87171;
+  --color-info: #3b82f6;
+  
+  /* ========================================
+     TYPOGRAPHY SYSTEM (fluid scales)
+     ======================================== */
+  
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Inter Variable', ui-monospace, monospace;
+  
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Fluid type scale (clamp-based) */
+  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.75rem, 1.5rem + 1.2vw, 2.25rem);
+  --text-3xl: clamp(2.25rem, 1.8rem + 2.2vw, 3.25rem);
+  --text-4xl: clamp(2.75rem, 2rem + 3.5vw, 4.5rem);
+  
+  /* Typography rhythm */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.08em;
+  
+  /* ========================================
+     LAYOUT & SPACING (4px base scale)
+     ======================================== */
+  
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  
+  /* Container sizes */
+  --container-narrow: 720px;
+  --container: 1120px;
+  --container-wide: 1280px;
+  
+  /* Padding & margins */
+  --page-pad-x: clamp(2rem, 6vw, 4rem);
+  --page-pad-top: clamp(6rem, 12vw, 8rem);
+  --section-pad-y: clamp(4rem, 8vw, 7rem);
+  
+  /* Responsive navbar */
+  --navbar-height: 76px;
+  
+  /* ========================================
+     BORDER RADIUS (modest scale)
+     ======================================== */
+  
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  
+  /* ========================================
+     SHADOWS (carefully tuned)
+     ======================================== */
+  
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 4px 16px rgba(2, 7, 17, 0.26), 0 2px 7px rgba(2, 7, 17, 0.2);
+  --shadow-md: 0 14px 42px rgba(2, 7, 17, 0.4), 0 4px 16px rgba(2, 7, 17, 0.28);
+  --shadow-lg: 0 20px 60px rgba(2, 7, 17, 0.5);
+  
+  /* ========================================
+     MOTION & TRANSITIONS
+     ======================================== */
+  
+  --motion-duration-fast: 150ms;
+  --motion-duration-base: 240ms;
+  --motion-duration-slow: 480ms;
+  --motion-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* ========================================
+     GLASS MORPHISM (used sparingly: navbar, modals only)
+     ======================================== */
+  
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 24px;
+  --glass-saturation: 1.8;
+
+  /* ========================================
+     COMPONENT SHORTHAND ALIASES
+     (legacy tokens consumed by components)
+     Maps semantic --color-* names to the
+     short vars used throughout JSX files.
+     ======================================== */
+
+  /* Text */
+  --text:  var(--color-text);
+  --text2: var(--color-text-muted);
+  --text3: var(--color-text-subtle);
+
+  /* Backgrounds / Surfaces */
+  --bg:       var(--color-bg);
+  --bg2:      var(--color-surface);
+  --surface:  var(--color-surface);
+  --surface2: var(--color-surface-raised);
+
+  /* Borders */
+  --border:  var(--color-border);
+  --border2: var(--color-border-strong);
+
+  /* Accent */
+  --accent:  var(--color-accent);
+  --accent2: color-mix(in srgb, var(--color-accent) 70%, #6b9fff);
+  --accent3: color-mix(in srgb, var(--color-accent) 50%, #b06aff);
+
+  /* Ghost button states */
+  --ghost-border:       var(--color-border-strong);
+  --ghost-hover-border: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  --ghost-hover-bg:     color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
+
+  /* Mobile nav contact pill */
+  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
+
+  /* Cursor accent (GravityCursor --nav-dot) */
+  --nav-dot: var(--color-accent);
+
+  /* Layout max-width alias used in JSX */
+  --page-max: var(--container);
+
+  /* Display / heading typography aliases */
+  --display-weight:           var(--font-weight-bold);
+  --display-tracking:         var(--letter-spacing-tight);
+  --section-title-weight:     var(--font-weight-bold);
+  --section-title-tracking:   var(--letter-spacing-tight);
+  
+  /* ========================================
+     AMBIENT ATMOSPHERE
+     ======================================== */
+  
+  --ambient-grain-opacity: 0.08;
+  --backdrop-gradient: radial-gradient(
+    circle at 18% 8%,
+    rgba(212, 162, 76, 0.16),
+    transparent 38%
+  ), radial-gradient(
+    circle at 88% 14%,
+    rgba(212, 162, 76, 0.1),
+    transparent 42%
+  );
+  
+  /* ========================================
+     INTERACTIVE STATES
+     ======================================== */
+  
+  --state-hover-opacity: 0.08;
+  --state-active-opacity: 0.14;
+  --focus-ring: 2px solid var(--color-accent);
+  --focus-ring-offset: 2px;
+}
+
+/* ========================================
+   LIGHT THEME
+   ======================================== */
+:root[data-theme="light"] {
+  --color-bg: #f5f3f0;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f9f8f6;
+  --color-surface-elev: #f0ede8;
+  
+  --color-border: #e5ddd6;
+  --color-border-strong: #d0c4ba;
+  
+  --color-text: #1a1513;
+  --color-text-muted: #6b6359;
+  --color-text-subtle: #8f8682;
+  
+  --color-accent: #9c6b21;
+  --color-accent-fg: #ffffff;
+  
+  --shadow-sm: 0 4px 16px rgba(26, 21, 19, 0.08), 0 2px 7px rgba(26, 21, 19, 0.04);
+  --shadow-md: 0 14px 42px rgba(26, 21, 19, 0.14), 0 4px 16px rgba(26, 21, 19, 0.08);
+  
+  --backdrop-gradient: radial-gradient(
+    circle at 18% 8%,
+    rgba(156, 107, 33, 0.12),
+    transparent 38%
+  ), radial-gradient(
+    circle at 88% 14%,
+    rgba(156, 107, 33, 0.08),
+    transparent 42%
+  );
+  
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.60);
+
+  /* Ghost / pill states adjusted for light bg */
+  --ghost-hover-bg: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
+  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
+}
+
+/* ========================================
+   REDUCED TRANSPARENCY MODE
+   (respects prefers-reduced-transparency)
+   ======================================== */
+@media (prefers-reduced-transparency) {
+  :root {
+    --glass-bg: var(--color-surface);
+    --glass-border: var(--color-border);
+    --ambient-grain-opacity: 0;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION MODE
+   (respects prefers-reduced-motion)
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0ms;
+    --motion-duration-base: 0ms;
+    --motion-duration-slow: 0ms;
+  }
+  
+  * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --page-pad-x: clamp(0.875rem, 4.5vw, 1.25rem);
+    --section-pad-y: clamp(2.5rem, 9vw, 4rem);
+    --page-pad-top: clamp(4.75rem, 12vw, 6rem);
+  }
+}
