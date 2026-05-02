@@ -222,7 +222,7 @@ export const skills = [
   {
     label: 'Data & Databases',
     icon: '🗄️',
-    color: 'var(--green)',
+    color: '#4ade80',
     items: ['PostgreSQL', 'pgvector', 'SQLite', 'Vector DBs', 'Semantic Search', 'Redis', 'Pandas', 'NumPy'],
   },
   {
