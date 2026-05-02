@@ -28,9 +28,15 @@ export default function SEO({
       'twitter:image': image,
     }
 
+    // ⚡ Bolt: Pre-fetch meta tags into Map to avoid O(n) DOM queries in the loop
+    const existingMetaTags = new Map()
+    document.querySelectorAll('meta').forEach(meta => {
+      const key = meta.getAttribute('property') || meta.getAttribute('name')
+      if (key) existingMetaTags.set(key, meta)
+    })
+
     Object.entries(metaTags).forEach(([name, content]) => {
-      let meta = document.querySelector(`meta[property="${name}"]`) || 
-                  document.querySelector(`meta[name="${name}"]`)
+      let meta = existingMetaTags.get(name)
       
       if (!meta) {
         meta = document.createElement('meta')
