@@ -6,7 +6,6 @@ import Testimonials from '../components/Testimonials'
 import ArchitectureSnapshotCard from '../components/ArchitectureSnapshotCard'
 import CurrentFocus from '../components/CurrentFocus'
 import TechStack from '../components/TechStack'
-import AvailabilityCtaPanel from '../components/AvailabilityCtaPanel'
 import Contact from '../components/Contact'
 import Section from '../components/Section'
 import {
@@ -16,7 +15,6 @@ import {
   proofLinks,
   architecturePipeline,
   currentFocusItems,
-  availabilityStatus,
 } from '../data'
 
 export default function HomePage() {
@@ -51,10 +49,6 @@ export default function HomePage() {
       <Section id="tech" title="Tech Stack" subtitle="Tools and technologies I work with" alt>
         <TechStack />
       </Section>
-
-      <section style={{ padding: '4rem 0' }}>
-        <AvailabilityCtaPanel status={availabilityStatus} />
-      </section>
 
       <Contact />
     </>

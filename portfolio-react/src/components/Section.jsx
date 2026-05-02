@@ -1,12 +1,22 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 
+const sectionNumbers = {}
+let sectionCounter = 0
+
+function getSectionNumber(id) {
+  if (!sectionNumbers[id]) {
+    sectionCounter++
+    sectionNumbers[id] = String(sectionCounter).padStart(2, '0')
+  }
+  return sectionNumbers[id]
+}
+
 export default function Section({ id, title, subtitle, alt, children }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
-  // When reduceMotion is true, bypass animation entirely — no layout shift
   const headerAnim = reduceMotion
     ? { initial: false, animate: {} }
     : {
@@ -23,6 +33,8 @@ export default function Section({ id, title, subtitle, alt, children }) {
         transition: { duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] },
       }
 
+  const num = id ? getSectionNumber(id) : null
+
   return (
     <section id={id} style={{
       padding: 'var(--section-pad-y) var(--page-pad-x)',
@@ -31,6 +43,11 @@ export default function Section({ id, title, subtitle, alt, children }) {
     }}>
       <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
         <motion.div {...headerAnim}>
+          {num && (
+            <div className="section-kicker">
+              {num} {title}
+            </div>
+          )}
           <h2 style={{
             fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
             fontFamily: 'var(--font-display)',
@@ -49,6 +66,8 @@ export default function Section({ id, title, subtitle, alt, children }) {
               marginBottom: '3rem',
               lineHeight: 1.7,
               fontWeight: 500,
+              borderLeft: '2px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
+              paddingLeft: '1rem',
             }}>
               {subtitle}
             </p>

@@ -23,10 +23,17 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
 
 export default function Navbar({ isDark, setIsDark }) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
   const reduceMotion = useReducedMotion()
   const hamburgerRef = useRef(null)
   const menuRef = useRef(null)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const isPageActive = (label) => {
     if (label === 'Projects')    return location.pathname === '/projects'
@@ -59,13 +66,10 @@ export default function Navbar({ isDark, setIsDark }) {
     window.history.replaceState(null, '', `/#${id}`)
   }
 
-  // Close menu on route change
   useEffect(() => { setOpen(false) }, [location.pathname])
 
-  // Focus trap inside mobile menu
   useEffect(() => {
     if (!open) return
-    // Move focus to first focusable item in menu
     requestAnimationFrame(() => {
       const focusable = menuRef.current?.querySelectorAll(FOCUSABLE)
       focusable?.[0]?.focus()
@@ -123,14 +127,17 @@ export default function Navbar({ isDark, setIsDark }) {
             borderRadius: 9999,
             position: 'relative',
             overflow: 'hidden',
-            transition: 'box-shadow 0.25s ease',
+            transition: 'box-shadow 0.3s ease',
+            boxShadow: scrolled
+              ? '0 8px 36px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.06) inset'
+              : '0 4px 16px rgba(0,0,0,0.14)',
           }}
         >
           {/* Logo */}
           <MotionNavLink
             to="/"
-            whileHover={{ opacity: 0.9 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ opacity: 0.85 }}
+            whileTap={{ scale: 0.97 }}
             onClick={() => setOpen(false)}
             style={{
               display: 'flex',
@@ -141,15 +148,30 @@ export default function Navbar({ isDark, setIsDark }) {
               paddingRight: 8,
             }}
           >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: 'var(--color-accent)',
-                flexShrink: 0,
-              }}
-            />
+            {/* Dot with pulse ring */}
+            <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
+              <span
+                className="nav-logo-dot-ring"
+                style={{
+                  position: 'absolute',
+                  inset: -3,
+                  borderRadius: '50%',
+                  background: 'transparent',
+                  border: '1.5px solid color-mix(in srgb, var(--color-accent) 45%, transparent)',
+                }}
+              />
+              <span
+                style={{
+                  display: 'block',
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: 'var(--color-accent)',
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              />
+            </span>
             <span
               style={{
                 fontWeight: 700,
@@ -178,49 +200,36 @@ export default function Navbar({ isDark, setIsDark }) {
                 padding: '0 4px',
                 minWidth: 0,
                 overflowX: 'auto',
+                position: 'relative',
               }}
             >
               {navLinks.map((item) => {
                 const active = isPageActive(item.label)
                 return (
-                  <li key={item.label} style={{ flexShrink: 0 }}>
+                  <li key={item.label} style={{ flexShrink: 0, position: 'relative' }}>
                     <MotionNavLink
                       to={item.to}
-                      whileTap={{ scale: 0.98 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={(event) => handleNavClick(item, event)}
                       aria-current={active ? 'page' : undefined}
                       style={{
-                        display: 'flex',
-                        flexDirection: 'column',
+                        display: 'inline-flex',
                         alignItems: 'center',
-                        justifyContent: 'flex-start',
-                        minWidth: 52,
-                        padding: '4px 10px 6px',
+                        justifyContent: 'center',
+                        padding: '6px 12px',
                         textDecoration: 'none',
                         fontSize: '0.8125rem',
                         fontWeight: active ? 600 : 500,
                         color: active ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                        transition: 'color 0.2s ease',
-                        borderRadius: 8,
-                        background: active ? 'color-mix(in srgb, var(--color-accent) 10%, transparent)' : 'transparent',
+                        transition: 'color 0.2s ease, background 0.2s ease',
+                        borderRadius: 9999,
+                        background: active
+                          ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)'
+                          : 'transparent',
                         position: 'relative',
                       }}
                     >
-                      <span style={{ lineHeight: 1.2 }}>{item.label}</span>
-                      {/* Active underline indicator */}
-                      <span
-                        style={{
-                          position: 'absolute',
-                          bottom: 2,
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          width: active ? '60%' : '0%',
-                          height: 2,
-                          borderRadius: 2,
-                          background: 'var(--color-accent)',
-                          transition: 'width 0.22s var(--motion-ease-out)',
-                        }}
-                      />
+                      {item.label}
                     </MotionNavLink>
                   </li>
                 )
@@ -244,13 +253,14 @@ export default function Navbar({ isDark, setIsDark }) {
             <MotionNavLink
               to={contactItem.to}
               whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileTap={{ scale: 0.97 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
-              className="glass-btn"
+              className="glass-btn-primary"
               style={{
-                display: 'inline-block',
-                color: 'var(--color-text)',
-                padding: '8px 16px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                color: '#fff',
+                padding: '7px 16px',
                 borderRadius: 9999,
                 textDecoration: 'none',
                 fontSize: '0.8125rem',
@@ -295,14 +305,15 @@ export default function Navbar({ isDark, setIsDark }) {
         </motion.div>
 
         {/* Mobile dropdown menu */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {open && (
             <motion.div
               ref={menuRef}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18 }}
+              key="mobile-menu"
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
               className="nav-mobile-only glass"
               style={{
                 marginTop: 10,
@@ -321,10 +332,9 @@ export default function Navbar({ isDark, setIsDark }) {
                   const active = !item.isContact && isPageActive(item.label)
                   return (
                     <li key={item.label}>
-                      <MotionNavLink
+                      <NavLink
                         to={item.to}
                         onClick={(event) => handleNavClick(item, event)}
-                        whileHover={{ x: 2 }}
                         aria-current={active ? 'page' : undefined}
                         style={{
                           display: 'flex',
@@ -337,20 +347,21 @@ export default function Navbar({ isDark, setIsDark }) {
                           fontSize: '0.9rem',
                           fontWeight: (item.isContact || active) ? 600 : 500,
                           background: item.isContact
-                            ? 'var(--pill-contact-mobile-bg)'
+                            ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)'
                             : active
                             ? 'color-mix(in srgb, var(--color-accent) 8%, transparent)'
                             : 'transparent',
-                          border: item.isContact ? '1px solid var(--ghost-border)' : 'none',
+                          border: item.isContact ? '1px solid color-mix(in srgb, var(--color-accent) 30%, var(--ghost-border))' : 'none',
                           textAlign: item.isContact ? 'center' : 'left',
                           minHeight: item.isContact ? 48 : 44,
                           borderLeft: (!item.isContact && active)
                             ? '2px solid var(--color-accent)'
                             : (!item.isContact ? '2px solid transparent' : 'none'),
+                          transition: 'color 0.2s, background 0.2s',
                         }}
                       >
                         {item.label}
-                      </MotionNavLink>
+                      </NavLink>
                     </li>
                   )
                 })}
@@ -363,6 +374,17 @@ export default function Navbar({ isDark, setIsDark }) {
       <style>{`
         .nav-pill-links::-webkit-scrollbar { display: none; }
         .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes nav-dot-ring {
+          0% { transform: scale(1); opacity: 0.6; }
+          50% { transform: scale(2.2); opacity: 0; }
+          100% { transform: scale(1); opacity: 0; }
+        }
+        .nav-logo-dot-ring {
+          animation: nav-dot-ring 2.8s ease-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .nav-logo-dot-ring { animation: none; }
+        }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }
