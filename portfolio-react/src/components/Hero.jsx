@@ -4,28 +4,50 @@ import { ChevronDown } from 'lucide-react'
 function HeroPhoto({ src, alt, size = 280, style: extraStyle }) {
   return (
     <div
-      className="hero-photo"
+      className="hero-photo-wrapper"
       style={{
-        width: size,
-        borderRadius: 'var(--radius-lg)',
-        overflow: 'hidden',
-        flexShrink: 0,
-        border: '2px solid var(--border2)',
         position: 'relative',
-        zIndex: 1,
+        flexShrink: 0,
+        alignSelf: 'flex-start',
+        marginTop: '3rem',
         ...extraStyle,
       }}
     >
-      {/* Above-the-fold: eager load, explicit height prevents layout shift */}
-      <img
-        src={src}
-        alt={alt}
-        loading="eager"
-        fetchPriority="high"
-        width={size}
-        height={size}
-        style={{ width: '100%', height: 'auto', display: 'block' }}
+      {/* Ambient glow behind photo */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: '-20px',
+          borderRadius: 'var(--radius-lg)',
+          background: 'radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--color-accent) 22%, transparent) 0%, transparent 70%)',
+          filter: 'blur(24px)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
       />
+      <div
+        className="hero-photo"
+        style={{
+          width: size,
+          borderRadius: 'var(--radius-lg)',
+          overflow: 'hidden',
+          border: '2px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border-strong))',
+          position: 'relative',
+          zIndex: 1,
+          boxShadow: '0 24px 64px rgba(0,0,0,0.35), 0 0 0 1px color-mix(in srgb, var(--color-accent) 12%, transparent)',
+        }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading="eager"
+          fetchPriority="high"
+          width={size}
+          height={size}
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+        />
+      </div>
     </div>
   )
 }
@@ -73,36 +95,15 @@ export default function Hero() {
         initial="hidden"
         animate="show"
       >
+        {/* Kicker */}
         <motion.div variants={fadeUp}>
-          <span
-            style={{
-              display: 'inline-block',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.8rem',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--text2)',
-              marginBottom: '2rem',
-              fontWeight: 500,
-              position: 'relative',
-              paddingLeft: '1.5rem',
-            }}
-          >
-            <span
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '1rem',
-                height: '1px',
-                background: 'var(--accent)',
-              }}
-            />
+          <span className="hero-kicker">
+            <span className="hero-kicker-line" aria-hidden="true" />
             Generative AI Engineer
           </span>
         </motion.div>
 
+        {/* Name */}
         <motion.h1
           variants={fadeUp}
           style={{
@@ -119,6 +120,7 @@ export default function Hero() {
           Himanshu Nakrani
         </motion.h1>
 
+        {/* Tagline */}
         <motion.p
           variants={fadeUp}
           style={{
@@ -128,11 +130,14 @@ export default function Hero() {
             marginBottom: '2.2rem',
             lineHeight: 1.75,
             fontWeight: 400,
+            borderLeft: '2px solid color-mix(in srgb, var(--color-accent) 45%, transparent)',
+            paddingLeft: '1rem',
           }}
         >
           Production AI engineer focused on LLMs, RAG, and Text-to-SQL—from research ideas to systems used by real users.
         </motion.p>
 
+        {/* CTAs */}
         <motion.div
           variants={fadeUp}
           style={{
@@ -163,6 +168,7 @@ export default function Hero() {
           </a>
         </motion.div>
 
+        {/* Stats */}
         <motion.div
           variants={fadeUp}
           style={{
@@ -173,10 +179,11 @@ export default function Hero() {
             borderTop: '1px solid color-mix(in srgb, var(--border2) 80%, transparent)',
           }}
         >
-          {stats.map((s, i) => (
+          {stats.map((s) => (
             <motion.div
               key={s.label}
               variants={fadeUp}
+              className="hero-stat"
               style={{ minWidth: 'min-content' }}
             >
               <div
@@ -185,7 +192,7 @@ export default function Hero() {
                   fontFamily: 'var(--font-display)',
                   fontWeight: 'var(--display-weight)',
                   lineHeight: 1,
-                  color: 'var(--text)',
+                  color: 'var(--color-accent)',
                   fontVariantNumeric: 'tabular-nums',
                   marginBottom: 'clamp(0.375rem, 1.5vw, 0.5rem)',
                 }}
@@ -210,7 +217,7 @@ export default function Hero() {
       </motion.div>
 
       <motion.div variants={fadeScale} initial="hidden" animate="show">
-        <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} style={{ alignSelf: 'flex-start', marginTop: '3rem' }} />
+        <HeroPhoto src="/himanshu.jpg" alt="Himanshu Nakrani" size={336} />
       </motion.div>
 
       {/* Scroll indicator */}
@@ -231,24 +238,58 @@ export default function Hero() {
           zIndex: 2,
         }}
       >
-        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500 }}>
+        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, opacity: 0.6 }}>
           Scroll
         </span>
         <motion.div
           animate={reduceMotion ? {} : { y: [0, 6, 0] }}
           transition={reduceMotion ? {} : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ChevronDown size={18} style={{ opacity: 0.6 }} />
+          <ChevronDown size={18} style={{ opacity: 0.5 }} />
         </motion.div>
       </motion.div>
 
       <style>{`
+        .hero-kicker {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          font-family: var(--font-mono);
+          font-size: 0.8rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--color-accent);
+          margin-bottom: 2rem;
+          font-weight: 600;
+        }
+        .hero-kicker-line {
+          display: inline-block;
+          width: 1.5rem;
+          height: 1.5px;
+          background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, transparent));
+          border-radius: 2px;
+          flex-shrink: 0;
+        }
+        .hero-stat {
+          position: relative;
+          padding-right: clamp(1.5rem, 4vw, 3rem);
+        }
+        .hero-stat:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 1px;
+          height: 60%;
+          background: color-mix(in srgb, var(--color-border-strong) 60%, transparent);
+        }
         .hero-cta {
           display: inline-flex;
           align-items: center;
           justify-content: center;
           min-height: 44px;
-          padding: 0.7rem 1.2rem;
+          padding: 0.7rem 1.4rem;
           border-radius: 999px;
           font-size: 0.88rem;
           font-weight: 600;
@@ -256,28 +297,11 @@ export default function Hero() {
           position: relative;
           overflow: hidden;
         }
-        .hero-cta-primary { color: #f8fbff; }
-        .hero-cta-primary::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          background: linear-gradient(174deg, rgba(255,255,255,0.22) 0%, transparent 50%);
-          pointer-events: none;
-        }
-        .hero-cta-primary:hover {
-          transform: translateY(-1px);
-          filter: saturate(1.06) brightness(1.04);
-        }
+        .hero-cta-primary { color: #fff; }
         .hero-cta-secondary {
           color: var(--text);
           border-color: var(--ghost-border);
           background: color-mix(in srgb, var(--surface2) 58%, transparent);
-        }
-        .hero-cta-secondary:hover {
-          border-color: var(--ghost-hover-border);
-          background: var(--ghost-hover-bg);
-          transform: translateY(-1px);
         }
         @media (max-width: 768px) {
           #about {
@@ -288,7 +312,10 @@ export default function Hero() {
           }
           .hero-copy { width: 100%; }
           .hero-photo { width: 216px !important; height: auto !important; align-self: center; order: -1; }
+          .hero-photo-wrapper { align-self: center !important; margin-top: 0 !important; order: -1; }
           .hero-cta { width: 100%; }
+          .hero-stat:not(:last-child)::after { display: none; }
+          .hero-stat { padding-right: 0; }
         }
         @media (max-width: 480px) {
           #about {

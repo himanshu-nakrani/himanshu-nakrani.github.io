@@ -12,7 +12,21 @@ export default function Contact() {
   return (
     <Section id="contact" title="Get in Touch" alt>
       <div style={{ textAlign: 'center', position: 'relative' }}>
-          <div
+        {/* Ambient bloom */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '60%', height: '120%',
+            background: 'radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--color-accent) 10%, transparent) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+        <div
           className="glass-card"
           style={{
             position: 'relative',
@@ -21,6 +35,7 @@ export default function Contact() {
             padding: 'clamp(1.4rem, 4vw, 2.2rem)',
             maxWidth: 860,
             margin: '0 auto',
+            boxShadow: 'var(--shadow-md), 0 0 0 1px color-mix(in srgb, var(--color-accent) 8%, transparent) inset',
           }}
         >
           <p
@@ -29,10 +44,14 @@ export default function Contact() {
               fontSize: '0.76rem',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: 'var(--accent2)',
+              color: 'var(--color-accent)',
               marginBottom: '0.85rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
             }}
           >
+            <span style={{ display: 'inline-block', width: '1.25rem', height: '1.5px', background: 'var(--color-accent)', borderRadius: 2 }} />
             Available for impactful AI work
           </p>
           <h3
@@ -91,32 +110,21 @@ export default function Contact() {
       
       <style>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         .contact-pill-link {
           display: inline-flex;
           align-items: center;
           justify-content: center;
           min-height: 44px;
-          padding: 0.52rem 0.95rem;
+          padding: 0.52rem 1.1rem;
           border-radius: 999px;
           border: 1px solid var(--glass-border);
-          background:
-            linear-gradient(
-              145deg,
-              color-mix(in srgb, var(--surface2) 60%, transparent) 0%,
-              color-mix(in srgb, var(--surface) 48%, transparent) 100%
-            );
+          background: color-mix(in srgb, var(--color-surface) 60%, transparent);
           backdrop-filter: blur(16px) saturate(var(--glass-saturation));
           -webkit-backdrop-filter: blur(16px) saturate(var(--glass-saturation));
-          box-shadow:
-            0 2px 12px color-mix(in srgb, var(--glass-shadow) 40%, transparent),
-            inset 0 1px 0 var(--glass-specular);
+          box-shadow: 0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
           color: var(--text);
           text-decoration: none;
           font-size: 0.84rem;
@@ -126,25 +134,24 @@ export default function Contact() {
           overflow: hidden;
           transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
                       box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-                      border-color 0.22s ease;
+                      border-color 0.22s ease,
+                      color 0.22s ease;
         }
         .contact-pill-link::before {
           content: '';
           position: absolute;
           inset: 0;
           border-radius: inherit;
-          background: linear-gradient(174deg, var(--glass-highlight) 0%, transparent 50%);
+          background: linear-gradient(174deg, rgba(255,255,255,0.1) 0%, transparent 50%);
           pointer-events: none;
           opacity: 0.5;
           transition: opacity 0.22s ease;
         }
         .contact-pill-link:hover {
-          border-color: color-mix(in srgb, var(--accent) 35%, var(--glass-border));
-          color: var(--accent2);
+          border-color: color-mix(in srgb, var(--color-accent) 45%, var(--glass-border));
+          color: var(--color-accent);
           transform: translateY(-2px);
-          box-shadow:
-            0 6px 20px color-mix(in srgb, var(--glass-shadow) 60%, transparent),
-            inset 0 1px 0 var(--glass-specular);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.2), 0 0 0 1px color-mix(in srgb, var(--color-accent) 15%, transparent);
         }
         .contact-pill-link:hover::before {
           opacity: 1;

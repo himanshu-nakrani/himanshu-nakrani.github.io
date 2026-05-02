@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Github, Linkedin, Mail, FileText } from 'lucide-react'
 import AmbientAtmosphere from '../components/AmbientAtmosphere'
@@ -44,7 +44,6 @@ export default function MainLayout({ isDark, setIsDark }) {
         const top = el.getBoundingClientRect().top + window.scrollY - navbarHeight - 8
         window.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'auto' : 'smooth' })
       }
-      // Paint route first, then scroll (double rAF — faster than setTimeout)
       let raf2 = 0
       const raf1 = requestAnimationFrame(() => {
         raf2 = requestAnimationFrame(scrollToTarget)
@@ -56,6 +55,14 @@ export default function MainLayout({ isDark, setIsDark }) {
     }
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [location.pathname, location.hash, reduceMotion])
+
+  const pageVariants = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 10 },
+        animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
+        exit: { opacity: 0, y: -6, transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } },
+      }
 
   return (
     <>
@@ -70,7 +77,17 @@ export default function MainLayout({ isDark, setIsDark }) {
           />
 
           <main id="main-content">
-            <Outlet />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={location.pathname}
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Outlet />
+              </motion.div>
+            </AnimatePresence>
           </main>
 
           <BackToTop />
@@ -90,6 +107,19 @@ export default function MainLayout({ isDark, setIsDark }) {
               borderBottom: 'none',
             }}
           >
+            {/* Footer accent glow */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: '30%',
+                right: '30%',
+                height: 1,
+                background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 40%, transparent), transparent)',
+                pointerEvents: 'none',
+              }}
+            />
             <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
               <div style={{
                 display: 'grid',
@@ -99,7 +129,13 @@ export default function MainLayout({ isDark, setIsDark }) {
               }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent)' }} />
+                    <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
+                      <span style={{
+                        position: 'absolute', inset: -3, borderRadius: '50%',
+                        border: '1.5px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
+                      }} />
+                      <span style={{ display: 'block', width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent)', position: 'relative', zIndex: 1 }} />
+                    </span>
                     <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
                       HN.AI
                     </span>
@@ -115,11 +151,7 @@ export default function MainLayout({ isDark, setIsDark }) {
                   </h4>
                   <nav aria-label="Footer navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {footerNav.map(item => (
-                      <a
-                        key={item.label}
-                        href={item.href}
-                        className="footer-nav-link"
-                      >
+                      <a key={item.label} href={item.href} className="footer-nav-link">
                         {item.label}
                       </a>
                     ))}
@@ -140,17 +172,14 @@ export default function MainLayout({ isDark, setIsDark }) {
                         aria-label={label}
                         className="glass-btn"
                         style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--color-text-muted)',
-                          textDecoration: 'none',
-                          position: 'relative',
-                          overflow: 'hidden',
+                          width: 40, height: 40, borderRadius: '50%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          color: 'var(--color-text-muted)', textDecoration: 'none',
+                          position: 'relative', overflow: 'hidden',
+                          transition: 'color 0.2s, border-color 0.2s, transform 0.2s',
                         }}
+                        onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-accent)' }}
+                        onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-text-muted)' }}
                       >
                         <Icon size={16} style={{ position: 'relative', zIndex: 1 }} />
                       </a>
@@ -172,14 +201,12 @@ export default function MainLayout({ isDark, setIsDark }) {
                   © {new Date().getFullYear()} Himanshu Nakrani
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: '0.75rem', opacity: 0.6 }}>Built with</span>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.5 }}>Built with</span>
                   {builtWith.map(tech => (
                     <span
                       key={tech}
                       style={{
-                        fontSize: '0.68rem',
-                        padding: '2px 8px',
-                        borderRadius: 9999,
+                        fontSize: '0.68rem', padding: '2px 8px', borderRadius: 9999,
                         border: '1px solid var(--color-border)',
                         background: 'var(--color-surface)',
                         color: 'var(--color-text-muted)',

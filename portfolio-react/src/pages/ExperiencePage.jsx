@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import Tag from '../components/Tag'
 import PageHeader from '../components/PageHeader'
 import HighlightedText from '../components/HighlightedText'
@@ -19,17 +20,20 @@ function ExperienceEntry({ item, index }) {
         position: 'relative',
         borderRadius: 16,
         border: '1px solid',
-        borderColor: open ? 'var(--border2)' : 'var(--border)',
-        background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        borderColor: open ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--border)',
+        background: open
+          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 4%, var(--surface)) 0%, var(--surface2) 100%)'
+          : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
         overflow: 'hidden',
-        transition: 'border-color 0.2s',
+        transition: 'border-color 0.25s, background 0.25s',
+        boxShadow: open ? 'var(--shadow-sm)' : 'none',
       }}
     >
       {/* Top accent bar */}
       <div style={{
         height: 3,
-        background: 'linear-gradient(90deg, var(--nav-dot) 0%, var(--accent) 50%, transparent 100%)',
-        opacity: open ? 1 : 0.5,
+        background: 'linear-gradient(90deg, var(--color-accent) 0%, color-mix(in srgb, var(--color-accent) 40%, transparent) 100%)',
+        opacity: open ? 1 : 0.3,
         transition: 'opacity 0.3s',
       }} />
 
@@ -50,7 +54,7 @@ function ExperienceEntry({ item, index }) {
           </h3>
           {item.progression && progressionSteps.length === 0 && (
             <p style={{
-              fontSize: '0.72rem', color: 'var(--accent)', fontFamily: "'Fira Code', monospace",
+              fontSize: '0.72rem', color: 'var(--color-accent)', fontFamily: 'var(--font-mono)',
               marginBottom: 6, lineHeight: 1.5,
             }}>
               {item.progression}
@@ -63,18 +67,14 @@ function ExperienceEntry({ item, index }) {
                 return (
                   <span
                     key={step}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 5,
-                    }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}
                   >
                     <span
                       style={{
                         fontSize: '0.66rem',
-                        color: isCurrent ? 'var(--accent2)' : 'var(--text2)',
-                        border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--accent2) 68%, transparent)' : 'var(--border)'}`,
-                        background: isCurrent ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
+                        color: isCurrent ? 'var(--color-accent)' : 'var(--text2)',
+                        border: `1px solid ${isCurrent ? 'color-mix(in srgb, var(--color-accent) 50%, transparent)' : 'var(--border)'}`,
+                        background: isCurrent ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'color-mix(in srgb, var(--surface2) 72%, transparent)',
                         borderRadius: 9999,
                         padding: '4px 8px',
                         fontFamily: 'var(--font-mono)',
@@ -84,7 +84,9 @@ function ExperienceEntry({ item, index }) {
                     >
                       {step}
                     </span>
-                    {idx < progressionSteps.length - 1 && <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>}
+                    {idx < progressionSteps.length - 1 && (
+                      <span style={{ color: 'var(--text2)', opacity: 0.5, fontSize: '0.72rem' }}>→</span>
+                    )}
                   </span>
                 )
               })}
@@ -98,17 +100,19 @@ function ExperienceEntry({ item, index }) {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flexShrink: 0 }}>
           <span style={{
-            fontFamily: "'Fira Code', monospace", fontSize: '0.72rem', color: 'var(--nav-dot)',
-            background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.28)',
+            fontFamily: 'var(--font-mono)', fontSize: '0.72rem', color: 'var(--color-accent)',
+            background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 28%, transparent)',
             padding: '5px 12px', borderRadius: 9999, whiteSpace: 'nowrap',
           }}>
             {item.period}
           </span>
           <span style={{
-            fontSize: '0.75rem', color: 'var(--text2)', opacity: 0.6,
-            fontFamily: "'Fira Code', monospace",
+            display: 'inline-flex', alignItems: 'center', gap: 4,
+            fontSize: '0.73rem', color: 'var(--text2)', opacity: 0.6,
           }}>
-            {open ? '▲ collapse' : '▼ expand'}
+            {open ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            {open ? 'collapse' : 'expand'}
           </span>
         </div>
       </button>
@@ -126,29 +130,27 @@ function ExperienceEntry({ item, index }) {
             style={{ overflow: 'hidden' }}
           >
             <div style={{ padding: '0 1.6rem 1.6rem' }}>
-              <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, var(--border), transparent)', marginBottom: '1.4rem' }} />
+              <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 25%, var(--border)), transparent)', marginBottom: '1.4rem' }} />
 
-              {/* Description */}
               {item.description && (
                 <p style={{
                   fontSize: '0.92rem', color: 'var(--text2)', lineHeight: 1.7,
                   marginBottom: '1.5rem',
                   padding: '1rem 1.2rem',
-                  background: 'color-mix(in srgb, var(--accent) 5%, var(--surface))',
-                  borderLeft: '3px solid var(--accent)',
+                  background: 'color-mix(in srgb, var(--color-accent) 5%, var(--surface))',
+                  borderLeft: '3px solid var(--color-accent)',
                   borderRadius: '0 8px 8px 0',
                 }}>
                   {item.description}
                 </p>
               )}
 
-              {/* Bullets */}
               {item.bullets && (
                 <div style={{ marginBottom: '1.5rem' }}>
                   <p style={{
-                    fontSize: '0.72rem', fontWeight: 700, color: 'var(--text2)',
+                    fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-accent)',
                     textTransform: 'uppercase', letterSpacing: '0.12em',
-                    marginBottom: '0.9rem', opacity: 0.6,
+                    marginBottom: '0.9rem',
                   }}>
                     Key Achievements
                   </p>
@@ -161,7 +163,7 @@ function ExperienceEntry({ item, index }) {
                         <span style={{
                           flexShrink: 0, marginTop: '0.55em',
                           width: 6, height: 6, borderRadius: '50%',
-                          background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
+                          background: 'var(--color-accent)',
                         }} />
                         <HighlightedText text={bullet} />
                       </li>
@@ -170,13 +172,12 @@ function ExperienceEntry({ item, index }) {
                 </div>
               )}
 
-              {/* Tags */}
               {item.tags && (
                 <div>
                   <p style={{
-                    fontSize: '0.72rem', fontWeight: 700, color: 'var(--text2)',
+                    fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-accent)',
                     textTransform: 'uppercase', letterSpacing: '0.12em',
-                    marginBottom: '0.75rem', opacity: 0.6,
+                    marginBottom: '0.75rem',
                   }}>
                     Tech Stack
                   </p>
@@ -207,7 +208,7 @@ export default function ExperiencePage() {
         <div style={{
           position: 'absolute', left: 6, top: 12, bottom: 12, width: 2,
           borderRadius: 2,
-          background: 'linear-gradient(to bottom, var(--nav-dot), var(--accent) 35%, var(--border))',
+          background: 'linear-gradient(to bottom, var(--color-accent), color-mix(in srgb, var(--color-accent) 30%, var(--border)) 60%, var(--border))',
         }} />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
@@ -215,18 +216,44 @@ export default function ExperiencePage() {
             <div key={`${item.company}-${i}`} style={{ position: 'relative' }}>
               {/* Timeline dot */}
               <div style={{
-                position: 'absolute', left: -34, top: 22,
+                position: 'absolute', left: -34, top: 24,
                 width: 14, height: 14, borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--nav-dot), var(--accent))',
+                background: i === 0 ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-accent) 50%, var(--color-border))',
                 border: '3px solid var(--bg)',
-                boxShadow: '0 0 0 2px var(--bg)',
+                boxShadow: i === 0
+                  ? `0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent)`
+                  : '0 0 0 2px var(--bg)',
                 zIndex: 2,
               }} />
+              {/* Pulse on first/most recent */}
+              {i === 0 && (
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute', left: -40, top: 18,
+                    width: 26, height: 26, borderRadius: '50%',
+                    border: '2px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
+                    animation: 'timeline-pulse 2.5s ease-out infinite',
+                    zIndex: 1,
+                  }}
+                />
+              )}
               <ExperienceEntry item={item} index={i} />
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes timeline-pulse {
+          0% { transform: scale(1); opacity: 0.8; }
+          70% { transform: scale(1.6); opacity: 0; }
+          100% { transform: scale(1.6); opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes timeline-pulse { 0%, 100% { opacity: 0; } }
+        }
+      `}</style>
     </section>
   )
 }
