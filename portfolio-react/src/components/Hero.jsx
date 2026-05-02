@@ -1,18 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ChevronDown, Github, Linkedin, FileText, Mail } from 'lucide-react'
+import { ChevronDown, Github, Linkedin } from 'lucide-react'
 
 const stats = [
   { num: '2+', label: 'Years exp.', icon: '🏗️' },
   { num: '100+', label: 'Users served', icon: '👥' },
   { num: '75%', label: 'Latency cut', icon: '⚡' },
   { num: '2', label: 'Publications', icon: '📄' },
-]
-
-const quickLinks = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com/himanshu-nakrani' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
-  { icon: Mail, label: 'Email', href: 'mailto:himanshunakrani0@gmail.com' },
-  { icon: FileText, label: 'Resume', href: '/resume.pdf' },
 ]
 
 /* ─── Desktop layout (≥ 769px) ───────────────────────────────── */
@@ -220,23 +213,6 @@ function MobileHero({ reduceMotion }) {
             <span className="mobile-stat-num">{s.num}</span>
             <span className="mobile-stat-label">{s.label}</span>
           </div>
-        ))}
-      </motion.div>
-
-      {/* ── Quick links ── */}
-      <motion.div variants={up} className="mobile-hero-links">
-        {quickLinks.map(({ icon: Icon, label, href }) => (
-          <a
-            key={label}
-            href={href}
-            target={href.startsWith('mailto') || href.startsWith('/') ? undefined : '_blank'}
-            rel={href.startsWith('mailto') || href.startsWith('/') ? undefined : 'noopener noreferrer'}
-            aria-label={label}
-            className="mobile-quick-link"
-          >
-            <Icon size={17} />
-            <span>{label}</span>
-          </a>
         ))}
       </motion.div>
 
@@ -618,36 +594,6 @@ export default function Hero() {
           font-weight: 500;
         }
 
-        /* Quick links */
-        .mobile-hero-links {
-          display: flex;
-          gap: 0.5rem;
-          flex-wrap: wrap;
-          justify-content: center;
-          margin-bottom: 1.5rem;
-        }
-        .mobile-quick-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.35rem;
-          padding: 0.45rem 0.9rem;
-          border-radius: 999px;
-          border: 1px solid var(--border);
-          background: color-mix(in srgb, var(--surface2) 65%, transparent);
-          color: var(--text2);
-          text-decoration: none;
-          font-size: 0.78rem;
-          font-weight: 500;
-          transition: border-color 0.2s, color 0.2s, background 0.2s;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .mobile-quick-link:active {
-          background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-          border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
-          color: var(--color-accent);
-        }
-
         /* Scroll nudge */
         .mobile-scroll-nudge {
           display: flex;
@@ -667,9 +613,6 @@ export default function Hero() {
         :root[data-theme="light"] .mobile-hero-badge {
           background: rgba(255,255,255,0.9);
           box-shadow: 0 4px 16px rgba(26,21,19,0.12);
-        }
-        :root[data-theme="light"] .mobile-quick-link {
-          background: rgba(255,255,255,0.7);
         }
         :root[data-theme="light"] .mobile-hero-photo-frame {
           box-shadow:
