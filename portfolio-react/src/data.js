@@ -92,7 +92,7 @@ export const projects = [
     fullDesc: 'Agent Forge empowers teams to build, test, and deploy AI agents without writing code. Features drag-and-drop workflow design, real-time observability, and comprehensive evaluation metrics.',
     tags: ['AI Agents', 'Google ADK', 'LangChain', 'Observability'], 
     techStack: ['Google ADK', 'LangChain', 'FastAPI', 'React', 'PostgreSQL', 'WebSocket'],
-    badge: 'In Progress', 
+    badge: 'Production', 
     link: null,
     features: [
       'Visual workflow builder with drag-and-drop interface',
