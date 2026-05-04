@@ -1,21 +1,25 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Command } from 'cmdk'
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
-  Search, Command as CommandIcon, ArrowRight
+  Search, Command as CommandIcon, ArrowRight, CornerDownLeft
 } from 'lucide-react'
 import { projects, skills, experience } from '../data'
 
+/**
+ * CommandPalette — lightweight command palette built with React + framer-motion
+ * No external dependencies required. Supports fuzzy search, keyboard navigation.
+ */
+
 const pages = [
-  { id: 'home', name: 'Home', icon: Home, path: '/', keywords: ['start', 'main'] },
-  { id: 'experience', name: 'Experience', icon: Briefcase, path: '/experience', keywords: ['work', 'jobs', 'career'] },
-  { id: 'skills', name: 'Skills', icon: Code2, path: '/skills', keywords: ['tech', 'stack', 'languages'] },
-  { id: 'projects', name: 'Projects', icon: FolderGit2, path: '/projects', keywords: ['portfolio', 'work', 'apps'] },
-  { id: 'research', name: 'Research', icon: BookOpen, path: '/research', keywords: ['papers', 'publications'] },
-  { id: 'profiles', name: 'Profiles', icon: User, path: '/profiles', keywords: ['social', 'links', 'contact'] },
+  { id: 'home', name: 'Home', icon: Home, path: '/', keywords: 'start main home' },
+  { id: 'experience', name: 'Experience', icon: Briefcase, path: '/experience', keywords: 'work jobs career' },
+  { id: 'skills', name: 'Skills', icon: Code2, path: '/skills', keywords: 'tech stack languages' },
+  { id: 'projects', name: 'Projects', icon: FolderGit2, path: '/projects', keywords: 'portfolio work apps' },
+  { id: 'research', name: 'Research', icon: BookOpen, path: '/research', keywords: 'papers publications' },
+  { id: 'profiles', name: 'Profiles', icon: User, path: '/profiles', keywords: 'social links contact' },
 ]
 
 const quickActions = [
@@ -27,369 +31,360 @@ const quickActions = [
 export default function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const [selectedIndex, setSelectedIndex] = useState(0)
   const navigate = useNavigate()
+  const inputRef = useRef(null)
+  const listRef = useRef(null)
 
-  // Toggle with Cmd+K / Ctrl+K
+  // Build all searchable items
+  const allItems = useMemo(() => {
+    const items = []
+
+    // Pages
+    pages.forEach((page) => {
+      items.push({
+        id: `page-${page.id}`,
+        type: 'page',
+        name: page.name,
+        icon: page.icon,
+        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+        action: () => navigate(page.path),
+      })
+    })
+
+    // Projects (top 5)
+    projects.slice(0, 5).forEach((p) => {
+      items.push({
+        id: `project-${p.id || p.title}`,
+        type: 'project',
+        name: p.title,
+        badge: p.badge,
+        icon: FolderGit2,
+        keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
+        action: () => navigate('/projects'),
+      })
+    })
+
+    // Skills (top 4)
+    skills.slice(0, 4).forEach((cat) => {
+      items.push({
+        id: `skill-${cat.category}`,
+        type: 'skill',
+        name: cat.category,
+        count: cat.items?.length || 0,
+        icon: Code2,
+        keywords: `${cat.category} ${cat.items?.join(' ') || ''}`.toLowerCase(),
+        action: () => navigate('/skills'),
+      })
+    })
+
+    // Quick actions
+    quickActions.forEach((action) => {
+      items.push({
+        id: `action-${action.id}`,
+        type: 'action',
+        name: action.name,
+        icon: action.icon,
+        external: true,
+        keywords: action.name.toLowerCase(),
+        action: () => window.open(action.url, '_blank'),
+      })
+    })
+
+    // Theme toggle
+    items.push({
+      id: 'action-theme',
+      type: 'action',
+      name: 'Toggle Theme',
+      icon: Sun,
+      keywords: 'toggle theme dark light mode',
+      action: () => {
+        const current = document.documentElement.getAttribute('data-theme')
+        const next = current === 'dark' ? 'light' : 'dark'
+        document.documentElement.setAttribute('data-theme', next)
+        document.documentElement.style.colorScheme = next
+        localStorage.setItem('theme', next)
+      },
+    })
+
+    return items
+  }, [navigate])
+
+  // Filter items based on search
+  const filteredItems = useMemo(() => {
+    if (!search.trim()) return allItems
+    const query = search.toLowerCase()
+    return allItems.filter((item) => item.keywords.includes(query))
+  }, [search, allItems])
+
+  // Group by type
+  const groupedItems = useMemo(() => {
+    const groups = { page: [], project: [], skill: [], action: [] }
+    filteredItems.forEach((item) => {
+      if (groups[item.type]) groups[item.type].push(item)
+    })
+    return groups
+  }, [filteredItems])
+
+  const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
+
+  // Reset selection when search changes
   useEffect(() => {
-    const down = (e) => {
+    setSelectedIndex(0)
+  }, [search])
+
+  // Keyboard shortcut to open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault()
         setOpen((prev) => !prev)
       }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // Focus input when opened
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => inputRef.current?.focus(), 50)
+    } else {
+      setSearch('')
+      setSelectedIndex(0)
+    }
+  }, [open])
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback(
+    (e) => {
       if (e.key === 'Escape') {
         setOpen(false)
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1))
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setSelectedIndex((prev) => Math.max(prev - 1, 0))
+      } else if (e.key === 'Enter') {
+        e.preventDefault()
+        const item = filteredItems[selectedIndex]
+        if (item) {
+          item.action()
+          setOpen(false)
+        }
       }
-    }
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [])
+    },
+    [filteredItems, selectedIndex]
+  )
 
-  const runCommand = useCallback((callback) => {
-    setOpen(false)
-    setSearch('')
-    callback()
-  }, [])
+  // Scroll selected into view
+  useEffect(() => {
+    const el = listRef.current?.querySelector(`[data-index="${selectedIndex}"]`)
+    el?.scrollIntoView({ block: 'nearest' })
+  }, [selectedIndex])
 
-  const toggleTheme = useCallback(() => {
-    const current = document.documentElement.getAttribute('data-theme')
-    const next = current === 'dark' ? 'light' : 'dark'
-    document.documentElement.setAttribute('data-theme', next)
-    document.documentElement.style.colorScheme = next
-    localStorage.setItem('theme', next)
-  }, [])
-
-  const currentTheme = typeof document !== 'undefined' 
-    ? document.documentElement.getAttribute('data-theme') 
-    : 'dark'
+  let globalIndex = -1
 
   return (
-    <>
-      {/* Trigger button */}
-      <button
-        onClick={() => setOpen(true)}
-        className="cmd-trigger"
-        aria-label="Open command palette (Cmd+K)"
-      >
-        <Search size={14} />
-        <span className="cmd-trigger-text">Search...</span>
-        <kbd className="cmd-trigger-kbd">
-          <CommandIcon size={10} />K
-        </kbd>
-      </button>
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={() => setOpen(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(10, 25, 47, 0.75)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+              zIndex: 9998,
+            }}
+          />
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="cmd-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              onClick={() => setOpen(false)}
-            />
-            
-            {/* Command dialog */}
-            <motion.div
-              className="cmd-dialog-wrapper"
-              initial={{ opacity: 0, scale: 0.96, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -10 }}
-              transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+          {/* Dialog */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: -10 }}
+            transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            onKeyDown={handleKeyDown}
+            style={{
+              position: 'fixed',
+              top: '18%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'min(90vw, 520px)',
+              maxHeight: '65vh',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border-strong)',
+              borderRadius: 16,
+              boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
+              overflow: 'hidden',
+              zIndex: 9999,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* Search */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '14px 18px',
+                borderBottom: '1px solid var(--color-border)',
+              }}
             >
-              <Command
-                className="cmd-dialog"
-                loop
-                shouldFilter={true}
+              <Search size={17} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Search pages, projects, skills..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  fontSize: '0.95rem',
+                  color: 'var(--color-text)',
+                  fontFamily: 'inherit',
+                }}
+              />
+              <kbd
+                style={{
+                  padding: '4px 8px',
+                  background: 'var(--color-bg)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 6,
+                  fontSize: '0.65rem',
+                  fontFamily: 'var(--font-mono)',
+                  color: 'var(--color-text-muted)',
+                }}
               >
-                <div className="cmd-input-wrapper">
-                  <Search size={16} className="cmd-input-icon" />
-                  <Command.Input
-                    className="cmd-input"
-                    placeholder="Search pages, projects, skills..."
-                    value={search}
-                    onValueChange={setSearch}
-                    autoFocus
-                  />
+                ESC
+              </kbd>
+            </div>
+
+            {/* Results */}
+            <div ref={listRef} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+              {filteredItems.length === 0 ? (
+                <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
+                  No results found for "{search}"
                 </div>
-
-                <Command.List className="cmd-list">
-                  <Command.Empty className="cmd-empty">
-                    No results found.
-                  </Command.Empty>
-
-                  {/* Navigation */}
-                  <Command.Group heading="Navigation" className="cmd-group">
-                    {pages.map((page) => (
-                      <Command.Item
-                        key={page.id}
-                        value={`${page.name} ${page.keywords.join(' ')}`}
-                        onSelect={() => runCommand(() => navigate(page.path))}
-                        className="cmd-item"
+              ) : (
+                Object.entries(groupedItems).map(([type, items]) => {
+                  if (items.length === 0) return null
+                  return (
+                    <div key={type} style={{ marginBottom: 6 }}>
+                      <div
+                        style={{
+                          padding: '8px 10px 4px',
+                          fontSize: '0.68rem',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.06em',
+                          color: 'var(--color-accent)',
+                          fontFamily: 'var(--font-mono)',
+                        }}
                       >
-                        <page.icon size={16} />
-                        <span>{page.name}</span>
-                        <ArrowRight size={12} className="cmd-item-arrow" />
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
+                        {groupLabels[type]}
+                      </div>
+                      {items.map((item) => {
+                        globalIndex++
+                        const idx = globalIndex
+                        const isSelected = idx === selectedIndex
+                        const Icon = item.icon
+                        return (
+                          <div
+                            key={item.id}
+                            data-index={idx}
+                            onClick={() => {
+                              item.action()
+                              setOpen(false)
+                            }}
+                            onMouseEnter={() => setSelectedIndex(idx)}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 10,
+                              padding: '9px 10px',
+                              borderRadius: 8,
+                              cursor: 'pointer',
+                              background: isSelected ? 'var(--color-surface-raised)' : 'transparent',
+                              transition: 'background 0.1s ease',
+                            }}
+                          >
+                            <Icon
+                              size={15}
+                              style={{ color: isSelected ? 'var(--color-accent)' : 'var(--color-text-muted)', flexShrink: 0 }}
+                            />
+                            <span style={{ flex: 1, fontSize: '0.875rem', color: 'var(--color-text)', fontWeight: 500 }}>
+                              {item.name}
+                            </span>
+                            {item.badge && (
+                              <span
+                                style={{
+                                  padding: '2px 6px',
+                                  fontSize: '0.6rem',
+                                  fontFamily: 'var(--font-mono)',
+                                  textTransform: 'uppercase',
+                                  background: 'var(--color-bg)',
+                                  border: '1px solid var(--color-border)',
+                                  borderRadius: 4,
+                                  color: 'var(--color-accent)',
+                                }}
+                              >
+                                {item.badge}
+                              </span>
+                            )}
+                            {item.count !== undefined && (
+                              <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                {item.count}
+                              </span>
+                            )}
+                            {item.external && <ExternalLink size={12} style={{ color: 'var(--color-text-muted)' }} />}
+                            {isSelected && !item.external && (
+                              <CornerDownLeft size={13} style={{ color: 'var(--color-text-muted)' }} />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )
+                })
+              )}
+            </div>
 
-                  {/* Projects */}
-                  <Command.Group heading="Projects" className="cmd-group">
-                    {projects.slice(0, 5).map((project) => (
-                      <Command.Item
-                        key={project.id}
-                        value={`${project.title} ${project.tags?.join(' ') || ''}`}
-                        onSelect={() => runCommand(() => {
-                          navigate('/projects')
-                          // Could implement project detail modal here
-                        })}
-                        className="cmd-item"
-                      >
-                        <FolderGit2 size={16} />
-                        <span>{project.title}</span>
-                        {project.badge && (
-                          <span className="cmd-item-badge">{project.badge}</span>
-                        )}
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-
-                  {/* Skills */}
-                  <Command.Group heading="Skills" className="cmd-group">
-                    {skills.slice(0, 4).map((cat) => (
-                      <Command.Item
-                        key={cat.category}
-                        value={`${cat.category} ${cat.items?.join(' ') || ''}`}
-                        onSelect={() => runCommand(() => navigate('/skills'))}
-                        className="cmd-item"
-                      >
-                        <Code2 size={16} />
-                        <span>{cat.category}</span>
-                        <span className="cmd-item-count">{cat.items?.length || 0}</span>
-                      </Command.Item>
-                    ))}
-                  </Command.Group>
-
-                  {/* Quick Actions */}
-                  <Command.Group heading="Quick Actions" className="cmd-group">
-                    {quickActions.map((action) => (
-                      <Command.Item
-                        key={action.id}
-                        value={action.name}
-                        onSelect={() => runCommand(() => window.open(action.url, '_blank'))}
-                        className="cmd-item"
-                      >
-                        <action.icon size={16} />
-                        <span>{action.name}</span>
-                        <ExternalLink size={12} className="cmd-item-arrow" />
-                      </Command.Item>
-                    ))}
-                    
-                    {/* Theme toggle */}
-                    <Command.Item
-                      value="toggle theme dark light mode"
-                      onSelect={() => runCommand(toggleTheme)}
-                      className="cmd-item"
-                    >
-                      {currentTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-                      <span>Toggle {currentTheme === 'dark' ? 'Light' : 'Dark'} Mode</span>
-                    </Command.Item>
-                  </Command.Group>
-                </Command.List>
-
-                <div className="cmd-footer">
-                  <span>Navigate with <kbd>↑↓</kbd></span>
-                  <span>Select with <kbd>↵</kbd></span>
-                  <span>Close with <kbd>Esc</kbd></span>
-                </div>
-              </Command>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      <style>{`
-        .cmd-trigger {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.4rem 0.75rem;
-          background: var(--color-surface);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-md);
-          color: var(--color-text-muted);
-          font-size: var(--text-sm);
-          cursor: pointer;
-          transition: all var(--motion-duration-fast) var(--motion-ease);
-        }
-        .cmd-trigger:hover {
-          border-color: var(--color-border-strong);
-          color: var(--color-text);
-        }
-        .cmd-trigger-text {
-          display: none;
-        }
-        @media (min-width: 640px) {
-          .cmd-trigger-text { display: inline; }
-        }
-        .cmd-trigger-kbd {
-          display: inline-flex;
-          align-items: center;
-          gap: 2px;
-          padding: 0.15rem 0.35rem;
-          background: var(--color-bg);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-sm);
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          color: var(--color-text-subtle);
-        }
-
-        .cmd-backdrop {
-          position: fixed;
-          inset: 0;
-          background: rgba(10, 25, 47, 0.8);
-          backdrop-filter: blur(4px);
-          z-index: 9998;
-        }
-
-        .cmd-dialog-wrapper {
-          position: fixed;
-          top: 20%;
-          left: 50%;
-          transform: translateX(-50%);
-          width: min(90vw, 560px);
-          z-index: 9999;
-        }
-
-        .cmd-dialog {
-          background: var(--color-surface);
-          border: 1px solid var(--color-border-strong);
-          border-radius: var(--radius-xl);
-          box-shadow: var(--shadow-xl);
-          overflow: hidden;
-        }
-
-        .cmd-input-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 1rem 1.25rem;
-          border-bottom: 1px solid var(--color-border);
-        }
-        .cmd-input-icon {
-          color: var(--color-text-subtle);
-          flex-shrink: 0;
-        }
-        .cmd-input {
-          flex: 1;
-          background: transparent;
-          border: none;
-          outline: none;
-          color: var(--color-text);
-          font-size: var(--text-base);
-          font-family: var(--font-body);
-        }
-        .cmd-input::placeholder {
-          color: var(--color-text-subtle);
-        }
-
-        .cmd-list {
-          max-height: 360px;
-          overflow-y: auto;
-          padding: 0.5rem;
-        }
-
-        .cmd-empty {
-          padding: 2rem;
-          text-align: center;
-          color: var(--color-text-muted);
-          font-size: var(--text-sm);
-        }
-
-        .cmd-group {
-          padding-bottom: 0.5rem;
-        }
-        .cmd-group [cmdk-group-heading] {
-          padding: 0.5rem 0.75rem 0.25rem;
-          font-size: 0.7rem;
-          font-weight: var(--font-weight-medium);
-          text-transform: uppercase;
-          letter-spacing: var(--letter-spacing-wide);
-          color: var(--color-accent);
-          font-family: var(--font-mono);
-        }
-
-        .cmd-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.6rem 0.75rem;
-          border-radius: var(--radius-md);
-          color: var(--color-text-muted);
-          font-size: var(--text-sm);
-          cursor: pointer;
-          transition: background var(--motion-duration-fast) var(--motion-ease);
-        }
-        .cmd-item[data-selected="true"],
-        .cmd-item:hover {
-          background: var(--color-surface-raised);
-          color: var(--color-text);
-        }
-        .cmd-item[data-selected="true"] svg:first-child,
-        .cmd-item:hover svg:first-child {
-          color: var(--color-accent);
-        }
-        .cmd-item-arrow {
-          margin-left: auto;
-          opacity: 0;
-          color: var(--color-text-subtle);
-          transition: opacity var(--motion-duration-fast) var(--motion-ease);
-        }
-        .cmd-item[data-selected="true"] .cmd-item-arrow,
-        .cmd-item:hover .cmd-item-arrow {
-          opacity: 1;
-        }
-        .cmd-item-badge {
-          margin-left: auto;
-          padding: 0.1rem 0.4rem;
-          background: var(--color-accent-soft);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-sm);
-          font-size: 0.65rem;
-          font-family: var(--font-mono);
-          color: var(--color-accent);
-          text-transform: uppercase;
-        }
-        .cmd-item-count {
-          margin-left: auto;
-          font-size: 0.7rem;
-          font-family: var(--font-mono);
-          color: var(--color-text-subtle);
-        }
-
-        .cmd-footer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1.5rem;
-          padding: 0.75rem;
-          border-top: 1px solid var(--color-border);
-          background: var(--color-bg);
-          font-size: 0.7rem;
-          color: var(--color-text-subtle);
-        }
-        .cmd-footer kbd {
-          padding: 0.1rem 0.3rem;
-          background: var(--color-surface);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-xs);
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-        }
-      `}</style>
-    </>
+            {/* Footer */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 20,
+                padding: '10px 14px',
+                borderTop: '1px solid var(--color-border)',
+                fontSize: '0.68rem',
+                color: 'var(--color-text-muted)',
+                fontFamily: 'var(--font-mono)',
+                background: 'var(--color-bg)',
+              }}
+            >
+              <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↑↓</kbd> navigate</span>
+              <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↵</kbd> select</span>
+              <span style={{ marginLeft: 'auto' }}>{filteredItems.length} results</span>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   )
 }
