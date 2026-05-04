@@ -119,11 +119,11 @@
   --space-32: 8rem;
 
   --container-narrow: 720px;
-  --container:        1000px;
-  --container-wide:   1200px;
-  --container-full:   1400px;
+  --container:        1280px;
+  --container-wide:   1440px;
+  --container-full:   1600px;
 
-  --page-pad-x:    clamp(1.5rem, 6vw, 9rem);
+  --page-pad-x:    clamp(1.25rem, 4vw, 3.5rem);
   --page-pad-top:  clamp(5rem, 15vh, 8rem);
   --section-pad-y: clamp(5rem, 12vh, 8rem);
 
