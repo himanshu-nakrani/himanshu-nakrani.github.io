@@ -58,6 +58,7 @@ export default function AnimatedAvatar() {
         width="100%"
         height="100%"
         viewBox="0 0 300 300"
+        aria-hidden="true"
         style={{ maxWidth: '320px', maxHeight: '320px' }}
         preserveAspectRatio="xMidYMid meet"
       >

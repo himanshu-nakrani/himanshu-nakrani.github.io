@@ -88,7 +88,7 @@ export default function CommandPalette() {
         icon: action.icon,
         external: true,
         keywords: action.name.toLowerCase(),
-        action: () => window.open(action.url, '_blank'),
+        action: () => window.open(action.url, '_blank', 'noopener,noreferrer'),
       })
     })
 
@@ -198,6 +198,7 @@ export default function CommandPalette() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             onClick={() => setOpen(false)}
+            aria-hidden="true"
             style={{
               position: 'fixed',
               inset: 0,
@@ -210,6 +211,9 @@ export default function CommandPalette() {
 
           {/* Dialog */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command palette"
             initial={{ opacity: 0, scale: 0.96, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -10 }}
@@ -246,6 +250,7 @@ export default function CommandPalette() {
               <input
                 ref={inputRef}
                 type="text"
+                aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}

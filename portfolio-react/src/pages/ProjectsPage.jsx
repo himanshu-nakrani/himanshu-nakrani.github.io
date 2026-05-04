@@ -32,9 +32,13 @@ function ProjectModal({ project, onClose }) {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
+            aria-hidden="true"
             style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 999 }}
           />
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={project ? `${project.title} project details` : 'Project details'}
             initial={{ opacity: 0, scale: 0.94, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 24 }}
