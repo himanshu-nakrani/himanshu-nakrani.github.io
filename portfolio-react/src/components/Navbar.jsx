@@ -8,7 +8,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 const MotionNavLink = motion(NavLink)
 
 const navLinks = [
-  { label: 'About', to: '/#about' },
+  { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Profiles', to: '/profiles' },
@@ -36,12 +37,13 @@ export default function Navbar({ isDark, setIsDark }) {
   }, [])
 
   const isPageActive = (label) => {
+    if (label === 'Home')        return location.pathname === '/'
     if (label === 'Projects')    return location.pathname === '/projects'
     if (label === 'Experience')  return location.pathname === '/experience'
     if (label === 'Profiles')    return location.pathname === '/profiles'
     if (label === 'Research')    return location.pathname === '/research'
     if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/'
+    if (label === 'About')       return location.pathname === '/about'
     return false
   }
 
