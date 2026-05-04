@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ExternalLink, GitFork, Star, Users, Trophy, Code2, Flame } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
+import ActivityConstellation from '../components/ActivityConstellation'
 import { kagglePinned } from '../data'
 
 /* ─── Platform header cards ───────────────────────────── */
@@ -265,7 +266,9 @@ export default function ProfilesPage() {
       <div ref={ghRef} style={{ marginBottom: '3.5rem' }}>
         <SectionLabel>GitHub Activity</SectionLabel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem' }} className="profile-4col">
+        <ActivityConstellation profiles={platforms.filter(p => p.id === 'github')} />
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem', marginTop: '1.5rem' }} className="profile-4col">
           {ghStats.map((s, i) => <StatBox key={s.label} num={s.num} label={s.label} index={i} inView={ghInView} />)}
         </div>
 
