@@ -75,19 +75,10 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
           align-items: center;
           gap: 0.35rem;
           padding: 0.75rem 1rem;
-          background:
-            linear-gradient(
-              145deg,
-              color-mix(in srgb, var(--surface) 72%, transparent) 0%,
-              color-mix(in srgb, var(--surface2) 60%, transparent) 100%
-            );
-          backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-          -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-          border: 1px solid var(--glass-border);
+          background: var(--color-surface-raised);
+          border: 1px solid var(--color-border);
           border-radius: var(--radius-md, 10px);
-          box-shadow:
-            0 2px 8px color-mix(in srgb, var(--glass-shadow) 30%, transparent),
-            inset 0 1px 0 var(--glass-specular);
+          box-shadow: var(--shadow-sm);
           min-width: 90px;
           flex: 1;
           text-align: center;
@@ -103,28 +94,26 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
           position: absolute;
           inset: 0;
           border-radius: inherit;
-          background: linear-gradient(168deg, var(--glass-highlight) 0%, transparent 38%);
+          background: linear-gradient(168deg, rgba(255,255,255,0.04) 0%, transparent 38%);
           pointer-events: none;
         }
 
         .arch-stage:hover {
           transform: translateY(-2px);
-          border-color: color-mix(in srgb, var(--accent) 30%, var(--glass-border));
-          box-shadow:
-            0 6px 16px color-mix(in srgb, var(--glass-shadow) 50%, transparent),
-            inset 0 1px 0 var(--glass-specular);
+          border-color: var(--color-accent);
+          box-shadow: var(--shadow-md);
         }
 
         .arch-stage-icon { font-size: 1.5rem; line-height: 1; }
         .arch-stage-label {
           font-size: 0.75rem;
           font-weight: 600;
-          color: var(--text);
+          color: var(--color-text);
           line-height: 1.2;
         }
         .arch-detail {
           font-size: 0.65rem;
-          color: var(--text2, var(--muted));
+          color: var(--color-text-muted);
           line-height: 1.3;
           margin-top: 0.1rem;
         }
@@ -147,14 +136,14 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
       `}</style>
 
       <div style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: 'var(--radius-lg, 16px)',
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--radius-lg)',
         padding: 'clamp(1.2rem, 3vw, 2rem)',
       }}>
       <h3 style={{
         fontWeight: 600,
-        color: 'var(--text2, var(--muted))',
+        color: 'var(--color-text-muted)',
         textTransform: 'uppercase',
         letterSpacing: '0.08em',
         marginBottom: '1.25rem',

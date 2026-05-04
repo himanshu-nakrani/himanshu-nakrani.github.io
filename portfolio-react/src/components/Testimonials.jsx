@@ -27,8 +27,8 @@ export default function Testimonials({ testimonials }) {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.12, ease: [0.25, 0.1, 0.25, 1] }}
             style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-lg)',
               padding: 'clamp(1.2rem, 3vw, 1.6rem)',
               margin: 0,
@@ -39,10 +39,10 @@ export default function Testimonials({ testimonials }) {
             }}
           >
             <Quote
-              size={20}
+              size={18}
               style={{
-                color: 'var(--accent)',
-                opacity: 0.5,
+                color: 'var(--color-accent)',
+                opacity: 0.35,
                 flexShrink: 0,
               }}
               aria-hidden="true"
@@ -51,7 +51,7 @@ export default function Testimonials({ testimonials }) {
             <p
               style={{
                 fontSize: '0.92rem',
-                color: 'var(--text)',
+                color: 'var(--color-text)',
                 lineHeight: 1.7,
                 fontStyle: 'italic',
                 margin: 0,
@@ -67,7 +67,7 @@ export default function Testimonials({ testimonials }) {
                 alignItems: 'center',
                 gap: '0.75rem',
                 paddingTop: '0.75rem',
-                borderTop: '1px solid var(--border)',
+                borderTop: '1px solid var(--color-border)',
               }}
             >
               <span
@@ -75,12 +75,13 @@ export default function Testimonials({ testimonials }) {
                   width: 36,
                   height: 36,
                   borderRadius: '50%',
-                  background: 'color-mix(in srgb, var(--accent) 15%, var(--surface2))',
+                  background: 'var(--color-surface-raised)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '1rem',
                   flexShrink: 0,
+                  border: '1px solid var(--color-border)',
                 }}
                 aria-hidden="true"
               >
@@ -91,7 +92,7 @@ export default function Testimonials({ testimonials }) {
                   style={{
                     fontSize: '0.85rem',
                     fontWeight: 600,
-                    color: 'var(--text)',
+                    color: 'var(--color-text)',
                     lineHeight: 1.3,
                   }}
                 >
@@ -100,7 +101,7 @@ export default function Testimonials({ testimonials }) {
                 <div
                   style={{
                     fontSize: '0.78rem',
-                    color: 'var(--text2)',
+                    color: 'var(--color-text-muted)',
                     lineHeight: 1.3,
                   }}
                 >

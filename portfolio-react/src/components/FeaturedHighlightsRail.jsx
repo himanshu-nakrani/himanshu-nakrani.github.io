@@ -23,6 +23,7 @@ const cardStyle = {
   height: '100%',
   position: 'relative',
   overflow: 'hidden',
+  borderRadius: 'var(--radius-lg)',
 }
 
 function CardInner({ highlight }) {
@@ -40,12 +41,13 @@ function CardInner({ highlight }) {
           className="highlights-category"
           style={{
             fontSize: '0.7rem',
-            fontWeight: 600,
+            fontWeight: 500,
             letterSpacing: '0.05em',
             textTransform: 'uppercase',
-            color: 'var(--accent)',
-            background: 'color-mix(in srgb, var(--accent) 12%, transparent)',
-            padding: '0.2rem 0.5rem',
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--color-accent)',
+            background: 'transparent',
+            padding: '0.2rem 0',
             borderRadius: '9999px',
           }}
         >
@@ -80,16 +82,18 @@ function CardInner({ highlight }) {
       <footer style={{ marginTop: '0.25rem' }}>
         {highlight.metric && (
           <span
-            className="highlights-metric"
+            className="highlights-metric count-up"
             style={{
               display: 'inline-block',
               fontSize: '0.8rem',
-              fontWeight: 700,
-              color: 'var(--accent)',
-              background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-              border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
-              padding: '0.2rem 0.6rem',
+              fontWeight: 600,
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--color-accent)',
+              background: 'transparent',
+              border: '1px solid var(--color-border-strong)',
+              padding: '0.3rem 0.65rem',
               borderRadius: '9999px',
+              fontFeatureSettings: '"tnum" 1',
             }}
           >
             {highlight.metric}
