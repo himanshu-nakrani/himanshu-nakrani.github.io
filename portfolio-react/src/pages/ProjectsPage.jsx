@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock } from 'lucide-react'
+import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import { projects } from '../data'
@@ -17,10 +17,10 @@ const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'Deep Learning', 
 
 /* ─── Page-level stats ─────────────────────────────────── */
 const pageStats = [
-  { value: projects.length,                                    label: 'Total Projects' },
-  { value: projects.filter(p => p.badge === 'Production').length,  label: 'In Production' },
-  { value: projects.filter(p => p.link).length,               label: 'Open Source' },
-  { value: projects.filter(p => p.metrics).length,            label: 'With Metrics' },
+  { value: projects.length,                                    label: 'Total', icon: FolderGit2 },
+  { value: projects.filter(p => p.badge === 'Production').length,  label: 'Production', icon: Rocket },
+  { value: projects.filter(p => p.link).length,               label: 'Open Source', icon: Code2 },
+  { value: projects.filter(p => p.metrics).length,            label: 'With Metrics', icon: BarChart2 },
 ]
 
 /* ─── Modal ────────────────────────────────────────────── */
@@ -32,9 +32,13 @@ function ProjectModal({ project, onClose }) {
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
+            aria-hidden="true"
             style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 999 }}
           />
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={project ? `${project.title} project details` : 'Project details'}
             initial={{ opacity: 0, scale: 0.94, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 24 }}
@@ -378,84 +382,171 @@ export default function ProjectsPage() {
         description="Production LLMs, RAG pipelines, and ML systems built for real-world scale."
       />
 
-      {/* Stats strip */}
-      <div style={{ display: 'flex', gap: '0.7rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-        {pageStats.map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
-            style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              padding: '0.65rem 1.1rem', borderRadius: 12,
-              border: '1px solid var(--border)', background: 'var(--surface)',
-              minWidth: 72,
-            }}
-          >
-            <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{s.value}</span>
-            <span style={{ fontSize: '0.63rem', color: 'var(--text2)', marginTop: 3, textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 500 }}>{s.label}</span>
-          </motion.div>
-        ))}
+      {/* Stats strip - modern bento style */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(4, 1fr)', 
+        gap: '0.75rem', 
+        marginBottom: '2rem',
+      }} className="projects-stats-grid">
+        {pageStats.map((s, i) => {
+          const Icon = s.icon
+          return (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 16, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.75rem',
+                padding: '1rem 1.1rem', borderRadius: 14,
+                border: '1px solid var(--color-border)', 
+                background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+              }}
+            >
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
+                border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <Icon size={16} color="var(--color-accent)" />
+              </div>
+              <div>
+                <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
+              </div>
+            </motion.div>
+          )
+        })}
       </div>
 
-      {/* Filter bar */}
-      <div style={{ border: '1px solid var(--border)', borderRadius: 14, background: 'var(--surface)', padding: '0.85rem 1rem', marginBottom: '1.75rem', display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
-        {/* Search */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-          <Search size={15} color="var(--text2)" style={{ flexShrink: 0, opacity: 0.5 }} />
-          <input
-            type="search"
-            placeholder="Search projects..."
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            style={{
-              flex: 1, border: '1px solid var(--border)', background: 'var(--surface2)',
-              color: 'var(--text)', borderRadius: 9999, padding: '7px 14px',
-              outline: 'none', fontSize: '0.86rem', transition: 'border-color 0.2s',
-            }}
-            onFocus={e => e.target.style.borderColor = 'color-mix(in srgb, var(--color-accent) 50%, var(--border))'}
-            onBlur={e => e.target.style.borderColor = 'var(--border)'}
-          />
-          <span style={{ fontSize: '0.75rem', color: 'var(--text2)', opacity: 0.5, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {filteredProjects.length} of {projects.length}
-          </span>
+      {/* Modern filter bar with glass effect */}
+      <div style={{ 
+        border: '1px solid var(--color-border)', 
+        borderRadius: 18, 
+        background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        padding: '1rem 1.25rem', 
+        marginBottom: '2rem',
+        boxShadow: 'var(--shadow-sm)',
+      }}>
+        {/* Search row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div style={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.6rem',
+            background: 'var(--color-bg)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 12,
+            padding: '0.5rem 0.85rem',
+            transition: 'border-color 0.2s, box-shadow 0.2s',
+          }}>
+            <Search size={16} color="var(--color-text-muted)" style={{ flexShrink: 0, opacity: 0.6 }} />
+            <input
+              type="search"
+              placeholder="Search projects..."
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              style={{
+                flex: 1, 
+                border: 'none', 
+                background: 'transparent',
+                color: 'var(--color-text)', 
+                outline: 'none', 
+                fontSize: '0.88rem',
+              }}
+            />
+          </div>
+          <div style={{ 
+            padding: '0.5rem 0.85rem',
+            background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+            borderRadius: 10,
+            fontSize: '0.75rem',
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--color-accent)',
+            fontWeight: 600,
+          }}>
+            {filteredProjects.length} results
+          </div>
         </div>
 
-        {/* Status + tag pills */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              style={{
-                background: activeFilter === f ? 'var(--color-accent)' : 'var(--surface2)',
-                color: activeFilter === f ? 'white' : 'var(--text2)',
-                border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--border)'}`,
-                borderRadius: 9999, padding: '4px 12px',
-                fontSize: '0.73rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.18s',
-                boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
-              }}
-            >{f}</button>
-          ))}
+        {/* Filter pills - two rows for better organization */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+          {/* Status filters */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <span style={{ 
+              fontSize: '0.65rem', 
+              fontWeight: 700, 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.1em',
+              color: 'var(--color-text-muted)', 
+              marginRight: 4,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}>
+              <Filter size={11} />
+              Status
+            </span>
+            {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                style={{
+                  background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
+                  color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
+                  border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                  borderRadius: 8, 
+                  padding: '5px 12px',
+                  fontSize: '0.74rem', 
+                  fontWeight: 600, 
+                  cursor: 'pointer', 
+                  transition: 'all 0.18s',
+                  boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
+                }}
+              >{f}</button>
+            ))}
+          </div>
 
-          <div style={{ width: 1, height: 18, background: 'var(--border)', flexShrink: 0 }} />
-
-          {['All', ...FEATURED_TAGS].map(tag => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(tag)}
-              style={{
-                border: '1px solid',
-                borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--border)',
-                background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
-                color: activeTag === tag ? 'var(--color-accent)' : 'var(--text2)',
-                borderRadius: 9999, padding: '3px 10px',
-                cursor: 'pointer', fontSize: '0.7rem', fontFamily: 'var(--font-mono)',
-                transition: 'all 0.15s',
-              }}
-            >{tag}</button>
-          ))}
+          {/* Tech/tag filters */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+            <span style={{ 
+              fontSize: '0.65rem', 
+              fontWeight: 700, 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.1em',
+              color: 'var(--color-text-muted)', 
+              marginRight: 4,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+            }}>
+              <Sparkles size={11} />
+              Tech
+            </span>
+            {['All', ...FEATURED_TAGS].map(tag => (
+              <button
+                key={tag}
+                onClick={() => setActiveTag(tag)}
+                style={{
+                  border: '1px solid',
+                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
+                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
+                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                  borderRadius: 6, 
+                  padding: '4px 10px',
+                  cursor: 'pointer', 
+                  fontSize: '0.7rem', 
+                  fontFamily: 'var(--font-mono)',
+                  transition: 'all 0.15s',
+                }}
+              >{tag}</button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -511,8 +602,15 @@ export default function ProjectsPage() {
       <ProjectModal project={selected} onClose={() => setSelected(null)} />
 
       <style>{`
-        @media (max-width: 600px) {
-          .filter-pills { flex-direction: column !important; }
+        @media (max-width: 768px) {
+          .projects-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .projects-stats-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </section>

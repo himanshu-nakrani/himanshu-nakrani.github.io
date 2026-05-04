@@ -8,18 +8,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <meta name="theme-color" content="#0a0d14" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f4f5f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a192f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f8f9fc" media="(prefers-color-scheme: light)" />
     <!-- Blocking theme script: runs before first paint to prevent FOUC -->
     <script>
       (function () {
         var stored = localStorage.getItem('theme');
+        // Default to dark (matches the deep navy design)
         var theme = (stored === 'light' || stored === 'dark')
           ? stored
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
         document.documentElement.style.colorScheme = theme;
       })();

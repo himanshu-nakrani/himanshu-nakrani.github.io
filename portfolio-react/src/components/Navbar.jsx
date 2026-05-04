@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 
 import { NavLink, useLocation } from 'react-router-dom'
@@ -8,7 +8,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 const MotionNavLink = motion(NavLink)
 
 const navLinks = [
-  { label: 'About', to: '/#about' },
+  { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Profiles', to: '/profiles' },
@@ -36,12 +37,13 @@ export default function Navbar({ isDark, setIsDark }) {
   }, [])
 
   const isPageActive = (label) => {
+    if (label === 'Home')        return location.pathname === '/'
     if (label === 'Projects')    return location.pathname === '/projects'
     if (label === 'Experience')  return location.pathname === '/experience'
     if (label === 'Profiles')    return location.pathname === '/profiles'
     if (label === 'Research')    return location.pathname === '/research'
     if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/'
+    if (label === 'About')       return location.pathname === '/about'
     return false
   }
 
@@ -239,6 +241,50 @@ export default function Navbar({ isDark, setIsDark }) {
               borderLeft: '1px solid var(--color-border)',
             }}
           >
+            {/* Command Palette Trigger */}
+            <button
+              onClick={() => {
+                const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
+                document.dispatchEvent(event)
+              }}
+              className="nav-cmd-btn"
+              aria-label="Open command palette (Cmd+K)"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '6px 10px',
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                color: 'var(--color-text-muted)',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border-strong)'
+                e.currentTarget.style.color = 'var(--color-text)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border)'
+                e.currentTarget.style.color = 'var(--color-text-muted)'
+              }}
+            >
+              <Search size={13} />
+              <span style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: 2,
+                padding: '2px 4px',
+                background: 'var(--color-bg)',
+                borderRadius: 4,
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.65rem',
+              }}>
+                <Command size={9} />K
+              </span>
+            </button>
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}

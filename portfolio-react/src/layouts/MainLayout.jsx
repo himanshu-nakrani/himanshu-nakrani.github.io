@@ -9,6 +9,7 @@ import SkipLink from '../components/SkipLink'
 import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
+import CommandPalette from '../components/CommandPalette'
 
 const footerNav = [
   { label: 'About', href: '/#about' },
@@ -74,6 +75,7 @@ export default function MainLayout({ isDark, setIsDark }) {
         <AmbientAtmosphere enableAnimation intensity="subtle" />
         <CursorHalo />
         <ScrollProgressRail />
+        <CommandPalette />
         <div className="app-shell-content">
           <Navbar
             isDark={isDark}

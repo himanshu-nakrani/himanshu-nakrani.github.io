@@ -7,6 +7,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
 import MainLayout from './layouts/MainLayout'
 import HomePage from './pages/HomePage'
+import AboutPage from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectsPage'
 import ExperiencePage from './pages/ExperiencePage'
 import ProfilesPage from './pages/ProfilesPage'
@@ -44,6 +45,7 @@ export default function App() {
             }
           >
             <Route path="/"           element={<HomePage />} />
+            <Route path="/about"      element={<AboutPage />} />
             <Route path="/projects"   element={<ProjectsPage />} />
             <Route path="/experience" element={<ExperiencePage />} />
             <Route path="/profiles"   element={<ProfilesPage />} />
