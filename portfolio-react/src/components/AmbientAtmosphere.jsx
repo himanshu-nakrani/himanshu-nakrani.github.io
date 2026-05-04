@@ -1,9 +1,12 @@
 import { useReducedMotion } from 'framer-motion'
 
 /**
- * Simplified ambient atmosphere: backdrop + grain only
- * Drifting orbs removed for performance on mobile
- * Vignette removed to not interfere with hero CTAs
+ * Atmospheric backdrop — three quiet layers:
+ *   1. Cool radial gradients (top-left + bottom-right)
+ *   2. Faint vertical grid lines (CAD/instrument feel, masked to fade out)
+ *   3. Static film grain to break up flat surfaces
+ *
+ * No motion. No warm tones. No heavy blur. Just air.
  */
 export default function AmbientAtmosphere({
   enableAnimation = true,
@@ -19,6 +22,7 @@ export default function AmbientAtmosphere({
       aria-hidden={ariaHidden}
     >
       <div className="ambient-layer ambient-backdrop" />
+      <div className="ambient-layer ambient-grid" />
       <div className="ambient-layer ambient-grain" />
     </div>
   )

@@ -133,7 +133,7 @@ export default function Navbar({ isDark, setIsDark }) {
               : '0 4px 16px rgba(0,0,0,0.14)',
           }}
         >
-          {/* Logo */}
+          {/* Logo — calm dot + monogram */}
           <MotionNavLink
             to="/"
             whileHover={{ opacity: 0.85 }}
@@ -145,43 +145,29 @@ export default function Navbar({ isDark, setIsDark }) {
               gap: 10,
               textDecoration: 'none',
               flexShrink: 0,
-              paddingRight: 8,
+              paddingRight: 10,
             }}
           >
-            {/* Dot with pulse ring */}
-            <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
-              <span
-                className="nav-logo-dot-ring"
-                style={{
-                  position: 'absolute',
-                  inset: -3,
-                  borderRadius: '50%',
-                  background: 'transparent',
-                  border: '1.5px solid color-mix(in srgb, var(--color-accent) 45%, transparent)',
-                }}
-              />
-              <span
-                style={{
-                  display: 'block',
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: 'var(--color-accent)',
-                  position: 'relative',
-                  zIndex: 1,
-                }}
-              />
-            </span>
             <span
               style={{
-                fontWeight: 700,
-                fontSize: '0.875rem',
-                letterSpacing: '0.08em',
+                display: 'block',
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: 'var(--color-accent)',
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: '0.85rem',
+                letterSpacing: '-0.01em',
                 color: 'var(--color-text)',
                 fontFamily: 'var(--font-display)',
               }}
             >
-              HN.AI
+              Himanshu
             </span>
           </MotionNavLink>
 
@@ -212,21 +198,25 @@ export default function Navbar({ isDark, setIsDark }) {
                       whileTap={{ scale: 0.97 }}
                       onClick={(event) => handleNavClick(item, event)}
                       aria-current={active ? 'page' : undefined}
+                      className={active ? 'nav-link-active' : ''}
                       style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: '6px 12px',
+                        padding: '8px 14px 10px',
                         textDecoration: 'none',
                         fontSize: '0.8125rem',
-                        fontWeight: active ? 600 : 500,
-                        color: active ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                        transition: 'color 0.2s ease, background 0.2s ease',
+                        fontWeight: 500,
+                        color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
+                        transition: 'color 0.2s ease',
                         borderRadius: 9999,
-                        background: active
-                          ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)'
-                          : 'transparent',
                         position: 'relative',
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!active) e.currentTarget.style.color = 'var(--color-text)'
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!active) e.currentTarget.style.color = 'var(--color-text-muted)'
                       }}
                     >
                       {item.label}
@@ -374,17 +364,6 @@ export default function Navbar({ isDark, setIsDark }) {
       <style>{`
         .nav-pill-links::-webkit-scrollbar { display: none; }
         .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes nav-dot-ring {
-          0% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(2.2); opacity: 0; }
-          100% { transform: scale(1); opacity: 0; }
-        }
-        .nav-logo-dot-ring {
-          animation: nav-dot-ring 2.8s ease-out infinite;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .nav-logo-dot-ring { animation: none; }
-        }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }

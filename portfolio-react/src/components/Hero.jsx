@@ -1,24 +1,65 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { ChevronDown, Github, Linkedin } from 'lucide-react'
+import { useCountUp } from '../hooks/useCountUp'
+import { useMagnetic } from '../hooks/useMagnetic'
 
 const stats = [
-  { num: '2+', label: 'Years exp.', icon: '🏗️' },
-  { num: '100+', label: 'Users served', icon: '👥' },
-  { num: '75%', label: 'Latency cut', icon: '⚡' },
-  { num: '2', label: 'Publications', icon: '📄' },
+  { num: '2+',   label: 'Years exp.' },
+  { num: '100+', label: 'Users served' },
+  { num: '75%',  label: 'Latency cut' },
+  { num: '2',    label: 'Publications' },
 ]
 
-/* ─── Desktop layout (≥ 769px) ───────────────────────────────── */
+/* ─── Animated stat (count-up + uppercase mono label) ──────── */
+function ClusterStat({ num, label }) {
+  const { ref, value, suffix } = useCountUp(num, { duration: 1100 })
+  return (
+    <div ref={ref} className="hero-stat">
+      <div
+        className="cluster-stat"
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(1.4rem, 4vw, 2.1rem)',
+          fontWeight: 600,
+          lineHeight: 1,
+          color: 'var(--color-text)',
+          letterSpacing: '-0.02em',
+          marginBottom: '0.45rem',
+        }}
+      >
+        <span style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+        <span style={{ color: 'var(--color-accent)' }}>{suffix}</span>
+      </div>
+      <div
+        style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.7rem',
+          color: 'var(--color-text-muted)',
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          fontWeight: 500,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {label}
+      </div>
+    </div>
+  )
+}
+
+/* ─── Desktop layout ───────────────────────────────────────── */
 function DesktopHero({ reduceMotion }) {
+  const magneticRef = useMagnetic({ radius: 90, strength: 5 })
+
   const stagger = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } } }
+    : { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } } }
   const fadeUp = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } } }
+    : { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }
   const fadeScale = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: { opacity: 0, scale: 0.92 }, show: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] } } }
+    : { hidden: { opacity: 0, scale: 0.96 }, show: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } } }
 
   return (
     <>
@@ -30,7 +71,10 @@ function DesktopHero({ reduceMotion }) {
       >
         <motion.div variants={fadeUp}>
           <span className="hero-kicker">
-            <span className="hero-kicker-line" aria-hidden="true" />
+            <span className="hero-kicker-bracket">[</span>
+            <span className="hero-kicker-num">01</span>
+            <span className="hero-kicker-bracket">]</span>
+            <span className="hero-kicker-divider">·</span>
             Generative AI Engineer
           </span>
         </motion.div>
@@ -38,14 +82,14 @@ function DesktopHero({ reduceMotion }) {
         <motion.h1
           variants={fadeUp}
           style={{
-            fontSize: 'clamp(2.75rem, 7vw, 4.4rem)',
             fontFamily: 'var(--font-display)',
-            fontWeight: 'var(--display-weight)',
+            fontSize: 'clamp(2.75rem, 7vw, 4.4rem)',
+            fontWeight: 600,
             lineHeight: 1.02,
-            marginBottom: '1.6rem',
             letterSpacing: 'var(--display-tracking)',
-            color: 'var(--text)',
+            color: 'var(--color-text)',
             textWrap: 'balance',
+            marginBottom: '1.5rem',
           }}
         >
           Himanshu Nakrani
@@ -55,88 +99,111 @@ function DesktopHero({ reduceMotion }) {
           variants={fadeUp}
           style={{
             fontSize: '1.125rem',
-            color: 'var(--text2)',
+            color: 'var(--color-text-muted)',
             maxWidth: '36rem',
-            marginBottom: '2.2rem',
-            lineHeight: 1.75,
+            marginBottom: '2.4rem',
+            lineHeight: 1.7,
             fontWeight: 400,
-            borderLeft: '2px solid color-mix(in srgb, var(--color-accent) 45%, transparent)',
-            paddingLeft: '1rem',
           }}
         >
-          Production AI engineer focused on LLMs, RAG, and Text-to-SQL—from research ideas to systems used by real users.
+          Production AI engineer focused on LLMs, RAG, and Text-to-SQL — from research ideas to systems used by real users.
         </motion.p>
 
         <motion.div
           variants={fadeUp}
-          style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '3.25rem' }}
+          style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', marginBottom: '3.25rem' }}
         >
-          <a href="https://github.com/himanshu-nakrani" target="_blank" rel="noopener noreferrer"
-            className="hero-cta hero-cta-primary glass-btn-primary" style={{ textDecoration: 'none' }}>
-            <span style={{ position: 'relative', zIndex: 1 }}>Explore Projects</span>
+          <a
+            ref={magneticRef}
+            href="https://github.com/himanshu-nakrani"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-cta hero-cta-primary glass-btn-primary magnetic"
+            style={{ textDecoration: 'none' }}
+          >
+            <Github size={15} strokeWidth={1.8} />
+            <span>Explore Projects</span>
           </a>
-          <a href="https://www.linkedin.com/in/himanshu-nakrani/" target="_blank" rel="noopener noreferrer"
-            className="hero-cta hero-cta-secondary glass-btn" style={{ textDecoration: 'none' }}>
-            <span style={{ position: 'relative', zIndex: 1 }}>Connect on LinkedIn</span>
+          <a
+            href="https://www.linkedin.com/in/himanshu-nakrani/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-cta hero-cta-secondary glass-btn"
+            style={{ textDecoration: 'none' }}
+          >
+            <Linkedin size={15} strokeWidth={1.8} />
+            <span>Connect on LinkedIn</span>
           </a>
         </motion.div>
 
         <motion.div
           variants={fadeUp}
           style={{
-            display: 'flex', gap: 'clamp(1.5rem, 4vw, 3rem)', flexWrap: 'wrap',
+            display: 'flex',
+            gap: 'clamp(1.5rem, 4vw, 3rem)',
+            flexWrap: 'wrap',
             paddingTop: 'clamp(2rem, 4vw, 3rem)',
-            borderTop: '1px solid color-mix(in srgb, var(--border2) 80%, transparent)',
+            borderTop: '1px solid var(--color-border)',
           }}
         >
           {stats.map((s) => (
-            <motion.div key={s.label} variants={fadeUp} className="hero-stat">
-              <div style={{ fontSize: 'clamp(1.25rem, 4vw, 2rem)', fontFamily: 'var(--font-display)', fontWeight: 'var(--display-weight)', lineHeight: 1, color: 'var(--color-accent)', fontVariantNumeric: 'tabular-nums', marginBottom: '0.4rem' }}>
-                {s.num}
-              </div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--text2)', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 400, whiteSpace: 'nowrap' }}>
-                {s.label}
-              </div>
+            <motion.div key={s.label} variants={fadeUp}>
+              <ClusterStat num={s.num} label={s.label} />
             </motion.div>
           ))}
         </motion.div>
       </motion.div>
 
       <motion.div variants={fadeScale} initial="hidden" animate="show" style={{ flexShrink: 0 }}>
-        <div className="hero-photo-wrapper" style={{ position: 'relative', marginTop: '3rem' }}>
-          <div aria-hidden="true" style={{ position: 'absolute', inset: '-20px', borderRadius: 'var(--radius-lg)', background: 'radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--color-accent) 22%, transparent) 0%, transparent 70%)', filter: 'blur(24px)', zIndex: 0, pointerEvents: 'none' }} />
-          <div style={{ width: 336, borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '2px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border-strong))', position: 'relative', zIndex: 1, boxShadow: '0 24px 64px rgba(0,0,0,0.35)' }}>
-            <img src="/himanshu.jpg" alt="Himanshu Nakrani" loading="eager" fetchPriority="high" width={336} height={336} style={{ width: '100%', height: 'auto', display: 'block' }} />
+        <div className="hero-photo-wrapper">
+          <div className="portrait-frame" style={{ width: 320 }}>
+            <img
+              src="/himanshu.jpg"
+              alt="Himanshu Nakrani"
+              loading="eager"
+              fetchPriority="high"
+              width={320}
+              height={400}
+              style={{ width: '100%', height: 'auto', display: 'block', position: 'relative', zIndex: 0 }}
+            />
           </div>
+          {/* Bracket corner glyph — quiet HUD detail */}
+          <span aria-hidden="true" className="portrait-corner portrait-corner--tl" />
+          <span aria-hidden="true" className="portrait-corner portrait-corner--br" />
         </div>
       </motion.div>
 
       <motion.div
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={reduceMotion ? {} : { delay: 1.8, duration: 0.8 }}
+        transition={reduceMotion ? {} : { delay: 1.4, duration: 0.8 }}
         className="hero-scroll-indicator"
       >
-        <span style={{ fontSize: '0.7rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500, opacity: 0.6 }}>Scroll</span>
-        <motion.div animate={reduceMotion ? {} : { y: [0, 6, 0] }} transition={reduceMotion ? {} : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
-          <ChevronDown size={18} style={{ opacity: 0.5 }} />
+        <span style={{ fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, opacity: 0.6, fontFamily: 'var(--font-mono)' }}>
+          Scroll
+        </span>
+        <motion.div
+          animate={reduceMotion ? {} : { y: [0, 4, 0] }}
+          transition={reduceMotion ? {} : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown size={16} strokeWidth={1.6} style={{ opacity: 0.5 }} />
         </motion.div>
       </motion.div>
     </>
   )
 }
 
-/* ─── Mobile layout (≤ 768px) ────────────────────────────────── */
+/* ─── Mobile layout ────────────────────────────────────────── */
 function MobileHero({ reduceMotion }) {
   const container = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: {}, show: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } } }
+    : { hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } } }
   const up = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } } }
+    : { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } } }
   const photoAnim = reduceMotion
     ? { hidden: {}, show: {} }
-    : { hidden: { opacity: 0, scale: 0.88 }, show: { opacity: 1, scale: 1, transition: { duration: 0.65, ease: [0.25, 0.1, 0.25, 1] } } }
+    : { hidden: { opacity: 0, scale: 0.94 }, show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } } }
 
   return (
     <motion.div
@@ -145,14 +212,8 @@ function MobileHero({ reduceMotion }) {
       initial="hidden"
       animate="show"
     >
-      {/* ── Photo card ── */}
       <motion.div variants={photoAnim} className="mobile-hero-photo-wrap">
-        {/* Outer glow */}
-        <div className="mobile-hero-glow" aria-hidden="true" />
-        {/* Decorative ring */}
-        <div className="mobile-hero-ring" aria-hidden="true" />
-        {/* Photo */}
-        <div className="mobile-hero-photo-frame">
+        <div className="mobile-hero-photo-frame portrait-frame">
           <img
             src="/himanshu.jpg"
             alt="Himanshu Nakrani"
@@ -161,29 +222,25 @@ function MobileHero({ reduceMotion }) {
             className="mobile-hero-img"
           />
         </div>
-        {/* Availability badge overlaid on photo */}
         <div className="mobile-hero-badge">
-          <span className="mobile-hero-badge-dot" />
+          <span className="status-dot status-dot--pulse" />
           Open to AI Roles
         </div>
       </motion.div>
 
-      {/* ── Name + role ── */}
       <motion.div variants={up} className="mobile-hero-identity">
         <h1 className="mobile-hero-name">Himanshu Nakrani</h1>
         <div className="mobile-hero-role">
-          <span className="mobile-hero-role-line" aria-hidden="true" />
-          Generative AI Engineer
-          <span className="mobile-hero-role-line" aria-hidden="true" />
+          <span className="hero-kicker-bracket">[</span>
+          <span>Generative AI Engineer</span>
+          <span className="hero-kicker-bracket">]</span>
         </div>
       </motion.div>
 
-      {/* ── Tagline ── */}
       <motion.p variants={up} className="mobile-hero-tagline">
         LLMs · RAG · Text-to-SQL — from research to production systems used by real users.
       </motion.p>
 
-      {/* ── CTA buttons ── */}
       <motion.div variants={up} className="mobile-hero-ctas">
         <a
           href="https://github.com/himanshu-nakrani"
@@ -191,7 +248,7 @@ function MobileHero({ reduceMotion }) {
           rel="noopener noreferrer"
           className="mobile-cta-primary glass-btn-primary"
         >
-          <Github size={16} />
+          <Github size={15} strokeWidth={1.8} />
           Explore Projects
         </a>
         <a
@@ -200,56 +257,58 @@ function MobileHero({ reduceMotion }) {
           rel="noopener noreferrer"
           className="mobile-cta-secondary glass-btn"
         >
-          <Linkedin size={16} />
+          <Linkedin size={15} strokeWidth={1.8} />
           Connect
         </a>
       </motion.div>
 
-      {/* ── Stats grid ── */}
       <motion.div variants={up} className="mobile-hero-stats">
         {stats.map((s) => (
-          <div key={s.label} className="mobile-stat-card">
-            <span className="mobile-stat-icon" aria-hidden="true">{s.icon}</span>
-            <span className="mobile-stat-num">{s.num}</span>
-            <span className="mobile-stat-label">{s.label}</span>
-          </div>
+          <MobileStat key={s.label} num={s.num} label={s.label} />
         ))}
       </motion.div>
 
-      {/* ── Scroll nudge ── */}
-      <motion.div
-        variants={up}
-        className="mobile-scroll-nudge"
-      >
+      <motion.div variants={up} className="mobile-scroll-nudge">
         <motion.div
-          animate={reduceMotion ? {} : { y: [0, 5, 0] }}
-          transition={reduceMotion ? {} : { duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          animate={reduceMotion ? {} : { y: [0, 4, 0] }}
+          transition={reduceMotion ? {} : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ChevronDown size={20} />
+          <ChevronDown size={18} strokeWidth={1.6} />
         </motion.div>
       </motion.div>
     </motion.div>
   )
 }
 
-/* ─── Root export ────────────────────────────────────────────── */
+function MobileStat({ num, label }) {
+  const { ref, value, suffix } = useCountUp(num, { duration: 1000 })
+  return (
+    <div ref={ref} className="mobile-stat-card">
+      <span className="mobile-stat-num cluster-stat">
+        <span style={{ fontVariantNumeric: 'tabular-nums' }}>{value}</span>
+        <span style={{ color: 'var(--color-accent)' }}>{suffix}</span>
+      </span>
+      <span className="mobile-stat-label">{label}</span>
+    </div>
+  )
+}
+
+/* ─── Root ─────────────────────────────────────────────────── */
 export default function Hero() {
   const reduceMotion = useReducedMotion()
 
   return (
     <section id="about">
-      {/* Desktop */}
       <div className="hero-desktop-layout">
         <DesktopHero reduceMotion={reduceMotion} />
       </div>
 
-      {/* Mobile */}
       <div className="hero-mobile-layout">
         <MobileHero reduceMotion={reduceMotion} />
       </div>
 
       <style>{`
-        /* ── Shared desktop styles ── */
+        /* ── Desktop ── */
         .hero-desktop-layout {
           display: flex;
           align-items: center;
@@ -268,56 +327,76 @@ export default function Hero() {
           position: relative;
           z-index: 1;
         }
+
+        /* Bracketed kicker shared by desktop + mobile */
         .hero-kicker {
           display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
+          gap: 0.45rem;
           font-family: var(--font-mono);
-          font-size: 0.8rem;
-          letter-spacing: 0.1em;
+          font-size: 0.74rem;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
           color: var(--color-accent);
-          margin-bottom: 2rem;
-          font-weight: 600;
+          margin-bottom: 1.75rem;
+          font-weight: 500;
+          font-feature-settings: "tnum" 1;
         }
-        .hero-kicker-line {
-          display: inline-block;
-          width: 1.5rem;
-          height: 1.5px;
-          background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 40%, transparent));
-          border-radius: 2px;
-          flex-shrink: 0;
-        }
-        .hero-stat {
-          position: relative;
-          padding-right: clamp(1.5rem, 4vw, 3rem);
-        }
+        .hero-kicker-bracket { opacity: 0.55; }
+        .hero-kicker-num     { font-variant-numeric: tabular-nums; }
+        .hero-kicker-divider { opacity: 0.4; margin: 0 0.15rem; }
+
+        .hero-stat { position: relative; padding-right: clamp(1.5rem, 4vw, 3rem); }
         .hero-stat:not(:last-child)::after {
           content: '';
           position: absolute;
-          right: 0; top: 50%;
-          transform: translateY(-50%);
-          width: 1px; height: 60%;
-          background: color-mix(in srgb, var(--color-border-strong) 60%, transparent);
+          right: 0;
+          top: 18%;
+          height: 64%;
+          width: 1px;
+          background: var(--color-border);
         }
+
         .hero-cta {
           display: inline-flex;
           align-items: center;
           justify-content: center;
+          gap: 0.5rem;
           min-height: 44px;
           padding: 0.7rem 1.4rem;
-          border-radius: 999px;
-          font-size: 0.88rem;
-          font-weight: 600;
-          letter-spacing: 0.01em;
+          border-radius: 9999px;
+          font-size: 0.875rem;
+          font-weight: 500;
+          letter-spacing: 0.005em;
           position: relative;
           overflow: hidden;
         }
-        .hero-cta-primary { color: #fff; }
-        .hero-cta-secondary {
-          color: var(--text);
-          background: color-mix(in srgb, var(--surface2) 58%, transparent);
+        .hero-cta-secondary { color: var(--color-text); }
+
+        /* Photo */
+        .hero-photo-wrapper {
+          position: relative;
+          margin-top: 2rem;
         }
+        .portrait-corner {
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          border: 1px solid var(--color-accent);
+          opacity: 0.6;
+          pointer-events: none;
+        }
+        .portrait-corner--tl {
+          top: -7px; left: -7px;
+          border-right: none;
+          border-bottom: none;
+        }
+        .portrait-corner--br {
+          bottom: -7px; right: -7px;
+          border-left: none;
+          border-top: none;
+        }
+
         .hero-scroll-indicator {
           position: absolute;
           bottom: clamp(1.5rem, 4vw, 2.5rem);
@@ -327,11 +406,11 @@ export default function Hero() {
           flex-direction: column;
           align-items: center;
           gap: 0.4rem;
-          color: var(--text2);
+          color: var(--color-text-muted);
           z-index: 2;
         }
 
-        /* ── Mobile layout ── */
+        /* ── Mobile ── */
         @media (max-width: 768px) {
           .hero-desktop-layout { display: none !important; }
           .hero-mobile-layout  { display: block; }
@@ -349,73 +428,26 @@ export default function Hero() {
           position: relative;
         }
 
-        /* Photo */
         .mobile-hero-photo-wrap {
           position: relative;
-          width: 192px;
-          height: 192px;
+          width: 188px;
+          height: 188px;
           flex-shrink: 0;
           margin-bottom: 1.75rem;
           margin-top: 0.5rem;
         }
-        .mobile-hero-glow {
-          position: absolute;
-          inset: -28px;
-          border-radius: 50%;
-          background: radial-gradient(
-            ellipse at 50% 50%,
-            color-mix(in srgb, var(--color-accent) 28%, transparent) 0%,
-            transparent 68%
-          );
-          filter: blur(20px);
-          pointer-events: none;
-          z-index: 0;
-          animation: mobile-glow-pulse 4s ease-in-out infinite alternate;
-        }
-        @keyframes mobile-glow-pulse {
-          from { opacity: 0.7; transform: scale(0.95); }
-          to   { opacity: 1;   transform: scale(1.05); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          @keyframes mobile-glow-pulse { from, to { opacity: 0.85; transform: none; } }
-        }
-        .mobile-hero-ring {
-          position: absolute;
-          inset: -8px;
-          border-radius: 50%;
-          border: 1.5px solid color-mix(in srgb, var(--color-accent) 28%, transparent);
-          z-index: 0;
-          animation: mobile-ring-rotate 12s linear infinite;
-        }
-        .mobile-hero-ring::before {
-          content: '';
-          position: absolute;
-          top: -3px; left: 50%;
-          transform: translateX(-50%);
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: var(--color-accent);
-          box-shadow: 0 0 8px var(--color-accent);
-        }
-        @keyframes mobile-ring-rotate {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .mobile-hero-ring { animation: none; }
-        }
         .mobile-hero-photo-frame {
           position: relative;
           z-index: 1;
-          width: 192px;
-          height: 192px;
-          border-radius: 50%;
+          width: 188px;
+          height: 188px;
+          border-radius: 50% !important;
           overflow: hidden;
-          border: 2.5px solid color-mix(in srgb, var(--color-accent) 45%, var(--color-border-strong));
-          box-shadow:
-            0 0 0 4px color-mix(in srgb, var(--color-accent) 10%, transparent),
-            0 20px 48px rgba(0,0,0,0.30);
+          border: 1px solid var(--color-border-strong);
+          box-shadow: var(--shadow-md);
         }
+        .mobile-hero-photo-frame::before,
+        .mobile-hero-photo-frame::after { border-radius: 50%; }
         .mobile-hero-img {
           width: 100%;
           height: 100%;
@@ -425,84 +457,53 @@ export default function Hero() {
         }
         .mobile-hero-badge {
           position: absolute;
-          bottom: 4px;
+          bottom: -6px;
           left: 50%;
           transform: translateX(-50%);
           z-index: 2;
           display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
-          background: var(--surface);
-          border: 1px solid color-mix(in srgb, var(--color-success) 40%, var(--color-border));
-          border-radius: 999px;
+          gap: 0.45rem;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border-strong);
+          border-radius: 9999px;
           padding: 5px 12px;
-          font-size: 0.71rem;
-          font-weight: 600;
-          color: var(--color-success);
-          letter-spacing: 0.03em;
+          font-size: 0.7rem;
+          font-weight: 500;
+          color: var(--color-text-muted);
+          letter-spacing: 0.04em;
           white-space: nowrap;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-        }
-        .mobile-hero-badge-dot {
-          display: inline-block;
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: var(--color-success);
-          animation: pulse 2s ease-in-out infinite;
-          flex-shrink: 0;
+          font-family: var(--font-mono);
+          text-transform: uppercase;
         }
 
-        /* Identity */
-        .mobile-hero-identity {
-          margin-bottom: 1rem;
-        }
+        .mobile-hero-identity { margin-bottom: 1rem; }
         .mobile-hero-name {
           font-family: var(--font-display);
           font-size: clamp(2.4rem, 10vw, 3rem);
-          font-weight: var(--display-weight);
+          font-weight: 600;
           line-height: 1.04;
           letter-spacing: -0.025em;
-          color: var(--text);
-          margin-bottom: 0.75rem;
+          color: var(--color-text);
+          margin-bottom: 0.85rem;
           text-wrap: balance;
         }
         .mobile-hero-role {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.65rem;
+          gap: 0.4rem;
           font-family: var(--font-mono);
           font-size: 0.72rem;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.06em;
           text-transform: uppercase;
           color: var(--color-accent);
-          font-weight: 600;
-        }
-        .mobile-hero-role-line {
-          flex: 1;
-          max-width: 2.5rem;
-          height: 1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            var(--color-accent)
-          );
-          flex-shrink: 0;
-        }
-        .mobile-hero-role-line:last-child {
-          background: linear-gradient(
-            90deg,
-            var(--color-accent),
-            transparent
-          );
+          font-weight: 500;
         }
 
-        /* Tagline */
         .mobile-hero-tagline {
           font-size: 0.97rem;
-          color: var(--text2);
+          color: var(--color-text-muted);
           line-height: 1.7;
           max-width: 30rem;
           margin: 0 auto 1.75rem;
@@ -510,11 +511,10 @@ export default function Hero() {
           padding: 0 0.25rem;
         }
 
-        /* CTAs */
         .mobile-hero-ctas {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 0.65rem;
+          gap: 0.6rem;
           width: 100%;
           max-width: 420px;
           margin-bottom: 1.75rem;
@@ -524,28 +524,22 @@ export default function Hero() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.45rem;
+          gap: 0.5rem;
           min-height: 48px;
           padding: 0.75rem 1rem;
-          border-radius: 999px;
-          font-size: 0.86rem;
-          font-weight: 600;
+          border-radius: 9999px;
+          font-size: 0.85rem;
+          font-weight: 500;
           text-decoration: none;
-          letter-spacing: 0.01em;
-          position: relative;
-          overflow: hidden;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          letter-spacing: 0.005em;
         }
-        .mobile-cta-primary  { color: #fff; }
-        .mobile-cta-primary:active  { transform: scale(0.97); }
-        .mobile-cta-secondary { color: var(--text); }
+        .mobile-cta-primary:active,
         .mobile-cta-secondary:active { transform: scale(0.97); }
 
-        /* Stats */
         .mobile-hero-stats {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 0.6rem;
+          gap: 0.5rem;
           width: 100%;
           max-width: 420px;
           margin-bottom: 1.5rem;
@@ -554,70 +548,39 @@ export default function Hero() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 0.2rem;
-          padding: 0.9rem 0.5rem;
-          background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
-          border: 1px solid var(--border);
-          border-radius: 14px;
-          position: relative;
-          overflow: hidden;
-          transition: border-color 0.2s, transform 0.2s;
-        }
-        .mobile-stat-card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 30%, transparent));
-          opacity: 0.5;
+          gap: 0.3rem;
+          padding: 0.95rem 0.5rem;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: 12px;
+          transition: border-color 0.2s;
         }
         .mobile-stat-card:active { transform: scale(0.98); }
-        .mobile-stat-icon {
-          font-size: 1.15rem;
-          line-height: 1;
-          margin-bottom: 0.15rem;
-        }
         .mobile-stat-num {
           font-family: var(--font-display);
           font-size: 1.6rem;
-          font-weight: var(--display-weight);
+          font-weight: 600;
           line-height: 1;
-          color: var(--color-accent);
-          font-variant-numeric: tabular-nums;
+          color: var(--color-text);
           letter-spacing: -0.02em;
         }
         .mobile-stat-label {
-          font-size: 0.68rem;
-          color: var(--text2);
+          font-family: var(--font-mono);
+          font-size: 0.66rem;
+          color: var(--color-text-muted);
           text-transform: uppercase;
           letter-spacing: 0.07em;
           font-weight: 500;
         }
 
-        /* Scroll nudge */
         .mobile-scroll-nudge {
           display: flex;
           flex-direction: column;
           align-items: center;
-          color: var(--text2);
+          color: var(--color-text-muted);
           opacity: 0.4;
           margin-top: auto;
           padding-top: 0.5rem;
-        }
-
-        /* Light mode adjustments */
-        :root[data-theme="light"] .mobile-stat-card {
-          background: rgba(255,255,255,0.75);
-          box-shadow: 0 2px 8px rgba(26,21,19,0.06);
-        }
-        :root[data-theme="light"] .mobile-hero-badge {
-          background: rgba(255,255,255,0.9);
-          box-shadow: 0 4px 16px rgba(26,21,19,0.12);
-        }
-        :root[data-theme="light"] .mobile-hero-photo-frame {
-          box-shadow:
-            0 0 0 4px color-mix(in srgb, var(--color-accent) 12%, transparent),
-            0 16px 40px rgba(26,21,19,0.18);
         }
       `}</style>
     </section>
