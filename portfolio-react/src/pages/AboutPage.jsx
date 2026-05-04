@@ -3,209 +3,10 @@ import { motion, useInView, useReducedMotion, AnimatePresence } from 'framer-mot
 import { 
   Briefcase, GraduationCap, Award, Target, Zap, BookOpen, Users, 
   Brain, Database, Code2, Layers, Cpu, Network, GitBranch,
-  ArrowRight, ExternalLink, Mail, Github, Linkedin, Terminal
+  ArrowRight, ExternalLink, Mail, Github, Linkedin, Terminal,
+  Sparkles, ChevronRight
 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
-
-/* ========================================
-   ANIMATED AVATAR GRAPHIC
-   An animated, abstract representation 
-   using SVG and motion
-   ======================================== */
-function AnimatedAvatar() {
-  const reduceMotion = useReducedMotion()
-  const [hoveredNode, setHoveredNode] = useState(null)
-  
-  // Neural network nodes
-  const nodes = [
-    { id: 'core', x: 100, y: 100, size: 24, label: 'AI/ML', icon: Brain },
-    { id: 'llm', x: 50, y: 50, size: 16, label: 'LLMs', icon: Cpu },
-    { id: 'rag', x: 150, y: 40, size: 16, label: 'RAG', icon: Database },
-    { id: 'sql', x: 170, y: 100, size: 14, label: 'SQL', icon: Code2 },
-    { id: 'api', x: 150, y: 160, size: 14, label: 'APIs', icon: Network },
-    { id: 'research', x: 50, y: 150, size: 14, label: 'Research', icon: BookOpen },
-    { id: 'deploy', x: 30, y: 100, size: 12, label: 'Deploy', icon: Layers },
-  ]
-  
-  // Connection lines between nodes
-  const connections = [
-    ['core', 'llm'], ['core', 'rag'], ['core', 'sql'], 
-    ['core', 'api'], ['core', 'research'], ['core', 'deploy'],
-    ['llm', 'rag'], ['rag', 'sql'], ['sql', 'api'], ['api', 'deploy'],
-    ['research', 'llm'], ['research', 'deploy']
-  ]
-  
-  const getNode = (id) => nodes.find(n => n.id === id)
-  
-  return (
-    <div style={{
-      position: 'relative',
-      width: '100%',
-      maxWidth: 320,
-      aspectRatio: '1',
-      margin: '0 auto',
-    }}>
-      {/* Glowing background */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle at center, color-mix(in srgb, var(--color-accent) 15%, transparent) 0%, transparent 70%)',
-        }}
-        animate={reduceMotion ? {} : {
-          scale: [1, 1.05, 1],
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      
-      {/* Main SVG */}
-      <svg
-        viewBox="0 0 200 200"
-        style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}
-      >
-        {/* Connection lines */}
-        {connections.map(([from, to], i) => {
-          const n1 = getNode(from)
-          const n2 = getNode(to)
-          const isActive = hoveredNode === from || hoveredNode === to
-          return (
-            <motion.line
-              key={`${from}-${to}`}
-              x1={n1.x}
-              y1={n1.y}
-              x2={n2.x}
-              y2={n2.y}
-              stroke={isActive ? 'var(--color-accent)' : 'var(--color-border-solid)'}
-              strokeWidth={isActive ? 2 : 1}
-              strokeOpacity={isActive ? 0.8 : 0.4}
-              initial={reduceMotion ? {} : { pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ delay: i * 0.05, duration: 0.5 }}
-            />
-          )
-        })}
-        
-        {/* Data flow animation along connections */}
-        {!reduceMotion && connections.slice(0, 6).map(([from, to], i) => {
-          const n1 = getNode(from)
-          const n2 = getNode(to)
-          return (
-            <motion.circle
-              key={`pulse-${from}-${to}`}
-              r={2}
-              fill="var(--color-accent)"
-              initial={{ cx: n1.x, cy: n1.y, opacity: 0 }}
-              animate={{
-                cx: [n1.x, n2.x],
-                cy: [n1.y, n2.y],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 2,
-                delay: i * 0.8,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-            />
-          )
-        })}
-        
-        {/* Nodes */}
-        {nodes.map((node, i) => {
-          const Icon = node.icon
-          const isHovered = hoveredNode === node.id
-          const isCore = node.id === 'core'
-          
-          return (
-            <motion.g
-              key={node.id}
-              initial={reduceMotion ? {} : { scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 + i * 0.08, type: 'spring', stiffness: 200 }}
-              onMouseEnter={() => setHoveredNode(node.id)}
-              onMouseLeave={() => setHoveredNode(null)}
-              style={{ cursor: 'pointer' }}
-            >
-              {/* Node glow */}
-              <circle
-                cx={node.x}
-                cy={node.y}
-                r={node.size + 8}
-                fill={isHovered || isCore ? 'color-mix(in srgb, var(--color-accent) 20%, transparent)' : 'transparent'}
-                style={{ transition: 'fill 0.2s ease' }}
-              />
-              
-              {/* Node circle */}
-              <motion.circle
-                cx={node.x}
-                cy={node.y}
-                r={node.size}
-                fill={isCore ? 'var(--color-accent)' : 'var(--color-surface-raised)'}
-                stroke={isHovered ? 'var(--color-accent)' : 'var(--color-border-solid)'}
-                strokeWidth={isHovered ? 2 : 1}
-                animate={isCore && !reduceMotion ? {
-                  scale: [1, 1.05, 1],
-                } : {}}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              
-              {/* Icon (foreignObject for React icons) */}
-              <foreignObject
-                x={node.x - node.size * 0.5}
-                y={node.y - node.size * 0.5}
-                width={node.size}
-                height={node.size}
-                style={{ overflow: 'visible' }}
-              >
-                <div style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <Icon
-                    size={node.size * 0.6}
-                    color={isCore ? 'var(--color-accent-fg)' : 'var(--color-accent)'}
-                  />
-                </div>
-              </foreignObject>
-            </motion.g>
-          )
-        })}
-      </svg>
-      
-      {/* Hover label */}
-      <AnimatePresence>
-        {hoveredNode && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            style={{
-              position: 'absolute',
-              bottom: -8,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              padding: '4px 12px',
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-accent)',
-              borderRadius: 6,
-              fontSize: '0.75rem',
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--color-accent)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {nodes.find(n => n.id === hoveredNode)?.label}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
 
 /* ========================================
    ANIMATED STAT COUNTER
@@ -244,128 +45,130 @@ function parseStatValue(value) {
 }
 
 /* ========================================
-   BENTO GRID CARD
+   STAT CARD WITH ICON AND COUNT-UP
    ======================================== */
-function BentoCard({ children, span = 1, rowSpan = 1, highlight = false, style = {} }) {
+function StatCard({ value, label, icon: Icon, index, inView }) {
+  const { numeric, suffix } = parseStatValue(value)
+  const count = useCountUp(numeric, 1000, inView)
   const [hovered, setHovered] = useState(false)
   
   return (
     <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5 }}
       style={{
-        gridColumn: `span ${span}`,
-        gridRow: `span ${rowSpan}`,
-        background: highlight 
-          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)) 0%, var(--color-surface) 100%)'
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        padding: '1.25rem 1.5rem',
+        background: hovered 
+          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 10%, var(--color-surface)) 0%, var(--color-surface) 100%)'
           : 'var(--color-surface)',
         border: `1px solid ${hovered ? 'var(--color-accent)' : 'var(--color-border)'}`,
-        borderRadius: 16,
-        padding: '1.5rem',
+        borderRadius: 14,
         transition: 'all 0.3s ease',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        boxShadow: hovered 
-          ? '0 20px 40px -10px color-mix(in srgb, var(--color-accent) 15%, transparent)'
-          : 'var(--shadow-sm)',
-        ...style,
+        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+        boxShadow: hovered ? '0 8px 24px -8px color-mix(in srgb, var(--color-accent) 20%, transparent)' : 'none',
       }}
     >
-      {children}
+      <div style={{
+        width: 48,
+        height: 48,
+        borderRadius: 12,
+        background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
+        border: '1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        transition: 'transform 0.3s ease',
+        transform: hovered ? 'scale(1.1)' : 'scale(1)',
+      }}>
+        <Icon size={22} color="var(--color-accent)" />
+      </div>
+      <div>
+        <div style={{
+          fontSize: '1.75rem',
+          fontWeight: 700,
+          fontFamily: 'var(--font-display)',
+          color: 'var(--color-text)',
+          lineHeight: 1,
+        }}>
+          {count}{suffix}
+        </div>
+        <div style={{
+          fontSize: '0.8rem',
+          color: 'var(--color-text-muted)',
+          marginTop: 4,
+        }}>
+          {label}
+        </div>
+      </div>
     </motion.div>
   )
 }
 
 /* ========================================
-   SKILL ORBIT
+   TECH STACK GRID
    ======================================== */
-function SkillOrbit() {
-  const reduceMotion = useReducedMotion()
-  const skills = [
-    { name: 'Python', angle: 0 },
-    { name: 'LangChain', angle: 45 },
-    { name: 'RAG', angle: 90 },
-    { name: 'PyTorch', angle: 135 },
-    { name: 'SQL', angle: 180 },
-    { name: 'FastAPI', angle: 225 },
-    { name: 'React', angle: 270 },
-    { name: 'AWS', angle: 315 },
-  ]
-  
+const techStack = [
+  { name: 'Python', category: 'Language' },
+  { name: 'LangChain', category: 'Framework' },
+  { name: 'PyTorch', category: 'ML' },
+  { name: 'FastAPI', category: 'Backend' },
+  { name: 'React', category: 'Frontend' },
+  { name: 'PostgreSQL', category: 'Database' },
+  { name: 'AWS', category: 'Cloud' },
+  { name: 'Docker', category: 'DevOps' },
+]
+
+function TechStackGrid() {
   return (
     <div style={{
-      position: 'relative',
-      width: '100%',
-      height: 200,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      {/* Center label */}
-      <div style={{
-        position: 'absolute',
-        zIndex: 2,
-        textAlign: 'center',
-      }}>
-        <Terminal size={24} color="var(--color-accent)" />
-        <div style={{
-          fontSize: '0.7rem',
-          fontFamily: 'var(--font-mono)',
-          color: 'var(--color-text-muted)',
-          marginTop: 4,
-        }}>
-          Core Stack
-        </div>
-      </div>
-      
-      {/* Orbit ring */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          width: 160,
-          height: 160,
-          borderRadius: '50%',
-          border: '1px dashed var(--color-border)',
-        }}
-        animate={reduceMotion ? {} : { rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      >
-        {skills.map((skill, i) => {
-          const rad = (skill.angle * Math.PI) / 180
-          const x = Math.cos(rad) * 80
-          const y = Math.sin(rad) * 80
-          
-          return (
-            <motion.div
-              key={skill.name}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-              }}
-              animate={reduceMotion ? {} : { rotate: -360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-            >
-              <div style={{
-                padding: '4px 8px',
-                background: 'var(--color-surface-raised)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 6,
-                fontSize: '0.65rem',
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--color-text)',
-                whiteSpace: 'nowrap',
-              }}>
-                {skill.name}
-              </div>
-            </motion.div>
-          )
-        })}
-      </motion.div>
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: '0.75rem',
+    }} className="tech-stack-grid">
+      {techStack.map((tech, i) => (
+        <motion.div
+          key={tech.name}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.05 }}
+          whileHover={{ y: -2, borderColor: 'var(--color-accent)' }}
+          style={{
+            padding: '0.85rem',
+            background: 'var(--color-surface-raised)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 10,
+            textAlign: 'center',
+            transition: 'all 0.2s ease',
+            cursor: 'default',
+          }}
+        >
+          <div style={{
+            fontSize: '0.9rem',
+            fontWeight: 600,
+            color: 'var(--color-text)',
+            marginBottom: 2,
+          }}>
+            {tech.name}
+          </div>
+          <div style={{
+            fontSize: '0.65rem',
+            fontFamily: 'var(--font-mono)',
+            color: 'var(--color-accent)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+          }}>
+            {tech.category}
+          </div>
+        </motion.div>
+      ))}
     </div>
   )
 }
@@ -373,7 +176,7 @@ function SkillOrbit() {
 /* ========================================
    TIMELINE ITEM
    ======================================== */
-function TimelineItem({ year, title, subtitle, description, isLast }) {
+function TimelineItem({ year, title, subtitle, description, isLast, index }) {
   const [expanded, setExpanded] = useState(false)
   
   return (
@@ -381,6 +184,7 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
       style={{
         display: 'flex',
         gap: '1rem',
@@ -418,11 +222,11 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
       {/* Content */}
       <div 
         style={{ 
-          paddingBottom: isLast ? 0 : '2rem', 
+          paddingBottom: isLast ? 0 : '1.5rem', 
           flex: 1,
-          cursor: 'pointer',
+          cursor: description ? 'pointer' : 'default',
         }}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => description && setExpanded(!expanded)}
       >
         <span style={{
           fontSize: '0.7rem',
@@ -438,8 +242,21 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
           fontWeight: 600,
           color: 'var(--color-text)',
           margin: '4px 0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
         }}>
           {title}
+          {description && (
+            <ChevronRight 
+              size={14} 
+              style={{ 
+                transform: expanded ? 'rotate(90deg)' : 'rotate(0)', 
+                transition: 'transform 0.2s',
+                color: 'var(--color-text-muted)',
+              }} 
+            />
+          )}
         </h4>
         <p style={{
           fontSize: '0.85rem',
@@ -449,7 +266,7 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
           {subtitle}
         </p>
         <AnimatePresence>
-          {expanded && (
+          {expanded && description && (
             <motion.p
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -459,6 +276,8 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
                 color: 'var(--color-text-muted)',
                 marginTop: 8,
                 lineHeight: 1.6,
+                paddingLeft: 12,
+                borderLeft: '2px solid var(--color-border)',
               }}
             >
               {description}
@@ -471,7 +290,7 @@ function TimelineItem({ year, title, subtitle, description, isLast }) {
 }
 
 /* ========================================
-   ANIMATED VALUE CARD
+   VALUE CARD
    ======================================== */
 function ValueCard({ icon: Icon, title, description, index }) {
   const [hovered, setHovered] = useState(false)
@@ -485,54 +304,55 @@ function ValueCard({ icon: Icon, title, description, index }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: 'flex',
-        gap: '1rem',
-        padding: '1rem',
-        background: hovered ? 'var(--color-surface-raised)' : 'transparent',
+        padding: '1.25rem',
+        background: hovered ? 'var(--color-surface-raised)' : 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
         borderRadius: 12,
         transition: 'all 0.2s ease',
-        cursor: 'default',
+        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
       }}
     >
-      <motion.div
-        animate={{ rotate: hovered ? 360 : 0 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: 10,
-          background: hovered 
-            ? 'var(--color-accent)' 
-            : 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          transition: 'background 0.2s ease',
-        }}
-      >
-        <Icon
-          size={18}
-          color={hovered ? 'var(--color-accent-fg)' : 'var(--color-accent)'}
-        />
-      </motion.div>
-      <div>
-        <h4 style={{
-          fontSize: '0.95rem',
-          fontWeight: 600,
-          color: 'var(--color-text)',
-          marginBottom: 4,
-        }}>
-          {title}
-        </h4>
-        <p style={{
-          fontSize: '0.8rem',
-          color: 'var(--color-text-muted)',
-          lineHeight: 1.5,
-          margin: 0,
-        }}>
-          {description}
-        </p>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+        <motion.div
+          animate={{ rotate: hovered ? 360 : 0 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 10,
+            background: hovered 
+              ? 'var(--color-accent)' 
+              : 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            transition: 'background 0.2s ease',
+          }}
+        >
+          <Icon
+            size={18}
+            color={hovered ? 'var(--color-accent-fg)' : 'var(--color-accent)'}
+          />
+        </motion.div>
+        <div>
+          <h4 style={{
+            fontSize: '0.95rem',
+            fontWeight: 600,
+            color: 'var(--color-text)',
+            marginBottom: 4,
+          }}>
+            {title}
+          </h4>
+          <p style={{
+            fontSize: '0.8rem',
+            color: 'var(--color-text-muted)',
+            lineHeight: 1.5,
+            margin: 0,
+          }}>
+            {description}
+          </p>
+        </div>
       </div>
     </motion.div>
   )
@@ -587,265 +407,283 @@ const certifications = [
 export default function AboutPage() {
   const heroRef = useRef(null)
   const heroInView = useInView(heroRef, { once: true })
+  const reduceMotion = useReducedMotion()
   
   return (
-    <div style={{ padding: '0 var(--space-4)' }}>
-      <PageHeader
-        title="About"
-        subtitle="AI engineer building production systems that scale"
-      />
-      
-      {/* Hero Bento Grid */}
-      <div 
-        ref={heroRef}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gap: '1rem',
-          marginBottom: '4rem',
-        }}
-        className="about-bento-grid"
-      >
-        {/* Main intro card - spans 7 columns */}
-        <BentoCard span={7} rowSpan={2} highlight className="about-intro-card">
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div className="mvp2-page">
+      {/* Hero Section */}
+      <section ref={heroRef} style={{ marginBottom: '4rem' }}>
+        {/* Intro */}
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{ marginBottom: '2.5rem' }}
+        >
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '6px 12px',
+            background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+            borderRadius: 20,
+            marginBottom: '1.25rem',
+          }}>
+            <Sparkles size={14} color="var(--color-accent)" />
             <span style={{
+              fontSize: '0.75rem',
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.7rem',
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
               color: 'var(--color-accent)',
-              marginBottom: '1rem',
+              fontWeight: 500,
             }}>
-              Hello, I&apos;m
+              AI Engineer
             </span>
-            <h1 style={{
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: 700,
-              color: 'var(--color-text)',
-              lineHeight: 1.1,
-              marginBottom: '1rem',
-            }}>
-              Himanshu Nakrani
-            </h1>
-            <p style={{
-              fontSize: '1.1rem',
-              color: 'var(--color-text-muted)',
-              lineHeight: 1.7,
-              marginBottom: '1.5rem',
-              flex: 1,
-            }}>
-              I&apos;m an <strong style={{ color: 'var(--color-text)' }}>AI Software Developer</strong> at State Street Corporation, 
-              building enterprise LLM systems that turn complex financial data into accessible insights. 
-              From fine-tuning models to shipping production APIs, I focus on systems that actually work at scale.
-            </p>
-            
-            {/* Social links */}
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <a
-                href="https://github.com/himanshu-nakrani"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '8px 16px',
-                  background: 'var(--color-accent)',
-                  color: 'var(--color-accent-fg)',
-                  borderRadius: 8,
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                }}
-              >
-                <Github size={16} />
-                GitHub
-              </a>
-              <a
-                href="https://www.linkedin.com/in/himanshu-nakrani/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '8px 16px',
-                  background: 'var(--color-surface-raised)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text)',
-                  borderRadius: 8,
-                  fontSize: '0.85rem',
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                }}
-              >
-                <Linkedin size={16} />
-                LinkedIn
-              </a>
-              <a
-                href="mailto:himanshu.nakrani@gmail.com"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '8px 16px',
-                  background: 'var(--color-surface-raised)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text)',
-                  borderRadius: 8,
-                  fontSize: '0.85rem',
-                  fontWeight: 500,
-                  textDecoration: 'none',
-                }}
-              >
-                <Mail size={16} />
-                Email
-              </a>
-            </div>
           </div>
-        </BentoCard>
-        
-        {/* Animated avatar - spans 5 columns */}
-        <BentoCard span={5} rowSpan={2} className="about-avatar-card">
-          <AnimatedAvatar />
-        </BentoCard>
-        
-        {/* Stats row - 4 cards spanning 3 columns each */}
-        {stats.map((stat, i) => {
-          const { numeric, suffix } = parseStatValue(stat.value)
-          const Icon = stat.icon
-          return (
-            <BentoCard key={stat.label} span={3} className="about-stat-card">
-              <div style={{ textAlign: 'center' }}>
-                <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 10,
-                  background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 0.75rem',
-                }}>
-                  <Icon size={18} color="var(--color-accent)" />
-                </div>
-                <StatDisplay value={stat.value} inView={heroInView} />
-                <div style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--color-text-muted)',
-                  marginTop: 4,
-                }}>
-                  {stat.label}
-                </div>
-              </div>
-            </BentoCard>
-          )
-        })}
-      </div>
-      
-      {/* Skills + Journey Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gap: '1rem',
-        marginBottom: '4rem',
-      }} className="about-content-grid">
-        {/* Skill Orbit */}
-        <BentoCard span={5} className="about-skills-card">
-          <h3 style={{
-            fontSize: '1rem',
-            fontWeight: 600,
+          
+          <h1 style={{
+            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+            fontWeight: 700,
+            fontFamily: 'var(--font-display)',
             color: 'var(--color-text)',
-            marginBottom: '1rem',
+            lineHeight: 1.1,
+            marginBottom: '1.25rem',
+            letterSpacing: '-0.02em',
           }}>
-            Tech Stack
-          </h3>
-          <SkillOrbit />
-        </BentoCard>
+            Himanshu Nakrani
+          </h1>
+          
+          <p style={{
+            fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
+            color: 'var(--color-text-muted)',
+            lineHeight: 1.7,
+            maxWidth: 700,
+            marginBottom: '2rem',
+          }}>
+            I build <strong style={{ color: 'var(--color-text)' }}>production AI systems</strong> at State Street Corporation — 
+            enterprise LLM pipelines that turn complex financial data into actionable insights. 
+            From fine-tuning models to shipping APIs, I focus on <strong style={{ color: 'var(--color-text)' }}>systems that scale</strong>.
+          </p>
+          
+          {/* CTA Buttons */}
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href="https://github.com/himanshu-nakrani"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '0.75rem 1.5rem',
+                background: 'var(--color-accent)',
+                color: 'var(--color-accent-fg)',
+                borderRadius: 10,
+                fontSize: '0.9rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Github size={18} />
+              View GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/himanshu-nakrani/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '0.75rem 1.5rem',
+                background: 'transparent',
+                border: '1px solid var(--color-border-strong)',
+                color: 'var(--color-text)',
+                borderRadius: 10,
+                fontSize: '0.9rem',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Linkedin size={18} />
+              LinkedIn
+            </a>
+            <a
+              href="mailto:himanshunakrani0@gmail.com"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '0.75rem 1.5rem',
+                background: 'transparent',
+                border: '1px solid var(--color-border-strong)',
+                color: 'var(--color-text)',
+                borderRadius: 10,
+                fontSize: '0.9rem',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Mail size={18} />
+              Email
+            </a>
+          </div>
+        </motion.div>
         
-        {/* Journey Timeline */}
-        <BentoCard span={7} className="about-journey-card">
-          <h3 style={{
-            fontSize: '1rem',
-            fontWeight: 600,
-            color: 'var(--color-text)',
-            marginBottom: '1.5rem',
-          }}>
-            Journey
-          </h3>
-          {journey.map((item, i) => (
-            <TimelineItem
-              key={item.year}
-              {...item}
-              isLast={i === journey.length - 1}
-            />
+        {/* Stats Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1rem',
+        }} className="about-stats-grid">
+          {stats.map((stat, i) => (
+            <StatCard key={stat.label} {...stat} index={i} inView={heroInView} />
           ))}
-        </BentoCard>
-      </div>
-      
-      {/* Values + Certifications */}
-      <div style={{
+        </div>
+      </section>
+
+      {/* Two Column Layout: Tech Stack + Journey */}
+      <section style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gap: '1rem',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '2rem',
         marginBottom: '4rem',
-      }} className="about-values-grid">
-        {/* Values */}
-        <BentoCard span={7} className="about-values-card">
-          <h3 style={{
-            fontSize: '1rem',
+      }} className="about-two-col">
+        {/* Tech Stack */}
+        <div>
+          <h2 style={{
+            fontSize: '1.25rem',
             fontWeight: 600,
+            fontFamily: 'var(--font-display)',
             color: 'var(--color-text)',
-            marginBottom: '1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
           }}>
+            <Terminal size={20} color="var(--color-accent)" />
+            Tech Stack
+          </h2>
+          <TechStackGrid />
+        </div>
+        
+        {/* Journey */}
+        <div>
+          <h2 style={{
+            fontSize: '1.25rem',
+            fontWeight: 600,
+            fontFamily: 'var(--font-display)',
+            color: 'var(--color-text)',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <Briefcase size={20} color="var(--color-accent)" />
+            Journey
+          </h2>
+          <div style={{
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 14,
+            padding: '1.5rem',
+          }}>
+            {journey.map((item, i) => (
+              <TimelineItem
+                key={item.year}
+                {...item}
+                index={i}
+                isLast={i === journey.length - 1}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Philosophy + Certifications */}
+      <section style={{
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr',
+        gap: '2rem',
+        marginBottom: '4rem',
+      }} className="about-philosophy-grid">
+        {/* Philosophy */}
+        <div>
+          <h2 style={{
+            fontSize: '1.25rem',
+            fontWeight: 600,
+            fontFamily: 'var(--font-display)',
+            color: 'var(--color-text)',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <Target size={20} color="var(--color-accent)" />
             Philosophy
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          </h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1rem',
+          }} className="values-grid">
             {values.map((value, i) => (
               <ValueCard key={value.title} {...value} index={i} />
             ))}
           </div>
-        </BentoCard>
+        </div>
         
         {/* Certifications */}
-        <BentoCard span={5} className="about-certs-card">
-          <h3 style={{
-            fontSize: '1rem',
+        <div>
+          <h2 style={{
+            fontSize: '1.25rem',
             fontWeight: 600,
+            fontFamily: 'var(--font-display)',
             color: 'var(--color-text)',
-            marginBottom: '1rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
           }}>
+            <Award size={20} color="var(--color-accent)" />
             Certifications
-          </h3>
+          </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {certifications.map((cert) => (
+            {certifications.map((cert, i) => (
               <motion.div
                 key={cert.name}
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
                 whileHover={{ x: 4 }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.75rem',
-                  padding: '0.75rem',
-                  background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)',
-                  borderRadius: 8,
+                  padding: '1rem',
+                  background: 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))',
+                  border: '1px solid color-mix(in srgb, var(--color-accent) 15%, var(--color-border))',
+                  borderRadius: 10,
+                  transition: 'all 0.2s ease',
                 }}
               >
-                <Award size={16} color="var(--color-accent)" />
+                <Award size={18} color="var(--color-accent)" />
                 <div>
                   <div style={{
-                    fontSize: '0.85rem',
+                    fontSize: '0.9rem',
                     fontWeight: 500,
                     color: 'var(--color-text)',
                   }}>
                     {cert.name}
                   </div>
                   <div style={{
-                    fontSize: '0.7rem',
+                    fontSize: '0.75rem',
                     color: 'var(--color-text-muted)',
+                    fontFamily: 'var(--font-mono)',
                   }}>
                     {cert.issuer}
                   </div>
@@ -853,53 +691,34 @@ export default function AboutPage() {
               </motion.div>
             ))}
           </div>
-        </BentoCard>
-      </div>
+        </div>
+      </section>
       
       {/* Responsive styles */}
       <style>{`
         @media (max-width: 900px) {
-          .about-bento-grid,
-          .about-content-grid,
-          .about-values-grid {
+          .about-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .about-two-col {
             grid-template-columns: 1fr !important;
           }
-          .about-intro-card,
-          .about-avatar-card,
-          .about-stat-card,
-          .about-skills-card,
-          .about-journey-card,
-          .about-values-card,
-          .about-certs-card {
-            grid-column: span 1 !important;
-            grid-row: span 1 !important;
+          .about-philosophy-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .values-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .tech-stack-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 600px) {
-          .about-bento-grid {
-            gap: 0.75rem !important;
+          .about-stats-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
-    </div>
-  )
-}
-
-/* ========================================
-   STAT DISPLAY WITH COUNT-UP
-   ======================================== */
-function StatDisplay({ value, inView }) {
-  const { numeric, suffix } = parseStatValue(value)
-  const count = useCountUp(numeric, 800, inView)
-  
-  return (
-    <div style={{
-      fontSize: '1.75rem',
-      fontWeight: 700,
-      color: 'var(--color-text)',
-      fontFamily: 'var(--font-mono)',
-    }}>
-      {count}{suffix}
     </div>
   )
 }
