@@ -1,4 +1,4 @@
-// Command Palette - custom implementation without external dependencies
+// Command Palette - custom implementation (React + framer-motion only)
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'

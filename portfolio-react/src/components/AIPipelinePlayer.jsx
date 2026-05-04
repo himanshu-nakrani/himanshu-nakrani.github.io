@@ -1,4 +1,4 @@
-// AI Pipeline Player - SVG-based visualization without external flow libraries
+// AI Pipeline Player - Pure CSS/SVG visualization (no react-flow dependency)
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play, Pause, RotateCcw, Clock, Zap, Database, Brain, CheckCircle, Rocket, X } from 'lucide-react'
