@@ -7,14 +7,14 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 const MotionNavLink = motion(NavLink)
 
+// Capped at 6 items — logo handles "/" navigation
 const navLinks = [
-  { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
-  { label: 'Profiles', to: '/profiles' },
-  { label: 'Research', to: '/research' },
   { label: 'Skills', to: '/skills' },
+  { label: 'Research', to: '/research' },
+  { label: 'Profiles', to: '/profiles' },
 ]
 
 const contactItem = { label: 'Contact', to: '/#contact' }
@@ -37,7 +37,6 @@ export default function Navbar({ isDark, setIsDark }) {
   }, [])
 
   const isPageActive = (label) => {
-    if (label === 'Home')        return location.pathname === '/'
     if (label === 'Projects')    return location.pathname === '/projects'
     if (label === 'Experience')  return location.pathname === '/experience'
     if (label === 'Profiles')    return location.pathname === '/profiles'

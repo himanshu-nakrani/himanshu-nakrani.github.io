@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import HeroEnhanced from '../components/HeroEnhanced'
-import ProofBar from '../components/ProofBar'
 import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
 import FeaturedProjects from '../components/FeaturedProjects'
 import Testimonials from '../components/Testimonials'
@@ -11,7 +10,6 @@ import {
   projects,
   testimonials,
   featuredHighlights,
-  proofLinks,
 } from '../data'
 
 // Lazy load the heavy pipeline player
@@ -50,11 +48,6 @@ export default function HomePage() {
 
       {/* Act 1: Hero + Live Status */}
       <HeroEnhanced />
-
-      {/* Proof bar */}
-      <section style={{ padding: '1rem 0' }}>
-        <ProofBar links={proofLinks} />
-      </section>
 
       {/* Act 2: Proof in 60 seconds */}
       <Section 

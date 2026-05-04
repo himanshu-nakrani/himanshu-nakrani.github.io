@@ -10,6 +10,7 @@ import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
 import CommandPalette from '../components/CommandPalette'
+import CmdKHint from '../components/CmdKHint'
 
 const footerNav = [
   { label: 'About', href: '/#about' },
@@ -76,6 +77,7 @@ export default function MainLayout({ isDark, setIsDark }) {
         <CursorHalo />
         <ScrollProgressRail />
         <CommandPalette />
+        <CmdKHint />
         <div className="app-shell-content">
           <Navbar
             isDark={isDark}
