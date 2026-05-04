@@ -16,13 +16,16 @@ function getSectionNumber(id) {
  * Section — primary content section with a numbered, bracketed kicker
  * (`[ 01 ]  HIGHLIGHTS`), a calm display headline, optional eyebrow lede,
  * and a clip-path reveal for the body when it scrolls into view.
+ * 
+ * @param {string} number - Optional explicit section number (e.g. "02")
  */
-export default function Section({ id, title, subtitle, alt, children }) {
+export default function Section({ id, title, subtitle, alt, children, number }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
-  const num = id ? getSectionNumber(id) : null
+  // Use explicit number prop if provided, otherwise auto-generate
+  const num = number || (id ? getSectionNumber(id) : null)
 
   const headerAnim = reduceMotion
     ? { initial: false, animate: {} }
