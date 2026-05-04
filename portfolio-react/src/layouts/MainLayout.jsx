@@ -7,6 +7,8 @@ import Navbar from '../components/Navbar'
 import SEO from '../components/SEO'
 import SkipLink from '../components/SkipLink'
 import BackToTop from '../components/BackToTop'
+import CursorHalo from '../components/CursorHalo'
+import ScrollProgressRail from '../components/ScrollProgressRail'
 
 const footerNav = [
   { label: 'About', href: '/#about' },
@@ -70,6 +72,8 @@ export default function MainLayout({ isDark, setIsDark }) {
       <SEO />
       <div className="app-shell">
         <AmbientAtmosphere enableAnimation intensity="subtle" />
+        <CursorHalo />
+        <ScrollProgressRail />
         <div className="app-shell-content">
           <Navbar
             isDark={isDark}
@@ -128,16 +132,23 @@ export default function MainLayout({ isDark, setIsDark }) {
                 marginBottom: '2.5rem',
               }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <span style={{ position: 'relative', width: 8, height: 8, flexShrink: 0 }}>
-                      <span style={{
-                        position: 'absolute', inset: -3, borderRadius: '50%',
-                        border: '1.5px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
-                      }} />
-                      <span style={{ display: 'block', width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent)', position: 'relative', zIndex: 1 }} />
-                    </span>
-                    <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
-                      HN.AI
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', marginBottom: '1rem' }}>
+                    <span style={{
+                      display: 'block',
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: 'var(--color-accent)',
+                      flexShrink: 0,
+                    }} />
+                    <span style={{
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text)',
+                      fontFamily: 'var(--font-display)',
+                      letterSpacing: '-0.01em',
+                    }}>
+                      Himanshu Nakrani
                     </span>
                   </div>
                   <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: 280, color: 'var(--color-text-muted)' }}>

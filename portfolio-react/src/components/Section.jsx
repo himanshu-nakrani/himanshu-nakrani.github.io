@@ -12,70 +12,77 @@ function getSectionNumber(id) {
   return sectionNumbers[id]
 }
 
+/**
+ * Section — primary content section with a numbered, bracketed kicker
+ * (`[ 01 ]  HIGHLIGHTS`), a calm display headline, optional eyebrow lede,
+ * and a clip-path reveal for the body when it scrolls into view.
+ */
 export default function Section({ id, title, subtitle, alt, children }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const reduceMotion = useReducedMotion()
 
+  const num = id ? getSectionNumber(id) : null
+
   const headerAnim = reduceMotion
     ? { initial: false, animate: {} }
     : {
-        initial: { opacity: 0, y: 32 },
+        initial: { opacity: 0, y: 24 },
         animate: inView ? { opacity: 1, y: 0 } : {},
-        transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
+        transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
       }
-
-  const bodyAnim = reduceMotion
-    ? { initial: false, animate: {} }
-    : {
-        initial: { opacity: 0, y: 40 },
-        animate: inView ? { opacity: 1, y: 0 } : {},
-        transition: { duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] },
-      }
-
-  const num = id ? getSectionNumber(id) : null
 
   return (
-    <section id={id} style={{
-      padding: 'var(--section-pad-y) var(--page-pad-x)',
-      background: alt ? 'var(--bg2)' : 'var(--bg)',
-      position: 'relative',
-    }}>
+    <section
+      id={id}
+      style={{
+        padding: 'var(--section-pad-y) var(--page-pad-x)',
+        background: alt ? 'var(--color-surface)' : 'var(--color-bg)',
+        position: 'relative',
+      }}
+    >
       <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
         <motion.div {...headerAnim}>
           {num && (
-            <div className="section-kicker">
-              {num} {title}
+            <div className="section-kicker" aria-hidden="true">
+              <span style={{ opacity: 0.55 }}>[</span>
+              <span style={{ fontFeatureSettings: '"tnum" 1' }}>{num}</span>
+              <span style={{ opacity: 0.55 }}>]</span>
+              <span style={{ opacity: 0.55 }}>·</span>
+              <span>{title}</span>
             </div>
           )}
-          <h2 style={{
-            fontSize: 'clamp(2.05rem, 5vw, 2.95rem)',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 'var(--section-title-weight)',
-            marginBottom: subtitle ? '1rem' : '3rem',
-            letterSpacing: 'var(--section-title-tracking)',
-            color: 'var(--text)',
-          }}>
+          <h2
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 'var(--section-title-weight)',
+              fontSize: 'clamp(2rem, 5vw, 2.85rem)',
+              lineHeight: 1.05,
+              letterSpacing: 'var(--section-title-tracking)',
+              color: 'var(--color-text)',
+              marginBottom: subtitle ? '1rem' : '3rem',
+            }}
+          >
             {title}
           </h2>
           {subtitle && (
-            <p style={{
-              color: 'var(--text2)',
-              fontSize: '1.05rem',
-              maxWidth: 600,
-              marginBottom: '3rem',
-              lineHeight: 1.7,
-              fontWeight: 500,
-              borderLeft: '2px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
-              paddingLeft: '1rem',
-            }}>
+            <p
+              style={{
+                color: 'var(--color-text-muted)',
+                fontSize: '1.0625rem',
+                maxWidth: '38rem',
+                marginBottom: '3rem',
+                lineHeight: 1.65,
+                fontWeight: 400,
+              }}
+            >
               {subtitle}
             </p>
           )}
         </motion.div>
-        <motion.div {...bodyAnim}>
+        <div className={`section-reveal ${inView ? 'is-visible' : ''}`}>
           {children}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

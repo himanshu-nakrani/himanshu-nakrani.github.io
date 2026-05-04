@@ -1,262 +1,271 @@
 /* ============================================
-   DESIGN TOKENS SYSTEM - Single Source of Truth
+   DESIGN TOKENS — "Atmospheric Calm"
    ============================================
-   
-   This file defines all semantic design tokens consumed
-   by components. It consolidates the previous 6-mode system
-   into 2 themes (light/dark) with optional accent variants.
-   
-   Token Hierarchy:
-   1. Primitives (raw 12-step scales) - never in components
-   2. Semantic tokens (surfaces, text, borders, accent) - what components use
-   3. Typography & motion (sized utilities)
-   4. Layout & spacing (rhythm)
+   Cool slate-blue dark theme with a single muted
+   soft-slate accent. No neon. No vibe-coded glow.
+   Calibrated for Linear / Rauno / Vercel-class polish.
 */
 
 :root {
   /* ========================================
-     SEMANTIC COLOR TOKENS (2-tier system)
+     SURFACES — cool deep slate, layered depth
      ======================================== */
-  
-  /* Surfaces (5 levels of depth) */
-  --color-bg: #0b0d10;              /* page background */
-  --color-surface: #13161b;         /* card/elevated element */
-  --color-surface-raised: #1a1e25;  /* hover state, modals */
-  --color-surface-elev: #1d2d45;    /* highest elevation */
-  
-  /* Borders (2 weights) */
-  --color-border: #262b33;          /* default, inactive */
-  --color-border-strong: #3d4452;   /* active, focused */
-  
-  /* Text (3 contrast levels) */
-  --color-text: #ece7dc;            /* primary, warm cream */
-  --color-text-muted: #a0a8b8;      /* secondary content */
-  --color-text-subtle: #6b7280;     /* tertiary, captions */
-  
-  /* Accent (brand color) */
-  --color-accent: #d4a24c;          /* warm amber */
-  --color-accent-fg: #0b0d10;       /* text on accent bg */
-  
-  /* Semantic status colors */
-  --color-success: #4ade80;
-  --color-warning: #facc15;
-  --color-danger: #f87171;
-  --color-info: #3b82f6;
-  
+
+  --color-bg:               #0a0d14;   /* page background, deep cool slate */
+  --color-surface:          #11151e;   /* default card */
+  --color-surface-raised:   #181d28;   /* hover / modal */
+  --color-surface-elev:     #1f2532;   /* highest elevation */
+
   /* ========================================
-     TYPOGRAPHY SYSTEM (fluid scales)
+     BORDERS — hairline, calm
      ======================================== */
-  
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'Inter Variable', ui-monospace, monospace;
-  
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
+
+  --color-border:           #1d2230;   /* default hairline */
+  --color-border-strong:    #2c3344;   /* focused / active */
+
+  /* ========================================
+     TEXT — cool off-white scale
+     ======================================== */
+
+  --color-text:             #e6eaf2;   /* primary, slight cool cast */
+  --color-text-muted:       #8a93a5;   /* secondary, slate */
+  --color-text-subtle:      #5a6275;   /* tertiary, captions */
+
+  /* ========================================
+     ACCENT — calm slate-blue (single accent)
+     ======================================== */
+
+  --color-accent:           #9fb6c8;   /* misty slate-blue */
+  --color-accent-strong:    #b9cbdb;   /* hover lift */
+  --color-accent-soft:      rgba(159, 182, 200, 0.12);  /* tints, washes */
+  --color-accent-fg:        #0a0d14;   /* text on accent bg */
+
+  /* ========================================
+     STATUS — minimal, semantic
+     ======================================== */
+
+  --color-success:          #7fb39f;   /* muted sage */
+  --color-warning:          #d4b061;   /* muted gold */
+  --color-danger:           #d49191;   /* muted coral */
+  --color-info:             var(--color-accent);
+  --color-live:             #e8a364;   /* the only warm note — "shipping" status */
+
+  /* ========================================
+     TYPOGRAPHY — 2 family system
+     Geist (display) + Inter (body) + JetBrains Mono (data)
+     ======================================== */
+
+  --font-display: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  
-  /* Fluid type scale (clamp-based) */
-  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
-  --text-sm: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --font-weight-bold:     700;
+
+  /* Fluid type scale */
+  --text-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-sm:   clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
   --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
-  --text-lg: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
-  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
-  --text-2xl: clamp(1.75rem, 1.5rem + 1.2vw, 2.25rem);
-  --text-3xl: clamp(2.25rem, 1.8rem + 2.2vw, 3.25rem);
-  --text-4xl: clamp(2.75rem, 2rem + 3.5vw, 4.5rem);
-  
-  /* Typography rhythm */
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.7;
-  --letter-spacing-tight: -0.02em;
+  --text-lg:   clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+  --text-xl:   clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
+  --text-2xl:  clamp(1.75rem, 1.5rem + 1.2vw, 2.25rem);
+  --text-3xl:  clamp(2.25rem, 1.8rem + 2.2vw, 3.25rem);
+  --text-4xl:  clamp(2.75rem, 2rem + 3.5vw, 4.5rem);
+
+  --line-height-tight:    1.12;
+  --line-height-normal:   1.5;
+  --line-height-relaxed:  1.65;
+  --letter-spacing-tight: -0.022em;
+  --letter-spacing-snug:  -0.011em;
   --letter-spacing-normal: 0;
-  --letter-spacing-wide: 0.08em;
-  
+  --letter-spacing-wide:  0.08em;
+  --letter-spacing-mono:  0.04em;
+
   /* ========================================
-     LAYOUT & SPACING (4px base scale)
+     LAYOUT & SPACING
      ======================================== */
-  
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-24: 6rem;     /* 96px */
-  --space-32: 8rem;     /* 128px */
-  
-  /* Container sizes */
+
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
   --container-narrow: 720px;
-  --container: 1120px;
-  --container-wide: 1280px;
-  
-  /* Padding & margins */
-  --page-pad-x: clamp(2rem, 6vw, 4rem);
-  --page-pad-top: clamp(6rem, 12vw, 8rem);
+  --container:        1120px;
+  --container-wide:   1280px;
+
+  --page-pad-x:    clamp(2rem, 6vw, 4rem);
+  --page-pad-top:  clamp(6rem, 12vw, 8rem);
   --section-pad-y: clamp(4rem, 8vw, 7rem);
-  
-  /* Responsive navbar */
+
   --navbar-height: 76px;
-  
+
   /* ========================================
-     BORDER RADIUS (modest scale)
+     RADIUS — modest, instrument-like
      ======================================== */
-  
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
   --radius-pill: 9999px;
-  
+
   /* ========================================
-     SHADOWS (carefully tuned)
+     SHADOWS — softer, cooler
      ======================================== */
-  
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 4px 16px rgba(2, 7, 17, 0.26), 0 2px 7px rgba(2, 7, 17, 0.2);
-  --shadow-md: 0 14px 42px rgba(2, 7, 17, 0.4), 0 4px 16px rgba(2, 7, 17, 0.28);
-  --shadow-lg: 0 20px 60px rgba(2, 7, 17, 0.5);
-  
+
+  --shadow-xs: 0 1px 2px rgba(2, 6, 14, 0.20);
+  --shadow-sm: 0 2px 8px rgba(2, 6, 14, 0.28), 0 1px 3px rgba(2, 6, 14, 0.18);
+  --shadow-md: 0 8px 24px rgba(2, 6, 14, 0.36), 0 2px 8px rgba(2, 6, 14, 0.20);
+  --shadow-lg: 0 24px 48px rgba(2, 6, 14, 0.48), 0 4px 16px rgba(2, 6, 14, 0.24);
+
   /* ========================================
-     MOTION & TRANSITIONS
+     MOTION — deliberate, calm
      ======================================== */
-  
-  --motion-duration-fast: 150ms;
-  --motion-duration-base: 240ms;
-  --motion-duration-slow: 480ms;
-  --motion-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --motion-duration-fast: 160ms;
+  --motion-duration-base: 280ms;
+  --motion-duration-slow: 520ms;
+  --motion-ease:        cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  
-  /* ========================================
-     GLASS MORPHISM (used sparingly: navbar, modals only)
-     ======================================== */
-  
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: 24px;
-  --glass-saturation: 1.8;
 
   /* ========================================
-     COMPONENT SHORTHAND ALIASES
-     (legacy tokens consumed by components)
-     Maps semantic --color-* names to the
-     short vars used throughout JSX files.
+     GLASS — refined, less saturated
      ======================================== */
 
-  /* Text */
+  --glass-bg:         rgba(17, 21, 30, 0.55);
+  --glass-border:     rgba(255, 255, 255, 0.06);
+  --glass-blur:       20px;
+  --glass-saturation: 1.4;
+
+  /* ========================================
+     LEGACY ALIASES (for components consuming
+     short var names — kept for compat)
+     ======================================== */
+
   --text:  var(--color-text);
   --text2: var(--color-text-muted);
   --text3: var(--color-text-subtle);
 
-  /* Backgrounds / Surfaces */
   --bg:       var(--color-bg);
   --bg2:      var(--color-surface);
   --surface:  var(--color-surface);
   --surface2: var(--color-surface-raised);
 
-  /* Borders */
   --border:  var(--color-border);
   --border2: var(--color-border-strong);
 
-  /* Accent */
   --accent:  var(--color-accent);
-  --accent2: color-mix(in srgb, var(--color-accent) 70%, #6b9fff);
-  --accent3: color-mix(in srgb, var(--color-accent) 50%, #b06aff);
+  --accent2: var(--color-accent-strong);
 
-  /* Ghost button states */
   --ghost-border:       var(--color-border-strong);
-  --ghost-hover-border: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  --ghost-bg:           transparent;
+  --ghost-hover-border: color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
   --ghost-hover-bg:     color-mix(in srgb, var(--color-accent) 8%, var(--color-surface));
 
-  /* Mobile nav contact pill */
   --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 70%, transparent);
 
-  /* Cursor accent (GravityCursor --nav-dot) */
   --nav-dot: var(--color-accent);
-
-  /* Layout max-width alias used in JSX */
   --page-max: var(--container);
 
-  /* Display / heading typography aliases */
-  --display-weight:           var(--font-weight-bold);
+  --display-weight:           var(--font-weight-semibold);
   --display-tracking:         var(--letter-spacing-tight);
-  --section-title-weight:     var(--font-weight-bold);
+  --section-title-weight:     var(--font-weight-semibold);
   --section-title-tracking:   var(--letter-spacing-tight);
-  
+
   /* ========================================
      AMBIENT ATMOSPHERE
+     One soft cool radial top-left, a fainter
+     one bottom-right. No warm tones.
      ======================================== */
-  
-  --ambient-grain-opacity: 0.08;
-  --backdrop-gradient: radial-gradient(
-    circle at 18% 8%,
-    rgba(212, 162, 76, 0.16),
-    transparent 38%
-  ), radial-gradient(
-    circle at 88% 14%,
-    rgba(212, 162, 76, 0.1),
-    transparent 42%
-  );
-  
+
+  --ambient-grain-opacity: 0.05;
+  --backdrop-gradient:
+    radial-gradient(
+      ellipse 80% 50% at 15% 0%,
+      rgba(159, 182, 200, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 90% 100%,
+      rgba(159, 182, 200, 0.05),
+      transparent 70%
+    );
+
   /* ========================================
      INTERACTIVE STATES
      ======================================== */
-  
-  --state-hover-opacity: 0.08;
-  --state-active-opacity: 0.14;
+
+  --state-hover-opacity: 0.06;
+  --state-active-opacity: 0.12;
   --focus-ring: 2px solid var(--color-accent);
   --focus-ring-offset: 2px;
 }
 
 /* ========================================
-   LIGHT THEME
+   LIGHT THEME — cool off-white, sophisticated
    ======================================== */
-:root[data-theme="light"] {
-  --color-bg: #f5f3f0;
-  --color-surface: #ffffff;
-  --color-surface-raised: #f9f8f6;
-  --color-surface-elev: #f0ede8;
-  
-  --color-border: #e5ddd6;
-  --color-border-strong: #d0c4ba;
-  
-  --color-text: #1a1513;
-  --color-text-muted: #6b6359;
-  --color-text-subtle: #8f8682;
-  
-  --color-accent: #9c6b21;
-  --color-accent-fg: #ffffff;
-  
-  --shadow-sm: 0 4px 16px rgba(26, 21, 19, 0.08), 0 2px 7px rgba(26, 21, 19, 0.04);
-  --shadow-md: 0 14px 42px rgba(26, 21, 19, 0.14), 0 4px 16px rgba(26, 21, 19, 0.08);
-  
-  --backdrop-gradient: radial-gradient(
-    circle at 18% 8%,
-    rgba(156, 107, 33, 0.12),
-    transparent 38%
-  ), radial-gradient(
-    circle at 88% 14%,
-    rgba(156, 107, 33, 0.08),
-    transparent 42%
-  );
-  
-  --glass-bg: rgba(255, 255, 255, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.60);
 
-  /* Ghost / pill states adjusted for light bg */
-  --ghost-hover-bg: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface));
-  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 85%, transparent);
+:root[data-theme="light"] {
+  --color-bg:               #f4f5f8;
+  --color-surface:          #ffffff;
+  --color-surface-raised:   #f9fafc;
+  --color-surface-elev:     #eef0f5;
+
+  --color-border:           #e3e6ed;
+  --color-border-strong:    #c8cdd9;
+
+  --color-text:             #0a0d14;
+  --color-text-muted:       #5a6478;
+  --color-text-subtle:      #8a93a5;
+
+  --color-accent:           #3b556d;   /* deeper slate-blue for AAA contrast */
+  --color-accent-strong:    #2a3f52;
+  --color-accent-soft:      rgba(59, 85, 109, 0.10);
+  --color-accent-fg:        #ffffff;
+
+  --color-success:          #4a8b73;
+  --color-warning:          #b08840;
+  --color-danger:           #b06a6a;
+  --color-live:             #c47835;
+
+  --shadow-sm: 0 2px 8px rgba(10, 13, 20, 0.06), 0 1px 3px rgba(10, 13, 20, 0.04);
+  --shadow-md: 0 8px 24px rgba(10, 13, 20, 0.08), 0 2px 8px rgba(10, 13, 20, 0.05);
+  --shadow-lg: 0 24px 48px rgba(10, 13, 20, 0.12), 0 4px 16px rgba(10, 13, 20, 0.06);
+
+  --backdrop-gradient:
+    radial-gradient(
+      ellipse 80% 50% at 15% 0%,
+      rgba(59, 85, 109, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 90% 100%,
+      rgba(59, 85, 109, 0.04),
+      transparent 70%
+    );
+
+  --glass-bg:     rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(10, 13, 20, 0.06);
+
+  --ghost-hover-bg:         color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
+  --pill-contact-mobile-bg: color-mix(in srgb, var(--color-surface) 92%, transparent);
 }
 
 /* ========================================
    REDUCED TRANSPARENCY MODE
-   (respects prefers-reduced-transparency)
    ======================================== */
+
 @media (prefers-reduced-transparency) {
   :root {
     --glass-bg: var(--color-surface);
@@ -267,15 +276,15 @@
 
 /* ========================================
    REDUCED MOTION MODE
-   (respects prefers-reduced-motion)
    ======================================== */
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-duration-fast: 0ms;
     --motion-duration-base: 0ms;
     --motion-duration-slow: 0ms;
   }
-  
+
   * {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
@@ -286,6 +295,7 @@
 /* ========================================
    RESPONSIVE BREAKPOINTS
    ======================================== */
+
 @media (max-width: 768px) {
   :root {
     --navbar-height: 72px;
@@ -294,8 +304,8 @@
 
 @media (max-width: 480px) {
   :root {
-    --page-pad-x: clamp(0.875rem, 4.5vw, 1.25rem);
+    --page-pad-x:    clamp(0.875rem, 4.5vw, 1.25rem);
     --section-pad-y: clamp(2.5rem, 9vw, 4rem);
-    --page-pad-top: clamp(4.75rem, 12vw, 6rem);
+    --page-pad-top:  clamp(4.75rem, 12vw, 6rem);
   }
 }
