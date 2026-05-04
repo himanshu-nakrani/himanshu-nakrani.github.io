@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail } from 'lucide-react'
+import AnimatedAvatar from './AnimatedAvatar'
 import { useCountUp } from '../hooks/useCountUp'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { currentFocusItems } from '../data'
@@ -183,7 +184,7 @@ export default function HeroEnhanced() {
           </div>
         </div>
 
-        {/* Right column - photo + decorations */}
+        {/* Right column - animated visual + decorations */}
         <motion.div 
           className="hero-visual"
           initial={reduceMotion ? {} : { opacity: 0, scale: 0.95 }}
@@ -191,13 +192,7 @@ export default function HeroEnhanced() {
           transition={{ delay: 0.3, duration: 0.7 }}
         >
           <div className="hero-photo-frame">
-            <img
-              src="/himanshu.jpg"
-              alt="Himanshu Nakrani"
-              className="hero-photo"
-              loading="eager"
-              fetchPriority="high"
-            />
+            <AnimatedAvatar />
             {/* Corner brackets */}
             <span className="hero-photo-corner hero-photo-corner--tl" />
             <span className="hero-photo-corner hero-photo-corner--br" />
@@ -464,14 +459,13 @@ export default function HeroEnhanced() {
         .hero-photo-frame {
           position: relative;
           width: clamp(240px, 25vw, 320px);
-        }
-
-        .hero-photo {
-          width: 100%;
-          height: auto;
-          display: block;
-          border-radius: var(--radius-lg);
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+          background: radial-gradient(circle, rgba(77, 184, 255, 0.03), rgba(77, 184, 255, 0));
         }
 
         .hero-photo-corner {
