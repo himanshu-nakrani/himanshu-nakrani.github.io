@@ -20,20 +20,20 @@
   --color-surface-elev:     #233d5a;   /* highest elevation */
 
   /* ========================================
-     BORDERS — subtle, almost invisible
+     BORDERS — visible by default, AA-compliant
      ======================================== */
 
-  --color-border:           rgba(100, 255, 218, 0.08);
-  --color-border-strong:    rgba(100, 255, 218, 0.15);
-  --color-border-solid:     #1e3a5f;
+  --color-border:           rgba(136, 146, 176, 0.18);   /* slate-tinted, ~3:1 vs bg */
+  --color-border-strong:    rgba(136, 146, 176, 0.32);   /* hover / active hairline */
+  --color-border-solid:     #233554;                     /* opaque variant */
 
   /* ========================================
-     TEXT — cool slate scale
+     TEXT — cool slate scale (all AA on bg)
      ======================================== */
 
-  --color-text:             #ccd6f6;   /* primary, light slate */
-  --color-text-muted:       #8892b0;   /* secondary, slate */
-  --color-text-subtle:      #5f6b8a;   /* tertiary, dim slate */
+  --color-text:             #ccd6f6;   /* primary, ~13.5:1 */
+  --color-text-muted:       #a8b2d1;   /* secondary, ~9.5:1 (was #8892b0 / 7:1) */
+  --color-text-subtle:      #8892b0;   /* tertiary, ~7:1 (was #5f6b8a / 4.4:1) */
 
   /* ========================================
      ACCENT — cool teal (single accent)
@@ -67,12 +67,12 @@
 
   /* ========================================
      TYPOGRAPHY — refined 2-family system
-     Calibre/SF Pro style display + Inter body
+     Space Grotesk display (geometric, technical) + Inter body
      ======================================== */
 
-  --font-display: 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
-  --font-mono:    'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
 
   --font-weight-regular:  400;
   --font-weight-medium:   500;
@@ -119,11 +119,11 @@
   --space-32: 8rem;
 
   --container-narrow: 720px;
-  --container:        1000px;
-  --container-wide:   1200px;
-  --container-full:   1400px;
+  --container:        1280px;
+  --container-wide:   1440px;
+  --container-full:   1600px;
 
-  --page-pad-x:    clamp(1.5rem, 6vw, 9rem);
+  --page-pad-x:    clamp(1.25rem, 4vw, 3.5rem);
   --page-pad-top:  clamp(5rem, 15vh, 8rem);
   --section-pad-y: clamp(5rem, 12vh, 8rem);
 
@@ -245,13 +245,13 @@
   --color-surface-raised:   #f0f4f8;
   --color-surface-elev:     #e8eef4;
 
-  --color-border:           rgba(10, 25, 47, 0.08);
-  --color-border-strong:    rgba(10, 25, 47, 0.15);
-  --color-border-solid:     #d8e0e8;
+  --color-border:           rgba(10, 25, 47, 0.14);
+  --color-border-strong:    rgba(10, 25, 47, 0.24);
+  --color-border-solid:     #d0d8e2;
 
   --color-text:             #0a192f;
-  --color-text-muted:       #495670;
-  --color-text-subtle:      #8892b0;
+  --color-text-muted:       #3f4b66;   /* darker for AA */
+  --color-text-subtle:      #5f6b8a;   /* darker for AA */
 
   --color-accent:           #0a7b6b;   /* darker teal for contrast */
   --color-accent-strong:    #059669;

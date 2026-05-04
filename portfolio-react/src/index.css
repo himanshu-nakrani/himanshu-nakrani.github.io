@@ -154,6 +154,8 @@ a, button, [role="button"], input, textarea, select {
   padding: var(--page-pad-top) var(--page-pad-x) max(4rem, calc(env(safe-area-inset-bottom, 0px) + 3rem));
   max-width: var(--container);
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 section[id] {

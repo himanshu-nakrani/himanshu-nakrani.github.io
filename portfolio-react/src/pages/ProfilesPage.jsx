@@ -252,152 +252,166 @@ export default function ProfilesPage() {
         description="GitHub, Kaggle, LeetCode, and research — all in one place."
       />
 
-      {/* ── Platform cards ── */}
+      {/* ── Platform cards — 4-col on large screens ── */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gap: '0.9rem',
         marginBottom: '3rem',
-      }}>
+      }} className="platform-grid">
         {platforms.map((p, i) => <PlatformCard key={p.id} p={p} index={i} />)}
       </div>
 
-      {/* ── GitHub ── */}
-      <div ref={ghRef} style={{ marginBottom: '3.5rem' }}>
-        <SectionLabel>GitHub Activity</SectionLabel>
+      {/* ── Two-column main content: GitHub left, Kaggle right ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '2.5rem',
+        marginBottom: '3rem',
+        alignItems: 'start',
+      }} className="profiles-two-col">
 
-        <ActivityConstellation profiles={platforms.filter(p => p.id === 'github')} />
+        {/* ── GitHub ── */}
+        <div ref={ghRef}>
+          <SectionLabel>GitHub Activity</SectionLabel>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginBottom: '1.5rem', marginTop: '1.5rem' }} className="profile-4col">
-          {ghStats.map((s, i) => <StatBox key={s.label} num={s.num} label={s.label} index={i} inView={ghInView} />)}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem', marginBottom: '1.25rem' }}>
+            {ghStats.map((s, i) => <StatBox key={s.label} num={s.num} label={s.label} index={i} inView={ghInView} />)}
+          </div>
+
+          {/* Readme stats stacked */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={ghInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}
+          >
+            <img
+              src="https://github-readme-stats-phi.vercel.app/api?username=himanshu-nakrani&show_icons=true&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&icon_color=d4a24c&text_color=eeeef8&ring_color=d4a24c"
+              alt="GitHub Stats"
+              style={{ borderRadius: 12, width: '100%' }}
+              loading="lazy"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+            <img
+              src="https://github-readme-stats-phi.vercel.app/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&text_color=eeeef8"
+              alt="Top Languages"
+              style={{ borderRadius: 12, width: '100%' }}
+              loading="lazy"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+          </motion.div>
+
+          {/* Contribution heatmap */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={ghInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            style={{
+              borderRadius: 14, border: '1px solid var(--border)',
+              overflow: 'auto', background: 'var(--surface)',
+              padding: '1rem 1.25rem',
+            }}
+          >
+            <p style={{ fontSize: '0.66rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
+              Contribution heatmap
+            </p>
+            <img
+              src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
+              alt="GitHub contribution heatmap"
+              style={{ display: 'block', width: '100%', minWidth: 400, height: 'auto' }}
+              loading="lazy"
+              onError={e => { e.currentTarget.style.display = 'none' }}
+            />
+          </motion.div>
         </div>
 
-        {/* Contribution heatmap */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={ghInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          style={{
-            borderRadius: 14, border: '1px solid var(--border)',
-            overflow: 'auto', background: 'var(--surface)',
-            padding: '1rem 1.25rem', marginBottom: '1.25rem',
-          }}
-        >
-          <p style={{ fontSize: '0.66rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
-            Contribution heatmap
-          </p>
-          <img
-            src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
-            alt="GitHub contribution heatmap"
-            style={{ display: 'block', width: '100%', minWidth: 560, height: 'auto' }}
-            loading="lazy"
-            onError={e => { e.currentTarget.style.display = 'none' }}
-          />
-        </motion.div>
+        {/* ── Kaggle ── */}
+        <div ref={kgRef}>
+          <SectionLabel>Kaggle Profile</SectionLabel>
 
-        {/* Readme stats cards */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={ghInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}
-        >
-          <img
-            src="https://github-readme-stats-phi.vercel.app/api?username=himanshu-nakrani&show_icons=true&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&icon_color=d4a24c&text_color=eeeef8&ring_color=d4a24c"
-            alt="GitHub Stats"
-            style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
-            loading="lazy"
-            onError={e => { e.currentTarget.style.display = 'none' }}
-          />
-          <img
-            src="https://github-readme-stats-phi.vercel.app/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&text_color=eeeef8"
-            alt="Top Languages"
-            style={{ borderRadius: 12, flex: 1, minWidth: 240, maxWidth: '100%' }}
-            loading="lazy"
-            onError={e => { e.currentTarget.style.display = 'none' }}
-          />
-        </motion.div>
-      </div>
-
-      {/* ── Kaggle ── */}
-      <div ref={kgRef} style={{ marginBottom: '3.5rem' }}>
-        <SectionLabel>Kaggle Profile</SectionLabel>
-
-        {/* Expert tier cards */}
-        <div style={{ display: 'flex', gap: '0.9rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-          {kaggleTiers.map((tier, i) => (
-            <motion.div
-              key={tier.title}
-              initial={{ opacity: 0, y: 16 }}
-              animate={kgInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              style={{
-                display: 'flex', gap: '0.9rem', alignItems: 'flex-start',
-                padding: '1.2rem 1.3rem', borderRadius: 14, flex: 1, minWidth: 'min(100%, 230px)',
-                border: '1px solid rgba(32,190,255,0.25)',
-                background: 'color-mix(in srgb, #20beff 5%, var(--surface))',
-              }}
-            >
-              <div style={{
-                width: 40, height: 40, borderRadius: 10, flexShrink: 0,
-                background: 'rgba(32,190,255,0.12)', border: '1px solid rgba(32,190,255,0.25)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem',
-              }}>
-                🏆
-              </div>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: '0.92rem', marginBottom: 3, color: 'var(--text)' }}>{tier.title}</p>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text2)', marginBottom: 7 }}>
-                  Rank <strong style={{ color: '#20beff' }}>{tier.rank}</strong> of {tier.total} · Best: {tier.highest}
-                </p>
-                <div style={{ display: 'flex', gap: 5 }}>
-                  <span style={{ fontSize: '0.66rem', padding: '2px 8px', borderRadius: 20, background: 'rgba(192,192,192,0.1)', border: '1px solid rgba(192,192,192,0.25)', color: '#c0c0c0' }}>🥈 {tier.silver} Silver</span>
-                  <span style={{ fontSize: '0.66rem', padding: '2px 8px', borderRadius: 20, background: 'rgba(205,127,50,0.1)', border: '1px solid rgba(205,127,50,0.3)', color: '#cd7f32' }}>🥉 {tier.bronze} Bronze</span>
+          {/* Expert tier cards */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}>
+            {kaggleTiers.map((tier, i) => (
+              <motion.div
+                key={tier.title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={kgInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                style={{
+                  display: 'flex', gap: '0.9rem', alignItems: 'flex-start',
+                  padding: '1.1rem 1.2rem', borderRadius: 14,
+                  border: '1px solid rgba(32,190,255,0.25)',
+                  background: 'color-mix(in srgb, #20beff 5%, var(--surface))',
+                }}
+              >
+                <div style={{
+                  width: 38, height: 38, borderRadius: 10, flexShrink: 0,
+                  background: 'rgba(32,190,255,0.12)', border: '1px solid rgba(32,190,255,0.25)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.15rem',
+                }}>
+                  🏆
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div>
+                  <p style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 3, color: 'var(--text)' }}>{tier.title}</p>
+                  <p style={{ fontSize: '0.73rem', color: 'var(--text2)', marginBottom: 6 }}>
+                    Rank <strong style={{ color: '#20beff' }}>{tier.rank}</strong> of {tier.total} · Best: {tier.highest}
+                  </p>
+                  <div style={{ display: 'flex', gap: 5 }}>
+                    <span style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: 20, background: 'rgba(192,192,192,0.1)', border: '1px solid rgba(192,192,192,0.25)', color: '#c0c0c0' }}>🥈 {tier.silver} Silver</span>
+                    <span style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: 20, background: 'rgba(205,127,50,0.1)', border: '1px solid rgba(205,127,50,0.3)', color: '#cd7f32' }}>🥉 {tier.bronze} Bronze</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
 
-        {/* Counter grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.7rem', marginBottom: '1.75rem' }} className="profile-4col">
-          {kaggleCounters.map(([num, label], i) => <StatBox key={label} num={num} label={label} index={i} inView={kgInView} />)}
-        </div>
+          {/* Counter grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.6rem', marginBottom: '1.5rem' }}>
+            {kaggleCounters.map(([num, label], i) => <StatBox key={label} num={num} label={label} index={i} inView={kgInView} />)}
+          </div>
 
-        {/* Pinned work */}
-        <p style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.85rem', fontFamily: 'var(--font-mono)' }}>
-          Pinned Work
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
-          {kagglePinned.map((item, i) => <KaggleWorkCard key={i} item={item} index={i} inView={kgInView} />)}
-        </div>
+          {/* Pinned work */}
+          <p style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--text2)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+            Pinned Work
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem', marginBottom: '1.1rem' }}>
+            {kagglePinned.map((item, i) => <KaggleWorkCard key={i} item={item} index={i} inView={kgInView} />)}
+          </div>
 
-        <a
-          href="https://www.kaggle.com/himanshunakrani"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn--ghost"
-          style={{ fontSize: '0.82rem' }}
-        >
-          View full Kaggle profile ↗
-        </a>
+          <a
+            href="https://www.kaggle.com/himanshunakrani"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn--ghost"
+            style={{ fontSize: '0.82rem' }}
+          >
+            View full Kaggle profile ↗
+          </a>
+        </div>
       </div>
 
-      {/* ── LeetCode ── */}
+      {/* ── LeetCode — full width ── */}
       <div ref={lcRef} style={{ marginBottom: '3rem' }}>
         <SectionLabel>LeetCode</SectionLabel>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem', alignItems: 'center' }} className="lc-grid">
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             animate={lcInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.45 }}
-            style={{ flex: 1, minWidth: 200 }}
           >
             <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.95rem', color: '#ffa116', marginBottom: 6 }}>@himanshunakrani0</p>
-            <p style={{ color: 'var(--text2)', fontSize: '0.9rem', marginBottom: '1.25rem', lineHeight: 1.7 }}>
+            <p style={{ color: 'var(--text2)', fontSize: '0.88rem', marginBottom: '1.25rem', lineHeight: 1.7 }}>
               Consistent problem solver — sharpening DSA skills alongside AI/ML work.
-              <strong style={{ color: 'var(--text)', display: 'block', marginTop: 4 }}>180 problems solved · ~150k global ranking</strong>
             </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem', marginBottom: '1.25rem' }}>
+              {[['180', 'Solved'], ['~150k', 'Global Rank']].map(([v, l]) => (
+                <div key={l} style={{ padding: '0.8rem', borderRadius: 10, background: 'var(--surface)', border: '1px solid rgba(255,161,22,0.2)', textAlign: 'center' }}>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#ffa116', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{v}</div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text2)', marginTop: 3 }}>{l}</div>
+                </div>
+              ))}
+            </div>
             <a
               href="https://leetcode.com/u/himanshunakrani0/"
               target="_blank"
@@ -405,7 +419,7 @@ export default function ProfilesPage() {
               className="btn btn--ghost"
               style={{ fontSize: '0.82rem' }}
             >
-              View LeetCode Profile ↗
+              View Profile ↗
             </a>
           </motion.div>
           <motion.img
@@ -414,7 +428,7 @@ export default function ProfilesPage() {
             transition={{ duration: 0.45, delay: 0.1 }}
             src="https://leetcard.jacoblin.cool/himanshunakrani0?theme=dark&font=Fira%20Code&ext=heatmap&border=0&radius=12"
             alt="LeetCode Stats Card"
-            style={{ borderRadius: 14, maxWidth: 480, width: '100%', flex: 2, border: '1px solid var(--border)' }}
+            style={{ borderRadius: 14, width: '100%', border: '1px solid var(--border)' }}
             loading="lazy"
             onError={e => { e.currentTarget.style.display = 'none' }}
           />
@@ -422,8 +436,13 @@ export default function ProfilesPage() {
       </div>
 
       <style>{`
-        @media (max-width: 640px) {
-          .profile-4col { grid-template-columns: repeat(2, 1fr) !important; }
+        @media (max-width: 1024px) {
+          .platform-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .profiles-two-col { grid-template-columns: 1fr !important; }
+          .lc-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 600px) {
+          .platform-grid { grid-template-columns: 1fr 1fr !important; }
         }
       `}</style>
     </section>
