@@ -7,7 +7,7 @@ import {
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
   Search, Command as CommandIcon, ArrowRight
 } from 'lucide-react'
-import { projects, skillCategories, experiences } from '../data'
+import { projects, skills, experience } from '../data'
 
 const pages = [
   { id: 'home', name: 'Home', icon: Home, path: '/', keywords: ['start', 'main'] },
@@ -158,15 +158,15 @@ export default function CommandPalette() {
 
                   {/* Skills */}
                   <Command.Group heading="Skills" className="cmd-group">
-                    {skillCategories.slice(0, 4).map((cat) => (
+                    {skills.slice(0, 4).map((cat) => (
                       <Command.Item
-                        key={cat.title}
-                        value={`${cat.title} ${cat.items?.map(i => i.name).join(' ') || ''}`}
+                        key={cat.category}
+                        value={`${cat.category} ${cat.items?.join(' ') || ''}`}
                         onSelect={() => runCommand(() => navigate('/skills'))}
                         className="cmd-item"
                       >
                         <Code2 size={16} />
-                        <span>{cat.title}</span>
+                        <span>{cat.category}</span>
                         <span className="cmd-item-count">{cat.items?.length || 0}</span>
                       </Command.Item>
                     ))}
