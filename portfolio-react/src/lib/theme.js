@@ -30,6 +30,6 @@ export function applyTheme(theme) {
 
   const meta = document.querySelector(THEME_META_SELECTOR)
   if (meta) {
-    meta.setAttribute('content', resolvedTheme === 'dark' ? '#0b0d10' : '#f5f3f0')
+    meta.setAttribute('content', resolvedTheme === 'dark' ? '#0d0d0f' : '#faf9f7')
   }
 }

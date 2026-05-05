@@ -64,12 +64,12 @@ export default function AnimatedAvatar() {
       >
         <defs>
           <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#4db8ff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#00d9ff" stopOpacity="0.6" />
+            <stop offset="0%" stopColor="#f5a623" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#f7b84b" stopOpacity="0.6" />
           </linearGradient>
           <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(77, 184, 255, 0.05)" />
-            <stop offset="100%" stopColor="rgba(77, 184, 255, 0)" />
+            <stop offset="0%" stopColor="rgba(245, 166, 35, 0.05)" />
+            <stop offset="100%" stopColor="rgba(245, 166, 35, 0)" />
           </radialGradient>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -98,7 +98,7 @@ export default function AnimatedAvatar() {
             cx="150"
             cy="20"
             r="4"
-            fill="#4db8ff"
+            fill="#f5a623"
             filter="url(#glow)"
           />
         </motion.g>
@@ -119,7 +119,7 @@ export default function AnimatedAvatar() {
             cx="270"
             cy="150"
             r="3.5"
-            fill="#00d9ff"
+            fill="#f7b84b"
             filter="url(#glow)"
           />
         </motion.g>
@@ -135,7 +135,7 @@ export default function AnimatedAvatar() {
                 cx={x}
                 cy={y}
                 r="5"
-                fill="#4db8ff"
+                fill="#f5a623"
                 opacity="0.6"
                 filter="url(#glow)"
               />
@@ -144,7 +144,7 @@ export default function AnimatedAvatar() {
                 cy={y}
                 r="5"
                 fill="none"
-                stroke="#4db8ff"
+                stroke="#f5a623"
                 strokeWidth="1"
                 opacity="0.3"
               />
@@ -158,7 +158,7 @@ export default function AnimatedAvatar() {
           <motion.polygon
             points="150,85 200,115 200,175 150,205 100,175 100,115"
             fill="none"
-            stroke="#4db8ff"
+            stroke="#f5a623"
             strokeWidth="2"
             opacity="0.5"
             animate={{ opacity: [0.3, 0.6, 0.3] }}
@@ -209,7 +209,7 @@ export default function AnimatedAvatar() {
               y1="145"
               x2={x}
               y2={y}
-              stroke="#4db8ff"
+              stroke="#f5a623"
               strokeWidth="1"
               opacity="0.1"
             />
@@ -217,10 +217,10 @@ export default function AnimatedAvatar() {
         })}
 
         {/* Decorative corner elements */}
-        <rect x="30" y="30" width="10" height="10" fill="none" stroke="#4db8ff" strokeWidth="1" opacity="0.3" />
-        <rect x="260" y="30" width="10" height="10" fill="none" stroke="#4db8ff" strokeWidth="1" opacity="0.3" />
-        <rect x="30" y="260" width="10" height="10" fill="none" stroke="#4db8ff" strokeWidth="1" opacity="0.3" />
-        <rect x="260" y="260" width="10" height="10" fill="none" stroke="#4db8ff" strokeWidth="1" opacity="0.3" />
+        <rect x="30" y="30" width="10" height="10" fill="none" stroke="#f5a623" strokeWidth="1" opacity="0.3" />
+        <rect x="260" y="30" width="10" height="10" fill="none" stroke="#f5a623" strokeWidth="1" opacity="0.3" />
+        <rect x="30" y="260" width="10" height="10" fill="none" stroke="#f5a623" strokeWidth="1" opacity="0.3" />
+        <rect x="260" y="260" width="10" height="10" fill="none" stroke="#f5a623" strokeWidth="1" opacity="0.3" />
       </svg>
     </motion.div>
   )

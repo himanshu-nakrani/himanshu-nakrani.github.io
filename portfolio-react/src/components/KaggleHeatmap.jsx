@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-/** GitHub dark-mode style greens (empty + 4 levels). */
-const LEVEL_FILL = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+/** Amber/gold gradient (empty + 4 levels) — harmonizes with Gilded Obsidian palette. */
+const LEVEL_FILL = ['#1c1917', '#44260a', '#7c4a12', '#b5710e', '#f5a623']
 
 function pad2(n) {
   return String(n).padStart(2, '0')

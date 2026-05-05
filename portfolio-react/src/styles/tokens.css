@@ -1,9 +1,8 @@
 /* ============================================
-   DESIGN TOKENS — "Midnight Teal"
+   DESIGN TOKENS — "Gilded Obsidian"
    ============================================
-   Deep navy foundation with cool teal accent.
-   Inspired by Brittany Chiang, Paco Coursey,
-   Linear, and Vercel design systems.
+   Warm obsidian foundation with amber/gold accent.
+   Professional & polished, dual-theme system.
    
    4-color system: bg, surface, text, accent
    Category colors only for data viz / tags.
@@ -11,59 +10,59 @@
 
 :root {
   /* ========================================
-     SURFACES — deep navy slate, layered
+     SURFACES — rich obsidian charcoal, layered
      ======================================== */
 
-  --color-bg:               #0a192f;   /* deep navy, signature background */
-  --color-surface:          #112240;   /* card background */
-  --color-surface-raised:   #1d3461;   /* hover / modal / elevated */
-  --color-surface-elev:     #233d5a;   /* highest elevation */
+  --color-bg:               #0d0d0f;   /* near-black obsidian, warm undertone */
+  --color-surface:          #18181b;   /* zinc-900, card background */
+  --color-surface-raised:   #27272a;   /* zinc-800, hover / modal / elevated */
+  --color-surface-elev:     #3f3f46;   /* zinc-700, highest elevation */
 
   /* ========================================
-     BORDERS — visible by default, AA-compliant
+     BORDERS — amber-tinted, visible by default
      ======================================== */
 
-  --color-border:           rgba(136, 146, 176, 0.18);   /* slate-tinted, ~3:1 vs bg */
-  --color-border-strong:    rgba(136, 146, 176, 0.32);   /* hover / active hairline */
-  --color-border-solid:     #233554;                     /* opaque variant */
+  --color-border:           rgba(161, 138, 94, 0.14);   /* warm amber-tinted, ~3:1 vs bg */
+  --color-border-strong:    rgba(161, 138, 94, 0.28);   /* hover / active hairline */
+  --color-border-solid:     #3f3f46;                   /* opaque fallback */
 
   /* ========================================
-     TEXT — cool slate scale (all AA on bg)
+     TEXT — warm neutrals (all AA on bg)
      ======================================== */
 
-  --color-text:             #ccd6f6;   /* primary, ~13.5:1 */
-  --color-text-muted:       #a8b2d1;   /* secondary, ~9.5:1 (was #8892b0 / 7:1) */
-  --color-text-subtle:      #8892b0;   /* tertiary, ~7:1 (was #5f6b8a / 4.4:1) */
+  --color-text:             #fafaf9;   /* warm white (stone-50), ~18:1 */
+  --color-text-muted:       #d4cfc8;   /* warm gray-300, ~10:1 */
+  --color-text-subtle:      #a39d95;   /* warm gray-400, ~6:1 */
 
   /* ========================================
-     ACCENT — cool teal (single accent)
+     ACCENT — warm amber/gold (single accent)
      ======================================== */
 
-  --color-accent:           #64ffda;   /* signature teal */
-  --color-accent-strong:    #7affdf;   /* hover lift */
-  --color-accent-soft:      rgba(100, 255, 218, 0.10);
-  --color-accent-fg:        #0a192f;   /* text on accent bg */
+  --color-accent:           #f5a623;   /* amber-500, warm gold */
+  --color-accent-strong:    #f7b84b;   /* hover lift, slightly lighter */
+  --color-accent-soft:      rgba(245, 166, 35, 0.12);
+  --color-accent-fg:        #0d0d0f;   /* dark text on amber bg, ~12:1 */
 
   /* ========================================
-     STATUS — muted, semantic
+     STATUS — warm-harmonious, semantic
      ======================================== */
 
-  --color-success:          #64ffda;   /* teal (same as accent) */
-  --color-warning:          #ffd166;   /* muted gold */
-  --color-danger:           #ff6b6b;   /* coral */
-  --color-info:             var(--color-accent);
-  --color-live:             #64ffda;   /* live status uses accent */
+  --color-success:          #4ade80;   /* green-400, warm enough */
+  --color-warning:          #f5a623;   /* amber (same as accent) */
+  --color-danger:           #f87171;   /* red-400, warm coral */
+  --color-info:             #60a5fa;   /* blue-400, cool contrast */
+  --color-live:             #4ade80;   /* green for live status */
 
   /* ========================================
      CATEGORY COLORS (data viz only)
      ======================================== */
 
-  --color-cat-1:            #64ffda;   /* teal */
-  --color-cat-2:            #bd93f9;   /* lavender */
-  --color-cat-3:            #ff79c6;   /* pink */
-  --color-cat-4:            #8be9fd;   /* cyan */
-  --color-cat-5:            #ffb86c;   /* orange */
-  --color-cat-6:            #50fa7b;   /* green */
+  --color-cat-1:            #f5a623;   /* amber (accent) */
+  --color-cat-2:            #c084fc;   /* purple-400 */
+  --color-cat-3:            #fb7185;   /* rose-400 */
+  --color-cat-4:            #67e8f9;   /* cyan-300 */
+  --color-cat-5:            #a78bfa;   /* violet-400 */
+  --color-cat-6:            #4ade80;   /* green-400 */
 
   /* ========================================
      TYPOGRAPHY — refined 2-family system
@@ -142,14 +141,14 @@
   --radius-pill: 9999px;
 
   /* ========================================
-     SHADOWS — subtle, navy-tinted
+     SHADOWS — subtle, obsidian-tinted
      ======================================== */
 
-  --shadow-xs: 0 1px 2px rgba(2, 12, 27, 0.4);
-  --shadow-sm: 0 2px 4px rgba(2, 12, 27, 0.3), 0 1px 2px rgba(2, 12, 27, 0.2);
-  --shadow-md: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-  --shadow-lg: 0 20px 40px -15px rgba(2, 12, 27, 0.8);
-  --shadow-xl: 0 30px 60px -20px rgba(2, 12, 27, 0.9);
+  --shadow-xs: 0 1px 2px rgba(13, 13, 15, 0.4);
+  --shadow-sm: 0 2px 4px rgba(13, 13, 15, 0.3), 0 1px 2px rgba(13, 13, 15, 0.2);
+  --shadow-md: 0 10px 30px -15px rgba(13, 13, 15, 0.7);
+  --shadow-lg: 0 20px 40px -15px rgba(13, 13, 15, 0.8);
+  --shadow-xl: 0 30px 60px -20px rgba(13, 13, 15, 0.9);
 
   /* ========================================
      MOTION — deliberate, smooth
@@ -167,11 +166,11 @@
   --motion-ease-spring:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   /* ========================================
-     GLASS — refined blur
+     GLASS — refined blur, amber-tinted
      ======================================== */
 
-  --glass-bg:         rgba(17, 34, 64, 0.85);
-  --glass-border:     rgba(100, 255, 218, 0.1);
+  --glass-bg:         rgba(24, 24, 27, 0.88);
+  --glass-border:     rgba(245, 166, 35, 0.12);
   --glass-blur:       10px;
   --glass-saturation: 1.2;
 
@@ -194,9 +193,9 @@
   --ghost-border:       var(--color-border-strong);
   --ghost-bg:           transparent;
   --ghost-hover-border: var(--color-accent);
-  --ghost-hover-bg:     rgba(100, 255, 218, 0.1);
+  --ghost-hover-bg:     rgba(245, 166, 35, 0.10);
 
-  --pill-contact-mobile-bg: rgba(17, 34, 64, 0.9);
+  --pill-contact-mobile-bg: rgba(24, 24, 27, 0.9);
   --nav-dot: var(--color-accent);
   --page-max: var(--container);
 
@@ -206,14 +205,14 @@
   --section-title-tracking: var(--letter-spacing-tight);
 
   /* ========================================
-     AMBIENT ATMOSPHERE
+     AMBIENT ATMOSPHERE — amber glow
      ======================================== */
 
   --ambient-grain-opacity: 0.03;
   --backdrop-gradient:
     radial-gradient(
       ellipse 80% 50% at 10% 0%,
-      rgba(100, 255, 218, 0.03),
+      rgba(245, 166, 35, 0.04),
       transparent 50%
     );
 
@@ -236,43 +235,50 @@
 }
 
 /* ========================================
-   LIGHT THEME — warm paper, sophisticated
+   LIGHT THEME — warm ivory/cream, sophisticated
    ======================================== */
 
 :root[data-theme="light"] {
-  --color-bg:               #f8f9fc;
-  --color-surface:          #ffffff;
-  --color-surface-raised:   #f0f4f8;
-  --color-surface-elev:     #e8eef4;
+  --color-bg:               #faf9f7;   /* warm ivory */
+  --color-surface:          #ffffff;   /* pure white cards */
+  --color-surface-raised:   #f5f0e8;   /* warm sand hover */
+  --color-surface-elev:     #ede8df;   /* deeper warm sand */
 
-  --color-border:           rgba(10, 25, 47, 0.14);
-  --color-border-strong:    rgba(10, 25, 47, 0.24);
-  --color-border-solid:     #d0d8e2;
+  --color-border:           rgba(120, 100, 60, 0.13);   /* warm brown-tinted */
+  --color-border-strong:    rgba(120, 100, 60, 0.24);   /* stronger hairline */
+  --color-border-solid:     #d9d0c2;                    /* opaque warm beige */
 
-  --color-text:             #0a192f;
-  --color-text-muted:       #3f4b66;   /* darker for AA */
-  --color-text-subtle:      #5f6b8a;   /* darker for AA */
+  --color-text:             #1a1714;   /* very dark warm brown, ~17:1 */
+  --color-text-muted:       #4a4139;   /* warm brown-gray, ~8:1 */
+  --color-text-subtle:      #7a6e63;   /* mid-warm gray, ~5:1 */
 
-  --color-accent:           #0a7b6b;   /* darker teal for contrast */
-  --color-accent-strong:    #059669;
-  --color-accent-soft:      rgba(10, 123, 107, 0.08);
-  --color-accent-fg:        #ffffff;
+  --color-accent:           #b5710e;   /* darker amber for contrast, ~5.5:1 */
+  --color-accent-strong:    #9a5e0a;   /* deeper for hover */
+  --color-accent-soft:      rgba(181, 113, 14, 0.08);
+  --color-accent-fg:        #ffffff;   /* white text on darker amber */
 
-  --shadow-sm: 0 1px 3px rgba(10, 25, 47, 0.06);
-  --shadow-md: 0 4px 12px rgba(10, 25, 47, 0.08);
-  --shadow-lg: 0 8px 24px rgba(10, 25, 47, 0.12);
+  --color-success:          #16a34a;   /* green-600 */
+  --color-warning:          #b5710e;   /* amber (same as accent) */
+  --color-danger:           #dc2626;   /* red-600 */
+  --color-info:             #2563eb;   /* blue-600 */
+
+  --shadow-xs: 0 1px 2px rgba(26, 23, 20, 0.04);
+  --shadow-sm: 0 1px 3px rgba(26, 23, 20, 0.06);
+  --shadow-md: 0 4px 12px rgba(26, 23, 20, 0.08);
+  --shadow-lg: 0 8px 24px rgba(26, 23, 20, 0.12);
+  --shadow-xl: 0 12px 36px rgba(26, 23, 20, 0.16);
 
   --backdrop-gradient:
     radial-gradient(
       ellipse 80% 50% at 10% 0%,
-      rgba(10, 123, 107, 0.03),
+      rgba(181, 113, 14, 0.03),
       transparent 50%
     );
 
-  --glass-bg:     rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(10, 25, 47, 0.08);
+  --glass-bg:     rgba(255, 255, 255, 0.90);
+  --glass-border: rgba(120, 100, 60, 0.10);
 
-  --ghost-hover-bg: rgba(10, 123, 107, 0.08);
+  --ghost-hover-bg: rgba(181, 113, 14, 0.08);
   --pill-contact-mobile-bg: rgba(255, 255, 255, 0.95);
 }
 

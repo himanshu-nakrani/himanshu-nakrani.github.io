@@ -16,12 +16,12 @@ const PRIMARY_STACK = [
   { name: 'Docker',       icon: '🐳', note: 'Containers', years: 2 },
 ]
 
-/* Cert accent colors */
+/* Cert accent colors — amber-harmonious palette */
 const CERT_COLORS = [
-  { bg: 'rgba(255,80,0,0.12)', border: 'rgba(255,80,0,0.3)', accent: '#ff5000' },
-  { bg: 'rgba(255,153,0,0.12)', border: 'rgba(255,153,0,0.3)', accent: '#ff9900' },
-  { bg: 'rgba(74,158,255,0.12)', border: 'rgba(74,158,255,0.3)', accent: '#4a9eff' },
-  { bg: 'rgba(255,60,60,0.12)', border: 'rgba(255,60,60,0.3)', accent: '#ff3c3c' },
+  { bg: 'rgba(245,166,35,0.12)', border: 'rgba(245,166,35,0.3)', accent: '#f5a623' },
+  { bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.3)', accent: '#c084fc' },
+  { bg: 'rgba(103,232,249,0.12)', border: 'rgba(103,232,249,0.3)', accent: '#67e8f9' },
+  { bg: 'rgba(251,113,133,0.12)', border: 'rgba(251,113,133,0.3)', accent: '#fb7185' },
   { bg: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.3)', accent: '#4ade80' },
 ]
 
