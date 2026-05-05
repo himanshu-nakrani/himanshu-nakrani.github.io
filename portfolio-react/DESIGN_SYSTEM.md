@@ -2,7 +2,7 @@
 
 ## Overview
 
-This portfolio uses a unified, token-driven design system based on semantic color tokens, fluid typography scales, and motion primitives. The system supports light/dark themes while maintaining a single, cohesive visual identity.
+This portfolio uses a unified, token-driven design system called **"Gilded Obsidian"** — featuring a warm amber/gold accent on a rich obsidian charcoal foundation. The system is based on semantic color tokens, fluid typography scales, and motion primitives, supporting both light and dark themes with equal polish while maintaining a single, cohesive visual identity.
 
 ## Color Tokens
 
@@ -19,11 +19,11 @@ All colors are managed through CSS custom properties in `/src/styles/tokens.css`
 --color-border            /* Default borders */
 --color-border-strong     /* Active/focused borders */
 
---color-text              /* Primary text (warm cream) */
+--color-text              /* Primary text — #fafaf9 dark / #1a1714 light */
 --color-text-muted        /* Secondary text */
 --color-text-subtle       /* Tertiary text, captions */
 
---color-accent            /* Brand color (warm amber) */
+--color-accent            /* Brand color — #f5a623 amber (dark) / #b5710e (light) */
 --color-accent-fg         /* Text on accent background */
 
 --color-success / --color-warning / --color-danger / --color-info

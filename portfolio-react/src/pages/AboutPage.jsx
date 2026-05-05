@@ -235,14 +235,14 @@ function BentoStatCard({ value, label, icon: Icon, color = 'var(--color-accent)'
 function SkillPill({ name, category, delay }) {
   const [hovered, setHovered] = useState(false)
   const categoryColors = {
-    'Language': '#64ffda',
-    'Framework': '#bd93f9',
-    'ML': '#ff79c6',
-    'Backend': '#8be9fd',
-    'Frontend': '#ffb86c',
-    'Database': '#50fa7b',
-    'Cloud': '#f1fa8c',
-    'DevOps': '#ff5555',
+    'Language': '#f5a623',
+    'Framework': '#c084fc',
+    'ML': '#fb7185',
+    'Backend': '#67e8f9',
+    'Frontend': '#a78bfa',
+    'Database': '#4ade80',
+    'Cloud': '#fde68a',
+    'DevOps': '#f87171',
   }
   const color = categoryColors[category] || 'var(--color-accent)'
   
@@ -436,10 +436,10 @@ function TiltCard({ children, className = '', style = {} }) {
    DATA
    ======================================== */
 const stats = [
-  { value: '2+', label: 'Years Experience', icon: Briefcase, color: '#64ffda' },
-  { value: '100+', label: 'Users Served', icon: Users, color: '#bd93f9' },
-  { value: '75%', label: 'Latency Reduction', icon: Zap, color: '#ffb86c' },
-  { value: '2', label: 'Publications', icon: BookOpen, color: '#ff79c6' },
+  { value: '2+', label: 'Years Experience', icon: Briefcase, color: '#f5a623' },
+  { value: '100+', label: 'Users Served', icon: Users, color: '#c084fc' },
+  { value: '75%', label: 'Latency Reduction', icon: Zap, color: '#f7b84b' },
+  { value: '2', label: 'Publications', icon: BookOpen, color: '#fb7185' },
 ]
 
 const techStack = [
