@@ -75,6 +75,7 @@ function ProjectModal({ project, onClose }) {
                   </div>
                   <button
                     onClick={onClose}
+                    aria-label="Close dialog"
                     style={{
                       background: 'color-mix(in srgb, var(--border) 40%, transparent)', border: '1px solid var(--border)',
                       cursor: 'pointer', color: 'var(--text2)', width: 32, height: 32, borderRadius: '50%',

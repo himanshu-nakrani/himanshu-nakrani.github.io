@@ -72,6 +72,7 @@ export default function ExperienceDetailModal({ item, isOpen, onClose }) {
               >
                 <button
                   onClick={onClose}
+                  aria-label="Back to experience list"
                   style={{
                     alignSelf: 'flex-start',
                     background: 'none',

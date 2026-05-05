@@ -1,0 +1,3 @@
+## 2025-05-05 - Missing ARIA Labels on Icon-Only Modal Close/Back Buttons
+**Learning:** React applications commonly rely on standalone SVG icons for close (e.g. `<X />`) or back buttons within custom modal components. Screen readers cannot interpret these elements without explicitly defining `aria-label` properties, rendering these common UI patterns inaccessible.
+**Action:** When implementing modal/overlay components or interactive elements represented solely by an icon, ensure the wrapping button explicitly contains an `aria-label` providing context to the action (e.g., `aria-label="Close dialog"` or `aria-label="Back to previous screen"`).
