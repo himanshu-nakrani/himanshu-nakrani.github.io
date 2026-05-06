@@ -124,7 +124,7 @@ function PlatformCard({ p, index }) {
         background: hovered ? p.bg : 'var(--surface)',
         textDecoration: 'none',
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? `0 8px 24px ${p.color}22` : 'var(--shadow-xs)',
+        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.22s ease',
       }}
     >
@@ -211,7 +211,7 @@ function KaggleWorkCard({ item, index, inView }) {
         background: hovered ? 'color-mix(in srgb, #20beff 5%, var(--surface))' : 'var(--surface)',
         textDecoration: 'none',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 6px 20px rgba(32,190,255,0.12)' : 'var(--shadow-xs)',
+        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.2s ease',
       }}
     >

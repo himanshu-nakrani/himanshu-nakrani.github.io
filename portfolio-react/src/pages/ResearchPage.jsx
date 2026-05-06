@@ -50,19 +50,13 @@ function PaperCard({ pub, index, isExpanded, onToggle }) {
       style={{
         borderRadius: 20,
         border: `1px solid ${hovered || isExpanded ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--color-border)'}`,
-        background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         overflow: 'hidden',
         transition: 'all 0.25s ease',
-        boxShadow: hovered || isExpanded ? '0 8px 32px color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--shadow-xs)',
+        boxShadow: hovered || isExpanded ? 'var(--shadow-sm)' : 'none',
       }}
     >
-      {/* Top accent bar */}
-      <div style={{
-        height: 3,
-        background: isPublished
-          ? 'linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 25%, transparent))'
-          : 'linear-gradient(90deg, var(--color-info), color-mix(in srgb, var(--color-info) 20%, transparent))',
-      }} />
+
 
       {/* Header - always visible */}
       <button
@@ -214,7 +208,7 @@ function MethodologyNode({ label, description, icon: Icon, delay, inView, isActi
         minWidth: 140,
         textAlign: 'center',
         transform: hovered || isActive ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: isActive ? '0 4px 16px color-mix(in srgb, var(--color-accent) 20%, transparent)' : 'var(--shadow-xs)',
+        boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.2s ease',
       }}
     >
@@ -309,7 +303,7 @@ export default function ResearchPage() {
             style={{
               display: 'flex', alignItems: 'center', gap: '0.75rem',
               padding: '1rem 1.1rem', borderRadius: 14,
-              background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+              background: 'var(--color-surface)',
               border: '1px solid var(--color-border)',
             }}
           >
@@ -352,7 +346,7 @@ export default function ResearchPage() {
           padding: '1.75rem',
           borderRadius: 20,
           border: '1px solid var(--color-border)',
-          background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+          background: 'var(--color-surface)',
         }}>
           {/* Pipeline title */}
           <div style={{ 
@@ -440,7 +434,7 @@ export default function ResearchPage() {
       <div style={{
         padding: '1.5rem 1.75rem', 
         borderRadius: 16,
-        background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 6%, var(--color-surface)) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         border: '1px solid var(--color-border)', 
         borderLeft: '4px solid var(--color-accent)',
         display: 'flex', 

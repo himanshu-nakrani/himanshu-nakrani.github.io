@@ -66,7 +66,7 @@ function HeroStatCard({ icon: Icon, value, label, delay }) {
       style={{
         display: 'flex', alignItems: 'center', gap: '0.75rem',
         padding: '1rem 1.25rem', borderRadius: 14,
-        background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         border: '1px solid var(--color-border)',
         flex: 1, minWidth: 140,
       }}
@@ -109,13 +109,11 @@ function BentoToolCard({ tool, index, large }) {
         gridColumn: large ? 'span 2' : 'span 1',
         padding: large ? '1.5rem' : '1.1rem',
         borderRadius: 16,
-        background: hovered 
-          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)) 0%, var(--color-surface-raised) 100%)'
-          : 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
         cursor: 'default',
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 8px 24px color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--shadow-xs)',
+        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.25s ease',
         display: 'flex',
         flexDirection: large ? 'row' : 'column',
@@ -184,12 +182,10 @@ function SkillCategoryCard({ group, index, isExpanded, onToggle }) {
       style={{
         borderRadius: 18,
         overflow: 'hidden',
-        background: isExpanded 
-          ? `linear-gradient(135deg, color-mix(in srgb, ${group.color} 8%, var(--color-surface)) 0%, var(--color-surface-raised) 100%)`
-          : 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         border: `1px solid ${isExpanded ? group.color : hovered ? 'color-mix(in srgb, var(--color-accent) 30%, var(--color-border))' : 'var(--color-border)'}`,
         transition: 'all 0.3s ease',
-        boxShadow: isExpanded ? `0 0 0 1px color-mix(in srgb, ${group.color} 20%, transparent), var(--shadow-md)` : 'var(--shadow-xs)',
+        boxShadow: isExpanded ? 'var(--shadow-sm)' : 'none',
       }}
     >
       {/* Header */}

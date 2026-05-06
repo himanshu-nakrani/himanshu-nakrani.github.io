@@ -22,7 +22,6 @@ export default function AmbientAtmosphere({
       aria-hidden={ariaHidden}
     >
       <div className="ambient-layer ambient-backdrop" />
-      <div className="ambient-layer ambient-grid" />
       <div className="ambient-layer ambient-grain" />
     </div>
   )

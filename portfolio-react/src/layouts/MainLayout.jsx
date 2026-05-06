@@ -115,19 +115,7 @@ export default function MainLayout({ isDark, setIsDark }) {
               borderBottom: 'none',
             }}
           >
-            {/* Footer accent glow */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: '30%',
-                right: '30%',
-                height: 1,
-                background: 'linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 40%, transparent), transparent)',
-                pointerEvents: 'none',
-              }}
-            />
+
             <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', position: 'relative', zIndex: 1 }}>
               <div style={{
                 display: 'grid',

@@ -69,7 +69,7 @@ function StatCard({ num, label, link, index }) {
         padding: '1.4rem 1rem',
         borderRadius: 12,
         border: '1px solid var(--color-border)',
-        background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
+        background: 'var(--color-surface)',
         cursor: 'pointer',
         transition: 'all 0.2s',
         textDecoration: 'none',
@@ -158,7 +158,7 @@ export default function HeroEnhanced() {
             transition={{ delay: 0.1, duration: 0.6 }}
             style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
           >
-            {/* Avatar in a more prominent box */}
+            {/* Avatar in a simple box */}
             <div style={{
               position: 'relative',
               display: 'flex',
@@ -168,9 +168,8 @@ export default function HeroEnhanced() {
               aspectRatio: '1',
               borderRadius: 16,
               border: '1px solid var(--color-border)',
-              background: 'radial-gradient(circle at 30% 30%, rgba(77, 184, 255, 0.08), transparent)',
+              background: 'var(--color-surface)',
               overflow: 'hidden',
-              boxShadow: '0 20px 60px rgba(77, 184, 255, 0.08)',
             }}>
               <AnimatedAvatar />
             </div>
@@ -206,10 +205,7 @@ export default function HeroEnhanced() {
                 fontWeight: 700,
                 lineHeight: 1.1,
                 marginBottom: '0.5rem',
-                background: 'linear-gradient(135deg, var(--color-text) 0%, var(--color-accent) 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: 'var(--color-text)',
               }}>
                 Himanshu Nakrani
               </h1>
@@ -230,8 +226,8 @@ export default function HeroEnhanced() {
               style={{
                 padding: '1.25rem',
                 borderRadius: 12,
-                border: '1px solid rgba(77, 184, 255, 0.25)',
-                background: 'linear-gradient(135deg, rgba(77, 184, 255, 0.08) 0%, rgba(77, 184, 255, 0.03) 100%)',
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-surface)',
               }}
             >
               <div style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Now building:</div>
