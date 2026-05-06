@@ -56,7 +56,7 @@ function ProjectModal({ project, onClose }) {
                 boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px color-mix(in srgb, var(--color-accent) 8%, transparent) inset',
               }}
             >
-              <div style={{ height: 3, borderRadius: '20px 20px 0 0', background: 'linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 25%, transparent))' }} />
+              
               <div style={{ padding: '1.6rem' }}>
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.2rem' }}>
@@ -185,20 +185,17 @@ function FeaturedCard({ item, onClick }) {
       tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
       style={{
-        borderRadius: 18,
-        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 45%, var(--border))' : 'color-mix(in srgb, var(--color-accent) 22%, var(--border))'}`,
-        background: hovered
-          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 6%, var(--surface)) 0%, var(--surface2) 100%)'
-          : 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 3%, var(--surface)) 0%, var(--surface2) 100%)',
+        borderRadius: 14,
+        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
+        background: 'var(--color-surface)',
         overflow: 'hidden', cursor: 'pointer',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 12px 40px color-mix(in srgb, var(--color-accent) 14%, transparent)' : '0 2px 8px rgba(0,0,0,0.06)',
-        transition: 'all 0.24s ease',
+        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
+        boxShadow: hovered ? 'var(--shadow-md)' : 'none',
+        transition: 'all 0.2s ease',
         outline: 'none',
         display: 'flex', flexDirection: 'column',
       }}
     >
-      <div style={{ height: 3, background: 'linear-gradient(90deg, var(--color-accent), color-mix(in srgb, var(--color-accent) 25%, transparent))' }} />
 
       <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.9rem', flex: 1 }}>
         {/* Header row */}
@@ -281,20 +278,17 @@ function ProjectCard({ item, index, onClick }) {
       tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
       style={{
-        borderRadius: 14,
-        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 32%, var(--border))' : 'var(--border)'}`,
-        background: hovered
-          ? 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 4%, var(--surface)) 0%, var(--surface2) 100%)'
-          : 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
+        borderRadius: 12,
+        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--color-border)'}`,
+        background: 'var(--color-surface)',
         overflow: 'hidden', cursor: 'pointer',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? 'var(--shadow-md)' : 'var(--shadow-xs)',
+        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.2s ease',
         display: 'flex', flexDirection: 'column',
         outline: 'none',
       }}
     >
-      <div style={{ height: 2, background: 'linear-gradient(90deg, var(--color-accent), transparent)', opacity: hovered ? 0.9 : 0.2, transition: 'opacity 0.25s' }} />
 
       <div style={{ padding: '1.1rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

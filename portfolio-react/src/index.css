@@ -84,15 +84,7 @@ body {
   mix-blend-mode: multiply;
 }
 
-/* Faint vertical grid lines — barely there, evokes a CAD/instrument canvas */
-.ambient-grid {
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--color-text) 4%, transparent) 1px, transparent 1px);
-  background-size: 88px 100%;
-  opacity: 0.5;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 30%, transparent 80%);
-}
+
 
 /* ============================================
    SCROLLBAR (custom styling)
