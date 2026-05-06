@@ -28,6 +28,8 @@ export function DensityToggle() {
   return (
     <div
       className="density-toggle"
+      role="group"
+      aria-label="Display density"
       style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -43,6 +45,7 @@ export function DensityToggle() {
           key={option.value}
           onClick={() => setDensity(option.value)}
           aria-label={`Set density to ${option.label}`}
+          aria-pressed={density === option.value}
           style={{
             padding: '4px 8px',
             fontSize: '0.75rem',

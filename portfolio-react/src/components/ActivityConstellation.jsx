@@ -87,6 +87,8 @@ export default function ActivityConstellation({ profiles = [] }) {
 
           {/* Layer toggles */}
           <div
+            role="group"
+            aria-label="Activity layers"
             style={{
               display: 'flex',
               gap: 8,
@@ -95,6 +97,7 @@ export default function ActivityConstellation({ profiles = [] }) {
             {layers.map((layer) => (
               <button
                 key={layer.id}
+                aria-pressed={activeLayer.includes(layer.id)}
                 onClick={() => {
                   setActiveLayer((prev) =>
                     prev.includes(layer.id)

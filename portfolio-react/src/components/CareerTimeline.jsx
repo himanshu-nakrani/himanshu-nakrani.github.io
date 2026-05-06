@@ -156,10 +156,11 @@ function ExperienceCard({ item, index }) {
                 {isStateStreet ? (
                   <>
                     {/* Category filter */}
-                    <div className="career-category-tabs">
+                    <div className="career-category-tabs" role="group" aria-label="Filter categories">
                       <button 
                         className={`career-category-tab ${activeCategory === 'all' ? 'career-category-tab--active' : ''}`}
                         onClick={() => setActiveCategory('all')}
+                        aria-pressed={activeCategory === 'all'}
                       >
                         All
                       </button>
@@ -168,6 +169,7 @@ function ExperienceCard({ item, index }) {
                           key={cat.key}
                           className={`career-category-tab ${activeCategory === cat.key ? 'career-category-tab--active' : ''}`}
                           onClick={() => setActiveCategory(cat.key)}
+                          aria-pressed={activeCategory === cat.key}
                           style={{ '--tab-color': cat.color }}
                         >
                           <cat.icon size={11} />
