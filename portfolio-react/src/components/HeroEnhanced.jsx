@@ -2,16 +2,6 @@ import { useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 
-// Pipeline steps matching the reference
-const pipelineSteps = [
-  { label: 'USER QUERY', time: '0ms' },
-  { label: 'SCHEMA LINKING', time: '200ms' },
-  { label: 'CACHE', time: '50ms' },
-  { label: 'LLM', time: '3-4s' },
-  { label: 'VALIDATION', time: '800ms' },
-  { label: 'EXECUTE', time: '1-2s' },
-]
-
 // Stats as horizontal text
 const stats = [
   '100+ USERS',
@@ -19,72 +9,6 @@ const stats = [
   '2 IEEE PUBS',
   '2 YEARS PRODUCTION',
 ]
-
-function PipelineArrow() {
-  return (
-    <svg 
-      width="32" 
-      height="12" 
-      viewBox="0 0 32 12" 
-      fill="none" 
-      style={{ flexShrink: 0 }}
-    >
-      <path 
-        d="M0 6H28M28 6L22 1M28 6L22 11" 
-        stroke="var(--color-accent)" 
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function PipelineStep({ label, time, index, isLast }) {
-  const reduceMotion = useReducedMotion()
-  
-  return (
-    <motion.div
-      initial={reduceMotion ? {} : { opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.6 + index * 0.08, duration: 0.4 }}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-      }}
-    >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-        <div
-          style={{
-            padding: '0.6rem 1rem',
-            border: '1px solid var(--color-accent)',
-            borderRadius: 4,
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.7rem',
-            fontWeight: 500,
-            letterSpacing: '0.05em',
-            color: 'var(--color-text)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {label}
-        </div>
-        <div
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.65rem',
-            color: 'var(--color-accent)',
-            letterSpacing: '0.02em',
-          }}
-        >
-          {time}
-        </div>
-      </div>
-      {!isLast && <PipelineArrow />}
-    </motion.div>
-  )
-}
 
 export default function HeroEnhanced() {
   const reduceMotion = useReducedMotion()
@@ -314,22 +238,9 @@ export default function HeroEnhanced() {
       </div>
 
       <style>{`
-        .pipeline-scroll::-webkit-scrollbar {
-          height: 4px;
-        }
-        .pipeline-scroll::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .pipeline-scroll::-webkit-scrollbar-thumb {
-          background: var(--color-border);
-          border-radius: 2px;
-        }
-        
         @media (max-width: 900px) {
-          .pipeline-scroll {
-            justify-content: flex-start !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
+          .hero-stats {
+            flex-wrap: wrap;
           }
         }
       `}</style>
