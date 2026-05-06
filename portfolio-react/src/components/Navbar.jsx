@@ -1,24 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Menu, X, Search, Command } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
-
 import { NavLink, useLocation } from 'react-router-dom'
 
 const MotionNavLink = motion(NavLink)
 
-// Capped at 6 items — logo handles "/" navigation
+// Minimal navigation — matches editorial reference
 const navLinks = [
+  { label: 'Work', to: '/projects' },
+  { label: 'Writing', to: '/research' },
   { label: 'About', to: '/about' },
-  { label: 'Experience', to: '/experience' },
-  { label: 'Projects', to: '/projects' },
-  { label: 'Skills', to: '/skills' },
-  { label: 'Research', to: '/research' },
-  { label: 'Profiles', to: '/profiles' },
+  { label: 'Contact', to: '/#contact' },
 ]
-
-const contactItem = { label: 'Contact', to: '/#contact' }
-const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -36,13 +30,10 @@ export default function Navbar({ isDark, setIsDark }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const isPageActive = (label) => {
-    if (label === 'Projects')    return location.pathname === '/projects'
-    if (label === 'Experience')  return location.pathname === '/experience'
-    if (label === 'Profiles')    return location.pathname === '/profiles'
-    if (label === 'Research')    return location.pathname === '/research'
-    if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/about'
+  const isActive = (to) => {
+    if (to === '/projects') return location.pathname === '/projects'
+    if (to === '/research') return location.pathname === '/research'
+    if (to === '/about') return location.pathname === '/about'
     return false
   }
 
@@ -103,115 +94,98 @@ export default function Navbar({ isDark, setIsDark }) {
 
   return (
     <header
+      className="editorial-nav"
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         zIndex: 100,
-        padding: 'max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left))',
-        pointerEvents: 'none',
+        background: scrolled 
+          ? 'color-mix(in srgb, var(--color-bg) 95%, transparent)' 
+          : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--color-border)' : '1px solid transparent',
+        transition: 'all 0.3s ease',
       }}
     >
-      <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', pointerEvents: 'auto' }}>
-        <motion.div
+      <div 
+        style={{ 
+          maxWidth: 'var(--container)', 
+          margin: '0 auto',
+          padding: '0 var(--page-pad-x)',
+        }}
+      >
+        <motion.nav
           initial={reduceMotion ? false : { y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-          className="glass-nav"
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 10,
-            minHeight: 52,
-            padding: '6px 8px 6px 14px',
-            borderRadius: 9999,
-            position: 'relative',
-            overflow: 'hidden',
-            transition: 'box-shadow 0.3s ease',
-            boxShadow: scrolled
-              ? '0 8px 36px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.06) inset'
-              : '0 4px 16px rgba(0,0,0,0.14)',
+            justifyContent: 'space-between',
+            height: 'var(--navbar-height)',
           }}
         >
-          {/* Logo — calm dot + monogram */}
+          {/* Logo — himanshu—nakrani */}
           <MotionNavLink
             to="/"
-            whileHover={{ opacity: 0.85 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ opacity: 0.7 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setOpen(false)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
               textDecoration: 'none',
               flexShrink: 0,
-              paddingRight: 10,
             }}
           >
             <span
               style={{
-                display: 'block',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--color-accent)',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: '0.85rem',
+                fontWeight: 400,
+                fontSize: '1rem',
                 letterSpacing: '-0.01em',
                 color: 'var(--color-text)',
-                fontFamily: 'var(--font-display)',
+                fontFamily: 'var(--font-body)',
               }}
             >
-              Himanshu
+              himanshu<span style={{ color: 'var(--color-text-subtle)' }}>—</span>nakrani
             </span>
           </MotionNavLink>
 
-          {/* Desktop nav links */}
-          <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
+          {/* Desktop nav links — Work · Writing · About · Contact */}
+          <div 
+            className="nav-desktop" 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '2rem',
+            }}
+          >
             <ul
-              className="nav-pill-links"
               style={{
                 listStyle: 'none',
                 display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
                 alignItems: 'center',
-                gap: 2,
+                gap: 0,
                 margin: 0,
-                padding: '0 4px',
-                minWidth: 0,
-                overflowX: 'auto',
-                position: 'relative',
+                padding: 0,
               }}
             >
-              {navLinks.map((item) => {
-                const active = isPageActive(item.label)
+              {navLinks.map((item, index) => {
+                const active = isActive(item.to)
                 return (
-                  <li key={item.label} style={{ flexShrink: 0, position: 'relative' }}>
+                  <li key={item.label} style={{ display: 'flex', alignItems: 'center' }}>
                     <MotionNavLink
                       to={item.to}
                       whileTap={{ scale: 0.97 }}
                       onClick={(event) => handleNavClick(item, event)}
                       aria-current={active ? 'page' : undefined}
-                      className={active ? 'nav-link-active' : ''}
                       style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '8px 14px 10px',
                         textDecoration: 'none',
-                        fontSize: '0.8125rem',
-                        fontWeight: 500,
-                        color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
+                        fontSize: '0.875rem',
+                        fontWeight: 400,
+                        color: active ? 'var(--color-accent)' : 'var(--color-text-muted)',
                         transition: 'color 0.2s ease',
-                        borderRadius: 9999,
-                        position: 'relative',
+                        padding: '0.5rem 0',
                       }}
                       onMouseEnter={(e) => {
                         if (!active) e.currentTarget.style.color = 'var(--color-text)'
@@ -222,101 +196,33 @@ export default function Navbar({ isDark, setIsDark }) {
                     >
                       {item.label}
                     </MotionNavLink>
+                    {index < navLinks.length - 1 && (
+                      <span 
+                        style={{ 
+                          color: 'var(--color-text-subtle)', 
+                          margin: '0 0.75rem',
+                          fontSize: '0.75rem',
+                        }}
+                      >
+                        ·
+                      </span>
+                    )}
                   </li>
                 )
               })}
             </ul>
-          </nav>
 
-          {/* Desktop right side */}
-          <div
-            className="nav-desktop"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              flexShrink: 0,
-              paddingLeft: 8,
-              borderLeft: '1px solid var(--color-border)',
-            }}
-          >
-            {/* Command Palette Trigger */}
-            <button
-              onClick={() => {
-                const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
-                document.dispatchEvent(event)
-              }}
-              className="nav-cmd-btn"
-              aria-label="Open command palette (Cmd+K)"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 10px',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                color: 'var(--color-text-muted)',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border-strong)'
-                e.currentTarget.style.color = 'var(--color-text)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.color = 'var(--color-text-muted)'
-              }}
-            >
-              <Search size={13} />
-              <span style={{ 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                gap: 2,
-                padding: '2px 4px',
-                background: 'var(--color-bg)',
-                borderRadius: 4,
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-              }}>
-                <Command size={9} />K
-              </span>
-            </button>
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
-            <MotionNavLink
-              to={contactItem.to}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
-              className="glass-btn-primary"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                color: '#fff',
-                padding: '7px 16px',
-                borderRadius: 9999,
-                textDecoration: 'none',
-                fontSize: '0.8125rem',
-                fontWeight: 600,
-                whiteSpace: 'nowrap',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
-            </MotionNavLink>
           </div>
 
           {/* Mobile: theme toggle + hamburger */}
-          <div className="nav-mobile-only" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+          <div className="nav-mobile-only" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <button
               ref={hamburgerRef}
               type="button"
               onClick={() => setOpen((prev) => !prev)}
-              className="nav-mobile-btn glass-btn"
+              className="nav-mobile-btn"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-nav-menu"
@@ -326,18 +232,18 @@ export default function Navbar({ isDark, setIsDark }) {
                 justifyContent: 'center',
                 width: 44,
                 height: 44,
-                borderRadius: 9999,
+                borderRadius: 8,
+                background: 'transparent',
+                border: '1px solid var(--color-border)',
                 color: 'var(--color-text)',
                 cursor: 'pointer',
-                position: 'relative',
-                overflow: 'hidden',
               }}
             >
               <span className="sr-only">{open ? 'Close navigation menu' : 'Open navigation menu'}</span>
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-        </motion.div>
+        </motion.nav>
 
         {/* Mobile dropdown menu */}
         <AnimatePresence mode="wait">
@@ -345,26 +251,31 @@ export default function Navbar({ isDark, setIsDark }) {
             <motion.div
               ref={menuRef}
               key="mobile-menu"
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="nav-mobile-only glass"
+              className="nav-mobile-only"
               style={{
-                marginTop: 10,
-                borderRadius: 16,
-                overflow: 'hidden',
-                position: 'relative',
+                paddingBottom: '1.5rem',
+                borderBottom: '1px solid var(--color-border)',
               }}
             >
               <ul
                 id="mobile-nav-menu"
                 role="list"
                 aria-label="Navigation links"
-                style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}
+                style={{ 
+                  listStyle: 'none', 
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: 4 
+                }}
               >
-                {navItems.map((item) => {
-                  const active = !item.isContact && isPageActive(item.label)
+                {navLinks.map((item) => {
+                  const active = isActive(item.to)
                   return (
                     <li key={item.label}>
                       <NavLink
@@ -372,27 +283,13 @@ export default function Navbar({ isDark, setIsDark }) {
                         onClick={(event) => handleNavClick(item, event)}
                         aria-current={active ? 'page' : undefined}
                         style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: item.isContact ? 'center' : 'flex-start',
-                          padding: item.isContact ? '12px 14px' : '12px 12px',
-                          borderRadius: item.isContact ? 9999 : 10,
-                          color: active ? 'var(--color-accent)' : item.isContact ? 'var(--color-text)' : 'var(--color-text-muted)',
+                          display: 'block',
+                          padding: '0.75rem 0',
+                          color: active ? 'var(--color-accent)' : 'var(--color-text-muted)',
                           textDecoration: 'none',
-                          fontSize: '0.9rem',
-                          fontWeight: (item.isContact || active) ? 600 : 500,
-                          background: item.isContact
-                            ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)'
-                            : active
-                            ? 'color-mix(in srgb, var(--color-accent) 8%, transparent)'
-                            : 'transparent',
-                          border: item.isContact ? '1px solid color-mix(in srgb, var(--color-accent) 30%, var(--ghost-border))' : 'none',
-                          textAlign: item.isContact ? 'center' : 'left',
-                          minHeight: item.isContact ? 48 : 44,
-                          borderLeft: (!item.isContact && active)
-                            ? '2px solid var(--color-accent)'
-                            : (!item.isContact ? '2px solid transparent' : 'none'),
-                          transition: 'color 0.2s, background 0.2s',
+                          fontSize: '1rem',
+                          fontWeight: active ? 500 : 400,
+                          transition: 'color 0.2s',
                         }}
                       >
                         {item.label}
@@ -407,8 +304,6 @@ export default function Navbar({ isDark, setIsDark }) {
       </div>
 
       <style>{`
-        .nav-pill-links::-webkit-scrollbar { display: none; }
-        .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }

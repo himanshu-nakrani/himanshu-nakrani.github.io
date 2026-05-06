@@ -1,22 +1,22 @@
 /* ============================================
-   DESIGN TOKENS — "Gilded Obsidian"
+   DESIGN TOKENS — "Editorial Gilded"
    ============================================
-   Warm obsidian foundation with amber/gold accent.
-   Professional & polished, dual-theme system.
+   Deep charcoal foundation with muted gold accent.
+   Professional & polished editorial design.
    
    4-color system: bg, surface, text, accent
-   Category colors only for data viz / tags.
+   Typography: Playfair Display (serif) + Inter (sans)
 */
 
 :root {
   /* ========================================
-     SURFACES — rich obsidian charcoal, layered
+     SURFACES — deep charcoal-navy, editorial
      ======================================== */
 
-  --color-bg:               #0d0d0f;   /* near-black obsidian, warm undertone */
-  --color-surface:          #18181b;   /* zinc-900, card background */
-  --color-surface-raised:   #27272a;   /* zinc-800, hover / modal / elevated */
-  --color-surface-elev:     #3f3f46;   /* zinc-700, highest elevation */
+  --color-bg:               #0f1419;   /* deep charcoal-navy, GitHub-inspired */
+  --color-surface:          #161b22;   /* GitHub dark surface */
+  --color-surface-raised:   #21262d;   /* elevated surface */
+  --color-surface-elev:     #30363d;   /* highest elevation */
 
   /* ========================================
      BORDERS — amber-tinted, visible by default
@@ -27,21 +27,21 @@
   --color-border-solid:     #3f3f46;                   /* opaque fallback */
 
   /* ========================================
-     TEXT — warm neutrals (all AA on bg)
+     TEXT — warm cream tones (all AA on bg)
      ======================================== */
 
-  --color-text:             #fafaf9;   /* warm white (stone-50), ~18:1 */
-  --color-text-muted:       #d4cfc8;   /* warm gray-300, ~10:1 */
-  --color-text-subtle:      #a39d95;   /* warm gray-400, ~6:1 */
+  --color-text:             #e6e1d8;   /* warm cream, main text */
+  --color-text-muted:       #a19888;   /* warm muted brown-gray */
+  --color-text-subtle:      #6e6560;   /* warm subtle gray */
 
   /* ========================================
-     ACCENT — warm amber/gold (single accent)
+     ACCENT — muted gold (refined, editorial)
      ======================================== */
 
-  --color-accent:           #f5a623;   /* amber-500, warm gold */
-  --color-accent-strong:    #f7b84b;   /* hover lift, slightly lighter */
-  --color-accent-soft:      rgba(245, 166, 35, 0.12);
-  --color-accent-fg:        #0d0d0f;   /* dark text on amber bg, ~12:1 */
+  --color-accent:           #c9a227;   /* muted gold, more sophisticated */
+  --color-accent-strong:    #ddb94a;   /* hover lift */
+  --color-accent-soft:      rgba(201, 162, 39, 0.12);
+  --color-accent-fg:        #0f1419;   /* dark text on gold bg */
 
   /* ========================================
      STATUS — warm-harmonious, semantic
@@ -65,13 +65,13 @@
   --color-cat-6:            #4ade80;   /* green-400 */
 
   /* ========================================
-     TYPOGRAPHY — refined 2-family system
-     Space Grotesk display (geometric, technical) + Inter body
+     TYPOGRAPHY — editorial serif + clean sans
+     Playfair Display (headlines, pull-quotes) + Inter (body)
      ======================================== */
 
-  --font-display: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
+  --font-display: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
   --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
-  --font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+  --font-mono:    'SF Mono', 'JetBrains Mono', 'Fira Code', 'Fira Mono', monospace;
 
   --font-weight-regular:  400;
   --font-weight-medium:   500;
@@ -193,7 +193,7 @@
   --ghost-border:       var(--color-border-strong);
   --ghost-bg:           transparent;
   --ghost-hover-border: var(--color-accent);
-  --ghost-hover-bg:     rgba(245, 166, 35, 0.10);
+  --ghost-hover-bg:     rgba(201, 162, 39, 0.10);
 
   --pill-contact-mobile-bg: rgba(24, 24, 27, 0.9);
   --nav-dot: var(--color-accent);
@@ -205,15 +205,15 @@
   --section-title-tracking: var(--letter-spacing-tight);
 
   /* ========================================
-     AMBIENT ATMOSPHERE — amber glow
+     AMBIENT ATMOSPHERE — subtle editorial
      ======================================== */
 
-  --ambient-grain-opacity: 0.03;
+  --ambient-grain-opacity: 0;
   --backdrop-gradient:
     radial-gradient(
-      ellipse 80% 50% at 10% 0%,
-      rgba(245, 166, 35, 0.04),
-      transparent 50%
+      ellipse 60% 40% at 50% 0%,
+      rgba(201, 162, 39, 0.02),
+      transparent 60%
     );
 
   /* ========================================
