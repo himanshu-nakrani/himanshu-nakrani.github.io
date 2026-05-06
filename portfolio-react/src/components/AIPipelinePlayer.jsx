@@ -522,6 +522,7 @@ export default function AIPipelinePlayer() {
                 </div>
                 <button 
                   onClick={() => setSelectedStage(null)}
+                  aria-label="Close details"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
