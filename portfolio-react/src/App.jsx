@@ -14,6 +14,7 @@ import ProfilesPage from './pages/ProfilesPage'
 import ResearchPage from './pages/ResearchPage'
 import SkillsPage from './pages/SkillsPage'
 import StyleguidePage from './pages/StyleguidePage'
+import MinimalSPA from './pages/MinimalSPA'
 import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
 import SpotlightCardDemo from './components/ui/spotlight-card-demo'
 
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
           <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
           <Route path="/styleguide" element={<StyleguidePage />} />
+          <Route path="/minimal" element={<MinimalSPA />} />
           <Route
             element={
               <MainLayout
