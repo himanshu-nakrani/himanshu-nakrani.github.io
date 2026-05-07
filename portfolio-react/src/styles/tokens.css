@@ -1,8 +1,8 @@
 /* ============================================
-   DESIGN TOKENS — "Gilded Obsidian"
+   DESIGN TOKENS — "Warm Editorial"
    ============================================
-   Warm obsidian foundation with amber/gold accent.
-   Professional & polished, dual-theme system.
+   Cream/off-white foundation with terracotta accent.
+   Inspired by JustHireMe — clean, editorial, minimal.
    
    4-color system: bg, surface, text, accent
    Category colors only for data viz / tags.
@@ -10,63 +10,63 @@
 
 :root {
   /* ========================================
-     SURFACES — rich obsidian charcoal, layered
+     SURFACES — warm cream/ivory, JustHireMe-inspired
      ======================================== */
 
-  --color-bg:               #0d0d0f;   /* near-black obsidian, warm undertone */
-  --color-surface:          #18181b;   /* zinc-900, card background */
-  --color-surface-raised:   #27272a;   /* zinc-800, hover / modal / elevated */
-  --color-surface-elev:     #3f3f46;   /* zinc-700, highest elevation */
+  --color-bg:               #f5f0e8;   /* warm cream, JustHireMe background */
+  --color-surface:          #ffffff;   /* pure white cards */
+  --color-surface-raised:   #ede8df;   /* warm sand elevated */
+  --color-surface-elev:     #e4ddd2;   /* deeper warm sand */
 
   /* ========================================
-     BORDERS — amber-tinted, visible by default
+     BORDERS — warm brown-tinted hairlines
      ======================================== */
 
-  --color-border:           rgba(161, 138, 94, 0.14);   /* warm amber-tinted, ~3:1 vs bg */
-  --color-border-strong:    rgba(161, 138, 94, 0.28);   /* hover / active hairline */
-  --color-border-solid:     #3f3f46;                   /* opaque fallback */
+  --color-border:           rgba(100, 80, 50, 0.13);   /* warm brown-tinted */
+  --color-border-strong:    rgba(100, 80, 50, 0.25);   /* hover / active */
+  --color-border-solid:     #d4ccbf;                   /* opaque warm beige */
 
   /* ========================================
-     TEXT — warm neutrals (all AA on bg)
+     TEXT — very dark warm brown (high contrast)
      ======================================== */
 
-  --color-text:             #fafaf9;   /* warm white (stone-50), ~18:1 */
-  --color-text-muted:       #d4cfc8;   /* warm gray-300, ~10:1 */
-  --color-text-subtle:      #a39d95;   /* warm gray-400, ~6:1 */
+  --color-text:             #1c1917;   /* stone-900, near-black warm */
+  --color-text-muted:       #44403c;   /* stone-700, readable mid */
+  --color-text-subtle:      #78716c;   /* stone-500, understated */
 
   /* ========================================
-     ACCENT — warm amber/gold (single accent)
+     ACCENT — terracotta/burnt orange (JustHireMe)
      ======================================== */
 
-  --color-accent:           #f5a623;   /* amber-500, warm gold */
-  --color-accent-strong:    #f7b84b;   /* hover lift, slightly lighter */
-  --color-accent-soft:      rgba(245, 166, 35, 0.12);
-  --color-accent-fg:        #0d0d0f;   /* dark text on amber bg, ~12:1 */
+  --color-accent:           #c2622a;   /* terracotta, main accent */
+  --color-accent-strong:    #a85220;   /* darker for hover */
+  --color-accent-soft:      rgba(194, 98, 42, 0.10);
+  --color-accent-fg:        #ffffff;   /* white on terracotta */
 
   /* ========================================
      STATUS — warm-harmonious, semantic
      ======================================== */
 
-  --color-success:          #4ade80;   /* green-400, warm enough */
-  --color-warning:          #f5a623;   /* amber (same as accent) */
-  --color-danger:           #f87171;   /* red-400, warm coral */
-  --color-info:             #60a5fa;   /* blue-400, cool contrast */
-  --color-live:             #4ade80;   /* green for live status */
+  --color-success:          #16a34a;   /* green-600 */
+  --color-warning:          #c2622a;   /* terracotta (accent) */
+  --color-danger:           #dc2626;   /* red-600 */
+  --color-info:             #2563eb;   /* blue-600 */
+  --color-live:             #16a34a;   /* green for live status */
 
   /* ========================================
      CATEGORY COLORS (data viz only)
      ======================================== */
 
-  --color-cat-1:            #f5a623;   /* amber (accent) */
-  --color-cat-2:            #c084fc;   /* purple-400 */
-  --color-cat-3:            #fb7185;   /* rose-400 */
-  --color-cat-4:            #67e8f9;   /* cyan-300 */
-  --color-cat-5:            #a78bfa;   /* violet-400 */
-  --color-cat-6:            #4ade80;   /* green-400 */
+  --color-cat-1:            #c2622a;   /* terracotta (accent) */
+  --color-cat-2:            #7c3aed;   /* violet-600 */
+  --color-cat-3:            #db2777;   /* pink-600 */
+  --color-cat-4:            #0891b2;   /* cyan-600 */
+  --color-cat-5:            #059669;   /* emerald-600 */
+  --color-cat-6:            #d97706;   /* amber-600 */
 
   /* ========================================
-     TYPOGRAPHY — refined 2-family system
-     Space Grotesk display (geometric, technical) + Inter body
+     TYPOGRAPHY — editorial serif + clean sans
+     Using existing font vars but remapped for editorial feel
      ======================================== */
 
   --font-display: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
@@ -144,11 +144,11 @@
      SHADOWS — subtle, obsidian-tinted
      ======================================== */
 
-  --shadow-xs: 0 1px 2px rgba(13, 13, 15, 0.4);
-  --shadow-sm: 0 2px 4px rgba(13, 13, 15, 0.3), 0 1px 2px rgba(13, 13, 15, 0.2);
-  --shadow-md: 0 10px 30px -15px rgba(13, 13, 15, 0.7);
-  --shadow-lg: 0 20px 40px -15px rgba(13, 13, 15, 0.8);
-  --shadow-xl: 0 30px 60px -20px rgba(13, 13, 15, 0.9);
+  --shadow-xs: 0 1px 2px rgba(28, 25, 23, 0.06);
+  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(28, 25, 23, 0.05);
+  --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.10);
+  --shadow-lg: 0 8px 24px rgba(28, 25, 23, 0.12);
+  --shadow-xl: 0 12px 36px rgba(28, 25, 23, 0.15);
 
   /* ========================================
      MOTION — deliberate, smooth
@@ -169,8 +169,8 @@
      GLASS — refined blur, amber-tinted
      ======================================== */
 
-  --glass-bg:         rgba(24, 24, 27, 0.88);
-  --glass-border:     rgba(245, 166, 35, 0.12);
+  --glass-bg:         rgba(245, 240, 232, 0.90);
+  --glass-border:     rgba(100, 80, 50, 0.12);
   --glass-blur:       10px;
   --glass-saturation: 1.2;
 
@@ -193,9 +193,9 @@
   --ghost-border:       var(--color-border-strong);
   --ghost-bg:           transparent;
   --ghost-hover-border: var(--color-accent);
-  --ghost-hover-bg:     rgba(245, 166, 35, 0.10);
+  --ghost-hover-bg:     rgba(194, 98, 42, 0.08);
 
-  --pill-contact-mobile-bg: rgba(24, 24, 27, 0.9);
+  --pill-contact-mobile-bg: rgba(245, 240, 232, 0.95);
   --nav-dot: var(--color-accent);
   --page-max: var(--container);
 
@@ -208,11 +208,11 @@
      AMBIENT ATMOSPHERE — amber glow
      ======================================== */
 
-  --ambient-grain-opacity: 0.03;
+  --ambient-grain-opacity: 0.025;
   --backdrop-gradient:
     radial-gradient(
       ellipse 80% 50% at 10% 0%,
-      rgba(245, 166, 35, 0.04),
+      rgba(194, 98, 42, 0.03),
       transparent 50%
     );
 
@@ -235,51 +235,46 @@
 }
 
 /* ========================================
-   LIGHT THEME — warm ivory/cream, sophisticated
+   DARK THEME — obsidian with terracotta accent
    ======================================== */
 
-:root[data-theme="light"] {
-  --color-bg:               #faf9f7;   /* warm ivory */
-  --color-surface:          #ffffff;   /* pure white cards */
-  --color-surface-raised:   #f5f0e8;   /* warm sand hover */
-  --color-surface-elev:     #ede8df;   /* deeper warm sand */
+:root[data-theme="dark"] {
+  --color-bg:               #0d0d0f;
+  --color-surface:          #18181b;
+  --color-surface-raised:   #27272a;
+  --color-surface-elev:     #3f3f46;
 
-  --color-border:           rgba(120, 100, 60, 0.13);   /* warm brown-tinted */
-  --color-border-strong:    rgba(120, 100, 60, 0.24);   /* stronger hairline */
-  --color-border-solid:     #d9d0c2;                    /* opaque warm beige */
+  --color-border:           rgba(194, 98, 42, 0.14);
+  --color-border-strong:    rgba(194, 98, 42, 0.28);
+  --color-border-solid:     #3f3f46;
 
-  --color-text:             #1a1714;   /* very dark warm brown, ~17:1 */
-  --color-text-muted:       #4a4139;   /* warm brown-gray, ~8:1 */
-  --color-text-subtle:      #7a6e63;   /* mid-warm gray, ~5:1 */
+  --color-text:             #fafaf9;
+  --color-text-muted:       #d4cfc8;
+  --color-text-subtle:      #a39d95;
 
-  --color-accent:           #b5710e;   /* darker amber for contrast, ~5.5:1 */
-  --color-accent-strong:    #9a5e0a;   /* deeper for hover */
-  --color-accent-soft:      rgba(181, 113, 14, 0.08);
-  --color-accent-fg:        #ffffff;   /* white text on darker amber */
+  --color-accent:           #e8753a;   /* lighter terracotta on dark bg */
+  --color-accent-strong:    #f0855a;
+  --color-accent-soft:      rgba(232, 117, 58, 0.14);
+  --color-accent-fg:        #0d0d0f;
 
-  --color-success:          #16a34a;   /* green-600 */
-  --color-warning:          #b5710e;   /* amber (same as accent) */
-  --color-danger:           #dc2626;   /* red-600 */
-  --color-info:             #2563eb;   /* blue-600 */
-
-  --shadow-xs: 0 1px 2px rgba(26, 23, 20, 0.04);
-  --shadow-sm: 0 1px 3px rgba(26, 23, 20, 0.06);
-  --shadow-md: 0 4px 12px rgba(26, 23, 20, 0.08);
-  --shadow-lg: 0 8px 24px rgba(26, 23, 20, 0.12);
-  --shadow-xl: 0 12px 36px rgba(26, 23, 20, 0.16);
+  --shadow-xs: 0 1px 2px rgba(13, 13, 15, 0.4);
+  --shadow-sm: 0 2px 4px rgba(13, 13, 15, 0.3), 0 1px 2px rgba(13, 13, 15, 0.2);
+  --shadow-md: 0 10px 30px -15px rgba(13, 13, 15, 0.7);
+  --shadow-lg: 0 20px 40px -15px rgba(13, 13, 15, 0.8);
+  --shadow-xl: 0 30px 60px -20px rgba(13, 13, 15, 0.9);
 
   --backdrop-gradient:
     radial-gradient(
       ellipse 80% 50% at 10% 0%,
-      rgba(181, 113, 14, 0.03),
+      rgba(232, 117, 58, 0.05),
       transparent 50%
     );
 
-  --glass-bg:     rgba(255, 255, 255, 0.90);
-  --glass-border: rgba(120, 100, 60, 0.10);
+  --glass-bg:     rgba(24, 24, 27, 0.88);
+  --glass-border: rgba(194, 98, 42, 0.14);
 
-  --ghost-hover-bg: rgba(181, 113, 14, 0.08);
-  --pill-contact-mobile-bg: rgba(255, 255, 255, 0.95);
+  --ghost-hover-bg: rgba(232, 117, 58, 0.10);
+  --pill-contact-mobile-bg: rgba(24, 24, 27, 0.92);
 }
 
 /* ========================================
