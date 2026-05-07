@@ -240,6 +240,40 @@ export default function Navbar({ isDark, setIsDark }) {
               borderLeft: '1px solid var(--color-border)',
             }}
           >
+            {/* Version toggle */}
+            <a
+              href={`${window.location.protocol}//${window.location.hostname}:5001`}
+              title="Switch to minimal version"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '6px 11px',
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                color: 'var(--color-text-muted)',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease',
+                fontFamily: 'var(--font-display)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-accent)'
+                e.currentTarget.style.color = 'var(--color-accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--color-border)'
+                e.currentTarget.style.color = 'var(--color-text-muted)'
+              }}
+            >
+              <span style={{ fontSize: '0.65rem', lineHeight: 1, opacity: 0.7 }}>&#9632;</span>
+              Minimal
+            </a>
+
             {/* Command Palette Trigger */}
             <button
               onClick={() => {

@@ -73,6 +73,13 @@ export default function App() {
               {item.label}
             </button>
           ))}
+          <a
+            href={`${window.location.protocol}//${window.location.hostname}:5000`}
+            className="spa-mobile-link spa-mobile-version-toggle"
+            title="Switch to full version"
+          >
+            Full version
+          </a>
         </div>
       </nav>
 
@@ -110,6 +117,15 @@ export default function App() {
               </a>
             ))}
           </div>
+
+          <a
+            href={`${window.location.protocol}//${window.location.hostname}:5000`}
+            className="spa-version-toggle"
+            title="Switch to full version"
+          >
+            <ExternalLink size={12} />
+            Full version
+          </a>
         </nav>
 
         {/* Scrollable content */}
