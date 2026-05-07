@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail, Sparkles } from 'lucide-react'
-import AnimatedAvatar from './AnimatedAvatar'
 import { useCountUp } from '../hooks/useCountUp'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { currentFocusItems } from '../data'
@@ -171,7 +170,16 @@ export default function HeroEnhanced() {
               background: 'var(--color-surface)',
               overflow: 'hidden',
             }}>
-              <AnimatedAvatar />
+            {/* Avatar photo */}
+            <img 
+              src="/himanshu.jpg" 
+              alt="Himanshu Nakrani"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
             </div>
 
             {/* Brief intro text */}
