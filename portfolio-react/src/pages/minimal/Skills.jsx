@@ -35,31 +35,30 @@ const CERTIFICATIONS = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="section" aria-labelledby="skills-title">
-      <div className="section__label">Skills</div>
-      <h2 id="skills-title" className="section__title">Toolkit</h2>
+    <section id="skills" className="spa-section" aria-labelledby="skills-title">
+      <div className="spa-section__label">Skills</div>
+      <h2 id="skills-title" className="spa-section__title">Toolkit</h2>
 
-      <div className="skills-groups">
+      <div className="spa-skills-groups">
         {SKILLS.map((group) => (
           <div key={group.label}>
-            <div className="skills-group__label">{group.label}</div>
-            <div className="skills-group__items">
+            <div className="spa-skills-group__label">{group.label}</div>
+            <div className="spa-skills-group__items">
               {group.items.map((item) => (
-                <span key={item} className="tag">{item}</span>
+                <span key={item} className="spa-tag">{item}</span>
               ))}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Certifications */}
       <div style={{ marginTop: '3rem' }}>
-        <div className="section__label" style={{ marginBottom: '0.85rem' }}>Certifications</div>
+        <div className="spa-section__label" style={{ marginBottom: '0.85rem' }}>Certifications</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {CERTIFICATIONS.map((c) => (
-            <div key={c.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 7 }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text)' }}>{c.name}</span>
-              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', flexShrink: 0, marginLeft: '1rem' }}>{c.issuer}</span>
+            <div key={c.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 7 }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text)' }}>{c.name}</span>
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono, monospace)', color: 'var(--color-text-subtle)', flexShrink: 0, marginLeft: '1rem' }}>{c.issuer}</span>
             </div>
           ))}
         </div>

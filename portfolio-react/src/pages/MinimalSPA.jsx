@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Github, Linkedin, Mail, ExternalLink, FileText } from 'lucide-react'
-import Hero from './sections/Hero'
-import Experience from './sections/Experience'
-import Projects from './sections/Projects'
-import Skills from './sections/Skills'
-import Research from './sections/Research'
-import Kaggle from './sections/Kaggle'
-import Contact from './sections/Contact'
+import Hero from './minimal/Hero'
+import Experience from './minimal/Experience'
+import Projects from './minimal/Projects'
+import Skills from './minimal/Skills'
+import Research from './minimal/Research'
+import Kaggle from './minimal/Kaggle'
+import Contact from './minimal/Contact'
 
 const NAV_ITEMS = [
   { id: 'about',      label: 'About' },
@@ -53,12 +54,12 @@ function scrollTo(id) {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-export default function App() {
+export default function MinimalSPA() {
   const ids = NAV_ITEMS.map((n) => n.id)
   const active = useActiveSection(ids)
 
   return (
-    <>
+    <div className="spa-layout">
       {/* Mobile top nav */}
       <nav className="spa-mobile-nav" aria-label="Mobile navigation">
         <span className="spa-mobile-nav__name">Himanshu</span>
@@ -73,13 +74,9 @@ export default function App() {
               {item.label}
             </button>
           ))}
-          <a
-            href={`${window.location.protocol}//${window.location.hostname}:5000`}
-            className="spa-mobile-link spa-mobile-version-toggle"
-            title="Switch to full version"
-          >
+          <Link to="/" className="spa-mobile-link spa-mobile-version-toggle">
             Full version
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -118,33 +115,29 @@ export default function App() {
             ))}
           </div>
 
-          <a
-            href={`${window.location.protocol}//${window.location.hostname}:5000`}
-            className="spa-version-toggle"
-            title="Switch to full version"
-          >
+          <Link to="/" className="spa-version-toggle">
             <ExternalLink size={12} />
             Full version
-          </a>
+          </Link>
         </nav>
 
         {/* Scrollable content */}
         <main className="spa-content" id="main-content">
           <Hero />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Experience />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Projects />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Skills />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Research />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Kaggle />
-          <div className="divider" aria-hidden="true" />
+          <div className="spa-divider" aria-hidden="true" />
           <Contact />
         </main>
       </div>
-    </>
+    </div>
   )
 }

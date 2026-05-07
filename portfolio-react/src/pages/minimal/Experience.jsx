@@ -41,38 +41,38 @@ function ExperienceItem({ item }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="timeline__item">
-      <div className="timeline__dot" aria-hidden="true" />
-      <div className="timeline__content">
-        <div className="timeline__period">{item.period}</div>
-        <div className="timeline__role">{item.role}</div>
-        <div className="timeline__company">
+    <div className="spa-timeline__item">
+      <div className="spa-timeline__dot" aria-hidden="true" />
+      <div className="spa-timeline__content">
+        <div className="spa-timeline__period">{item.period}</div>
+        <div className="spa-timeline__role">{item.role}</div>
+        <div className="spa-timeline__company">
           {item.company} · {item.location}
           {item.progression && (
-            <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', marginTop: 2 }}>
+            <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--color-text-subtle)', fontFamily: 'var(--font-mono, monospace)', marginTop: 2 }}>
               {item.progression}
             </span>
           )}
         </div>
-        <p className="timeline__desc">{item.desc}</p>
+        <p className="spa-timeline__desc">{item.desc}</p>
 
         {expanded && (
-          <ul className="timeline__bullets" style={{ marginBottom: '0.85rem' }}>
+          <ul className="spa-timeline__bullets" style={{ marginBottom: '0.85rem' }}>
             {item.bullets.map((b) => (
-              <li key={b} className="timeline__bullet">{b}</li>
+              <li key={b} className="spa-timeline__bullet">{b}</li>
             ))}
           </ul>
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-          <div className="timeline__tags">
+          <div className="spa-timeline__tags">
             {item.tags.map((t) => (
-              <span key={t} className="tag">{t}</span>
+              <span key={t} className="spa-tag">{t}</span>
             ))}
           </div>
           <button
             onClick={() => setExpanded((e) => !e)}
-            style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-body)', padding: '2px 0', flexShrink: 0 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '0.75rem', color: 'var(--color-accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-body)', padding: '2px 0', flexShrink: 0 }}
             aria-expanded={expanded}
           >
             {expanded ? <><ChevronUp size={13} /> Less</> : <><ChevronDown size={13} /> All bullets</>}
@@ -85,12 +85,12 @@ function ExperienceItem({ item }) {
 
 export default function Experience() {
   return (
-    <section id="experience" className="section" aria-labelledby="exp-title">
-      <div className="section__label">Experience</div>
-      <h2 id="exp-title" className="section__title">Career</h2>
+    <section id="experience" className="spa-section" aria-labelledby="exp-title">
+      <div className="spa-section__label">Experience</div>
+      <h2 id="exp-title" className="spa-section__title">Career</h2>
 
-      <div className="timeline">
-        <div className="timeline__line" aria-hidden="true" />
+      <div className="spa-timeline">
+        <div className="spa-timeline__line" aria-hidden="true" />
         {EXPERIENCE.map((item) => (
           <ExperienceItem key={item.company} item={item} />
         ))}

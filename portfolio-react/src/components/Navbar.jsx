@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 
 const MotionNavLink = motion(NavLink)
 
@@ -241,8 +241,8 @@ export default function Navbar({ isDark, setIsDark }) {
             }}
           >
             {/* Version toggle */}
-            <a
-              href={`${window.location.protocol}//${window.location.hostname}:5001`}
+            <Link
+              to="/minimal"
               title="Switch to minimal version"
               style={{
                 display: 'inline-flex',
@@ -272,7 +272,7 @@ export default function Navbar({ isDark, setIsDark }) {
             >
               <span style={{ fontSize: '0.65rem', lineHeight: 1, opacity: 0.7 }}>&#9632;</span>
               Minimal
-            </a>
+            </Link>
 
             {/* Command Palette Trigger */}
             <button
