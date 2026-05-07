@@ -425,7 +425,10 @@ export default function AIPipelinePlayer() {
             <span>Reset</span>
           </button>
           
-          <div style={{
+          <div
+            role="group"
+            aria-label="Playback speed"
+            style={{
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem',
@@ -437,6 +440,7 @@ export default function AIPipelinePlayer() {
             {[0.5, 1, 2].map(speed => (
               <button
                 key={speed}
+                aria-pressed={playbackSpeed === speed}
                 onClick={() => setPlaybackSpeed(speed)}
                 style={{
                   padding: '0.25rem 0.5rem',

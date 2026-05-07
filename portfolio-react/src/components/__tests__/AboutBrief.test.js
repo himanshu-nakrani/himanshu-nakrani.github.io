@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseStatValue } from '../AboutBrief.jsx'
+import { parseStatValue } from '../../lib/aboutBrief.js'
 
 describe('parseStatValue', () => {
   it('parses "2+" → numeric 2, suffix "+"', () => {
