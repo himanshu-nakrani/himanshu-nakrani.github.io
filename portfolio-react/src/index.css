@@ -77,11 +77,20 @@ body {
   mix-blend-mode: overlay;
 }
 
-:root[data-theme="light"] .ambient-grain {
+/* Light (default) uses multiply blend for grain on cream bg */
+.ambient-grain {
   background-image:
-    radial-gradient(rgba(10, 13, 20, 0.35) 0.4px, transparent 0.4px),
-    radial-gradient(rgba(10, 13, 20, 0.2) 0.3px, transparent 0.3px);
+    radial-gradient(rgba(10, 13, 20, 0.25) 0.4px, transparent 0.4px),
+    radial-gradient(rgba(10, 13, 20, 0.15) 0.3px, transparent 0.3px);
   mix-blend-mode: multiply;
+}
+
+/* Dark mode restores overlay blend */
+:root[data-theme="dark"] .ambient-grain {
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.5) 0.4px, transparent 0.4px),
+    radial-gradient(rgba(255, 255, 255, 0.3) 0.3px, transparent 0.3px);
+  mix-blend-mode: overlay;
 }
 
 
@@ -645,33 +654,55 @@ section[id] {
 }
 
 /* ============================================
-   LIGHT MODE — CARD & SHADOW IMPROVEMENTS
+   LIGHT (CREAM) MODE — DEFAULT — CARD & NAV
    ============================================ */
 
-:root[data-theme="light"] .interactive-card:hover {
+.interactive-card:hover {
   box-shadow: var(--shadow-md);
 }
 
-:root[data-theme="light"] .glass-nav {
-  background: rgba(255, 255, 255, 0.78);
+.glass-nav {
+  background: rgba(245, 240, 232, 0.82);
 }
 
-:root[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.65);
+.glass {
+  background: rgba(255, 255, 255, 0.70);
 }
 
-:root[data-theme="light"] .btn--primary,
-:root[data-theme="light"] .glass-btn-primary {
+.btn--primary,
+.glass-btn-primary {
   background: var(--color-text);
   color: var(--color-bg);
   border-color: var(--color-text);
 }
 
-:root[data-theme="light"] .btn--primary:hover,
-:root[data-theme="light"] .glass-btn-primary:hover {
+.btn--primary:hover,
+.glass-btn-primary:hover {
   background: var(--color-accent);
   border-color: var(--color-accent);
   color: var(--color-accent-fg);
+}
+
+/* Dark mode overrides for nav & glass */
+:root[data-theme="dark"] .glass-nav {
+  background: rgba(24, 24, 27, 0.88);
+}
+
+:root[data-theme="dark"] .glass {
+  background: rgba(24, 24, 27, 0.65);
+}
+
+:root[data-theme="dark"] .btn--primary,
+:root[data-theme="dark"] .glass-btn-primary {
+  background: var(--color-accent);
+  color: var(--color-accent-fg);
+  border-color: var(--color-accent);
+}
+
+:root[data-theme="dark"] .btn--primary:hover,
+:root[data-theme="dark"] .glass-btn-primary:hover {
+  background: var(--color-accent-strong);
+  border-color: var(--color-accent-strong);
 }
 
 /* ============================================
