@@ -81,6 +81,7 @@ export default function SectionNav({ sections = [] }) {
                     onClick={() => scrollToSection(section.id)}
                     className={`section-nav-link ${isActive ? 'section-nav-link--active' : ''}`}
                     aria-current={isActive ? 'true' : undefined}
+                    aria-label={`Navigate to ${section.label} section`}
                   >
                     <span className="section-nav-number">{number}</span>
                     <span className="section-nav-label">{section.label}</span>
