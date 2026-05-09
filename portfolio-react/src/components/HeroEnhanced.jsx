@@ -164,6 +164,7 @@ export default function HeroEnhanced() {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
+              maxWidth: 320,
               borderRadius: 16,
               border: '1px solid var(--color-border)',
               background: 'var(--color-surface)',
