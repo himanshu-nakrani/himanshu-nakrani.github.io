@@ -17,9 +17,9 @@ const platforms = [
     border: 'rgba(110,84,148,0.28)',
     emoji: '🐙',
     stats: [
-      { icon: GitFork, label: 'Public Repos', value: '31' },
-      { icon: Star, label: 'Stars',           value: '156' },
-      { icon: Users, label: 'Followers',      value: '7' },
+      { icon: GitFork, label: 'Public Repos', value: '37' },
+      { icon: Star, label: 'Stars',           value: '73' },
+      { icon: Users, label: 'Followers',      value: '8' },
     ],
     badge: 'Python Primary',
   },
@@ -81,7 +81,7 @@ const kaggleCounters = [
 
 /* ─── GitHub stats ─────────────────────────────────────── */
 const ghStats = [
-  { num: '31',     label: 'Public Repos' },
+  { num: '37',     label: 'Public Repos' },
   { num: '1,240',  label: 'Commits (2024)' },
   { num: 'Python', label: 'Primary Lang' },
   { num: '2021',   label: 'Member Since' },
