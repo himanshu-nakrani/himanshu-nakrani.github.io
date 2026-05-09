@@ -159,7 +159,7 @@ export default function HeroEnhanced() {
           <div style={{
             width: 100,
             height: 100,
-            borderRadius: '50%',
+            borderRadius: 12,
             border: '2px solid var(--color-border)',
             overflow: 'hidden',
             flexShrink: 0,
