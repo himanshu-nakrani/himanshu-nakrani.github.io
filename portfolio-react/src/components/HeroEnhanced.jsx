@@ -157,8 +157,7 @@ export default function HeroEnhanced() {
         >
           {/* Avatar */}
           <div style={{
-            width: 100,
-            height: 100,
+            width: 120,
             borderRadius: 12,
             border: '2px solid var(--color-border)',
             overflow: 'hidden',
@@ -170,13 +169,11 @@ export default function HeroEnhanced() {
               alt="Himanshu Nakrani"
               style={{
                 width: '100%',
-                height: '100%',
-                objectFit: 'cover',
+                height: 'auto',
                 display: 'block',
               }}
             />
           </div>
-
           {/* Name + tagline */}
           <div>
             <h1 style={{
