@@ -164,7 +164,6 @@ export default function HeroEnhanced() {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              aspectRatio: '1',
               borderRadius: 16,
               border: '1px solid var(--color-border)',
               background: 'var(--color-surface)',
@@ -177,7 +176,8 @@ export default function HeroEnhanced() {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain',
+                objectFit: 'cover',
+                display: 'block',
               }}
             />
             </div>
