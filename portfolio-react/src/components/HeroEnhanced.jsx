@@ -142,35 +142,28 @@ export default function HeroEnhanced() {
           <span>Generative AI Engineer</span>
         </motion.div>
 
-        {/* Main hero grid: Left (avatar + intro) + Right (stats) */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '3rem',
-          alignItems: 'start',
-          marginBottom: '4rem',
-        }} className="hero-grid">
-          {/* Left column: Avatar + intro text */}
-          <motion.div
-            initial={reduceMotion ? {} : { opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-          >
-            {/* Avatar in a simple box */}
-            <div style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-              maxWidth: 320,
-              borderRadius: 16,
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-surface)',
-              overflow: 'hidden',
-            }}>
-            {/* Avatar photo */}
+        {/* Hero header: Avatar + Name + Tagline */}
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+            marginBottom: '2rem',
+          }}
+          className="hero-header"
+        >
+          {/* Avatar */}
+          <div style={{
+            width: 100,
+            height: 100,
+            borderRadius: '50%',
+            border: '2px solid var(--color-border)',
+            overflow: 'hidden',
+            flexShrink: 0,
+          }}>
             <img 
               src="/himanshu.jpg" 
               alt="Himanshu Nakrani"
@@ -181,151 +174,153 @@ export default function HeroEnhanced() {
                 display: 'block',
               }}
             />
-            </div>
+          </div>
 
-            {/* Brief intro text */}
-            <motion.div
-              initial={reduceMotion ? {} : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              style={{ fontSize: '0.95rem', lineHeight: 1.6, color: 'var(--color-text-muted)' }}
-            >
-              <p style={{ marginBottom: '1rem' }}>
-                Production AI engineer at <strong style={{ color: 'var(--color-accent)' }}>State Street</strong>, building enterprise LLM systems that scale.
-              </p>
-              <p>
-                Specializing in <strong>RAG architectures</strong>, <strong>Text-to-SQL</strong> pipelines, and deploying models that work reliably at production scale.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Right column: Large name + tagline + stats + CTA */}
-          <motion.div
-            initial={reduceMotion ? {} : { opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-          >
-            {/* Large name + role */}
-            <div>
-              <h1 style={{
-                fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 700,
-                lineHeight: 1.1,
-                marginBottom: '0.5rem',
-                color: 'var(--color-text)',
-              }}>
-                Himanshu Nakrani
-              </h1>
-              <p style={{
-                fontSize: '1.1rem',
-                color: 'var(--color-text-muted)',
-                fontWeight: 500,
-              }}>
-                Building AI systems that work at scale
-              </p>
-            </div>
-
-            {/* Now building with accent block */}
-            <motion.div
-              initial={reduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              style={{
-                padding: '1.25rem',
-                borderRadius: 12,
-                border: '1px solid var(--color-border)',
-                background: 'var(--color-surface)',
-              }}
-            >
-              <div style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Now building:</div>
-              <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
-                {typingText}
-                <span style={{ animation: 'pulse 1s infinite', marginLeft: 4 }}>|</span>
-              </div>
-            </motion.div>
-
-            {/* Stats grid - 2x2 */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.85rem',
+          {/* Name + tagline */}
+          <div>
+            <h1 style={{
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              lineHeight: 1.1,
+              marginBottom: '0.35rem',
+              color: 'var(--color-text)',
             }}>
-              {stats.map((s, i) => <StatCard key={s.label} num={s.num} label={s.label} link={s.link} index={i} />)}
-            </div>
+              Himanshu Nakrani
+            </h1>
+            <p style={{
+              fontSize: '1.05rem',
+              color: 'var(--color-text-muted)',
+              fontWeight: 500,
+              margin: 0,
+            }}>
+              Building AI systems that work at scale
+            </p>
+          </div>
+        </motion.div>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={reduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              style={{
-                display: 'flex',
-                gap: '0.75rem',
-                flexWrap: 'wrap',
-              }}
-            >
-              <a
-                ref={magneticRef}
-                href="https://github.com/himanshu-nakrani"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '0.85rem 1.2rem',
-                  borderRadius: 10,
-                  background: 'var(--color-accent)',
-                  color: '#0a192f',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  textDecoration: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => e.target.style.transform = 'translateY(-2px)'}
-                onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
-              >
-                <Github size={16} />
-                GitHub
-              </a>
-              <a
-                href="https://linkedin.com/in/himanshu-nakrani"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  padding: '0.85rem 1.2rem',
-                  borderRadius: 10,
-                  border: '1px solid var(--color-border)',
-                  background: 'transparent',
-                  color: 'var(--color-text)',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => {
-                  e.target.style.background = 'var(--color-surface-raised)'
-                  e.target.style.borderColor = 'var(--color-accent)'
-                }}
-                onMouseLeave={e => {
-                  e.target.style.background = 'transparent'
-                  e.target.style.borderColor = 'var(--color-border)'
-                }}
-              >
-                <Linkedin size={16} />
-                LinkedIn
-              </a>
-            </motion.div>
-          </motion.div>
+        {/* Intro text */}
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25, duration: 0.6 }}
+          style={{
+            fontSize: '0.95rem',
+            lineHeight: 1.7,
+            color: 'var(--color-text-muted)',
+            maxWidth: 600,
+            marginBottom: '2.5rem',
+          }}
+        >
+          <p style={{ marginBottom: '0.75rem' }}>
+            Production AI engineer at <strong style={{ color: 'var(--color-accent)' }}>State Street</strong>, building enterprise LLM systems that scale.
+          </p>
+          <p style={{ margin: 0 }}>
+            Specializing in <strong>RAG architectures</strong>, <strong>Text-to-SQL</strong> pipelines, and deploying models that work reliably at production scale.
+          </p>
+        </motion.div>
+
+        {/* Now building */}
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          style={{
+            padding: '1.25rem',
+            borderRadius: 12,
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-surface)',
+            maxWidth: 480,
+            marginBottom: '2.5rem',
+          }}
+        >
+          <div style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>Now building:</div>
+          <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
+            {typingText}
+            <span style={{ animation: 'pulse 1s infinite', marginLeft: 4 }}>|</span>
+          </div>
+        </motion.div>
+
+        {/* Stats row */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '0.85rem',
+          marginBottom: '2.5rem',
+        }} className="hero-stats-grid">
+          {stats.map((s, i) => <StatCard key={s.label} num={s.num} label={s.label} link={s.link} index={i} />)}
         </div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={reduceMotion ? {} : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          style={{
+            display: 'flex',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+            marginBottom: '2rem',
+          }}
+        >
+          <a
+            ref={magneticRef}
+            href="https://github.com/himanshu-nakrani"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '0.85rem 1.2rem',
+              borderRadius: 10,
+              background: 'var(--color-accent)',
+              color: '#0a192f',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              textDecoration: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
+          >
+            <Github size={16} />
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/himanshu-nakrani"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '0.85rem 1.2rem',
+              borderRadius: 10,
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              color: 'var(--color-text)',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => {
+              e.target.style.background = 'var(--color-surface-raised)'
+              e.target.style.borderColor = 'var(--color-accent)'
+            }}
+            onMouseLeave={e => {
+              e.target.style.background = 'transparent'
+              e.target.style.borderColor = 'var(--color-border)'
+            }}
+          >
+            <Linkedin size={16} />
+            LinkedIn
+          </a>
+        </motion.div>
 
         {/* Scroll prompt */}
         <motion.div
@@ -358,10 +353,17 @@ export default function HeroEnhanced() {
           50% { opacity: 0.5; }
         }
 
-        .hero-grid {
-          @media (max-width: 1024px) {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
+        .hero-header {
+          @media (max-width: 600px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+          }
+        }
+
+        .hero-stats-grid {
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr 1fr !important;
           }
         }
       `}</style>
