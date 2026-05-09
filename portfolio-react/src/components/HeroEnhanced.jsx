@@ -163,6 +163,7 @@ export default function HeroEnhanced() {
             border: '2px solid var(--color-border)',
             overflow: 'hidden',
             flexShrink: 0,
+            marginTop: 8,
           }}>
             <img 
               src="/himanshu.jpg" 
