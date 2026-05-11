@@ -66,15 +66,19 @@ export default function AvailabilityCtaPanel({ status = availabilityStatus }) {
           justifyContent: 'center',
         }}
       >
-        {status.actions.map(action => (
+        {status.actions.map(action => {
+          const isExternal = action.href.startsWith('http');
+          return (
           <a
             key={action.label}
             href={action.href}
             className={`btn btn--${action.variant === 'primary' ? 'primary' : 'ghost'}`}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
           >
             {action.label}
           </a>
-        ))}
+        )})}
       </div>
     </section>
   )
