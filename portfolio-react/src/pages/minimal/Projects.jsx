@@ -62,6 +62,20 @@ const PROJECTS = [
     ],
   },
   {
+    title: 'TinyMathReason-1B',
+    desc: 'From-scratch 1.07B-parameter math reasoning LLM trained on TPU v4-64 with 57B tokens of curated math, web, and code data.',
+    tags: ['Pretraining', 'JAX', 'MaxText', 'TPU', 'LLM'],
+    badge: 'Research',
+    link: null,
+    metrics: [{ value: '57B', label: 'Tokens trained' }, { value: '1.07B', label: 'Parameters' }],
+    bullets: [
+      'Custom 32k math tokenizer and packed FineWeb-Edu, MathPile, OpenWebMath, and Stack-Edu shards',
+      'Completed 54,363 MaxText pretraining steps with ~1M tokens per step',
+      'Resolved TPU spot preemptions and JAX 0.6.2 compatibility issues across Pallas, AbstractMesh, and reshard APIs',
+      'Next stages: Orbax → Hugging Face conversion, SFT, DPO/GRPO, benchmarks, and model release',
+    ],
+  },
+  {
     title: 'Document QA',
     desc: 'Document question-answering system using LLMs and retrieval techniques.',
     tags: ['Python', 'LLM', 'RAG'],

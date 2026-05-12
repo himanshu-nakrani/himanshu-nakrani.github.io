@@ -9,6 +9,7 @@ import { projects } from '../data'
 const badgeStyle = {
   Production:   { bg: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent)',  border: 'color-mix(in srgb, var(--color-accent) 30%, transparent)' },
   'In Progress':{ bg: 'color-mix(in srgb, #6b7fff 10%, transparent)',              color: '#8b9fff',              border: 'rgba(107,124,255,0.3)' },
+  Research:     { bg: 'color-mix(in srgb, var(--color-accent) 9%, transparent)',   color: 'var(--color-accent)',  border: 'color-mix(in srgb, var(--color-accent) 24%, transparent)' },
 }
 const metricIcon = { performance: Zap, users: Users, efficiency: BarChart2 }
 
