@@ -7,7 +7,7 @@ import {
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
   Search, Command as CommandIcon, ArrowRight, CornerDownLeft
 } from 'lucide-react'
-import { projects, skills, experience } from '../data'
+import { projects, skills } from '../data'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -133,6 +133,16 @@ export default function CommandPalette() {
   }, [filteredItems])
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
+
+  const handleMouseOver = useCallback((e) => {
+    const target = e.target.closest('[data-index]')
+    if (target) {
+      const idx = parseInt(target.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        setSelectedIndex(idx)
+      }
+    }
+  }, [])
 
   // Reset selection when search changes
   useEffect(() => {
@@ -285,7 +295,7 @@ export default function CommandPalette() {
             </div>
 
             {/* Results */}
-            <div ref={listRef} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+            <div ref={listRef} onMouseOver={handleMouseOver} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
               {filteredItems.length === 0 ? (
                 <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                   No results found for "{search}"
@@ -321,7 +331,6 @@ export default function CommandPalette() {
                               item.action()
                               setOpen(false)
                             }}
-                            onMouseEnter={() => setSelectedIndex(idx)}
                             style={{
                               display: 'flex',
                               alignItems: 'center',
