@@ -444,6 +444,7 @@ export default function ProjectsPage() {
             <input
               type="search"
               placeholder="Search projects..."
+              aria-label="Search projects"
               value={query}
               onChange={e => setQuery(e.target.value)}
               style={{
@@ -473,7 +474,11 @@ export default function ProjectsPage() {
         {/* Filter pills - two rows for better organization */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           {/* Status filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div
+            role="group"
+            aria-label="Project status filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}
+          >
             <span style={{ 
               fontSize: '0.65rem', 
               fontWeight: 700, 
@@ -492,6 +497,7 @@ export default function ProjectsPage() {
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
+                aria-pressed={activeFilter === f}
                 style={{
                   background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
                   color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
@@ -509,7 +515,11 @@ export default function ProjectsPage() {
           </div>
 
           {/* Tech/tag filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+          <div
+            role="group"
+            aria-label="Project technology filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}
+          >
             <span style={{ 
               fontSize: '0.65rem', 
               fontWeight: 700, 
@@ -528,6 +538,7 @@ export default function ProjectsPage() {
               <button
                 key={tag}
                 onClick={() => setActiveTag(tag)}
+                aria-pressed={activeTag === tag}
                 style={{
                   border: '1px solid',
                   borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
