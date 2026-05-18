@@ -491,6 +491,7 @@ export default function ProjectsPage() {
             {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
               <button
                 key={f}
+                aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
                 style={{
                   background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
@@ -527,6 +528,7 @@ export default function ProjectsPage() {
             {['All', ...FEATURED_TAGS].map(tag => (
               <button
                 key={tag}
+                aria-pressed={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
                 style={{
                   border: '1px solid',
