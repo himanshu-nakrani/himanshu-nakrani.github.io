@@ -291,6 +291,7 @@ export default function ProfilesPage() {
               alt="GitHub Stats"
               style={{ borderRadius: 12, width: '100%' }}
               loading="lazy"
+              referrerPolicy="no-referrer"
               onError={e => { e.currentTarget.style.display = 'none' }}
             />
             <img
@@ -298,6 +299,7 @@ export default function ProfilesPage() {
               alt="Top Languages"
               style={{ borderRadius: 12, width: '100%' }}
               loading="lazy"
+              referrerPolicy="no-referrer"
               onError={e => { e.currentTarget.style.display = 'none' }}
             />
           </motion.div>
@@ -430,6 +432,7 @@ export default function ProfilesPage() {
             alt="LeetCode Stats Card"
             style={{ borderRadius: 14, width: '100%', border: '1px solid var(--border)' }}
             loading="lazy"
+            referrerPolicy="no-referrer"
             onError={e => { e.currentTarget.style.display = 'none' }}
           />
         </div>
