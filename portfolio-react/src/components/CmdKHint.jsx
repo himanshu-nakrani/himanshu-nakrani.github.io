@@ -16,6 +16,8 @@ export default function CmdKHint() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (localStorage.getItem(STORAGE_KEY)) return
+    // Don't show on small screens or touch-primary devices — not relevant there
+    if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) return
 
     const showTimer = setTimeout(() => setVisible(true), SHOW_DELAY)
     const hideTimer = setTimeout(() => dismiss(), SHOW_DELAY + 12000)

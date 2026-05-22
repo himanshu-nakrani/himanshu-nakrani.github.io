@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
+import DataIcon from '../components/DataIcon'
 import { projects } from '../data'
 
 /* ─── Badge styles ─────────────────────────────────────── */
@@ -62,7 +63,7 @@ function ProjectModal({ project, onClose }) {
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.2rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '2rem' }}>{project.icon}</span>
+                    <span style={{ color: 'var(--color-accent)' }}><DataIcon name={project.icon} size={26} /></span>
                     <div>
                       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 4 }}>{project.title}</h2>
                       {project.badge && (
@@ -202,8 +203,8 @@ function FeaturedCard({ item, onClick }) {
         {/* Header row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.15 : 1 }} transition={{ duration: 0.2 }} style={{ fontSize: '1.8rem' }}>
-              {item.icon}
+            <motion.span animate={{ scale: hovered ? 1.15 : 1 }} transition={{ duration: 0.2 }} style={{ color: 'var(--color-accent)' }}>
+              <DataIcon name={item.icon} size={24} />
             </motion.span>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', lineHeight: 1.2 }}>{item.title}</h3>
@@ -294,8 +295,8 @@ function ProjectCard({ item, index, onClick }) {
       <div style={{ padding: '1.1rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.1 : 1 }} transition={{ duration: 0.18 }} style={{ fontSize: '1.35rem' }}>
-              {item.icon}
+            <motion.span animate={{ scale: hovered ? 1.1 : 1 }} transition={{ duration: 0.18 }} style={{ color: 'var(--color-accent)' }}>
+              <DataIcon name={item.icon} size={20} />
             </motion.span>
             <h3 style={{ fontSize: '0.93rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.25 }}>{item.title}</h3>
           </div>
@@ -419,11 +420,11 @@ export default function ProjectsPage() {
       </div>
 
       {/* Modern filter bar with glass effect */}
-      <div style={{ 
-        border: '1px solid var(--color-border)', 
-        borderRadius: 18, 
+      <div style={{
+        border: '1px solid var(--color-border)',
+        borderRadius: 18,
         background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
-        padding: '1rem 1.25rem', 
+        padding: '1rem 1.25rem',
         marginBottom: '2rem',
         boxShadow: 'var(--shadow-sm)',
       }}>
@@ -448,16 +449,16 @@ export default function ProjectsPage() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               style={{
-                flex: 1, 
-                border: 'none', 
+                flex: 1,
+                border: 'none',
                 background: 'transparent',
-                color: 'var(--color-text)', 
-                outline: 'none', 
+                color: 'var(--color-text)',
+                outline: 'none',
                 fontSize: '0.88rem',
               }}
             />
           </div>
-          <div style={{ 
+          <div style={{
             padding: '0.5rem 0.85rem',
             background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
             border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
@@ -466,29 +467,33 @@ export default function ProjectsPage() {
             fontFamily: 'var(--font-mono)',
             color: 'var(--color-accent)',
             fontWeight: 600,
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
           }}>
             {filteredProjects.length} results
           </div>
         </div>
 
-        {/* Filter pills - two rows for better organization */}
+        {/* Filter rows — horizontally scrollable on mobile */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
           {/* Status filters */}
           <div
             role="group"
             aria-label="Project status filters"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
           >
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
+            <span style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
+              color: 'var(--color-text-muted)',
               marginRight: 4,
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              flexShrink: 0,
             }}>
               <Filter size={11} />
               Status
@@ -498,18 +503,19 @@ export default function ProjectsPage() {
                 key={f}
                 aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
-                aria-pressed={activeFilter === f}
                 style={{
                   background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
                   color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
                   border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                  borderRadius: 8, 
+                  borderRadius: 8,
                   padding: '5px 12px',
-                  fontSize: '0.74rem', 
-                  fontWeight: 600, 
-                  cursor: 'pointer', 
+                  fontSize: '0.74rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
                   transition: 'all 0.18s',
                   boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >{f}</button>
             ))}
@@ -519,18 +525,20 @@ export default function ProjectsPage() {
           <div
             role="group"
             aria-label="Project technology filters"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
           >
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
+            <span style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
+              color: 'var(--color-text-muted)',
               marginRight: 4,
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              flexShrink: 0,
             }}>
               <Sparkles size={11} />
               Tech
@@ -540,18 +548,19 @@ export default function ProjectsPage() {
                 key={tag}
                 aria-pressed={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
-                aria-pressed={activeTag === tag}
                 style={{
                   border: '1px solid',
                   borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
                   background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
                   color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                  borderRadius: 6, 
+                  borderRadius: 6,
                   padding: '4px 10px',
-                  cursor: 'pointer', 
-                  fontSize: '0.7rem', 
+                  cursor: 'pointer',
+                  fontSize: '0.7rem',
                   fontFamily: 'var(--font-mono)',
                   transition: 'all 0.15s',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >{tag}</button>
             ))}
@@ -616,11 +625,7 @@ export default function ProjectsPage() {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
-        @media (max-width: 480px) {
-          .projects-stats-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
+        .filter-scroll-row::-webkit-scrollbar { display: none; }
       `}</style>
     </section>
   )
