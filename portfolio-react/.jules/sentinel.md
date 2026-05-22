@@ -1,4 +1,4 @@
-## 2024-05-01 - Missing Security Headers in Vercel Deployment
-**Vulnerability:** Missing security headers (CSP, X-Frame-Options, X-Content-Type-Options, etc.)
-**Learning:** The static React application hosted on Vercel did not define HTTP security headers by default, leaving the application open to framing (Clickjacking) and MIME-type sniffing.
-**Prevention:** Include a `vercel.json` file in the root of the project to explicitly enforce standard security headers for all routes via `"source": "/(.*)"`.
+## 2024-05-08 - Add Permissions-Policy Header to Vercel Deployment
+**Vulnerability:** Missing `Permissions-Policy` header in the static deployment configuration.
+**Learning:** By default, web applications allow access to native device features (camera, microphone, geolocation) unless explicitly denied. For a static portfolio site, leaving these open is a minor security risk, as malicious third-party scripts could attempt to abuse them or prompt the user.
+**Prevention:** Include `"camera=(), microphone=(), geolocation=(), interest-cohort=()"` in the `Permissions-Policy` header inside `vercel.json` to explicitly opt-out of unused device APIs and tracking features like FLoC.

@@ -1,3 +1,3 @@
-## 2025-05-05 - Missing ARIA Labels on Icon-Only Modal Close/Back Buttons
-**Learning:** React applications commonly rely on standalone SVG icons for close (e.g. `<X />`) or back buttons within custom modal components. Screen readers cannot interpret these elements without explicitly defining `aria-label` properties, rendering these common UI patterns inaccessible.
-**Action:** When implementing modal/overlay components or interactive elements represented solely by an icon, ensure the wrapping button explicitly contains an `aria-label` providing context to the action (e.g., `aria-label="Close dialog"` or `aria-label="Back to previous screen"`).
+## 2024-05-06 - Accessible Toggle Groups
+**Learning:** Found multiple instances of toggleable lists/filters (e.g., density toggles, category filters, timeline layers) missing proper `role="group"` and `aria-pressed` states. This makes it difficult for screen reader users to understand the current active state within a group of options.
+**Action:** When creating toggle button groups or filters, always wrap the buttons in a container with `role="group"` and a descriptive `aria-label`, and use `aria-pressed="true/false"` on the buttons to indicate the active selection state.
