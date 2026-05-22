@@ -2,18 +2,19 @@ import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Award, Sparkles, Layers, TrendingUp, ExternalLink, ChevronRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
+import DataIcon from '../components/DataIcon'
 import { skills, certifications } from '../data'
 
 /* Primary tools - showcased in a bento grid */
 const PRIMARY_STACK = [
-  { name: 'Python',       icon: '🐍', note: 'Primary language', years: 4, featured: true },
-  { name: 'FastAPI',      icon: '⚡', note: 'Backend APIs', years: 2 },
-  { name: 'LangChain',    icon: '🔗', note: 'LLM orchestration', years: 1.5 },
-  { name: 'Azure OpenAI', icon: '☁️', note: 'LLM infrastructure', years: 1.5, featured: true },
-  { name: 'PostgreSQL',   icon: '🐘', note: 'Primary database', years: 3 },
-  { name: 'pgvector',     icon: '🔢', note: 'Vector search', years: 1 },
-  { name: 'RAG',          icon: '📚', note: 'Retrieval AI', years: 1.5 },
-  { name: 'Docker',       icon: '🐳', note: 'Containers', years: 2 },
+  { name: 'Python',       icon: 'Code2',    note: 'Primary language', years: 4, featured: true },
+  { name: 'FastAPI',      icon: 'Zap',      note: 'Backend APIs', years: 2 },
+  { name: 'LangChain',    icon: 'Link',     note: 'LLM orchestration', years: 1.5 },
+  { name: 'Azure OpenAI', icon: 'Cloud',    note: 'LLM infrastructure', years: 1.5, featured: true },
+  { name: 'PostgreSQL',   icon: 'Database', note: 'Primary database', years: 3 },
+  { name: 'pgvector',     icon: 'Hash',     note: 'Vector search', years: 1 },
+  { name: 'RAG',          icon: 'BookOpen', note: 'Retrieval AI', years: 1.5 },
+  { name: 'Docker',       icon: 'Box',      note: 'Containers', years: 2 },
 ]
 
 /* Cert accent colors — amber-harmonious palette */
@@ -122,12 +123,11 @@ function BentoToolCard({ tool, index, large }) {
       }}
     >
       <div style={{
-        fontSize: large ? '2.5rem' : '1.6rem',
         lineHeight: 1,
-        filter: hovered ? 'none' : 'grayscale(20%)',
-        transition: 'filter 0.2s',
+        color: hovered ? 'var(--color-accent)' : 'var(--color-text-muted)',
+        transition: 'color 0.2s',
       }}>
-        {tool.icon}
+        <DataIcon name={tool.icon} size={large ? 28 : 20} />
       </div>
       <div style={{ flex: 1 }}>
         <div style={{ 
@@ -208,10 +208,10 @@ function SkillCategoryCard({ group, index, isExpanded, onToggle }) {
           background: `color-mix(in srgb, ${group.color} 15%, transparent)`,
           border: `1px solid color-mix(in srgb, ${group.color} 30%, transparent)`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.35rem',
+          color: group.color,
           transition: 'all 0.25s',
         }}>
-          {group.icon}
+          <DataIcon name={group.icon} size={20} />
         </div>
         <div style={{ flex: 1 }}>
           <div style={{
@@ -319,10 +319,10 @@ function CertCard({ cert, index, colors }) {
         background: colors.bg,
         border: `1px solid ${colors.border}`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '1.3rem',
+        color: colors.text || 'var(--color-accent)',
         flexShrink: 0,
       }}>
-        {cert.icon}
+        <DataIcon name={cert.icon} size={18} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ 

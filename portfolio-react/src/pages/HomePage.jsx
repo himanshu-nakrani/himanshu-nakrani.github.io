@@ -1,44 +1,21 @@
-import { lazy, Suspense } from 'react'
 import HeroEnhanced from '../components/HeroEnhanced'
 import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
-import FeaturedProjects from '../components/FeaturedProjects'
-import Testimonials from '../components/Testimonials'
+import CaseStudyWorkbench from '../components/CaseStudyWorkbench'
 import Contact from '../components/Contact'
 import Section from '../components/Section'
 import SectionNav from '../components/SectionNav'
-import {
-  projects,
-  testimonials,
-  featuredHighlights,
-} from '../data'
+import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
+import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
+import { featuredHighlights } from '../data'
 
-// Lazy load the heavy pipeline player
-const AIPipelinePlayer = lazy(() => import('../components/AIPipelinePlayer'))
-
-// Section definitions for the nav
 const sections = [
-  { id: 'about', label: 'About' },
+  { id: 'about',      label: 'About' },
   { id: 'highlights', label: 'Highlights' },
-  { id: 'pipeline', label: 'Pipeline' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'testimonials', label: 'Testimonials' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'pipeline',   label: 'Architecture' },
+  { id: 'projects',   label: 'Case Studies' },
+  { id: 'modelops',   label: 'ModelOps' },
+  { id: 'contact',    label: 'Contact' },
 ]
-
-function PipelineFallback() {
-  return (
-    <div style={{
-      background: 'var(--color-surface)',
-      border: '1px solid var(--color-border)',
-      borderRadius: 'var(--radius-xl)',
-      padding: '3rem',
-      textAlign: 'center',
-    }}>
-      <div className="skeleton-shimmer" style={{ width: '60%', height: 24, margin: '0 auto 1rem', borderRadius: 6 }} />
-      <div className="skeleton-shimmer" style={{ width: '80%', height: 200, margin: '0 auto', borderRadius: 8 }} />
-    </div>
-  )
-}
 
 export default function HomePage() {
   return (
@@ -46,50 +23,48 @@ export default function HomePage() {
       {/* Desktop section navigation */}
       <SectionNav sections={sections} />
 
-      {/* Act 1: Hero + Live Status */}
+      {/* 1 — Hero */}
       <HeroEnhanced />
 
-      {/* Act 2: Proof in 60 seconds */}
-      <Section 
-        id="highlights" 
-        title="Highlights" 
+      {/* 2 — Proof highlights */}
+      <Section
+        id="highlights"
+        title="Highlights"
         subtitle="High-signal proof points from production work and research"
         number="02"
       >
         <FeaturedHighlightsRail highlights={featuredHighlights} />
       </Section>
 
-      {/* Interactive AI Pipeline Player */}
-      <Section 
-        id="pipeline" 
-        title="Architecture" 
-        subtitle="Interactive visualization of the RAG/Text-to-SQL production pipeline"
+      {/* 3 — Production pipeline explorer */}
+      <Section
+        id="pipeline"
+        title="Architecture"
+        subtitle="Alpha Copilot production pipeline — select a stage to inspect latency and design"
         number="03"
       >
-        <Suspense fallback={<PipelineFallback />}>
-          <AIPipelinePlayer />
-        </Suspense>
+        <ProductionTraceExplorer />
       </Section>
 
-      {/* Act 3: Featured Work */}
-      <Section 
-        id="projects" 
-        title="Featured Projects" 
-        subtitle="Production systems and open-source work"
+      {/* 4 — Case studies */}
+      <Section
+        id="projects"
+        title="Case Studies"
+        subtitle="Production LLM systems built at State Street"
         number="04"
         alt
       >
-        <FeaturedProjects projects={projects} />
+        <CaseStudyWorkbench />
       </Section>
 
-      {/* Act 4: Social Proof + Contact */}
-      <Section 
-        id="testimonials" 
-        title="What People Say" 
-        subtitle="Feedback from colleagues and stakeholders"
+      {/* 5 — Model training / research ops */}
+      <Section
+        id="modelops"
+        title="Model Research"
+        subtitle="Fine-tuning and pretraining work — from QLoRA to TPU-scale training"
         number="05"
       >
-        <Testimonials testimonials={testimonials} />
+        <ModelOpsSnapshot />
       </Section>
 
       <Contact />

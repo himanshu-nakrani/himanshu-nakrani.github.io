@@ -1,23 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * useCountUp — animates a numeric value from 0 to `target` once when the
- * referenced element enters the viewport. Honours prefers-reduced-motion.
+ * useCountUp — animates from 80% of target to target once the element enters
+ * the viewport. Starts near the final value to avoid misleading interim states.
+ * Honours prefers-reduced-motion.
  *
- * Returns: { ref, value }
- *   - ref: attach to the element you want to observe
- *   - value: current displayed number (starts at 0, ends at target)
- *
- * Supports `target` as a string with a suffix (e.g. "75%", "100+", "2+")
- * by parsing the leading integer; non-numeric returns target verbatim.
+ * Supports target as a string with a suffix (e.g. "75%", "100+", "2+").
  */
-export function useCountUp(target, { duration = 900, decimals = 0 } = {}) {
+export function useCountUp(target, { duration = 450, decimals = 0 } = {}) {
   const ref = useRef(null)
-  const [value, setValue] = useState(0)
-  const startedRef = useRef(false)
-
-  // Parse "75%" → { num: 75, suffix: "%" }, "100+" → { num: 100, suffix: "+" }
   const parsed = parseTarget(target)
+  const startValue = parsed.num !== null ? Math.round(parsed.num * 0.8) : 0
+  const [value, setValue] = useState(startValue)
+  const startedRef = useRef(false)
 
   useEffect(() => {
     if (!ref.current) return
@@ -25,26 +20,24 @@ export function useCountUp(target, { duration = 900, decimals = 0 } = {}) {
     if (parsed.num === null) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
-      setValue(parsed.num)
-      return
-    }
 
     const node = ref.current
     let raf = 0
-    let startTime = 0
+    const from = Math.round(parsed.num * 0.8)
+    const range = parsed.num - from
 
-    const step = (t) => {
-      if (!startTime) startTime = t
-      const elapsed = t - startTime
-      const progress = Math.min(1, elapsed / duration)
-      // ease-out-cubic for a calm, decelerating curve
-      const eased = 1 - Math.pow(1 - progress, 3)
-      const next = parsed.num * eased
-      setValue(decimals > 0 ? Number(next.toFixed(decimals)) : Math.round(next))
-      if (progress < 1) {
-        raf = requestAnimationFrame(step)
+    const animate = (startTime) => {
+      const step = (t) => {
+        const elapsed = t - startTime
+        const progress = Math.min(1, elapsed / duration)
+        const eased = 1 - Math.pow(1 - progress, 3)
+        const next = from + range * eased
+        setValue(decimals > 0 ? Number(next.toFixed(decimals)) : Math.round(next))
+        if (progress < 1) {
+          raf = requestAnimationFrame(step)
+        }
       }
+      raf = requestAnimationFrame(step)
     }
 
     const observer = new IntersectionObserver(
@@ -52,8 +45,12 @@ export function useCountUp(target, { duration = 900, decimals = 0 } = {}) {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !startedRef.current) {
             startedRef.current = true
-            raf = requestAnimationFrame(step)
             observer.unobserve(node)
+            if (reduce) {
+              setValue(parsed.num)
+            } else {
+              requestAnimationFrame((t) => animate(t))
+            }
           }
         })
       },

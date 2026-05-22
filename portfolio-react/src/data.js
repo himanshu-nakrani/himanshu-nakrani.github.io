@@ -59,8 +59,8 @@ export const experience = [
 ]
 
 export const projects = [
-  { 
-    icon: '🤖', 
+  {
+    icon: 'Bot',
     title: 'Alpha Copilot', 
     desc: 'Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves 100+ internal users at State Street.', 
     fullDesc: 'Alpha Copilot is a production-grade enterprise chatbot that democratizes data access by allowing non-technical users to query complex financial databases using natural language. Built with FastAPI and Azure OpenAI, it features advanced caching, query optimization, and automatic data visualization.',
@@ -86,7 +86,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '🔧', 
+    icon: 'Wrench',
     title: 'Agent Forge', 
     desc: 'No-code AI agent builder platform for designing, registering, and deploying custom agents with real-time trace monitoring and evaluation dashboards.', 
     fullDesc: 'Agent Forge empowers teams to build, test, and deploy AI agents without writing code. Features drag-and-drop workflow design, real-time observability, and comprehensive evaluation metrics.',
@@ -103,7 +103,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '💼', 
+    icon: 'Briefcase',
     title: 'WealthAI', 
     desc: 'Real-time portfolio narrative generation system that processes optimizer outputs and delivers personalized investment insights at scale.', 
     fullDesc: 'WealthAI transforms complex portfolio optimization data into clear, personalized narratives for wealth management clients. Processes real-time market data and generates tailored investment insights.',
@@ -117,7 +117,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '📄', 
+    icon: 'FileText',
     title: 'Fund Prospectus RAG', 
     desc: 'Production RAG system for extracting actionable insights from fund prospectuses using OpenAI models, vector embeddings, and intelligent chunking.', 
     fullDesc: 'A sophisticated RAG pipeline that processes fund prospectuses, extracts key information, and enables semantic search across thousands of documents. Features intelligent chunking and hybrid search.',
@@ -134,7 +134,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '🧮', 
+    icon: 'Calculator',
     title: 'LLaMA 3.2-3B Mathematical Reasoning Fine-tuning', 
     desc: 'End-to-end fine-tuning pipeline: generated 200 synthetic reasoning samples on AMD MI300X GPU using Qwen 3.6, then fine-tuned LLaMA 3.2-3B with QLoRA. Achieved 77% loss reduction and 90% token accuracy.', 
     fullDesc: 'Complete end-to-end pipeline for teaching a 3B parameter model to reason step-by-step through complex mathematical problems. First, generated 200 high-quality synthetic chain-of-thought reasoning samples using Qwen 3.6-35B on AMD MI300X GPU. Then fine-tuned LLaMA 3.2-3B using QLoRA (4-bit quantization + LoRA adapters) on NVIDIA A10G. Training loss dropped from 1.3 → 0.30 over 5 epochs in 32 minutes.',
@@ -165,7 +165,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '🔬', 
+    icon: 'FlaskConical',
     title: 'TinyMathReason-1B', 
     desc: 'From-scratch 1.07B-parameter math reasoning language model trained on TPU v4-64 with 57B tokens of curated web, code, and math data. Pretraining completed at 54,363 steps.', 
     fullDesc: 'TinyMathReason-1B is an end-to-end research build for a compact math reasoning model: custom 32k tokenizer, distributed data preparation across Vultr instances, MaxText pretraining on TPU v4-64, Orbax checkpointing, and planned SFT plus preference optimization. The base model finished 54,363 steps, roughly 57B tokens, with a LLaMA-style 1.07B-parameter architecture.',
@@ -194,7 +194,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '📚', 
+    icon: 'BookOpen',
     title: 'Document QA', 
     desc: 'Document question-answering system using LLMs and retrieval techniques to extract precise answers from uploaded documents.', 
     tags: ['Python', 'LLM', 'RAG'], 
@@ -203,7 +203,7 @@ export const projects = [
     liveLink: 'https://document-qa-two.vercel.app/',
   },
   { 
-    icon: '🛡️', 
+    icon: 'ShieldCheck',
     title: 'Intrusion Detection System', 
     desc: 'ML-based network intrusion detection on KDD Cup 1999 dataset (4.9M records), achieving 94% accuracy across DoS, Probe, R2L, and U2R attacks.', 
     fullDesc: 'Comprehensive intrusion detection system using ensemble methods to identify network attacks. Trained on 4.9M records with extensive feature engineering.',
@@ -217,7 +217,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '₿', 
+    icon: 'TrendingUp',
     title: 'Cryptocurrency Price Prediction', 
     desc: 'Automated daily-updated crypto forecasting using LSTM networks with technical indicators. Achieved 18% RMSE reduction via walk-forward validation.', 
     fullDesc: 'LSTM-based cryptocurrency price prediction system with automated daily updates. Features technical indicators, walk-forward validation, and real-time data integration.',
@@ -230,7 +230,7 @@ export const projects = [
     ],
   },
   { 
-    icon: '🥇', 
+    icon: 'Trophy',
     title: 'Gold Price Prediction', 
     desc: 'ML-based gold price forecasting using historical market data, feature engineering, and regression models.', 
     tags: ['Python', 'Regression', 'Jupyter'], 
@@ -240,10 +240,10 @@ export const projects = [
 ]
 
 export const kagglePinned = [
-  { type: 'notebook', medal: '🥈', title: 'Bitcoin Price Prediction (Updated Daily)', desc: 'LSTM-based daily-updated crypto forecasting with technical indicators. Auto-refreshes with latest market data.', votes: 156, link: 'https://www.kaggle.com/code/himanshunakrani/bitcoin-price-prediction-updated-daily' },
-  { type: 'dataset', medal: '🥈', title: 'Iris Dataset', desc: 'Widely-used classification dataset. One of the most popular datasets on Kaggle with hundreds of downstream notebooks.', votes: 395, link: 'https://www.kaggle.com/datasets/himanshunakrani/iris-dataset' },
-  { type: 'dataset', medal: '🥈', title: 'Student Study Hours Dataset', desc: 'Popular regression dataset for predicting student scores based on study hours. Widely used for ML tutorials.', votes: 262, link: 'https://www.kaggle.com/datasets/himanshunakrani/student-study-hours' },
-  { type: 'notebook', medal: '🥉', title: 'Gold Price Prediction Project', desc: 'End-to-end ML project predicting gold prices using historical market data and feature engineering techniques.', votes: 59, link: 'https://www.kaggle.com/code/himanshunakrani/gold-price-prediction-project' },
+  { type: 'notebook', medal: 'Silver', title: 'Bitcoin Price Prediction (Updated Daily)', desc: 'LSTM-based daily-updated crypto forecasting with technical indicators. Auto-refreshes with latest market data.', votes: 156, link: 'https://www.kaggle.com/code/himanshunakrani/bitcoin-price-prediction-updated-daily' },
+  { type: 'dataset', medal: 'Silver', title: 'Iris Dataset', desc: 'Widely-used classification dataset. One of the most popular datasets on Kaggle with hundreds of downstream notebooks.', votes: 395, link: 'https://www.kaggle.com/datasets/himanshunakrani/iris-dataset' },
+  { type: 'dataset', medal: 'Silver', title: 'Student Study Hours Dataset', desc: 'Popular regression dataset for predicting student scores based on study hours. Widely used for ML tutorials.', votes: 262, link: 'https://www.kaggle.com/datasets/himanshunakrani/student-study-hours' },
+  { type: 'notebook', medal: 'Bronze', title: 'Gold Price Prediction Project', desc: 'End-to-end ML project predicting gold prices using historical market data and feature engineering techniques.', votes: 59, link: 'https://www.kaggle.com/code/himanshunakrani/gold-price-prediction-project' },
   { type: 'notebook', medal: null, title: 'RAG with LangChain', desc: 'Practical implementation of Retrieval-Augmented Generation using LangChain — bridging ML fundamentals with modern LLM work.', votes: 12, link: 'https://www.kaggle.com/code/himanshunakrani/rag-retrieval-augmented-generation-with-langchain' },
   { type: 'notebook', medal: null, title: 'CrewAI Multi-Agent Blog Generator', desc: 'Multi-agent system using CrewAI framework to autonomously generate blog content — showcasing AI agent orchestration.', votes: 2, link: 'https://www.kaggle.com/code/himanshunakrani/crewai-multi-ai-agent-blog-generator' },
 ]
@@ -257,37 +257,37 @@ export const kaggleContributionMap = {}
 export const skills = [
   {
     label: 'AI & LLMs',
-    icon: '🤖',
+    icon: 'Bot',
     color: 'var(--accent)',
     items: ['LLMs', 'RAG', 'Fine-tuning', 'LoRA/PEFT', 'Prompt Engineering', 'AI Agents', 'OpenAI API', 'Azure OpenAI', 'LangChain', 'Google ADK'],
   },
   {
     label: 'Machine Learning',
-    icon: '🧠',
+    icon: 'Brain',
     color: 'var(--accent2)',
     items: ['CNNs', 'LSTM', 'XGBoost', 'Random Forest', 'Feature Engineering', 'Model Deployment', 'scikit-learn', 'TensorFlow'],
   },
   {
     label: 'Backend & APIs',
-    icon: '⚙️',
+    icon: 'Settings',
     color: 'var(--accent3)',
     items: ['FastAPI', 'ASP.NET Core', 'REST APIs', 'SQLAlchemy', 'WebSocket', 'Microservices'],
   },
   {
     label: 'Languages',
-    icon: '💻',
+    icon: 'Code2',
     color: 'var(--nav-dot)',
     items: ['Python', 'SQL', 'TypeScript', 'Java', 'C#', 'C/C++', 'Shell/Perl'],
   },
   {
     label: 'Data & Databases',
-    icon: '🗄️',
+    icon: 'Database',
     color: '#4ade80',
     items: ['PostgreSQL', 'pgvector', 'SQLite', 'Vector DBs', 'Semantic Search', 'Redis', 'Pandas', 'NumPy'],
   },
   {
     label: 'Cloud & DevOps',
-    icon: '☁️',
+    icon: 'Cloud',
     color: 'var(--accent)',
     items: ['Azure', 'AWS', 'OCI', 'Databricks', 'CI/CD', 'Docker', 'Azure OpenAI Studio'],
   },
@@ -299,11 +299,11 @@ export const publications = [
 ]
 
 export const certifications = [
-  { icon: '☁️', title: 'Oracle Cloud Infrastructure Certified Generative AI Professional' },
-  { icon: '🤖', title: 'Amazon Machine Learning Summer School 2022' },
-  { icon: '☁️', title: 'AWS Machine Learning Foundations — Udacity' },
-  { icon: '🏦', title: 'Goldman Sachs Engineering Virtual Program' },
-  { icon: '🧠', title: 'Generative AI Fundamentals — Databricks' },
+  { icon: 'Cloud', title: 'Oracle Cloud Infrastructure Certified Generative AI Professional' },
+  { icon: 'Bot', title: 'Amazon Machine Learning Summer School 2022' },
+  { icon: 'Cloud', title: 'AWS Machine Learning Foundations — Udacity' },
+  { icon: 'Building2', title: 'Goldman Sachs Engineering Virtual Program' },
+  { icon: 'Brain', title: 'Generative AI Fundamentals — Databricks' },
 ]
 
 
@@ -369,26 +369,26 @@ export const testimonials = [
     name: 'Senior Data Analyst',
     role: 'State Street Corporation',
     text: 'Alpha Copilot transformed how we access data. What used to take hours of SQL writing now takes seconds.',
-    avatar: '👤',
+    avatar: 'User',
   },
   {
     name: 'Portfolio Manager',
     role: 'State Street Corporation',
     text: 'WealthAI narratives help us communicate complex portfolio changes to clients in plain language.',
-    avatar: '👤',
+    avatar: 'User',
   },
   {
     name: 'Compliance Officer',
     role: 'State Street Corporation',
     text: 'The Fund Prospectus RAG system saves us countless hours of manual document review.',
-    avatar: '👤',
+    avatar: 'User',
   },
 ]
 
 export const featuredHighlights = [
   {
     id: 'alpha-copilot',
-    icon: '🤖',
+    icon: 'Bot',
     category: 'Production AI',
     headline: 'Alpha Copilot — LLM system serving 100+ users',
     subtext: 'Text-to-SQL + RAG pipeline deployed at State Street Corporation',
@@ -396,7 +396,7 @@ export const featuredHighlights = [
   },
   {
     id: 'latency',
-    icon: '⚡',
+    icon: 'Zap',
     category: 'Performance',
     headline: '75% query latency reduction',
     subtext: 'Optimized retrieval pipeline via hybrid search and prompt caching',
@@ -404,7 +404,7 @@ export const featuredHighlights = [
   },
   {
     id: 'research',
-    icon: '📄',
+    icon: 'FileText',
     category: 'Research',
     headline: 'IEEE published — Text-to-SQL & Graph-of-Thoughts',
     subtext: 'Peer-reviewed research on structured query generation with LLMs',
@@ -424,11 +424,11 @@ export const proofLinks = [
 export const architecturePipeline = {
   title: 'Production RAG / Text-to-SQL Pipeline',
   stages: [
-    { id: 'ingest',   label: 'Ingestion',            icon: '📥', detail: 'Document parsing, chunking, embedding' },
-    { id: 'retrieve', label: 'Retrieval',             icon: '🔍', detail: 'Hybrid vector + keyword search' },
-    { id: 'prompt',   label: 'Prompt Orchestration',  icon: '🧠', detail: 'Chain-of-thought, few-shot, routing' },
-    { id: 'eval',     label: 'Evaluation',            icon: '✅', detail: 'Faithfulness, relevance, latency checks' },
-    { id: 'deliver',  label: 'Delivery',              icon: '🚀', detail: 'API response, UI rendering, caching' },
+    { id: 'ingest',   label: 'Ingestion',            icon: 'Download',    detail: 'Document parsing, chunking, embedding' },
+    { id: 'retrieve', label: 'Retrieval',             icon: 'Search',      detail: 'Hybrid vector + keyword search' },
+    { id: 'prompt',   label: 'Prompt Orchestration',  icon: 'Brain',       detail: 'Chain-of-thought, few-shot, routing' },
+    { id: 'eval',     label: 'Evaluation',            icon: 'CheckCircle', detail: 'Faithfulness, relevance, latency checks' },
+    { id: 'deliver',  label: 'Delivery',              icon: 'Rocket',      detail: 'API response, UI rendering, caching' },
   ],
   connections: [
     ['ingest', 'retrieve'],
@@ -466,3 +466,135 @@ export const availabilityStatus = {
     { label: 'Resume', href: '/resume.pdf', variant: 'ghost' },
   ],
 }
+
+// ─── Production Trace Explorer ────────────────────────────────────────────────
+export const productionTraceStages = [
+  {
+    id: 'query',
+    label: 'User Query',
+    purpose: 'Parse and validate the natural language question from the analyst.',
+    legacyMs: '—',
+    optimizedMs: '<10 ms',
+    optimization: 'No processing overhead — input is pre-validated at the API boundary.',
+    snippet: 'query = "Top 10 performing funds last quarter?"\nctx = { user_id: "analyst_42", schema: "financial_db" }',
+  },
+  {
+    id: 'schema',
+    label: 'Schema Linking',
+    purpose: 'Map query entities to database tables and columns via semantic similarity.',
+    legacyMs: '2–3 s',
+    optimizedMs: '200 ms',
+    optimization: 'Pre-built embedding index with top-k column matching; 0.8 similarity threshold.',
+    snippet: 'candidates = find_similar_columns(embed(query), k=10)\nlinked = [c for c in candidates if c.score > 0.8]',
+  },
+  {
+    id: 'cache',
+    label: 'Query Cache',
+    purpose: 'Check Redis for a semantically equivalent cached SQL result before calling the LLM.',
+    legacyMs: 'N/A',
+    optimizedMs: '50 ms',
+    optimization: 'Semantic hash + vector similarity at 0.95 threshold; ~40% of requests served from cache.',
+    snippet: 'if cached := await redis.get(hash(query)):\n    return cached\nhit = await vector_db.search(query, threshold=0.95)',
+  },
+  {
+    id: 'llm',
+    label: 'LLM Generation',
+    purpose: 'Generate SQL using GPT-4o with schema-linked context and few-shot examples.',
+    legacyMs: '18–22 s',
+    optimizedMs: '3–4 s',
+    optimization: 'Schema context injection reduces token count; LoRA fine-tuned fallback for common query patterns.',
+    snippet: 'response = await openai.chat.completions.create(\n    model="gpt-4o",\n    messages=[system, few_shot, user],\n    temperature=0\n)',
+  },
+  {
+    id: 'validate',
+    label: 'Validation',
+    purpose: 'AST-based syntax check, blocked-operation scan, and schema reference validation.',
+    legacyMs: '3–4 s',
+    optimizedMs: '800 ms',
+    optimization: 'Parallel AST parsing; blocked-ops pre-checked before a DB connection is acquired.',
+    snippet: 'parsed = sqlparse.parse(sql)[0]\nif contains_dangerous_ops(parsed): raise SecurityError\nvalidate_schema_refs(parsed, schema)',
+  },
+  {
+    id: 'execute',
+    label: 'Execute & Viz',
+    purpose: 'Run the validated query against the database and auto-generate a chart config.',
+    legacyMs: '2–3 s',
+    optimizedMs: '1–2 s',
+    optimization: 'Connection pooling + 1 h result cache; async chart config generated from column types.',
+    snippet: 'result = await db.execute(sql, timeout=30)\nchart = generate_viz(detect_chart_type(result))\nawait cache_result(sql, result, ttl=3600)',
+  },
+]
+
+// ─── Case Study Workbench ─────────────────────────────────────────────────────
+export const caseStudies = [
+  {
+    id: 'alpha-copilot',
+    label: 'Alpha Copilot',
+    icon: 'Bot',
+    badge: 'Production',
+    summary: 'Enterprise Text-to-SQL chatbot serving 100+ analysts over structured financial data at State Street.',
+    problem: 'Non-technical analysts needed safe, fast access to financial databases without writing SQL or involving engineering every time.',
+    system: 'FastAPI backend, Azure OpenAI (GPT-4o), schema linking, Redis query cache, SQL validation layer, auto-generated chart visualization.',
+    impact: '100+ internal users, 75% response latency reduction (25–30 s → 6–8 s), 90%+ SQL accuracy after schema-linking and caching optimization.',
+    arch: ['User Query', 'Schema Link', 'Cache Check', 'LLM Gen', 'Validate', 'Execute & Viz'],
+    tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'Redis', 'React'],
+  },
+  {
+    id: 'agent-forge',
+    label: 'Agent Forge',
+    icon: 'Wrench',
+    badge: 'Production',
+    summary: 'No-code AI agent builder with visual workflow design, deployment, trace monitoring, and evaluation dashboards.',
+    problem: 'Teams needed a repeatable, observable way to design, register, and monitor custom AI agents without bespoke engineering each time.',
+    system: 'Visual drag-and-drop workflow builder, agent registry, real-time WebSocket trace monitoring, evaluation layer with custom metrics.',
+    impact: 'Production platform in active use. Reduced agent deployment cycle from days to hours. Per-run trace inspection and eval layer improves quality.',
+    arch: ['Workflow Builder', 'Agent Registry', 'Execution Engine', 'Trace Monitor', 'Eval Layer'],
+    tags: ['AI Agents', 'Google ADK', 'LangChain', 'FastAPI', 'React', 'PostgreSQL'],
+  },
+  {
+    id: 'fund-rag',
+    label: 'Fund Prospectus RAG',
+    icon: 'FileText',
+    badge: 'Production',
+    summary: 'Production RAG pipeline for compliance-aware semantic retrieval across fund prospectuses.',
+    problem: 'Users needed accurate, source-attributed answers from dense financial documents — keyword search produced too many false positives.',
+    system: 'Document parsing, overlap chunking, OpenAI embeddings, pgvector hybrid search (BM25 + semantic), re-ranking, citation-aware generation.',
+    impact: 'Sub-second retrieval across 10,000+ pages. Compliance-aware responses with source attribution. Deployed to production at State Street.',
+    arch: ['Document Parser', 'Chunker', 'Embeddings', 'pgvector Search', 'Re-ranker', 'LLM + Citations'],
+    tags: ['RAG', 'OpenAI', 'pgvector', 'PostgreSQL', 'FastAPI', 'LangChain'],
+  },
+]
+
+// ─── ModelOps Snapshots ───────────────────────────────────────────────────────
+export const modelOpsSnapshots = [
+  {
+    id: 'llama-finetune',
+    title: 'LLaMA 3.2-3B Math Reasoning',
+    subtitle: 'QLoRA fine-tuning on NVIDIA A10G',
+    badge: 'Research',
+    link: 'https://huggingface.co/himanshunakrani9/llama-3.2-3b-reasoning-sft',
+    metrics: [
+      { label: 'Loss Reduction', value: '77%' },
+      { label: 'Token Accuracy', value: '90%' },
+      { label: 'Training Time', value: '32 min' },
+      { label: 'Synthetic Samples', value: '200' },
+    ],
+    stack: ['QLoRA', 'PEFT', 'Transformers', 'HF', 'AMD MI300X'],
+    note: 'Synthetic data generated on AMD MI300X using Qwen 3.6-35B via vLLM. Fine-tuned with 4-bit NF4 quantisation + LoRA (r=16, α=32) targeting all 7 projection layers. 46 MB adapter, 0.47% trainable params.',
+  },
+  {
+    id: 'tinymathReason',
+    title: 'TinyMathReason-1B',
+    subtitle: 'Pretraining on TPU v4-64 with MaxText',
+    badge: 'Research',
+    link: null,
+    metrics: [
+      { label: 'Parameters', value: '1.07B' },
+      { label: 'Tokens Trained', value: '57B' },
+      { label: 'Training Steps', value: '54,363' },
+      { label: 'Tokens / Step', value: '~1M' },
+    ],
+    stack: ['JAX', 'MaxText', 'Orbax', 'TPU v4-64', 'GCS'],
+    note: 'LLaMA-style architecture: 22 layers, 2048 hidden, 16Q/4KV heads. Custom 32k tokeniser trained on FineWeb-Edu, MathPile, OpenWebMath. SFT and DPO/GRPO planned next.',
+  },
+]

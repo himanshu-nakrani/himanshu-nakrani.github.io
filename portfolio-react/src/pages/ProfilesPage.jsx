@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ExternalLink, GitFork, Star, Users, Trophy, Code2, Flame } from 'lucide-react'
+import { ExternalLink, GitFork, Star, Users, Trophy, Code2, Flame, Award } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
+import DataIcon from '../components/DataIcon'
 import ActivityConstellation from '../components/ActivityConstellation'
 import { kagglePinned } from '../data'
 
@@ -15,7 +16,7 @@ const platforms = [
     color: '#6e5494',
     bg: 'rgba(110,84,148,0.1)',
     border: 'rgba(110,84,148,0.28)',
-    emoji: '🐙',
+    iconName: 'Github',
     stats: [
       { icon: GitFork, label: 'Public Repos', value: '37' },
       { icon: Star, label: 'Stars',           value: '73' },
@@ -31,7 +32,7 @@ const platforms = [
     color: '#20beff',
     bg: 'rgba(32,190,255,0.08)',
     border: 'rgba(32,190,255,0.25)',
-    emoji: '📊',
+    iconName: 'BarChart2',
     stats: [
       { icon: Trophy, label: 'Tier',     value: 'Expert' },
       { icon: Star,   label: 'Votes',    value: '884' },
@@ -47,7 +48,7 @@ const platforms = [
     color: '#ffa116',
     bg: 'rgba(255,161,22,0.08)',
     border: 'rgba(255,161,22,0.25)',
-    emoji: '💻',
+    iconName: 'Code2',
     stats: [
       { icon: Code2, label: 'Solved',  value: '180' },
       { icon: Flame, label: 'Ranking', value: '~150k' },
@@ -55,18 +56,18 @@ const platforms = [
     badge: 'Consistent problem solver',
   },
   {
-    id: 'linkedin',
-    name: 'LinkedIn',
-    handle: 'himanshu-nakrani',
-    href: 'https://www.linkedin.com/in/himanshu-nakrani/',
-    color: '#0a66c2',
-    bg: 'rgba(10,102,194,0.08)',
-    border: 'rgba(10,102,194,0.25)',
-    emoji: '💼',
+    id: 'huggingface',
+    name: 'Hugging Face',
+    handle: '@himanshunakrani9',
+    href: 'https://huggingface.co/himanshunakrani9',
+    color: '#ff9d00',
+    bg: 'rgba(255,157,0,0.08)',
+    border: 'rgba(255,157,0,0.25)',
+    iconName: 'Bot',
     stats: [
-      { icon: Users, label: 'Open to',  value: 'AI Roles' },
+      { icon: Code2, label: 'Models', value: '2' },
     ],
-    badge: 'Connect on LinkedIn',
+    badge: 'Models & Datasets',
   },
 ]
 
@@ -132,11 +133,11 @@ function PlatformCard({ p, index }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
-            width: 40, height: 40, borderRadius: 10, fontSize: '1.2rem',
+            width: 40, height: 40, borderRadius: 10,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: p.bg, border: `1px solid ${p.border}`,
+            background: p.bg, border: `1px solid ${p.border}`, color: p.color,
           }}>
-            {p.emoji}
+            <DataIcon name={p.iconName} size={18} />
           </div>
           <div>
             <p style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2 }}>{p.name}</p>
@@ -225,7 +226,11 @@ function KaggleWorkCard({ item, index, inView }) {
           {item.type === 'notebook' ? 'Notebook' : 'Dataset'}
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          {item.medal && <span style={{ fontSize: '0.9rem' }}>{item.medal}</span>}
+          {item.medal && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: item.medal === 'Silver' ? '#c0c0c0' : '#cd7f32', fontWeight: 600 }}>
+              <Award size={12} /> {item.medal}
+            </span>
+          )}
         </div>
       </div>
       <p style={{ fontSize: '0.87rem', fontWeight: 600, color: 'var(--text)', lineHeight: 1.35, margin: 0 }}>{item.title}</p>

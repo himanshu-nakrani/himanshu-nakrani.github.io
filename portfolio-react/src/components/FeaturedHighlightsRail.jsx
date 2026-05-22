@@ -1,18 +1,8 @@
+import DataIcon from './DataIcon'
+
 /**
  * FeaturedHighlightsRail
  * Renders a scannable grid/rail of high-signal proof point cards.
- * Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6
- */
-
-/**
- * @typedef {Object} Highlight
- * @property {string} id
- * @property {string} icon
- * @property {string} category
- * @property {string} headline
- * @property {string} subtext
- * @property {string} [metric]
- * @property {string} [link]
  */
 
 const cardStyle = {
@@ -30,12 +20,8 @@ function CardInner({ highlight }) {
   return (
     <>
       <header style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span
-          className="highlights-icon"
-          aria-hidden="true"
-          style={{ fontSize: '1.25rem', lineHeight: 1 }}
-        >
-          {highlight.icon}
+        <span className="highlights-icon" aria-hidden="true" style={{ lineHeight: 1, color: 'var(--color-accent)' }}>
+          <DataIcon name={highlight.icon} size={18} />
         </span>
         <span
           className="highlights-category"
