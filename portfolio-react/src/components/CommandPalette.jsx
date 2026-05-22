@@ -132,12 +132,48 @@ export default function CommandPalette() {
     return groups
   }, [filteredItems])
 
+  // Create a flattened array of items in the exact render order
+  // to enable O(1) lookup during delegated events via data-index
+  const renderedItems = useMemo(() => {
+    return [
+      ...groupedItems.page,
+      ...groupedItems.project,
+      ...groupedItems.skill,
+      ...groupedItems.action
+    ]
+  }, [groupedItems])
+
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
 
   // Reset selection when search changes
   useEffect(() => {
     setSelectedIndex(0)
   }, [search])
+
+  // Memoized event handlers for delegation
+  const handleListMouseOver = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        setSelectedIndex(idx)
+      }
+    }
+  }, [])
+
+  const handleListClick = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        const item = renderedItems[idx]
+        if (item) {
+          item.action()
+          setOpen(false)
+        }
+      }
+    }
+  }, [renderedItems])
 
   // Keyboard shortcut to open
   useEffect(() => {
@@ -285,7 +321,12 @@ export default function CommandPalette() {
             </div>
 
             {/* Results */}
-            <div ref={listRef} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+            <div
+              ref={listRef}
+              style={{ flex: 1, overflowY: 'auto', padding: 8 }}
+              onClick={handleListClick}
+              onMouseOver={handleListMouseOver}
+            >
               {filteredItems.length === 0 ? (
                 <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                   No results found for "{search}"
@@ -317,11 +358,6 @@ export default function CommandPalette() {
                           <div
                             key={item.id}
                             data-index={idx}
-                            onClick={() => {
-                              item.action()
-                              setOpen(false)
-                            }}
-                            onMouseEnter={() => setSelectedIndex(idx)}
                             style={{
                               display: 'flex',
                               alignItems: 'center',

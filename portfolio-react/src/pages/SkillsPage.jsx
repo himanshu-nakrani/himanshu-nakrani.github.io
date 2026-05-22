@@ -190,6 +190,7 @@ function SkillCategoryCard({ group, index, isExpanded, onToggle }) {
     >
       {/* Header */}
       <button
+        aria-expanded={isExpanded}
         onClick={onToggle}
         style={{
           width: '100%',

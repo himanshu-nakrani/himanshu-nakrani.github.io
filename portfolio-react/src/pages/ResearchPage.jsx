@@ -60,6 +60,7 @@ function PaperCard({ pub, index, isExpanded, onToggle }) {
 
       {/* Header - always visible */}
       <button
+        aria-expanded={isExpanded}
         onClick={onToggle}
         style={{
           width: '100%',
@@ -188,6 +189,7 @@ function MethodologyNode({ label, description, icon: Icon, delay, inView, isActi
   
   return (
     <motion.button
+      aria-pressed={isActive}
       initial={{ opacity: 0, scale: 0.9, y: 10 }}
       animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
       transition={{ duration: 0.4, delay }}
