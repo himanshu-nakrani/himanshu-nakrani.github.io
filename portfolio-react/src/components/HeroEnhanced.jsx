@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail, FileText } from 'lucide-react'
-import { useCountUp } from '../hooks/useCountUp'
 import { useMagnetic } from '../hooks/useMagnetic'
 import { currentFocusItems } from '../data'
 
@@ -12,47 +11,40 @@ const stats = [
   { num: '2',    label: 'Publications',  link: '/research' },
 ]
 
-function StatCard({ num, label, link, index }) {
-  const { ref, value, suffix } = useCountUp(num, { duration: 400 })
+function StatCard({ num, label, link }) {
   const reduceMotion = useReducedMotion()
-
   return (
     <motion.a
-      ref={ref}
       href={link}
-      initial={reduceMotion ? {} : { opacity: 0, y: 16, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.1 + index * 0.05, duration: 0.35 }}
-      whileHover={reduceMotion ? {} : { y: -4, scale: 1.02 }}
+      whileHover={reduceMotion ? {} : { y: -3, scale: 1.02 }}
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '1.25rem 1rem',
-        borderRadius: 12,
+        padding: '1.1rem 0.75rem',
+        borderRadius: 10,
         border: '1px solid var(--color-border)',
         background: 'var(--color-surface)',
         cursor: 'pointer',
-        transition: 'all 0.2s',
+        transition: 'border-color 0.2s, box-shadow 0.2s',
         textDecoration: 'none',
         color: 'inherit',
       }}
     >
       <div style={{
-        fontSize: '1.6rem',
+        fontSize: '1.5rem',
         fontWeight: 800,
         fontFamily: 'var(--font-display)',
         color: 'var(--color-accent)',
         lineHeight: 1,
-        marginBottom: 6,
+        marginBottom: 5,
         fontVariantNumeric: 'tabular-nums',
       }}>
-        <span>{value}</span>
-        <span style={{ fontSize: '0.75em', marginLeft: 2 }}>{suffix}</span>
+        {num}
       </div>
       <div style={{
-        fontSize: '0.68rem',
+        fontSize: '0.65rem',
         fontWeight: 600,
         color: 'var(--color-text-muted)',
         textTransform: 'uppercase',
@@ -67,13 +59,26 @@ function StatCard({ num, label, link, index }) {
 
 function CurrentFocus({ items }) {
   return (
-    <div className="hero-focus">
-      {items.map(item => (
-        <div key={item.area} className="hero-focus__row">
-          <span className="hero-focus__area">{item.area}</span>
-          <span className="hero-focus__text">{item.description}</span>
-        </div>
-      ))}
+    <div>
+      <div style={{
+        fontSize: '0.6rem',
+        fontFamily: 'var(--font-mono)',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        color: 'var(--color-text-subtle)',
+        marginBottom: '0.45rem',
+      }}>
+        Current Focus
+      </div>
+      <div className="hero-focus">
+        {items.map(item => (
+          <div key={item.area} className="hero-focus__row">
+            <span className="hero-focus__area">{item.area}</span>
+            <span className="hero-focus__text">{item.description}</span>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -97,24 +102,21 @@ export default function HeroEnhanced() {
         padding: '0 var(--page-pad-x)',
       }}>
 
-        {/* Hero header: Avatar + Name + Tagline */}
-        <motion.div
-          initial={reduceMotion ? {} : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
+        {/* Hero header: Avatar + Name + Tagline — immediately visible, no fade-in */}
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '1.5rem',
-            marginBottom: '1.75rem',
+            marginBottom: '1.5rem',
           }}
           className="hero-header"
         >
           {/* Avatar */}
           <div className="portrait-frame" style={{
-            width: 112,
+            width: 108,
             flexShrink: 0,
-            marginTop: 6,
+            marginTop: 4,
           }}>
             <img
               src="/himanshu.jpg"
@@ -126,28 +128,28 @@ export default function HeroEnhanced() {
           {/* Name + role */}
           <div>
             <div style={{
-              fontSize: '0.7rem',
+              fontSize: '0.68rem',
               fontFamily: 'var(--font-mono)',
               fontWeight: 700,
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               color: 'var(--color-accent)',
-              marginBottom: '0.4rem',
+              marginBottom: '0.35rem',
             }}>
               Generative AI Engineer · State Street
             </div>
             <h1 style={{
-              fontSize: 'clamp(1.9rem, 5vw, 3rem)',
+              fontSize: 'clamp(1.8rem, 5vw, 2.8rem)',
               fontFamily: 'var(--font-display)',
               fontWeight: 700,
               lineHeight: 1.1,
-              marginBottom: '0.4rem',
+              marginBottom: '0.35rem',
               color: 'var(--color-text)',
             }}>
               Himanshu Nakrani
             </h1>
             <p style={{
-              fontSize: '0.95rem',
+              fontSize: '0.93rem',
               color: 'var(--color-text-muted)',
               fontWeight: 500,
               margin: 0,
@@ -156,35 +158,25 @@ export default function HeroEnhanced() {
               Building production LLM systems — RAG, Text-to-SQL, AI agents
             </p>
           </div>
-        </motion.div>
+        </div>
 
         {/* Intro text */}
-        <motion.p
-          initial={reduceMotion ? {} : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.08, duration: 0.4 }}
-          style={{
-            fontSize: '0.93rem',
-            lineHeight: 1.75,
-            color: 'var(--color-text-muted)',
-            maxWidth: 580,
-            marginBottom: '2rem',
-          }}
-        >
+        <p style={{
+          fontSize: '0.9rem',
+          lineHeight: 1.75,
+          color: 'var(--color-text-muted)',
+          maxWidth: 560,
+          marginBottom: '1.75rem',
+        }}>
           Production AI engineer at{' '}
           <strong style={{ color: 'var(--color-text)' }}>State Street Corporation</strong>
           {' '}— building enterprise Text-to-SQL, RAG pipelines, and AI agent infrastructure
           serving real users over financial data. Currently an Emerging Lead, progressed from
           intern to senior associate in two years.
-        </motion.p>
+        </p>
 
         {/* CTA Buttons */}
-        <motion.div
-          initial={reduceMotion ? {} : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.12, duration: 0.35 }}
-          className="hero-ctas"
-        >
+        <div className="hero-ctas">
           <a
             ref={magneticRef}
             href="https://github.com/himanshu-nakrani"
@@ -192,7 +184,7 @@ export default function HeroEnhanced() {
             rel="noopener noreferrer"
             className="hero-cta hero-cta--primary"
           >
-            <Github size={15} />
+            <Github size={14} />
             GitHub
           </a>
           <a
@@ -201,100 +193,66 @@ export default function HeroEnhanced() {
             rel="noopener noreferrer"
             className="hero-cta hero-cta--ghost"
           >
-            <Linkedin size={15} />
+            <Linkedin size={14} />
             LinkedIn
           </a>
           <a
             href="mailto:himanshunakrani0@gmail.com"
             className="hero-cta hero-cta--ghost"
           >
-            <Mail size={15} />
+            <Mail size={14} />
             Email
           </a>
           <a
             href="/resume.pdf"
             className="hero-cta hero-cta--ghost"
           >
-            <FileText size={15} />
+            <FileText size={14} />
             Resume
           </a>
-        </motion.div>
+        </div>
 
-        {/* Stats row */}
-        <motion.div
-          initial={reduceMotion ? {} : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.4 }}
-        >
-          <div className="hero-stats-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '0.75rem',
-            marginBottom: '2rem',
-          }}>
-            {stats.map((s, i) => (
-              <StatCard key={s.label} num={s.num} label={s.label} link={s.link} index={i} />
-            ))}
-          </div>
-        </motion.div>
+        {/* Stats row — stable final values, no count-up */}
+        <div className="hero-stats-grid">
+          {stats.map((s) => (
+            <StatCard key={s.label} num={s.num} label={s.label} link={s.link} />
+          ))}
+        </div>
 
         {/* Current Focus */}
-        <motion.div
-          initial={reduceMotion ? {} : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
-          style={{ marginBottom: '2.5rem' }}
-        >
+        <div style={{ marginBottom: '2rem' }}>
           <CurrentFocus items={currentFocusItems} />
-        </motion.div>
+        </div>
 
         {/* Scroll prompt */}
         <motion.button
           type="button"
-          initial={reduceMotion ? {} : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
           onClick={() => scrollToSection('highlights')}
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 8,
+            gap: 6,
             cursor: 'pointer',
             background: 'none',
             border: 'none',
             padding: 0,
-            marginTop: '1.5rem',
+            marginTop: '1rem',
           }}
           aria-label="Scroll to highlights"
         >
-          <span style={{ fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-text-muted)' }}>
+          <span style={{ fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--color-text-subtle)' }}>
             Explore
           </span>
           <motion.div
-            animate={reduceMotion ? {} : { y: [0, 6, 0] }}
+            animate={reduceMotion ? {} : { y: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ArrowDown size={16} color="var(--color-accent)" />
+            <ArrowDown size={15} color="var(--color-accent)" />
           </motion.div>
         </motion.button>
 
       </div>
-
-      <style>{`
-        .hero-header {
-          @media (max-width: 560px) {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-          }
-        }
-        .hero-stats-grid {
-          @media (max-width: 640px) {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-      `}</style>
     </section>
   )
 }

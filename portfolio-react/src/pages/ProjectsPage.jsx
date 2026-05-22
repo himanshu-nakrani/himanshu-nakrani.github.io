@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2 } from 'lucide-react'
+import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2, ChevronDown } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import DataIcon from '../components/DataIcon'
@@ -351,6 +351,9 @@ export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
+
+  const activeFilterCount = (activeFilter !== 'All' ? 1 : 0) + (activeTag !== 'All' ? 1 : 0)
 
   const filteredProjects = useMemo(() =>
     projects.filter(p => {
@@ -474,8 +477,34 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        {/* Filter rows — horizontally scrollable on mobile */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+        {/* Mobile filter toggle — visible only on small screens */}
+        <button
+          className="mobile-filter-toggle"
+          onClick={() => setFiltersExpanded(v => !v)}
+          aria-expanded={filtersExpanded}
+          aria-controls="project-filter-rows"
+        >
+          <Filter size={12} aria-hidden="true" />
+          <span>Filters</span>
+          {activeFilterCount > 0 && (
+            <span className="mobile-filter-count">{activeFilterCount}</span>
+          )}
+          <ChevronDown
+            size={12}
+            aria-hidden="true"
+            style={{
+              transform: filtersExpanded ? 'rotate(180deg)' : 'none',
+              transition: 'transform 0.18s ease',
+              marginLeft: 'auto',
+            }}
+          />
+        </button>
+
+        {/* Filter rows — collapsible on mobile, always visible on desktop */}
+        <div
+          id="project-filter-rows"
+          className={`project-filter-rows${filtersExpanded ? ' is-expanded' : ''}`}
+        >
           {/* Status filters */}
           <div
             role="group"
