@@ -448,6 +448,7 @@ export default function ProjectsPage() {
             <input
               type="search"
               placeholder="Search projects..."
+              aria-label="Search projects"
               value={query}
               onChange={e => setQuery(e.target.value)}
               style={{
@@ -505,7 +506,12 @@ export default function ProjectsPage() {
           className={`project-filter-rows${filtersExpanded ? ' is-expanded' : ''}`}
         >
           {/* Status filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="filter-scroll-row">
+          <div
+            role="group"
+            aria-label="Project status filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
+          >
             <span style={{
               fontSize: '0.65rem',
               fontWeight: 700,
@@ -524,6 +530,7 @@ export default function ProjectsPage() {
             {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
               <button
                 key={f}
+                aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
                 style={{
                   background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
@@ -544,7 +551,12 @@ export default function ProjectsPage() {
           </div>
 
           {/* Tech/tag filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="filter-scroll-row">
+          <div
+            role="group"
+            aria-label="Project technology filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
+          >
             <span style={{
               fontSize: '0.65rem',
               fontWeight: 700,
@@ -563,6 +575,7 @@ export default function ProjectsPage() {
             {['All', ...FEATURED_TAGS].map(tag => (
               <button
                 key={tag}
+                aria-pressed={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
                 style={{
                   border: '1px solid',
