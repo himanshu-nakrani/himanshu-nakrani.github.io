@@ -1677,6 +1677,35 @@ section[id] {
 }
 
 /* ============================================
+   HERO STATS GRID
+   ============================================ */
+
+.hero-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 640px) {
+  .hero-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================================
+   HERO HEADER (avatar + name row)
+   ============================================ */
+
+@media (max-width: 560px) {
+  .hero-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* ============================================
    HERO CTA BUTTONS
    ============================================ */
 
@@ -2304,4 +2333,119 @@ section[id] {
   border-radius: 9999px;
   color: var(--color-text-muted);
   background: transparent;
+}
+
+/* ============================================
+   MOBILE PROJECT FILTER TOGGLE
+   ============================================ */
+
+/* Filter rows — flex column on all viewports */
+.project-filter-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* Toggle button — hidden on desktop */
+.mobile-filter-toggle {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .mobile-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    margin-top: 0.6rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background: var(--color-surface-raised);
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s;
+    font-family: var(--font-body);
+    text-align: left;
+  }
+
+  .mobile-filter-toggle:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  .mobile-filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Collapse filter rows on mobile by default */
+  .project-filter-rows {
+    display: none;
+    margin-top: 0.65rem;
+  }
+
+  .project-filter-rows.is-expanded {
+    display: flex;
+  }
+}
+
+/* ============================================
+   PRODUCTION TRACE EXPLORER — MOBILE VERTICAL
+   ============================================ */
+
+@media (max-width: 640px) {
+  .trace-stages {
+    flex-direction: column;
+    gap: 0.3rem;
+    overflow-x: visible;
+    padding: 0.85rem 1rem;
+  }
+
+  /* Hide hairline connectors in vertical layout */
+  .trace-connector {
+    display: none;
+  }
+
+  /* Stages become horizontal rows on mobile */
+  .trace-stage {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    text-align: left;
+    min-width: unset;
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-md);
+  }
+
+  .trace-stage__idx {
+    flex-shrink: 0;
+    width: 1.4rem;
+    text-align: left;
+  }
+
+  .trace-stage__label {
+    flex: 1;
+    font-size: 0.78rem;
+    text-align: left;
+  }
+
+  .trace-stage__time {
+    flex-shrink: 0;
+    font-size: 0.65rem;
+  }
 }
