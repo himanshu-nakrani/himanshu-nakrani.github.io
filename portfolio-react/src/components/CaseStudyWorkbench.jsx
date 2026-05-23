@@ -92,6 +92,9 @@ export default function CaseStudyWorkbench() {
 
       {/* Footer link */}
       <div className="csw__footer">
+        <Link to={`/projects/${study.id}`} className="csw__footer-link" style={{ marginRight: '1.5rem' }}>
+          Deep dive <ArrowRight size={13} aria-hidden="true" />
+        </Link>
         <Link to="/projects" className="csw__footer-link">
           All projects <ArrowRight size={13} aria-hidden="true" />
         </Link>

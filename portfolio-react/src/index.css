@@ -2449,3 +2449,164 @@ section[id] {
     font-size: 0.65rem;
   }
 }
+
+/* ========================================
+   TECHNICAL SHOWCASE COMPONENTS
+   Responsive CSS for deep-dive pages, lab, and showcase components
+   ======================================== */
+
+/* Architecture Map — responsive */
+@media (max-width: 640px) {
+  .tam-desktop { display: none !important; }
+  .tam-mobile { display: block !important; }
+}
+@media (min-width: 641px) {
+  .tam-desktop { display: flex !important; }
+  .tam-mobile { display: none !important; }
+}
+
+/* Agent Run Viewer — responsive */
+@media (max-width: 640px) {
+  .arv-desktop { display: none !important; }
+  .arv-mobile { display: block !important; }
+}
+@media (min-width: 641px) {
+  .arv-desktop { display: grid !important; }
+  .arv-mobile { display: none !important; }
+}
+
+/* Project Deep Dive — metrics grid responsive */
+@media (max-width: 640px) {
+  .pddp-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Research Deep Dive — metrics grid responsive */
+@media (max-width: 640px) {
+  .rddp-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Lab page layout — responsive */
+.lab-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .lab-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Lab tab row — scrollable on desktop, grid on mobile */
+.lab-tab-row {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.25rem;
+}
+
+.lab-tab-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* Trace replay steps — wrap to grid on small screens */
+.trace-replay-steps::-webkit-scrollbar { display: none; }
+.trace-replay-steps { scrollbar-width: none; }
+
+@media (max-width: 480px) {
+  .trace-replay-steps {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr;
+    overflow-x: visible !important;
+  }
+  .trace-replay-steps button {
+    flex-shrink: 1 !important;
+  }
+  .trace-replay-steps button span:last-child {
+    font-size: 0.68rem !important;
+    white-space: normal !important;
+  }
+}
+
+/* Deep dive rail — horizontal scroll on desktop, stack on mobile */
+.deep-dive-rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.25rem;
+}
+
+.deep-dive-rail::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .deep-dive-rail {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+  .deep-dive-rail > * {
+    min-width: 0 !important;
+  }
+}
+
+/* Mobile filter toggle for project filters */
+.mobile-filter-toggle {
+  display: none;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mobile-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--color-accent);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.project-filter-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-filter-toggle {
+    display: flex;
+    margin-bottom: 0.75rem;
+  }
+  .project-filter-rows {
+    display: none;
+  }
+  .project-filter-rows.is-expanded {
+    display: flex;
+  }
+}
