@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
-  Search, Command as CommandIcon, ArrowRight, CornerDownLeft
+  Search, Command as CommandIcon, ArrowRight, CornerDownLeft,
+  FlaskConical, Activity, FileText
 } from 'lucide-react'
-import { projects, skills, experience } from '../data'
+import { projects, skills } from '../data'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -20,13 +21,23 @@ const pages = [
   { id: 'skills', name: 'Skills', icon: Code2, path: '/skills', keywords: 'tech stack languages' },
   { id: 'projects', name: 'Projects', icon: FolderGit2, path: '/projects', keywords: 'portfolio work apps' },
   { id: 'research', name: 'Research', icon: BookOpen, path: '/research', keywords: 'papers publications' },
+  { id: 'lab', name: 'Demo Lab', icon: FlaskConical, path: '/lab', keywords: 'lab demo interactive trace agent retrieval' },
   { id: 'profiles', name: 'Profiles', icon: User, path: '/profiles', keywords: 'social links contact' },
+]
+
+const deepDivePages = [
+  { id: 'alpha-copilot', name: 'Alpha Copilot Deep Dive', icon: Activity, path: '/projects/alpha-copilot', keywords: 'alpha copilot text-to-sql case study production' },
+  { id: 'agent-forge', name: 'Agent Forge Deep Dive', icon: Activity, path: '/projects/agent-forge', keywords: 'agent forge builder case study production' },
+  { id: 'fund-rag', name: 'Prospectus RAG Deep Dive', icon: Activity, path: '/projects/fund-prospectus-rag', keywords: 'fund prospectus rag retrieval case study production' },
+  { id: 'llama-reasoning', name: 'LLaMA Reasoning Research', icon: FileText, path: '/research/llama-3b-reasoning', keywords: 'llama reasoning fine-tuning qlora research' },
+  { id: 'tinymath', name: 'TinyMathReason Research', icon: FileText, path: '/research/tinymathreason-1b', keywords: 'tinymathreason pretraining tpu research' },
 ]
 
 const quickActions = [
   { id: 'github', name: 'Open GitHub', icon: Github, url: 'https://github.com/himanshu-nakrani', external: true },
   { id: 'linkedin', name: 'Open LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/himanshu-nakrani', external: true },
-  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:him.nakrani@gmail.com', external: true },
+  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:himanshunakrani0@gmail.com', external: true },
+  { id: 'resume', name: 'View Resume', icon: FileText, url: '/resume.pdf', external: true },
 ]
 
 export default function CommandPalette() {
@@ -53,6 +64,18 @@ export default function CommandPalette() {
       })
     })
 
+    // Deep-dive pages
+    deepDivePages.forEach((page) => {
+      items.push({
+        id: `deepdive-${page.id}`,
+        type: 'page',
+        name: page.name,
+        icon: page.icon,
+        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+        action: () => navigate(page.path),
+      })
+    })
+
     // Projects (top 5)
     projects.slice(0, 5).forEach((p) => {
       items.push({
@@ -69,12 +92,12 @@ export default function CommandPalette() {
     // Skills (top 4)
     skills.slice(0, 4).forEach((cat) => {
       items.push({
-        id: `skill-${cat.category}`,
+        id: `skill-${cat.label}`,
         type: 'skill',
-        name: cat.category,
+        name: cat.label,
         count: cat.items?.length || 0,
         icon: Code2,
-        keywords: `${cat.category} ${cat.items?.join(' ') || ''}`.toLowerCase(),
+        keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
         action: () => navigate('/skills'),
       })
     })

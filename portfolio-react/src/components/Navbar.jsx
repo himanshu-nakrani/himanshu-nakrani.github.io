@@ -14,6 +14,7 @@ const navLinks = [
   { label: 'Projects', to: '/projects' },
   { label: 'Skills', to: '/skills' },
   { label: 'Research', to: '/research' },
+  { label: 'Lab', to: '/lab' },
   { label: 'Profiles', to: '/profiles' },
 ]
 
@@ -37,12 +38,13 @@ export default function Navbar({ isDark, setIsDark }) {
   }, [])
 
   const isPageActive = (label) => {
-    if (label === 'Projects')    return location.pathname === '/projects'
+    if (label === 'Projects')    return location.pathname === '/projects' || location.pathname.startsWith('/projects/')
     if (label === 'Experience')  return location.pathname === '/experience'
     if (label === 'Profiles')    return location.pathname === '/profiles'
-    if (label === 'Research')    return location.pathname === '/research'
+    if (label === 'Research')    return location.pathname === '/research' || location.pathname.startsWith('/research/')
     if (label === 'Skills')      return location.pathname === '/skills'
     if (label === 'About')       return location.pathname === '/about'
+    if (label === 'Lab')         return location.pathname === '/lab'
     return false
   }
 
