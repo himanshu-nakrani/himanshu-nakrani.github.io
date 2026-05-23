@@ -102,6 +102,31 @@ const PROJECTS = [
     tags: ['Python', 'Regression', 'Jupyter'],
     link: 'https://github.com/himanshu-nakrani/Gold-price-prediction',
   },
+  {
+    title: 'RAGrade',
+    desc: 'RAG evaluation dashboard for managing documents, question sets, experiments, and parameter sweeps with blind evaluation, daily challenges, and arena battles.',
+    tags: ['RAG', 'Evaluation', 'TypeScript', 'React', 'PostgreSQL'],
+    link: 'https://github.com/himanshu-nakrani/RAGrade',
+    bullets: [
+      'Configurable experiments — chunk size, embedding model, retriever type, top-K',
+      'Blind evaluation mode and RAG Arena for head-to-head comparison',
+      'Daily challenge with deterministic presets and personal best scoring',
+      'Leaderboard ranking by faithfulness, recall, and latency metrics',
+    ],
+  },
+  {
+    title: 'Generative AI Academy',
+    desc: 'Hands-on generative AI learning platform with 40 topic modules, 200+ MCQ quizzes, XP/levels, 24 achievement badges, and streak tracking.',
+    tags: ['Generative AI', 'Education', 'TypeScript', 'React', 'PostgreSQL'],
+    link: 'https://github.com/himanshu-nakrani/Generative-AI-Academy',
+    liveLink: 'https://himanshu-nakrani.github.io/Generative-AI-Academy/',
+    bullets: [
+      '40 topic modules with prerequisite-aware progression and learning paths',
+      '200+ MCQ questions with daily challenge and timed quiz modes',
+      'XP/levels, 24 achievement badges, streak tracking, and activity heatmap',
+      'Optional Clerk auth with OAuth for cross-device profile and progress sync',
+    ],
+  },
 ]
 
 function ProjectRow({ project }) {
