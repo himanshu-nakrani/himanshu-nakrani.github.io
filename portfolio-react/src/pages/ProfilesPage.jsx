@@ -18,11 +18,11 @@ const platforms = [
     border: 'rgba(110,84,148,0.28)',
     iconName: 'Github',
     stats: [
-      { icon: GitFork, label: 'Public Repos', value: '37' },
+      { icon: GitFork, label: 'Public Repos', value: '43' },
       { icon: Star, label: 'Stars',           value: '73' },
       { icon: Users, label: 'Followers',      value: '8' },
     ],
-    badge: 'Python Primary',
+    badge: 'TypeScript Primary',
   },
   {
     id: 'kaggle',
@@ -65,9 +65,12 @@ const platforms = [
     border: 'rgba(255,157,0,0.25)',
     iconName: 'Bot',
     stats: [
-      { icon: Code2, label: 'Models', value: '2' },
+      { icon: Code2, label: 'Models', value: '9' },
+      { icon: GitFork, label: 'Datasets', value: '9' },
+      { icon: Star, label: 'Spaces', value: '6' },
+      { icon: Users, label: 'Downloads', value: '1.4K+' },
     ],
-    badge: 'Models & Datasets',
+    badge: 'Models, Datasets & Spaces',
   },
 ]
 
@@ -82,10 +85,10 @@ const kaggleCounters = [
 
 /* ─── GitHub stats ─────────────────────────────────────── */
 const ghStats = [
-  { num: '37',     label: 'Public Repos' },
-  { num: '1,240',  label: 'Commits (2024)' },
-  { num: 'Python', label: 'Primary Lang' },
-  { num: '2021',   label: 'Member Since' },
+  { num: '43',          label: 'Public Repos' },
+  { num: '635',         label: 'Lifetime Commits' },
+  { num: 'TypeScript',  label: 'Primary Lang' },
+  { num: '2021',        label: 'Member Since' },
 ]
 
 /* ─── Sub-components ───────────────────────────────────── */

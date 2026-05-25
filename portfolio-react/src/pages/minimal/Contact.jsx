@@ -3,7 +3,7 @@ import { Mail, Github, Linkedin, ExternalLink, FileText } from 'lucide-react'
 const LINKS = [
   { label: 'Email', sublabel: 'himanshunakrani0@gmail.com', href: 'mailto:himanshunakrani0@gmail.com', icon: Mail, external: false },
   { label: 'LinkedIn', sublabel: 'linkedin.com/in/himanshu-nakrani', href: 'https://www.linkedin.com/in/himanshu-nakrani/', icon: Linkedin, external: true },
-  { label: 'GitHub', sublabel: 'github.com/himanshu-nakrani · 31 repos', href: 'https://github.com/himanshu-nakrani', icon: Github, external: true },
+  { label: 'GitHub', sublabel: 'github.com/himanshu-nakrani · 43 repos', href: 'https://github.com/himanshu-nakrani', icon: Github, external: true },
   { label: 'Resume', sublabel: 'Download PDF', href: '/resume.pdf', icon: FileText, external: false },
   { label: 'Kaggle', sublabel: 'kaggle.com/himanshunakrani · Expert', href: 'https://www.kaggle.com/himanshunakrani', icon: ExternalLink, external: true },
   { label: 'LeetCode', sublabel: '180+ problems solved', href: 'https://leetcode.com/u/himanshunakrani0/', icon: ExternalLink, external: true },
