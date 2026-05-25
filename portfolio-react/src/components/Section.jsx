@@ -42,6 +42,7 @@ export default function Section({ id, title, subtitle, alt, children, number }) 
         padding: 'var(--section-pad-y) var(--page-pad-x)',
         background: alt ? 'var(--color-surface)' : 'var(--color-bg)',
         position: 'relative',
+        borderTop: '1px solid var(--color-border)',
       }}
     >
       <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>

@@ -2,15 +2,16 @@ import { Github, Linkedin, Mail, FileText, MapPin, Zap } from 'lucide-react'
 
 const STATS = [
   { value: '2+',   label: 'Years at State Street' },
-  { value: '100+', label: 'Users on Alpha Copilot' },
-  { value: '75%',  label: 'Latency reduction' },
+  { value: '10+',  label: 'Business units' },
+  { value: '200+', label: 'Total users' },
+  { value: '75%',  label: 'Avg latency reduction' },
   { value: '2',    label: 'IEEE publications' },
 ]
 
 const CURRENTLY = [
-  { area: 'Researching', text: 'Agentic evaluation frameworks — measuring multi-step LLM reasoning quality at scale', tags: ['LLM Evals', 'Agents'] },
+  { area: 'Researching', text: 'Agent evaluation — measuring multi-step reasoning quality and tool-use reliability', tags: ['LLM Evals', 'Agents'] },
   { area: 'Building',    text: 'Agent Forge v2 — composable multi-agent orchestration with structured tool use',        tags: ['Multi-Agent', 'Tool Use'] },
-  { area: 'Optimizing',  text: 'Retrieval latency in hybrid RAG — exploring late interaction models and re-ranking',    tags: ['RAG', 'Latency'] },
+  { area: 'Optimizing',  text: 'Hybrid RAG retrieval — latency, re-ranking, and source-grounded answers',               tags: ['RAG', 'Latency'] },
 ]
 
 export default function Hero() {
@@ -53,9 +54,8 @@ export default function Hero() {
       </div>
 
       <p style={{ fontSize: '0.95rem', lineHeight: 1.8, color: 'var(--color-text-muted)', marginBottom: '1.75rem', maxWidth: 620 }}>
-        I build <strong style={{ color: 'var(--color-text)' }}>production-grade LLM systems</strong> at State Street Corporation — enterprise Text-to-SQL, RAG pipelines,
-        and AI agent infrastructure serving real users over financial data. Currently an Emerging Lead having
-        progressed from intern to senior associate in two years.
+        I build <strong style={{ color: 'var(--color-text)' }}>LLM systems for financial-data workflows</strong> at State Street Corporation — Text-to-SQL, RAG pipelines,
+        AI agent tooling, and evaluation infrastructure. Currently an Emerging Lead having progressed from intern to senior associate in two years.
         I also publish research on structured query generation with LLMs.
       </p>
 

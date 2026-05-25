@@ -12,17 +12,17 @@ export const experience = [
       'Emerging Lead',
     ],
     currentRoleStep: 'Emerging Lead',
-    description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 100+ users) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
+    description: 'Building LLM systems for financial-data workflows: Text-to-SQL, RAG, agent tooling, and evaluation infrastructure. Alpha Copilot serves 10+ business units with 200+ total users, with 75% average latency reduction and 95%+ backend unit-test coverage.',
     bullets: [
-      'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data',
-      'Engineered FastAPI + SQLAlchemy backend with advanced caching, cutting response time by 75% (25–30s → 6–8s)',
+      'Architected Alpha Copilot — Text-to-SQL assistant serving 10+ business units with 200+ total users over structured financial data',
+      'Engineered FastAPI + SQLAlchemy backend with caching and schema-linking, cutting average response latency by 75% (25–30s → 6–8s)',
       'Integrated LLM-based data visualization for auto-generating interactive charts from query results',
       'Led backend for WealthAI — real-time portfolio narrative generation from optimizer outputs',
       'Fine-tuned GPT-4o mini, GPT-4.1 mini (Azure OpenAI) and Llama 3.1-8B (Databricks) using PEFT/LoRA',
-      'Researched schema-linking and few-shot prompting strategies, improving SQL accuracy by 25%',
+      'Researched schema-linking and few-shot prompting strategies; measured 90% SQL accuracy on an internal golden dataset',
       'Building Agent Forge — no-code AI agent builder with real-time trace monitoring and evaluation dashboards',
-      'Achieved 95%+ unit test coverage across production systems',
-      'Built production-ready RAG for fund prospectuses using OpenAI + vector embeddings; intelligent chunking and vector DB pipeline for sub-second retrieval',
+      'Reached 95%+ backend unit-test coverage for Alpha Copilot',
+      'Built RAG for fund prospectuses using OpenAI embeddings, chunking, source attribution, and vector search',
       'Collaborated with business analysts and compliance officers to meet regulatory requirements',
       'Migrated legacy ideation platform from .NET Core to FastAPI + ReactJS, improving performance by 40%',
       'Designed RESTful APIs with SQLite backend and comprehensive test coverage',
@@ -62,34 +62,34 @@ export const projects = [
   {
     icon: 'Bot',
     title: 'Alpha Copilot', 
-    desc: 'Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves 100+ internal users at State Street.', 
-    fullDesc: 'Alpha Copilot is a production-grade enterprise chatbot that democratizes data access by allowing non-technical users to query complex financial databases using natural language. Built with FastAPI and Azure OpenAI, it features advanced caching, query optimization, and automatic data visualization.',
+    desc: 'Internal Text-to-SQL assistant for natural-language queries over approved financial datasets. Used across 10+ business units with 200+ total users.', 
+    fullDesc: 'Alpha Copilot helps analysts query structured financial data in natural language. Built with FastAPI and Azure OpenAI, it includes schema linking, SQL validation, caching, and automatic data visualization.',
     tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy'], 
     techStack: ['FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'PostgreSQL', 'Redis', 'React', 'LangChain'],
     badge: 'Production', 
     link: null,
     metrics: [
-      { type: 'performance', value: '75%', label: 'Response Time Reduction' },
-      { type: 'users', value: '100+', label: 'Active Users' },
+      { type: 'performance', value: '75%', label: 'Avg Latency Reduction' },
+      { type: 'users', value: '200+', label: 'Total Users' },
       { type: 'efficiency', value: '6-8s', label: 'Avg Query Time' },
     ],
     features: [
-      'Natural language to SQL translation with 90%+ accuracy',
-      'Intelligent caching system reducing response time from 25-30s to 6-8s',
+      'Natural language to SQL translation with 90% accuracy on an internal golden dataset',
+      'Caching system reducing average response time from 25-30s to 6-8s',
       'Auto-generated interactive charts and visualizations',
       'Multi-turn conversation with context awareness',
       'Query history and favorites for power users',
     ],
     challenges: [
-      { challenge: 'High latency on complex queries', solution: 'Implemented Redis caching and query result memoization, achieving 75% latency reduction' },
-      { challenge: 'SQL accuracy on ambiguous queries', solution: 'Developed schema-linking and few-shot prompting strategies, improving accuracy by 25%' },
+      { challenge: 'High latency on complex queries', solution: 'Implemented Redis caching and query result memoization, achieving 75% average latency reduction' },
+      { challenge: 'SQL accuracy on ambiguous queries', solution: 'Developed schema-linking and few-shot prompting strategies; evaluated at 90% SQL accuracy on an internal golden dataset' },
     ],
   },
   { 
     icon: 'Wrench',
     title: 'Agent Forge', 
-    desc: 'No-code AI agent builder platform for designing, registering, and deploying custom agents with real-time trace monitoring and evaluation dashboards.', 
-    fullDesc: 'Agent Forge empowers teams to build, test, and deploy AI agents without writing code. Features drag-and-drop workflow design, real-time observability, and comprehensive evaluation metrics.',
+    desc: 'No-code AI agent builder for designing, registering, and monitoring custom agents with trace views and evaluation dashboards.', 
+    fullDesc: 'Agent Forge helps teams create and monitor AI agents through workflow design, an agent registry, trace inspection, and evaluation metrics.',
     tags: ['AI Agents', 'Google ADK', 'LangChain', 'Observability'], 
     techStack: ['Google ADK', 'LangChain', 'FastAPI', 'React', 'PostgreSQL', 'WebSocket'],
     badge: 'Production', 
@@ -105,22 +105,22 @@ export const projects = [
   { 
     icon: 'Briefcase',
     title: 'WealthAI', 
-    desc: 'Real-time portfolio narrative generation system that processes optimizer outputs and delivers personalized investment insights at scale.', 
-    fullDesc: 'WealthAI transforms complex portfolio optimization data into clear, personalized narratives for wealth management clients. Processes real-time market data and generates tailored investment insights.',
+    desc: 'Portfolio narrative generation system that turns optimizer outputs into readable investment commentary.', 
+    fullDesc: 'WealthAI converts portfolio optimization outputs into clear narratives for wealth-management workflows.',
     tags: ['LLM', 'FastAPI', 'Real-time', 'Finance'], 
     techStack: ['FastAPI', 'GPT-4', 'WebSocket', 'PostgreSQL', 'Redis'],
     badge: 'Production', 
     link: null,
     metrics: [
       { type: 'performance', value: '<2s', label: 'Generation Time' },
-      { type: 'efficiency', value: '95%', label: 'Client Satisfaction' },
+      { type: 'efficiency', value: 'Internal', label: 'Business Workflow' },
     ],
   },
   { 
     icon: 'FileText',
     title: 'Fund Prospectus RAG', 
-    desc: 'Production RAG system for extracting actionable insights from fund prospectuses using OpenAI models, vector embeddings, and intelligent chunking.', 
-    fullDesc: 'A sophisticated RAG pipeline that processes fund prospectuses, extracts key information, and enables semantic search across thousands of documents. Features intelligent chunking and hybrid search.',
+    desc: 'RAG system for source-aware answers over fund prospectus documents using OpenAI embeddings, pgvector, and citation tracking.', 
+    fullDesc: 'A RAG pipeline that processes fund prospectuses, preserves source context, and supports semantic search across document collections with citations.',
     tags: ['RAG', 'OpenAI', 'pgvector', 'Embeddings'], 
     techStack: ['OpenAI', 'pgvector', 'PostgreSQL', 'FastAPI', 'LangChain'],
     badge: 'Production', 
@@ -128,7 +128,7 @@ export const projects = [
     features: [
       'Intelligent document chunking with overlap strategy',
       'Hybrid search combining semantic and keyword matching',
-      'Sub-second retrieval from 10,000+ documents',
+      'Sub-second retrieval across indexed prospectus content',
       'Compliance-aware response generation',
       'Citation tracking and source attribution',
     ],
@@ -158,7 +158,7 @@ export const projects = [
       '46MB adapter achieving 0.47% trainable parameters',
     ],
     challenges: [
-      { challenge: 'Generating high-quality reasoning data at scale', solution: 'Used Qwen 3.6-35B on AMD MI300X GPU with structured prompts to generate 200 diverse graduate-level problems with detailed chain-of-thought reasoning' },
+      { challenge: 'Generating high-quality reasoning data', solution: 'Used Qwen 3.6-35B on AMD MI300X GPU with structured prompts to generate 200 diverse graduate-level problems with detailed chain-of-thought reasoning' },
       { challenge: 'OOM errors with long reasoning chains during training', solution: 'Reduced max_length from 4096 → 2048 and batch_size to 1 with gradient accumulation' },
       { challenge: 'Small dataset overfitting risk', solution: 'Used QLoRA regularization (frozen base + small adapters) and cosine LR schedule' },
       { challenge: 'Training pipeline crashes', solution: 'Wrapped monitoring callbacks in try/except to prevent non-fatal failures from blocking model saves' },
@@ -348,106 +348,32 @@ export const certifications = [
 ]
 
 
-export const blogPosts = [
-  {
-    id: 'text-to-sql-production',
-    title: 'Building Production Text-to-SQL: Lessons from 100+ Users',
-    excerpt: 'Key insights from deploying an enterprise Text-to-SQL system serving real users in a financial institution.',
-    date: '2024-03-15',
-    readTime: '8 min',
-    tags: ['Text-to-SQL', 'LLM', 'Production'],
-    content: `
-# Building Production Text-to-SQL: Lessons from 100+ Users
+export const blogPosts = []
 
-After deploying Alpha Copilot to 100+ internal users, here are the critical lessons learned...
-
-## 1. Schema Linking is Everything
-The biggest challenge wasn't the LLM—it was helping it understand which tables and columns to use...
-
-## 2. Caching Saves Lives
-Our initial response times were 25-30 seconds. After implementing intelligent caching, we got down to 6-8 seconds...
-
-## 3. User Trust Through Transparency
-Always show the generated SQL. Users need to verify the query before execution...
-    `,
-  },
-  {
-    id: 'rag-pipeline-design',
-    title: 'Designing RAG Pipelines That Actually Work',
-    excerpt: 'Practical guide to building retrieval-augmented generation systems based on real production experience.',
-    date: '2024-02-20',
-    readTime: '10 min',
-    tags: ['RAG', 'LLM', 'Architecture'],
-    content: `
-# Designing RAG Pipelines That Actually Work
-
-RAG is simple in theory but complex in practice. Here's what actually matters...
-
-## Chunking Strategy
-Don't just split on character count. Use semantic boundaries...
-
-## Hybrid Search
-Pure vector search isn't enough. Combine with keyword matching...
-    `,
-  },
-  {
-    id: 'llm-fine-tuning-guide',
-    title: 'Fine-tuning LLMs with LoRA: A Practical Guide',
-    excerpt: 'Step-by-step guide to fine-tuning GPT and Llama models using LoRA/PEFT for domain-specific tasks.',
-    date: '2024-01-10',
-    readTime: '12 min',
-    tags: ['Fine-tuning', 'LoRA', 'PEFT'],
-    content: `
-# Fine-tuning LLMs with LoRA: A Practical Guide
-
-Fine-tuning doesn't have to be expensive. Here's how we fine-tuned GPT-4o mini and Llama 3.1-8B...
-    `,
-  },
-]
-
-export const testimonials = [
-  {
-    name: 'Senior Data Analyst',
-    role: 'State Street Corporation',
-    text: 'Alpha Copilot transformed how we access data. What used to take hours of SQL writing now takes seconds.',
-    avatar: 'User',
-  },
-  {
-    name: 'Portfolio Manager',
-    role: 'State Street Corporation',
-    text: 'WealthAI narratives help us communicate complex portfolio changes to clients in plain language.',
-    avatar: 'User',
-  },
-  {
-    name: 'Compliance Officer',
-    role: 'State Street Corporation',
-    text: 'The Fund Prospectus RAG system saves us countless hours of manual document review.',
-    avatar: 'User',
-  },
-]
+export const testimonials = []
 
 export const featuredHighlights = [
   {
     id: 'alpha-copilot',
     icon: 'Bot',
     category: 'Production AI',
-    headline: 'Alpha Copilot — LLM system serving 100+ users',
-    subtext: 'Text-to-SQL + RAG pipeline deployed at State Street Corporation',
-    metric: '100+ users',
+    headline: 'Alpha Copilot — Text-to-SQL across 10+ business units',
+    subtext: 'Internal assistant for approved financial datasets, with 200+ total users',
+    metric: '200+ users',
   },
   {
     id: 'latency',
     icon: 'Zap',
     category: 'Performance',
-    headline: '75% query latency reduction',
-    subtext: 'Optimized retrieval pipeline via hybrid search and prompt caching',
-    metric: '75% faster',
+    headline: '75% average latency reduction',
+    subtext: 'Caching and schema-linking brought average query time from 25–30s to 6–8s',
+    metric: '6–8s avg',
   },
   {
     id: 'research',
     icon: 'FileText',
-    category: 'Research',
-    headline: 'IEEE published — Text-to-SQL & Graph-of-Thoughts',
+    category: 'Research Depth',
+    headline: 'Text-to-SQL research with Graph-of-Thoughts',
     subtext: 'Peer-reviewed research on structured query generation with LLMs',
     metric: '2 publications',
   },
@@ -482,7 +408,7 @@ export const architecturePipeline = {
 export const currentFocusItems = [
   {
     area: 'Researching',
-    description: 'Agentic evaluation frameworks — measuring multi-step LLM reasoning quality at scale',
+    description: 'Agent evaluation — measuring multi-step reasoning quality and tool-use reliability',
     tags: ['LLM Evals', 'Agents'],
   },
   {
@@ -492,15 +418,22 @@ export const currentFocusItems = [
   },
   {
     area: 'Optimizing',
-    description: 'Retrieval latency in hybrid RAG — exploring late interaction models and re-ranking',
+    description: 'Hybrid RAG retrieval — latency, re-ranking, and source-grounded answers',
     tags: ['RAG', 'Latency'],
   },
+]
+
+export const recruiterSummary = [
+  'LLM backend systems',
+  'RAG and Text-to-SQL',
+  'FastAPI / Python APIs',
+  'Evaluation and observability',
 ]
 
 export const availabilityStatus = {
   available: true,
   statusLabel: 'Open to opportunities',
-  description: 'Looking for senior AI/ML engineering roles where I can build production LLM systems that matter. Open to full-time and select consulting.',
+  description: 'Looking for AI/ML engineering roles focused on LLM backends, retrieval systems, agent tooling, and evaluation. Open to full-time and select consulting.',
   actions: [
     { label: 'Send an email', href: 'mailto:himanshunakrani0@gmail.com', variant: 'primary' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', variant: 'ghost' },
@@ -573,10 +506,10 @@ export const caseStudies = [
     label: 'Alpha Copilot',
     icon: 'Bot',
     badge: 'Production',
-    summary: 'Enterprise Text-to-SQL chatbot serving 100+ analysts over structured financial data at State Street.',
+    summary: 'Text-to-SQL assistant used across 10+ business units with 200+ total users over structured financial data.',
     problem: 'Non-technical analysts needed safe, fast access to financial databases without writing SQL or involving engineering every time.',
     system: 'FastAPI backend, Azure OpenAI (GPT-4o), schema linking, Redis query cache, SQL validation layer, auto-generated chart visualization.',
-    impact: '100+ internal users, 75% response latency reduction (25–30 s → 6–8 s), 90%+ SQL accuracy after schema-linking and caching optimization.',
+    impact: '10+ business units, 200+ total users, 75% average latency reduction (25–30 s → 6–8 s), and 90% SQL accuracy on an internal golden dataset.',
     arch: ['User Query', 'Schema Link', 'Cache Check', 'LLM Gen', 'Validate', 'Execute & Viz'],
     tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'Redis', 'React'],
   },
@@ -588,7 +521,7 @@ export const caseStudies = [
     summary: 'No-code AI agent builder with visual workflow design, deployment, trace monitoring, and evaluation dashboards.',
     problem: 'Teams needed a repeatable, observable way to design, register, and monitor custom AI agents without bespoke engineering each time.',
     system: 'Visual drag-and-drop workflow builder, agent registry, real-time WebSocket trace monitoring, evaluation layer with custom metrics.',
-    impact: 'Production platform in active use. Reduced agent deployment cycle from days to hours. Per-run trace inspection and eval layer improves quality.',
+    impact: 'Improved repeatability and observability for agent deployment. Reduced deployment cycle from days to hours.',
     arch: ['Workflow Builder', 'Agent Registry', 'Execution Engine', 'Trace Monitor', 'Eval Layer'],
     tags: ['AI Agents', 'Google ADK', 'LangChain', 'FastAPI', 'React', 'PostgreSQL'],
   },
@@ -597,10 +530,10 @@ export const caseStudies = [
     label: 'Fund Prospectus RAG',
     icon: 'FileText',
     badge: 'Production',
-    summary: 'Production RAG pipeline for compliance-aware semantic retrieval across fund prospectuses.',
+    summary: 'RAG pipeline for source-aware semantic retrieval across fund prospectuses.',
     problem: 'Users needed accurate, source-attributed answers from dense financial documents — keyword search produced too many false positives.',
     system: 'Document parsing, overlap chunking, OpenAI embeddings, pgvector hybrid search (BM25 + semantic), re-ranking, citation-aware generation.',
-    impact: 'Sub-second retrieval across 10,000+ pages. Compliance-aware responses with source attribution. Deployed to production at State Street.',
+    impact: 'Sub-second retrieval across indexed prospectus content, with source attribution for compliance-aware review.',
     arch: ['Document Parser', 'Chunker', 'Embeddings', 'pgvector Search', 'Re-ranker', 'LLM + Citations'],
     tags: ['RAG', 'OpenAI', 'pgvector', 'PostgreSQL', 'FastAPI', 'LangChain'],
   },
@@ -618,12 +551,12 @@ export const technicalCaseStudies = [
     organization: 'State Street Corporation',
     role: 'AI Software Developer / Emerging Lead',
     timeline: '2023–present',
-    summary: 'Enterprise LLM-powered Text-to-SQL assistant serving 100+ internal users over structured financial data.',
+    summary: 'Text-to-SQL assistant used across 10+ business units with 200+ total users over structured financial data.',
     metrics: [
-      { label: 'Active Users', value: '100+' },
-      { label: 'Latency Reduction', value: '75%' },
+      { label: 'Scope', value: '10+ BU / 200+ users' },
+      { label: 'Avg Latency Reduction', value: '75%' },
       { label: 'Response Time', value: '6–8s' },
-      { label: 'SQL Accuracy', value: '90%+' },
+      { label: 'SQL Accuracy', value: '90%' },
     ],
     problem: 'Business users needed safe, fast access to structured financial data without writing SQL or waiting on engineering.',
     constraints: [
@@ -655,7 +588,7 @@ export const technicalCaseStudies = [
       { decision: 'Schema pruning', pro: 'Reduces token count and improves generation accuracy', con: 'Must preserve relevant context — aggressive pruning risks missing relevant tables' },
       { decision: 'SQL validation layer', pro: 'Protects production data from destructive queries', con: 'Adds ~800ms latency to every request' },
     ],
-    impact: '100+ internal users; response time reduced from 25–30s to 6–8s; improved self-serve access to structured financial data.',
+    impact: 'Used across 10+ business units with 200+ total users; average response time reduced from 25–30s to 6–8s; 90% SQL accuracy on an internal golden dataset.',
     stack: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'Redis', 'React', 'LangChain'],
     ownership: 'Architecture, backend implementation, schema-linking strategy, caching, validation, testing.',
     demoModuleId: 'alpha-trace-replay',
@@ -722,10 +655,10 @@ export const technicalCaseStudies = [
     organization: 'State Street Corporation',
     role: 'AI Software Developer',
     timeline: '2024',
-    summary: 'Production RAG system for extracting source-aware insights from dense fund prospectus documents.',
+    summary: 'RAG system for source-aware answers over dense fund prospectus documents.',
     metrics: [
       { label: 'Retrieval', value: 'Sub-second' },
-      { label: 'Documents', value: '10,000+' },
+      { label: 'Corpus', value: 'Indexed' },
       { label: 'Attribution', value: 'Source-aware' },
       { label: 'Status', value: 'Production' },
     ],
@@ -756,7 +689,7 @@ export const technicalCaseStudies = [
       { decision: 'Smaller chunks', pro: 'Improve matching granularity', con: 'Require re-ranking to reconstruct context' },
       { decision: 'Source-aware responses', pro: 'Reduce hallucination risk and improve trust', con: 'Add complexity to response generation pipeline' },
     ],
-    impact: 'Faster source-aware retrieval over dense financial documents. Deployed to production at State Street.',
+    impact: 'Faster source-aware retrieval over dense financial documents, with citations for review workflows.',
     stack: ['RAG', 'OpenAI', 'pgvector', 'PostgreSQL', 'FastAPI', 'LangChain'],
     ownership: 'RAG pipeline, chunking strategy, embeddings, retrieval, source-aware answer flow.',
     demoModuleId: 'rag-retrieval-inspector',

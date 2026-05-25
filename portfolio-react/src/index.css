@@ -923,9 +923,8 @@ section[id] {
 
 /* ============================================
    PHOTO TREATMENT (hero portrait)
-   Soft hairline frame, scanline overlay,
-   subtle rim light. No rotating ring, no
-   pulsing glow — single static treatment.
+   Subtle frame with accent-tinted border glow
+   and quiet scanline overlay. Compact, integrated.
    ============================================ */
 
 .portrait-frame {
@@ -933,7 +932,9 @@ section[id] {
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border-strong);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 15%, transparent),
+    var(--shadow-md);
   isolation: isolate;
 }
 
@@ -945,8 +946,8 @@ section[id] {
     0deg,
     transparent 0px,
     transparent 3px,
-    rgba(255, 255, 255, 0.012) 3px,
-    rgba(255, 255, 255, 0.012) 4px
+    rgba(255, 255, 255, 0.01) 3px,
+    rgba(255, 255, 255, 0.01) 4px
   );
   pointer-events: none;
   mix-blend-mode: overlay;
@@ -958,28 +959,45 @@ section[id] {
   inset: 0;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--color-accent) 6%, transparent) 0%,
-    transparent 35%,
+    color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
+    transparent 30%,
     transparent 70%,
-    color-mix(in srgb, var(--color-text) 8%, transparent) 100%
+    color-mix(in srgb, var(--color-text) 4%, transparent) 100%
   );
   pointer-events: none;
   z-index: 1;
 }
 
 /* ============================================
-   ACTIVE NAV LINK UNDERLINE (replaces fill)
+   GLOBAL MOBILE OVERFLOW PROTECTION
    ============================================ */
 
-.nav-link-active::after {
-  content: '';
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 2px;
-  height: 1px;
-  background: var(--color-accent);
-  transform-origin: left center;
+@media (max-width: 480px) {
+  body, #root, .app-shell, .app-shell-content, main {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  img, video, svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  pre, code, .trace-detail__code {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+/* ============================================
+   ACTIVE NAV LINK — uses pill bg from inline styles
+   No lingering underline. Style handled via inline.
+   ============================================ */
+
+.nav-link-active {
+  /* active styling handled via inline style props */
 }
 
 /* ============================================
@@ -1677,19 +1695,57 @@ section[id] {
 }
 
 /* ============================================
+   HERO TWO-COLUMN GRID
+   ============================================ */
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.hero-col-left {
+  min-width: 0;
+}
+
+.hero-col-right {
+  min-width: 0;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .hero-col-right {
+    padding-top: 0;
+  }
+}
+
+/* ============================================
    HERO STATS GRID
    ============================================ */
 
 .hero-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.65rem;
-  margin-bottom: 1.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  max-width: 100%;
 }
 
 @media (max-width: 640px) {
   .hero-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.4rem;
   }
 }
 
@@ -1701,7 +1757,7 @@ section[id] {
   .hero-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 }
 
@@ -1711,18 +1767,19 @@ section[id] {
 
 .hero-ctas {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
 }
 
 .hero-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 0.7rem 1.1rem;
-  border-radius: 9px;
-  font-size: 0.875rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.84rem;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -1742,28 +1799,41 @@ section[id] {
   transform: translateY(-2px);
 }
 
-.hero-cta--ghost {
+.hero-cta--secondary {
   background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
 }
 
-.hero-cta--ghost:hover {
+.hero-cta--secondary:hover {
   background: var(--color-surface-raised);
   border-color: var(--color-accent);
   color: var(--color-accent);
   transform: translateY(-1px);
 }
 
+.hero-cta--quiet {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.hero-cta--quiet:hover {
+  background: transparent;
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  transform: translateY(-1px);
+}
+
 /* ============================================
-   HERO CURRENT FOCUS PANEL
+   HERO CURRENT FOCUS PANEL (legacy — kept for compat)
    ============================================ */
 
 .hero-focus {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  max-width: 540px;
+  max-width: 100%;
 }
 
 .hero-focus__row {

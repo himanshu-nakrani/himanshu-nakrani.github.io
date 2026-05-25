@@ -519,7 +519,7 @@ export default function ResearchPage() {
             Research Focus
           </p>
           <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.75, margin: 0 }}>
-            My research bridges structured reasoning and LLM capabilities — specifically how Graph-of-Thoughts frameworks improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks. The goal is connecting academic NLP advances with production-grade enterprise systems.
+            My research explores how Graph-of-Thoughts frameworks can improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks, with an eye toward practical structured-data systems.
           </p>
         </div>
       </div>

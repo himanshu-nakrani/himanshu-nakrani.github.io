@@ -417,7 +417,7 @@ export default function ProjectsPage() {
       <PageHeader
         kicker="Portfolio"
         title="Selected Works"
-        description="Production LLMs, RAG pipelines, and ML systems built for real-world scale."
+        description="LLM backends, RAG pipelines, Text-to-SQL systems, and applied ML projects."
       />
 
       {/* Stats strip - modern bento style */}
@@ -571,13 +571,13 @@ export default function ProjectsPage() {
                 aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
                 style={{
-                  background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
-                  color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
+                  background: activeFilter === f ? 'var(--color-accent)' : 'transparent',
+                  color: activeFilter === f ? 'var(--color-accent-fg)' : 'var(--color-text-subtle)',
                   border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
                   borderRadius: 8,
                   padding: '5px 12px',
-                  fontSize: '0.74rem',
-                  fontWeight: 600,
+                  fontSize: '0.72rem',
+                  fontWeight: activeFilter === f ? 600 : 500,
                   cursor: 'pointer',
                   transition: 'all 0.18s',
                   boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
@@ -617,17 +617,18 @@ export default function ProjectsPage() {
                 onClick={() => setActiveTag(tag)}
                 style={{
                   border: '1px solid',
-                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
-                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
-                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'transparent',
+                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'transparent',
+                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-subtle)',
                   borderRadius: 6,
                   padding: '4px 10px',
                   cursor: 'pointer',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontFamily: 'var(--font-mono)',
                   transition: 'all 0.15s',
                   flexShrink: 0,
                   whiteSpace: 'nowrap',
+                  opacity: activeTag === tag ? 1 : 0.6,
                 }}
               >{tag}</button>
             ))}

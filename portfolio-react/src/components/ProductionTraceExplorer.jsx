@@ -20,7 +20,7 @@ export default function ProductionTraceExplorer() {
           <span className="trace-summary__lbl">Optimized</span>
           <span className="trace-summary__opt-val">6–8 s</span>
         </div>
-        <span className="trace-summary__badge">75% faster</span>
+        <span className="trace-summary__badge">75% avg latency cut</span>
       </div>
 
       {/* Stage pipeline — horizontal scrollable */}

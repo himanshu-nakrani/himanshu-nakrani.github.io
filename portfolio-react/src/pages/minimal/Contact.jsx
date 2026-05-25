@@ -16,8 +16,8 @@ export default function Contact() {
       <h2 id="contact-title" className="spa-section__title">Get in touch</h2>
 
       <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.75, marginBottom: '1.75rem', maxWidth: 520 }}>
-        Looking for senior AI/ML engineering roles where I can build production LLM systems that matter.
-        Open to full-time positions and select consulting. Reach out any time.
+        Looking for AI/ML engineering roles focused on LLM backends, retrieval systems, agent tooling,
+        and evaluation. Open to full-time positions and select consulting. Reach out any time.
       </p>
 
       <a
