@@ -4,21 +4,21 @@ import { ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 const PROJECTS = [
   {
     title: 'Alpha Copilot',
-    desc: 'Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves 100+ internal users at State Street.',
+    desc: 'Internal Text-to-SQL assistant for approved financial datasets, used across 10+ business units with 200+ total users.',
     tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy'],
     badge: 'Production',
     link: null,
-    metrics: [{ value: '75%', label: 'Latency reduction' }, { value: '100+', label: 'Active users' }],
+    metrics: [{ value: '75%', label: 'Avg latency reduction' }, { value: '200+', label: 'Total users' }],
     bullets: [
-      'Natural language to SQL translation with 90%+ accuracy',
-      'Intelligent caching reducing response time from 25–30s to 6–8s',
+      'Natural language to SQL translation with 90% accuracy on an internal golden dataset',
+      'Caching reducing average response time from 25–30s to 6–8s',
       'Auto-generated interactive charts and visualizations',
       'Multi-turn conversation with context awareness',
     ],
   },
   {
     title: 'Agent Forge',
-    desc: 'No-code AI agent builder platform for designing, registering, and deploying custom agents with real-time trace monitoring and evaluation dashboards.',
+    desc: 'No-code AI agent builder for designing, registering, and monitoring custom agents with trace views and evaluation dashboards.',
     tags: ['AI Agents', 'Google ADK', 'LangChain', 'Observability'],
     badge: 'Production',
     link: null,
@@ -30,7 +30,7 @@ const PROJECTS = [
   },
   {
     title: 'WealthAI',
-    desc: 'Real-time portfolio narrative generation system that processes optimizer outputs and delivers personalized investment insights at scale.',
+    desc: 'Portfolio narrative generation system that turns optimizer outputs into readable investment commentary.',
     tags: ['LLM', 'FastAPI', 'Real-time', 'Finance'],
     badge: 'Production',
     link: null,
@@ -38,14 +38,14 @@ const PROJECTS = [
   },
   {
     title: 'Fund Prospectus RAG',
-    desc: 'Production RAG system for extracting actionable insights from fund prospectuses using OpenAI models, vector embeddings, and intelligent chunking.',
+    desc: 'RAG system for source-aware answers over fund prospectus documents using OpenAI embeddings, pgvector, and citation tracking.',
     tags: ['RAG', 'OpenAI', 'pgvector', 'Embeddings'],
     badge: 'Production',
     link: null,
     bullets: [
       'Intelligent document chunking with overlap strategy',
       'Hybrid search combining semantic and keyword matching',
-      'Sub-second retrieval from 10,000+ documents',
+      'Sub-second retrieval across indexed prospectus content',
     ],
   },
   {

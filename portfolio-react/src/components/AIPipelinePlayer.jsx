@@ -371,7 +371,7 @@ export default function AIPipelinePlayer() {
               color: 'var(--color-accent, #4db8ff)',
               fontWeight: 500,
             }}>
-              {improvement} faster
+              {improvement} avg latency cut
             </span>
           </div>
         </div>

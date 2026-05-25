@@ -168,6 +168,22 @@ export default function CommandPalette() {
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
 
+  // Route path hints for pages
+  const pagePaths = {
+    'Home': '/',
+    'Experience': '/experience',
+    'Skills': '/skills',
+    'Projects': '/projects',
+    'Research': '/research',
+    'Demo Lab': '/lab',
+    'Profiles': '/profiles',
+    'Alpha Copilot Deep Dive': '/projects/alpha-copilot',
+    'Agent Forge Deep Dive': '/projects/agent-forge',
+    'Prospectus RAG Deep Dive': '/projects/fund-prospectus-rag',
+    'LLaMA Reasoning Research': '/research/llama-3b-reasoning',
+    'TinyMathReason Research': '/research/tinymathreason-1b',
+  }
+
   // Reset selection when search changes
   useEffect(() => {
     setSelectedIndex(0)
@@ -355,18 +371,19 @@ export default function CommandPalette() {
                   No results found for "{search}"
                 </div>
               ) : (
-                Object.entries(groupedItems).map(([type, items]) => {
+                Object.entries(groupedItems).map(([type, items], groupIndex, arr) => {
                   if (items.length === 0) return null
+                  const isLastGroup = groupIndex === arr.length - 1
                   return (
-                    <div key={type} style={{ marginBottom: 6 }}>
+                    <div key={type} style={{ marginBottom: isLastGroup ? 0 : 10 }}>
                       <div
                         style={{
-                          padding: '8px 10px 4px',
-                          fontSize: '0.68rem',
+                          padding: '6px 10px 3px',
+                          fontSize: '0.62rem',
                           fontWeight: 600,
                           textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          color: 'var(--color-accent)',
+                          letterSpacing: '0.08em',
+                          color: 'var(--color-text-subtle)',
                           fontFamily: 'var(--font-mono)',
                         }}
                       >
@@ -377,6 +394,7 @@ export default function CommandPalette() {
                         const idx = globalIndex
                         const isSelected = idx === selectedIndex
                         const Icon = item.icon
+                        const routePath = pagePaths[item.name]
                         return (
                           <div
                             key={item.id}
@@ -385,7 +403,7 @@ export default function CommandPalette() {
                               display: 'flex',
                               alignItems: 'center',
                               gap: 10,
-                              padding: '9px 10px',
+                              padding: '8px 10px',
                               borderRadius: 8,
                               cursor: 'pointer',
                               background: isSelected ? 'var(--color-surface-raised)' : 'transparent',
@@ -396,9 +414,19 @@ export default function CommandPalette() {
                               size={15}
                               style={{ color: isSelected ? 'var(--color-accent)' : 'var(--color-text-muted)', flexShrink: 0 }}
                             />
-                            <span style={{ flex: 1, fontSize: '0.875rem', color: 'var(--color-text)', fontWeight: 500 }}>
+                            <span style={{ flex: 1, fontSize: '0.84rem', color: 'var(--color-text)', fontWeight: 500 }}>
                               {item.name}
                             </span>
+                            {routePath && (
+                              <span style={{
+                                fontSize: '0.62rem',
+                                fontFamily: 'var(--font-mono)',
+                                color: 'var(--color-text-subtle)',
+                                opacity: 0.5,
+                              }}>
+                                {routePath}
+                              </span>
+                            )}
                             {item.badge && (
                               <span
                                 style={{
