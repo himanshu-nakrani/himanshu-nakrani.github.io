@@ -65,6 +65,7 @@ export function FocusModeToggle() {
       onClick={handleToggle}
       className="focus-mode-btn"
       aria-label={`${focusMode ? 'Exit' : 'Enter'} focus mode`}
+      aria-pressed={focusMode}
       title="Focus mode (⌘⇧F)"
       style={{
         display: 'flex',
