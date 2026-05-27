@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 import { productionTraceStages } from '../data'
+import { useUplift } from '../lib/uplift'
+import AnimatedBeam from './ui/AnimatedBeam'
 
 export default function ProductionTraceExplorer() {
   const [active, setActive] = useState(productionTraceStages[0].id)
   const reduceMotion = useReducedMotion()
+  const uplift = useUplift()
   const activeStage = productionTraceStages.find(s => s.id === active)
+
+  const stagesContainerRef = useRef(null)
+  const stageRefs = useMemo(
+    () => productionTraceStages.map(() => ({ current: null })),
+    [],
+  )
 
   return (
     <div className="trace-explorer">
@@ -25,29 +34,52 @@ export default function ProductionTraceExplorer() {
 
       {/* Stage pipeline — horizontal scrollable */}
       <div
+        ref={stagesContainerRef}
         className="trace-stages"
         role="tablist"
         aria-label="Alpha Copilot pipeline stages"
+        style={uplift ? { position: 'relative' } : undefined}
       >
         {productionTraceStages.map((stage, i) => (
           <div key={stage.id} style={{ display: 'contents' }}>
             <button
+              ref={(el) => { stageRefs[i].current = el }}
               role="tab"
               id={`trace-tab-${stage.id}`}
               aria-selected={active === stage.id}
               aria-controls={`trace-panel-${stage.id}`}
               className={`trace-stage${active === stage.id ? ' is-active' : ''}`}
               onClick={() => setActive(stage.id)}
+              style={uplift ? { position: 'relative', zIndex: 1 } : undefined}
             >
               <span className="trace-stage__idx">{String(i + 1).padStart(2, '0')}</span>
               <span className="trace-stage__label">{stage.label}</span>
               <span className="trace-stage__time">{stage.optimizedMs}</span>
             </button>
             {i < productionTraceStages.length - 1 && (
-              <div className="trace-connector" aria-hidden="true" />
+              <div
+                className="trace-connector"
+                aria-hidden="true"
+                style={uplift ? { visibility: 'hidden' } : undefined}
+              />
             )}
           </div>
         ))}
+        {uplift && productionTraceStages.map((stage, i) => {
+          if (i === productionTraceStages.length - 1) return null
+          return (
+            <AnimatedBeam
+              key={`beam-${stage.id}`}
+              containerRef={stagesContainerRef}
+              fromRef={stageRefs[i]}
+              toRef={stageRefs[i + 1]}
+              fromAnchor="right"
+              toAnchor="left"
+              duration={2.6}
+              delay={i * 0.35}
+            />
+          )
+        })}
       </div>
 
       {/* Detail panel */}

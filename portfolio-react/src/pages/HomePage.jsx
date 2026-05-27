@@ -4,7 +4,6 @@ import CaseStudyWorkbench from '../components/CaseStudyWorkbench'
 import Contact from '../components/Contact'
 import Section from '../components/Section'
 import SectionNav from '../components/SectionNav'
-import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
 import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
 import TechnicalDeepDiveRail from '../components/TechnicalDeepDiveRail'
 import { featuredHighlights } from '../data'
@@ -12,7 +11,6 @@ import { featuredHighlights } from '../data'
 const sections = [
   { id: 'about',      label: 'About' },
   { id: 'highlights', label: 'Highlights' },
-  { id: 'pipeline',   label: 'Architecture' },
   { id: 'deepdives',  label: 'Deep Dives' },
   { id: 'projects',   label: 'Case Studies' },
   { id: 'modelops',   label: 'ModelOps' },
@@ -38,22 +36,12 @@ export default function HomePage() {
         <FeaturedHighlightsRail highlights={featuredHighlights} />
       </Section>
 
-      {/* 3 — Production pipeline explorer */}
-      <Section
-        id="pipeline"
-        title="Architecture"
-        subtitle="Alpha Copilot production pipeline — select a stage to inspect latency and design"
-        number="03"
-      >
-        <ProductionTraceExplorer />
-      </Section>
-
-      {/* 3.5 — Technical deep dives */}
+      {/* 3 — Technical deep dives */}
       <Section
         id="deepdives"
         title="Technical Deep Dives"
         subtitle="In-depth case studies and research — architecture, tradeoffs, and implementation"
-        number="04"
+        number="03"
         alt
       >
         <TechnicalDeepDiveRail />
@@ -64,7 +52,7 @@ export default function HomePage() {
         id="projects"
         title="Case Studies"
         subtitle="Production LLM systems built at State Street"
-        number="05"
+        number="04"
       >
         <CaseStudyWorkbench />
       </Section>
@@ -74,7 +62,7 @@ export default function HomePage() {
         id="modelops"
         title="Model Research"
         subtitle="Fine-tuning and pretraining work — from QLoRA to TPU-scale training"
-        number="06"
+        number="05"
       >
         <ModelOpsSnapshot />
       </Section>

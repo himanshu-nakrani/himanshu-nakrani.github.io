@@ -1,4 +1,6 @@
 import DataIcon from './DataIcon'
+import { useUplift } from '../lib/uplift'
+import SpotlightGlowCard from './ui/SpotlightGlowCard'
 
 /**
  * FeaturedHighlightsRail
@@ -94,10 +96,25 @@ function CardInner({ highlight }) {
  * @param {{ highlights: Highlight[] }} props
  */
 export default function FeaturedHighlightsRail({ highlights }) {
+  const uplift = useUplift()
+  const Wrap = uplift
+    ? ({ children }) => (
+        <SpotlightGlowCard size={300} style={{ display: 'block', borderRadius: 'var(--radius-lg)', height: '100%' }}>
+          {children}
+        </SpotlightGlowCard>
+      )
+    : ({ children }) => children
+
   return (
     <section aria-label="Featured highlights">
       <div className="highlights-rail">
         {highlights.map((highlight) => {
+          const card = (
+            <article className="interactive-card highlights-card glass-card" style={cardStyle}>
+              <CardInner highlight={highlight} />
+            </article>
+          )
+
           if (highlight.link) {
             return (
               <a
@@ -108,22 +125,12 @@ export default function FeaturedHighlightsRail({ highlights }) {
                 aria-label={`${highlight.headline} (opens in new tab)`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                <article className="interactive-card highlights-card glass-card" style={cardStyle}>
-                  <CardInner highlight={highlight} />
-                </article>
+                <Wrap>{card}</Wrap>
               </a>
             )
           }
 
-          return (
-            <article
-              key={highlight.id}
-              className="interactive-card highlights-card glass-card"
-              style={cardStyle}
-            >
-              <CardInner highlight={highlight} />
-            </article>
-          )
+          return <Wrap key={highlight.id}>{card}</Wrap>
         })}
       </div>
     </section>
