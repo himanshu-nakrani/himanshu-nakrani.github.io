@@ -16,11 +16,18 @@ export default function ActivityConstellation({ profiles = [] }) {
     for (let i = 51; i >= 0; i--) {
       const date = new Date(now)
       date.setDate(date.getDate() - i * 7)
+      // eslint-disable-next-line react-hooks/purity
+      const github = Math.floor(Math.random() * 15)
+      // eslint-disable-next-line react-hooks/purity
+      const kaggle = Math.floor(Math.random() * 8)
+      // eslint-disable-next-line react-hooks/purity
+      const leetcode = Math.floor(Math.random() * 5)
+
       weeks.push({
         date,
-        github: Math.floor(Math.random() * 15),
-        kaggle: Math.floor(Math.random() * 8),
-        leetcode: Math.floor(Math.random() * 5),
+        github,
+        kaggle,
+        leetcode,
       })
     }
     return weeks
@@ -34,9 +41,15 @@ export default function ActivityConstellation({ profiles = [] }) {
     { id: 'leetcode', label: 'LeetCode', color: '#FFA500', icon: '■' },
   ]
 
-  const maxValue = Math.max(
-    ...weeks.flatMap(w => [w.github, w.kaggle, w.leetcode])
-  )
+  const maxValue = useMemo(() => {
+    let max = 0
+    for (const w of weeks) {
+      if (w.github > max) max = w.github
+      if (w.kaggle > max) max = w.kaggle
+      if (w.leetcode > max) max = w.leetcode
+    }
+    return max
+  }, [weeks])
 
   const getIntensity = (value) => {
     if (value === 0) return 0.1

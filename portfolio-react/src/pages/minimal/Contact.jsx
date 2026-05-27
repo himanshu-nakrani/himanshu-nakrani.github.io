@@ -3,7 +3,7 @@ import { Mail, Github, Linkedin, ExternalLink, FileText } from 'lucide-react'
 const LINKS = [
   { label: 'Email', sublabel: 'himanshunakrani0@gmail.com', href: 'mailto:himanshunakrani0@gmail.com', icon: Mail, external: false },
   { label: 'LinkedIn', sublabel: 'linkedin.com/in/himanshu-nakrani', href: 'https://www.linkedin.com/in/himanshu-nakrani/', icon: Linkedin, external: true },
-  { label: 'GitHub', sublabel: 'github.com/himanshu-nakrani · 31 repos', href: 'https://github.com/himanshu-nakrani', icon: Github, external: true },
+  { label: 'GitHub', sublabel: 'github.com/himanshu-nakrani · 43 repos', href: 'https://github.com/himanshu-nakrani', icon: Github, external: true },
   { label: 'Resume', sublabel: 'Download PDF', href: '/resume.pdf', icon: FileText, external: false },
   { label: 'Kaggle', sublabel: 'kaggle.com/himanshunakrani · Expert', href: 'https://www.kaggle.com/himanshunakrani', icon: ExternalLink, external: true },
   { label: 'LeetCode', sublabel: '180+ problems solved', href: 'https://leetcode.com/u/himanshunakrani0/', icon: ExternalLink, external: true },
@@ -16,8 +16,8 @@ export default function Contact() {
       <h2 id="contact-title" className="spa-section__title">Get in touch</h2>
 
       <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.75, marginBottom: '1.75rem', maxWidth: 520 }}>
-        Looking for senior AI/ML engineering roles where I can build production LLM systems that matter.
-        Open to full-time positions and select consulting. Reach out any time.
+        Looking for AI/ML engineering roles focused on LLM backends, retrieval systems, agent tooling,
+        and evaluation. Open to full-time positions and select consulting. Reach out any time.
       </p>
 
       <a
