@@ -294,16 +294,24 @@ export default function ProfilesPage() {
             <img
               src="https://github-readme-stats-phi.vercel.app/api?username=himanshu-nakrani&show_icons=true&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&icon_color=d4a24c&text_color=eeeef8&ring_color=d4a24c"
               alt="GitHub Stats"
+              width="495"
+              height="195"
               style={{ borderRadius: 12, width: '100%' }}
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
               referrerPolicy="no-referrer"
               onError={e => { e.currentTarget.style.display = 'none' }}
             />
             <img
               src="https://github-readme-stats-phi.vercel.app/api/top-langs/?username=himanshu-nakrani&layout=compact&theme=gruvbox_light&hide_border=true&bg_color=0e0e1a&title_color=d4a24c&text_color=eeeef8"
               alt="Top Languages"
+              width="495"
+              height="160"
               style={{ borderRadius: 12, width: '100%' }}
               loading="lazy"
+              decoding="async"
+              fetchPriority="low"
               referrerPolicy="no-referrer"
               onError={e => { e.currentTarget.style.display = 'none' }}
             />
@@ -326,8 +334,11 @@ export default function ProfilesPage() {
             <img
               src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
               alt="GitHub contribution heatmap"
+              width="663"
+              height="104"
               style={{ display: 'block', width: '100%', minWidth: 400, height: 'auto' }}
               loading="lazy"
+              decoding="async"
               onError={e => { e.currentTarget.style.display = 'none' }}
             />
           </motion.div>
