@@ -7,7 +7,9 @@ import {
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
   Search, Command as CommandIcon, ArrowRight, CornerDownLeft
 } from 'lucide-react'
-import { projects, skills, experience } from '../data'
+import { projects } from '../data/projects'
+import { skills } from '../data/skills'
+import { experience } from '../data/experience'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion

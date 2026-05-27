@@ -6,7 +6,7 @@ import Section from '../components/Section'
 import SectionNav from '../components/SectionNav'
 import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
 import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
-import { featuredHighlights } from '../data'
+import { featuredHighlights } from '../data/projects'
 
 const sections = [
   { id: 'about',      label: 'About' },

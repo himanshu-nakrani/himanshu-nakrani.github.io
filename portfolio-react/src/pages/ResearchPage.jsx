@@ -3,7 +3,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp, Brain, ChevronRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
-import { publications } from '../data'
+import { publications } from '../data/research'
 
 /* ─── Sub-components ───────────────────────────────────── */
 function SectionLabel({ children, icon: Icon }) {

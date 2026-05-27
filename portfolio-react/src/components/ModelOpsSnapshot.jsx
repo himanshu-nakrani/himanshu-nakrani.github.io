@@ -1,5 +1,5 @@
 import { ExternalLink } from 'lucide-react'
-import { modelOpsSnapshots } from '../data'
+import { modelOpsSnapshots } from '../data/lab'
 
 function ModelCard({ model }) {
   return (

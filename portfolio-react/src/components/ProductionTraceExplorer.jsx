@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
-import { productionTraceStages } from '../data'
+import { productionTraceStages } from '../data/lab'
 
 export default function ProductionTraceExplorer() {
   const [active, setActive] = useState(productionTraceStages[0].id)
