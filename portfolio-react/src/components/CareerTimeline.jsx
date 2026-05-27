@@ -7,7 +7,7 @@ import {
 import { DisclosureGroup, DisclosureItem } from './ui/DisclosureGroup'
 import Tag from './Tag'
 import HighlightedText from './HighlightedText'
-import { experience } from '../data'
+import { experience } from '../data/experience'
 
 // Career stats
 const careerStats = [

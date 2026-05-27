@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
 export default function LazyImage({ src, alt, style, ...props }) {
   const [isLoaded, setIsLoaded] = useState(false)
@@ -38,14 +37,18 @@ export default function LazyImage({ src, alt, style, ...props }) {
         />
       )}
       {isInView && (
-        <motion.img
+        <img
           src={src}
           alt={alt}
           onLoad={() => setIsLoaded(true)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isLoaded ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          className="lazy-image"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
           {...props}
         />
       )}
@@ -53,6 +56,9 @@ export default function LazyImage({ src, alt, style, ...props }) {
         @keyframes shimmer {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lazy-image { transition: none !important; }
         }
       `}</style>
     </div>

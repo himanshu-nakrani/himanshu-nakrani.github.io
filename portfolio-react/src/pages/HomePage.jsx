@@ -7,7 +7,7 @@ import SectionNav from '../components/SectionNav'
 import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
 import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
 import TechnicalDeepDiveRail from '../components/TechnicalDeepDiveRail'
-import { featuredHighlights } from '../data'
+import { featuredHighlights } from '../data/projects'
 
 const sections = [
   { id: 'about',      label: 'About' },

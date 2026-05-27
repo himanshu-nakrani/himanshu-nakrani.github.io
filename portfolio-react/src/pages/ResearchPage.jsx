@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp, Brain, ChevronRight, ArrowRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
-import { publications, researchDeepDives } from '../data'
+import { publications, researchDeepDives } from '../data/research'
 
 /* ─── Sub-components ───────────────────────────────────── */
 function SectionLabel({ children, icon: Icon }) {

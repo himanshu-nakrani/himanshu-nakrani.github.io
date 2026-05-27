@@ -1,6 +1,6 @@
 import { ExternalLink, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { modelOpsSnapshots } from '../data'
+import { modelOpsSnapshots } from '../data/lab'
 
 const researchSlugs = {
   'llama-finetune': 'llama-3b-reasoning',
