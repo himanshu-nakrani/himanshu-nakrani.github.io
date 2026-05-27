@@ -12,9 +12,9 @@ import { experience } from '../data'
 // Career stats
 const careerStats = [
   { icon: TrendingUp, value: '2+',   label: 'Years', color: 'var(--color-accent)' },
-  { icon: Users,      value: '100+', label: 'Users', color: 'var(--color-cat-2)' },
-  { icon: Zap,        value: '75%',  label: 'Faster', color: 'var(--color-cat-4)' },
-  { icon: TestTube,   value: '95%',  label: 'Coverage', color: 'var(--color-cat-6)' },
+  { icon: Users,      value: '10+',  label: 'Biz Units', color: 'var(--color-cat-2)' },
+  { icon: Zap,        value: '75%',  label: 'Avg Latency Cut', color: 'var(--color-cat-4)' },
+  { icon: TestTube,   value: '95%',  label: 'Backend Tests', color: 'var(--color-cat-6)' },
 ]
 
 // Category metadata for State Street achievements

@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp, Brain, ChevronRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp, Brain, ChevronRight, ArrowRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
-import { publications } from '../data'
+import { publications, researchDeepDives } from '../data'
 
 /* ─── Sub-components ───────────────────────────────────── */
 function SectionLabel({ children, icon: Icon }) {
@@ -417,6 +418,67 @@ export default function ResearchPage() {
         </div>
       </div>
 
+      {/* Research Models - deep dive links */}
+      <div style={{ marginBottom: '2.5rem' }}>
+        <SectionLabel icon={Brain}>Research Models</SectionLabel>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+          {researchDeepDives.map(item => (
+            <Link
+              key={item.slug}
+              to={`/research/${item.slug}`}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: '1rem',
+                padding: '1.25rem 1.5rem',
+                borderRadius: 14,
+                border: '1px solid var(--color-border)',
+                background: 'var(--color-surface)',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = 'var(--shadow-sm)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--color-border)'
+                e.currentTarget.style.transform = 'none'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
+                  <span style={{
+                    fontSize: '0.65rem', fontFamily: 'var(--font-mono)',
+                    background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+                    color: 'var(--color-accent)', padding: '2px 8px', borderRadius: 6,
+                    border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+                  }}>Research</span>
+                  <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text)', margin: 0 }}>{item.shortTitle}</h3>
+                </div>
+                <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: 1.5, margin: 0 }}>{item.summary}</p>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                  {item.metrics.slice(0, 3).map(m => (
+                    <span key={m.label} style={{
+                      fontSize: '0.67rem', padding: '2px 8px',
+                      background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+                      border: '1px solid color-mix(in srgb, var(--color-accent) 22%, transparent)',
+                      borderRadius: 20, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', fontWeight: 600,
+                    }}>
+                      {m.value} {m.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <ArrowRight size={16} color="var(--color-accent)" style={{ flexShrink: 0, opacity: 0.6 }} />
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Research interests tags */}
       <div style={{ marginBottom: '2rem' }}>
         <SectionLabel icon={TrendingUp}>Research Interests</SectionLabel>
@@ -457,7 +519,7 @@ export default function ResearchPage() {
             Research Focus
           </p>
           <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.75, margin: 0 }}>
-            My research bridges structured reasoning and LLM capabilities — specifically how Graph-of-Thoughts frameworks improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks. The goal is connecting academic NLP advances with production-grade enterprise systems.
+            My research explores how Graph-of-Thoughts frameworks can improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks, with an eye toward practical structured-data systems.
           </p>
         </div>
       </div>

@@ -7,7 +7,7 @@ export default function ExperiencePage() {
       <PageHeader
         kicker="Experience"
         title="Career Timeline"
-        description="Enterprise AI software — RAG, LLM backends, and production systems at scale."
+        description="LLM backends, RAG pipelines, Text-to-SQL systems, and agent tooling for financial-data workflows."
       />
       <CareerTimeline />
     </section>

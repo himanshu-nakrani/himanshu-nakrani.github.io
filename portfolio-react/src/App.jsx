@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState, lazy, Suspense } from 'react'
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
@@ -17,6 +17,11 @@ import StyleguidePage from './pages/StyleguidePage'
 import MinimalSPA from './pages/MinimalSPA'
 import ThreeDAdaptiveNavDemo from './components/ui/3d-adaptive-navigation-bar-demo'
 import SpotlightCardDemo from './components/ui/spotlight-card-demo'
+
+// Lazy-loaded routes — keeps initial bundle lean
+const ProjectDeepDivePage = lazy(() => import('./pages/ProjectDeepDivePage'))
+const ResearchDeepDivePage = lazy(() => import('./pages/ResearchDeepDivePage'))
+const LabPage = lazy(() => import('./pages/LabPage'))
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -52,7 +57,10 @@ export default function App() {
             <Route path="/experience" element={<ExperiencePage />} />
             <Route path="/profiles"   element={<ProfilesPage />} />
             <Route path="/research"   element={<ResearchPage />} />
+            <Route path="/research/:slug" element={<Suspense fallback={null}><ResearchDeepDivePage /></Suspense>} />
             <Route path="/skills"     element={<SkillsPage />} />
+            <Route path="/projects/:slug" element={<Suspense fallback={null}><ProjectDeepDivePage /></Suspense>} />
+            <Route path="/lab"        element={<Suspense fallback={null}><LabPage /></Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>
