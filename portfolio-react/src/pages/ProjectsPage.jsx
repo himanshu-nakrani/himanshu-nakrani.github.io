@@ -5,7 +5,7 @@ import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, G
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import DataIcon from '../components/DataIcon'
-import { projects, technicalCaseStudies } from '../data'
+import { projects, technicalCaseStudies } from '../data/projects'
 
 /* ─── Badge styles ─────────────────────────────────────── */
 const badgeStyle = {

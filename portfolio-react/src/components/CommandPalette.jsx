@@ -8,7 +8,8 @@ import {
   Search, Command as CommandIcon, ArrowRight, CornerDownLeft,
   FlaskConical, Activity, FileText
 } from 'lucide-react'
-import { projects, skills } from '../data'
+import { projects } from '../data/projects'
+import { skills } from '../data/skills'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion

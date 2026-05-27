@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import DataIcon from './DataIcon'
-import { caseStudies } from '../data'
+import { caseStudies } from '../data/projects'
 
 export default function CaseStudyWorkbench() {
   const [activeId, setActiveId] = useState(caseStudies[0].id)

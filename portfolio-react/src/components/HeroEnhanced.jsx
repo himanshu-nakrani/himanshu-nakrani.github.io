@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
-import { currentFocusItems, recruiterSummary } from '../data'
+import { currentFocusItems, recruiterSummary } from '../data/hero'
 
 const stats = [
   { num: '2+',   label: 'Years exp.',    detail: 'Intern → Emerging Lead', link: '/experience' },

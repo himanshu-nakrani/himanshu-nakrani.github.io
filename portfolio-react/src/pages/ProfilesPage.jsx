@@ -4,7 +4,7 @@ import { ExternalLink, GitFork, Star, Users, Trophy, Code2, Flame, Award } from 
 import PageHeader from '../components/PageHeader'
 import DataIcon from '../components/DataIcon'
 import ActivityConstellation from '../components/ActivityConstellation'
-import { kagglePinned } from '../data'
+import { kagglePinned } from '../data/profiles'
 
 /* ─── Platform header cards ───────────────────────────── */
 const platforms = [
