@@ -409,8 +409,14 @@ export default function ProjectsPage() {
   )
 
   const isFiltered = query || activeFilter !== 'All' || activeTag !== 'All'
-  const featured = !isFiltered ? filteredProjects.filter(p => p.badge === 'Production').slice(0, 2) : []
-  const rest = !isFiltered ? filteredProjects.filter(p => !featured.includes(p)) : filteredProjects
+  const featured = useMemo(
+    () => (!isFiltered ? filteredProjects.filter(p => p.badge === 'Production').slice(0, 2) : []),
+    [filteredProjects, isFiltered],
+  )
+  const rest = useMemo(
+    () => (!isFiltered ? filteredProjects.filter(p => !featured.includes(p)) : filteredProjects),
+    [filteredProjects, featured, isFiltered],
+  )
 
   return (
     <section className="mvp2-page">
@@ -660,7 +666,7 @@ export default function ProjectsPage() {
         )}
 
         {/* All other projects */}
-        <motion.div key={`grid-${activeFilter}-${activeTag}-${query}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
           {rest.length > 0 && !isFiltered && (
             <p style={{
               display: 'flex', alignItems: 'center', gap: 6,
