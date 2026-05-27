@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import Pill3DNav from './ui/Pill3DNav'
 
 import { NavLink, Link, useLocation } from 'react-router-dom'
 
@@ -178,61 +179,11 @@ export default function Navbar({ isDark, setIsDark }) {
 
           {/* Desktop nav links */}
           <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
-            <ul
-              className="nav-pill-links"
-              style={{
-                listStyle: 'none',
-                display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                margin: 0,
-                padding: '0 4px',
-                minWidth: 0,
-                overflowX: 'auto',
-                position: 'relative',
-              }}
-            >
-              {navLinks.map((item) => {
-                const active = isPageActive(item.label)
-                const isSecondary = item.isSecondary
-                return (
-                  <li key={item.label} style={{ flexShrink: 0, position: 'relative' }}>
-                    <MotionNavLink
-                      to={item.to}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={(event) => handleNavClick(item, event)}
-                      aria-current={active ? 'page' : undefined}
-                      className={active ? 'nav-link-active' : ''}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: isSecondary ? '8px 12px 10px' : '8px 14px 10px',
-                        textDecoration: 'none',
-                        fontSize: isSecondary ? '0.75rem' : '0.8125rem',
-                        fontWeight: isSecondary ? 400 : 500,
-                        color: active ? 'var(--color-accent)' : isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)',
-                        background: active ? 'color-mix(in srgb, var(--color-accent) 10%, transparent)' : 'transparent',
-                        transition: 'color 0.2s ease, background 0.2s ease',
-                        borderRadius: 9999,
-                        position: 'relative',
-                        fontFamily: isSecondary ? 'var(--font-mono)' : undefined,
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!active) e.currentTarget.style.color = 'var(--color-text)'
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!active) e.currentTarget.style.color = isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)'
-                      }}
-                    >
-                      {item.label}
-                    </MotionNavLink>
-                  </li>
-                )
-              })}
-            </ul>
+            <Pill3DNav
+              items={navLinks}
+              isActive={isPageActive}
+              onItemClick={handleNavClick}
+            />
           </nav>
 
           {/* Desktop right side */}

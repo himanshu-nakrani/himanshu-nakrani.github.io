@@ -2,12 +2,15 @@ import { useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
+import AuroraBackground from './ui/AuroraBackground'
+import TextGenerateEffect from './ui/TextGenerateEffect'
+import MagneticButton from './ui/MagneticButton'
 import { currentFocusItems, recruiterSummary } from '../data/hero'
 
 const stats = [
   { num: '2+',   label: 'Years exp.',    detail: 'Intern → Emerging Lead', link: '/experience' },
   { num: '10+',  label: 'Biz units',     detail: '200+ total users',        link: '#projects' },
-  { num: '75%',  label: 'Latency cut',   detail: 'average response time',   link: '#pipeline' },
+  { num: '75%',  label: 'Latency cut',   detail: 'average response time',   link: '/lab' },
   { num: '2',    label: 'Publications',  detail: 'IEEE peer-reviewed',       link: '/research' },
 ]
 
@@ -145,11 +148,17 @@ export default function HeroEnhanced() {
   }, [reduceMotion])
 
   return (
-    <section id="about" style={{ paddingTop: 'clamp(5.5rem, 12vh, 7rem)' }}>
+    <section
+      id="about"
+      style={{ paddingTop: 'clamp(5.5rem, 12vh, 7rem)', position: 'relative', overflow: 'hidden' }}
+    >
+      <AuroraBackground intensity={0.45} />
       <div style={{
         maxWidth: 'var(--container)',
         margin: '0 auto',
         padding: '0 var(--page-pad-x)',
+        position: 'relative',
+        zIndex: 1,
       }}>
 
         {/* Desktop two-column, mobile single-column */}
@@ -196,16 +205,18 @@ export default function HeroEnhanced() {
                 }}>
                   Generative AI Engineer · State Street
                 </div>
-                <h1 style={{
-                  fontSize: 'clamp(1.7rem, 4.5vw, 2.5rem)',
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  marginBottom: '0.25rem',
-                  color: 'var(--color-text)',
-                }}>
-                  Himanshu Nakrani
-                </h1>
+                <TextGenerateEffect
+                  as="h1"
+                  words="Himanshu Nakrani"
+                  style={{
+                    fontSize: 'clamp(1.7rem, 4.5vw, 2.5rem)',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 700,
+                    lineHeight: 1.1,
+                    marginBottom: '0.25rem',
+                    color: 'var(--color-text)',
+                  }}
+                />
                 <p style={{
                   fontSize: '0.88rem',
                   color: 'var(--color-text-muted)',
@@ -243,31 +254,46 @@ export default function HeroEnhanced() {
                 <FileText size={14} />
                 Resume
               </a>
-              <a
-                href="mailto:himanshunakrani0@gmail.com"
-                className="hero-cta hero-cta--secondary"
-              >
-                <Mail size={14} />
-                Contact
-              </a>
-              <a
-                href="https://github.com/himanshu-nakrani"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-cta hero-cta--quiet"
-              >
-                <Github size={13} />
-                GitHub
-              </a>
-              <a
-                href="https://linkedin.com/in/himanshu-nakrani"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-cta hero-cta--quiet"
-              >
-                <Linkedin size={13} />
-                LinkedIn
-              </a>
+              {(() => {
+                const contact = (
+                  <a
+                    href="mailto:himanshunakrani0@gmail.com"
+                    className="hero-cta hero-cta--secondary"
+                  >
+                    <Mail size={14} />
+                    Contact
+                  </a>
+                )
+                const github = (
+                  <a
+                    href="https://github.com/himanshu-nakrani"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hero-cta hero-cta--quiet"
+                  >
+                    <Github size={13} />
+                    GitHub
+                  </a>
+                )
+                const linkedin = (
+                  <a
+                    href="https://linkedin.com/in/himanshu-nakrani"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hero-cta hero-cta--quiet"
+                  >
+                    <Linkedin size={13} />
+                    LinkedIn
+                  </a>
+                )
+                return (
+                  <>
+                    <MagneticButton radius={70} strength={5}>{contact}</MagneticButton>
+                    <MagneticButton radius={60} strength={4}>{github}</MagneticButton>
+                    <MagneticButton radius={60} strength={4}>{linkedin}</MagneticButton>
+                  </>
+                )
+              })()}
             </div>
 
             {/* Stats row */}

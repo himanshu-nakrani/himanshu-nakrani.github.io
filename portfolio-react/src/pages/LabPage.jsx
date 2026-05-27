@@ -8,6 +8,7 @@ import TraceReplay from '../components/TraceReplay'
 import AgentRunViewer from '../components/AgentRunViewer'
 import RetrievalInspector from '../components/RetrievalInspector'
 import TrainingRunPanel from '../components/TrainingRunPanel'
+import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
 import Tag from '../components/Tag'
 import { demoLabModules } from '../data'
 
@@ -69,6 +70,50 @@ export default function LabPage() {
         title="Demo Lab"
         description="Interactive, deterministic walkthroughs of production AI systems and model research."
       />
+
+      {/* ── Production architecture (Alpha Copilot pipeline) ── */}
+      <motion.section
+        {...fadeUp}
+        transition={{ duration: 0.35 }}
+        aria-labelledby="lab-architecture-heading"
+        style={{ marginBottom: '2.25rem' }}
+      >
+        <header style={{ marginBottom: '0.9rem' }}>
+          <p style={{
+            fontSize: '0.68rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            color: 'var(--color-accent)',
+            margin: '0 0 0.35rem',
+          }}>
+            Architecture
+          </p>
+          <h2
+            id="lab-architecture-heading"
+            style={{
+              fontSize: 'clamp(1.15rem, 2.4vw, 1.45rem)',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 700,
+              color: 'var(--color-text)',
+              margin: '0 0 0.35rem',
+              lineHeight: 1.25,
+            }}
+          >
+            Alpha Copilot production pipeline
+          </h2>
+          <p style={{
+            fontSize: '0.88rem',
+            color: 'var(--color-text-muted)',
+            margin: 0,
+            lineHeight: 1.55,
+            maxWidth: 640,
+          }}>
+            Select a stage to inspect latency and design.
+          </p>
+        </header>
+        <ProductionTraceExplorer />
+      </motion.section>
 
       {/* ── Module selector (tab row) ────────────────────── */}
       <motion.div
