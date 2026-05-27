@@ -840,6 +840,10 @@ section[id] {
   .scroll-progress-rail { display: none; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress-rail { display: none; }
+}
+
 /* ============================================
    SECTION CLIP-PATH REVEAL
    ============================================ */

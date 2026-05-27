@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 /**
  * CursorHalo — a soft, calm radial wash that follows the pointer
  * on desktop only. No visible dot, no chromatic flash. The native
  * cursor is preserved; this is purely atmospheric lighting.
  *
- * - Hidden on touch devices and prefers-reduced-motion
+ * - Hidden on touch devices and prefers-reduced-motion (effect bails so
+ *   no listeners or rAF loop run; CSS also hides the element)
  * - rAF only runs while easing toward the pointer; idles to zero CPU at rest
  * - Hides when pointer leaves the window
  */
@@ -16,14 +18,14 @@ export default function CursorHalo() {
   const rafId = useRef(0)
   const lastTime = useRef(0)
   const visible = useRef(false)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
-    // Bail early on touch / reduced-motion. The CSS class also hides it,
-    // but skipping the listeners avoids any work.
+    if (reduceMotion) return
+    // Bail early on touch devices. Skipping the listeners avoids any work.
     if (typeof window === 'undefined') return
     const isCoarse = window.matchMedia('(hover: none), (pointer: coarse)').matches
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (isCoarse || reduceMotion) return
+    if (isCoarse) return
 
     const el = haloRef.current
     if (!el) return
@@ -104,8 +106,11 @@ export default function CursorHalo() {
       document.removeEventListener('mouseleave', onLeave)
       document.removeEventListener('visibilitychange', onVisibility)
       if (rafId.current) cancelAnimationFrame(rafId.current)
+      rafId.current = 0
+      lastTime.current = 0
+      visible.current = false
     }
-  }, [])
+  }, [reduceMotion])
 
   return <div ref={haloRef} aria-hidden="true" className="cursor-halo" />
 }

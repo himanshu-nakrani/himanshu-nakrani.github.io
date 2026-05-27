@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useReducedMotion } from 'framer-motion'
 
 /**
  * ScrollProgressRail — a 2px rail along the right edge of the viewport
@@ -6,13 +7,17 @@ import { useEffect, useRef } from 'react'
  * variable on the fill element so we don't trigger React re-renders.
  *
  * - Hidden under 768px (the rail competes with thumb scroll on touch)
+ * - Hidden under prefers-reduced-motion (decorative; effect bails so no
+ *   listeners or rAF loop run; CSS also hides the element)
  * - Throttled via rAF
  */
 export default function ScrollProgressRail() {
   const fillRef = useRef(null)
   const rafId = useRef(0)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
+    if (reduceMotion) return
     if (typeof window === 'undefined') return
 
     const update = () => {
@@ -38,8 +43,9 @@ export default function ScrollProgressRail() {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', update)
       if (rafId.current) cancelAnimationFrame(rafId.current)
+      rafId.current = 0
     }
-  }, [])
+  }, [reduceMotion])
 
   return (
     <div className="scroll-progress-rail" aria-hidden="true">
