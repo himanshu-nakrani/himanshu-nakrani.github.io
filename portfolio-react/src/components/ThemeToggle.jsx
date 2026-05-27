@@ -1,12 +1,10 @@
 import { Sun, Moon } from 'lucide-react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 /**
  * ThemeToggle — calm icon button with a smooth Sun/Moon morph.
  * Uses lucide icons (no emojis). Hairline border + accent on hover.
  */
 export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
-  const reduceMotion = useReducedMotion()
   const size = compact ? 36 : 44
   const iconSize = compact ? 15 : 17
 
@@ -16,13 +14,14 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
   }
 
-  const variants = reduceMotion
-    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 0 } }
-    : {
-        initial: { opacity: 0, rotate: -45, scale: 0.6 },
-        animate: { opacity: 1, rotate: 0, scale: 1 },
-        exit:    { opacity: 0, rotate: 45, scale: 0.6 },
-      }
+  const iconWrap = {
+    position: 'absolute',
+    inset: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
+  }
 
   return (
     <button
@@ -31,6 +30,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       aria-pressed={isDark}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="theme-toggle"
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -59,28 +59,32 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
       }}
     >
       <span style={{ display: 'inline-flex', position: 'relative', width: iconSize, height: iconSize }}>
-        <AnimatePresence mode="wait" initial={false}>
-          {isDark ? (
-            <motion.span
-              key="sun"
-              {...variants}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              style={{ position: 'absolute', inset: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Sun size={iconSize} strokeWidth={1.8} />
-            </motion.span>
-          ) : (
-            <motion.span
-              key="moon"
-              {...variants}
-              transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              style={{ position: 'absolute', inset: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <Moon size={iconSize} strokeWidth={1.8} />
-            </motion.span>
-          )}
-        </AnimatePresence>
+        <span
+          aria-hidden={!isDark}
+          style={{
+            ...iconWrap,
+            opacity: isDark ? 1 : 0,
+            transform: isDark ? 'rotate(0deg) scale(1)' : 'rotate(45deg) scale(0.6)',
+          }}
+        >
+          <Sun size={iconSize} strokeWidth={1.8} />
+        </span>
+        <span
+          aria-hidden={isDark}
+          style={{
+            ...iconWrap,
+            opacity: isDark ? 0 : 1,
+            transform: isDark ? 'rotate(-45deg) scale(0.6)' : 'rotate(0deg) scale(1)',
+          }}
+        >
+          <Moon size={iconSize} strokeWidth={1.8} />
+        </span>
       </span>
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          .theme-toggle span span { transition: none !important; transform: none !important; }
+        }
+      `}</style>
     </button>
   )
 }
