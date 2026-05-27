@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Command, X } from 'lucide-react'
 
 const STORAGE_KEY = 'cmdk-hint-dismissed'
-const SHOW_DELAY = 3500
+const SHOW_DELAY = 8000
 
 /**
  * CmdKHint — one-time discoverability nudge for the command palette.
@@ -63,22 +63,23 @@ export default function CmdKHint() {
           aria-live="polite"
           style={{
             position: 'fixed',
-            bottom: 'max(1.25rem, env(safe-area-inset-bottom))',
-            right: 'max(1.25rem, env(safe-area-inset-right))',
+            bottom: 'max(1rem, env(safe-area-inset-bottom))',
+            right: 'max(1rem, env(safe-area-inset-right))',
             zIndex: 90,
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            padding: '0.7rem 0.85rem 0.7rem 1rem',
+            gap: '0.55rem',
+            padding: '0.45rem 0.65rem 0.45rem 0.75rem',
             background: 'var(--glass-bg)',
             backdropFilter: 'blur(var(--glass-blur)) saturate(var(--glass-saturation))',
             WebkitBackdropFilter: 'blur(var(--glass-blur)) saturate(var(--glass-saturation))',
-            border: '1px solid var(--color-border-strong)',
+            border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-pill)',
-            color: 'var(--color-text)',
-            fontSize: '0.8125rem',
-            boxShadow: 'var(--shadow-md)',
-            maxWidth: 'calc(100vw - 2.5rem)',
+            color: 'var(--color-text-muted)',
+            fontSize: '0.7rem',
+            boxShadow: 'var(--shadow-sm)',
+            maxWidth: 'calc(100vw - 2rem)',
+            opacity: 0.85,
           }}
         >
           <span

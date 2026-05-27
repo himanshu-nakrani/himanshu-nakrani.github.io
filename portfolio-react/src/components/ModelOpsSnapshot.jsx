@@ -1,7 +1,14 @@
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { modelOpsSnapshots } from '../data/lab'
 
+const researchSlugs = {
+  'llama-finetune': 'llama-3b-reasoning',
+  'tinymathReason': 'tinymathreason-1b',
+}
+
 function ModelCard({ model }) {
+  const slug = researchSlugs[model.id]
   return (
     <div className="mos__card">
       <div className="mos__card-header">
@@ -41,6 +48,26 @@ function ModelCard({ model }) {
           <span key={t} className="mos__stack-tag">{t}</span>
         ))}
       </div>
+
+      {slug && (
+        <div style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)', marginTop: '0.75rem' }}>
+          <Link
+            to={`/research/${slug}`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              color: 'var(--color-accent)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            Deep dive <ArrowRight size={13} />
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

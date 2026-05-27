@@ -123,8 +123,8 @@
   --container-full:   1600px;
 
   --page-pad-x:    clamp(1.25rem, 4vw, 3.5rem);
-  --page-pad-top:  clamp(5rem, 15vh, 8rem);
-  --section-pad-y: clamp(5rem, 12vh, 8rem);
+  --page-pad-top:  clamp(4.5rem, 10vh, 6.5rem);
+  --section-pad-y: clamp(4rem, 10vh, 7rem);
 
   --navbar-height: 100px;
 

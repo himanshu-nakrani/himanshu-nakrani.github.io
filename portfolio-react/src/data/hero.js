@@ -26,3 +26,10 @@ export const availabilityStatus = {
     { label: 'Resume', href: '/resume.pdf', variant: 'ghost' },
   ],
 }
+export const recruiterSummary = [
+  'LLM backend systems',
+  'RAG and Text-to-SQL',
+  'FastAPI / Python APIs',
+  'Evaluation and observability',
+]
+

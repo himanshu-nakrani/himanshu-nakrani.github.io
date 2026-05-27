@@ -1,10 +1,11 @@
 import { useMemo, useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2, ChevronDown } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2, ChevronDown, ArrowRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import DataIcon from '../components/DataIcon'
-import { projects } from '../data/projects'
+import { projects, technicalCaseStudies } from '../data/projects'
 
 /* ─── Badge styles ─────────────────────────────────────── */
 const badgeStyle = {
@@ -16,6 +17,16 @@ const metricIcon = { performance: Zap, users: Users, efficiency: BarChart2 }
 
 /* ─── Top-8 most-relevant tags ─────────────────────────── */
 const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'Deep Learning', 'Python', 'AI Agents', 'LSTM']
+
+/* ─── Deep-dive slug lookup ───────────────────────────── */
+const deepDiveSlugs = new Set(technicalCaseStudies.map(s => s.slug))
+
+function getDeepDiveSlug(title) {
+  const slug = title.toLowerCase().replace(/\s+/g, '-')
+  if (deepDiveSlugs.has(slug)) return slug
+  const match = technicalCaseStudies.find(s => s.title === title)
+  return match ? match.slug : null
+}
 
 /* ─── Page-level stats ─────────────────────────────────── */
 const pageStats = [
@@ -254,8 +265,35 @@ function FeaturedCard({ item, onClick }) {
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 'auto' }}>
-          {item.tags.map(t => <Tag key={t}>{t}</Tag>)}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginTop: 'auto' }}>
+          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+            {item.tags.slice(0, 3).map(t => <Tag key={t}>{t}</Tag>)}
+            {item.tags.length > 3 && <span style={{ fontSize: '0.68rem', color: 'var(--text2)', opacity: 0.45, alignSelf: 'center' }}>+{item.tags.length - 3}</span>}
+          </div>
+          {getDeepDiveSlug(item.title) && (
+            <Link
+              to={`/projects/${getDeepDiveSlug(item.title)}`}
+              onClick={e => e.stopPropagation()}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                color: 'var(--color-accent)',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-mono)',
+                padding: '4px 10px',
+                borderRadius: 8,
+                border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)',
+                background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              Deep dive <ArrowRight size={11} />
+            </Link>
+          )}
         </div>
       </div>
     </motion.article>
@@ -379,7 +417,7 @@ export default function ProjectsPage() {
       <PageHeader
         kicker="Portfolio"
         title="Selected Works"
-        description="Production LLMs, RAG pipelines, and ML systems built for real-world scale."
+        description="LLM backends, RAG pipelines, Text-to-SQL systems, and applied ML projects."
       />
 
       {/* Stats strip - modern bento style */}
@@ -533,13 +571,13 @@ export default function ProjectsPage() {
                 aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
                 style={{
-                  background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
-                  color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
+                  background: activeFilter === f ? 'var(--color-accent)' : 'transparent',
+                  color: activeFilter === f ? 'var(--color-accent-fg)' : 'var(--color-text-subtle)',
                   border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
                   borderRadius: 8,
                   padding: '5px 12px',
-                  fontSize: '0.74rem',
-                  fontWeight: 600,
+                  fontSize: '0.72rem',
+                  fontWeight: activeFilter === f ? 600 : 500,
                   cursor: 'pointer',
                   transition: 'all 0.18s',
                   boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
@@ -579,17 +617,18 @@ export default function ProjectsPage() {
                 onClick={() => setActiveTag(tag)}
                 style={{
                   border: '1px solid',
-                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
-                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
-                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'transparent',
+                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'transparent',
+                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-subtle)',
                   borderRadius: 6,
                   padding: '4px 10px',
                   cursor: 'pointer',
-                  fontSize: '0.7rem',
+                  fontSize: '0.68rem',
                   fontFamily: 'var(--font-mono)',
                   transition: 'all 0.15s',
                   flexShrink: 0,
                   whiteSpace: 'nowrap',
+                  opacity: activeTag === tag ? 1 : 0.6,
                 }}
               >{tag}</button>
             ))}

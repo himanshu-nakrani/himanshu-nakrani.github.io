@@ -6,12 +6,14 @@ import Section from '../components/Section'
 import SectionNav from '../components/SectionNav'
 import ProductionTraceExplorer from '../components/ProductionTraceExplorer'
 import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
+import TechnicalDeepDiveRail from '../components/TechnicalDeepDiveRail'
 import { featuredHighlights } from '../data/projects'
 
 const sections = [
   { id: 'about',      label: 'About' },
   { id: 'highlights', label: 'Highlights' },
   { id: 'pipeline',   label: 'Architecture' },
+  { id: 'deepdives',  label: 'Deep Dives' },
   { id: 'projects',   label: 'Case Studies' },
   { id: 'modelops',   label: 'ModelOps' },
   { id: 'contact',    label: 'Contact' },
@@ -46,13 +48,23 @@ export default function HomePage() {
         <ProductionTraceExplorer />
       </Section>
 
+      {/* 3.5 — Technical deep dives */}
+      <Section
+        id="deepdives"
+        title="Technical Deep Dives"
+        subtitle="In-depth case studies and research — architecture, tradeoffs, and implementation"
+        number="04"
+        alt
+      >
+        <TechnicalDeepDiveRail />
+      </Section>
+
       {/* 4 — Case studies */}
       <Section
         id="projects"
         title="Case Studies"
         subtitle="Production LLM systems built at State Street"
-        number="04"
-        alt
+        number="05"
       >
         <CaseStudyWorkbench />
       </Section>
@@ -62,7 +74,7 @@ export default function HomePage() {
         id="modelops"
         title="Model Research"
         subtitle="Fine-tuning and pretraining work — from QLoRA to TPU-scale training"
-        number="05"
+        number="06"
       >
         <ModelOpsSnapshot />
       </Section>
