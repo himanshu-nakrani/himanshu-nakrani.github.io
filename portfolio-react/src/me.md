@@ -6,8 +6,8 @@
 
 ## About Me
 
-- 🤖 I build production AI systems: Text-to-SQL, RAG pipelines, LLM fine-tuning, and AI agents
-- 🏦 Currently working on enterprise-scale NLP tools serving 100+ internal users
+- 🤖 I build LLM systems for financial-data workflows: Text-to-SQL, RAG pipelines, agent tooling, and evaluation
+- 🏦 Currently working on Alpha Copilot, used across 10+ business units with 200+ total users
 - 📝 Published researcher in Graph-of-Thoughts reasoning for Text-to-SQL (IEEE FLLM 2025)
 - 🌱 Always exploring new tools, frameworks, and practical ML workflows
 - 🤝 Open to collaboration on AI/ML projects and open-source contributions
@@ -34,7 +34,7 @@
 
 | Project | Description | Status |
 |---|---|---|
-| 🤖 **Alpha Copilot** | Enterprise LLM Text-to-SQL chatbot over structured financial data (100+ users) | Production |
+| 🤖 **Alpha Copilot** | Internal Text-to-SQL assistant over approved financial datasets (10+ business units, 200+ total users) | Production |
 | 🔧 **Agent Forge** | No-code AI agent builder with real-time trace monitoring and evaluation dashboards | In Progress |
 | 💼 **WealthAI** | Real-time portfolio narrative generation from optimizer outputs | Production |
 | 📄 **Fund Prospectus RAG** | RAG system for extracting insights from fund prospectuses using OpenAI + pgvector | Production |

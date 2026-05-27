@@ -7,14 +7,16 @@ import { NavLink, Link, useLocation } from 'react-router-dom'
 
 const MotionNavLink = motion(NavLink)
 
-// Capped at 6 items — logo handles "/" navigation
+// Capped at 8 items — logo handles "/" navigation
 const navLinks = [
   { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Skills', to: '/skills' },
   { label: 'Research', to: '/research' },
+  { label: 'Lab', to: '/lab' },
   { label: 'Profiles', to: '/profiles' },
+  { label: 'Minimal', to: '/minimal', isSecondary: true },
 ]
 
 const contactItem = { label: 'Contact', to: '/#contact' }
@@ -37,12 +39,14 @@ export default function Navbar({ isDark, setIsDark }) {
   }, [])
 
   const isPageActive = (label) => {
-    if (label === 'Projects')    return location.pathname === '/projects'
+    if (label === 'Projects')    return location.pathname === '/projects' || location.pathname.startsWith('/projects/')
     if (label === 'Experience')  return location.pathname === '/experience'
     if (label === 'Profiles')    return location.pathname === '/profiles'
-    if (label === 'Research')    return location.pathname === '/research'
+    if (label === 'Research')    return location.pathname === '/research' || location.pathname.startsWith('/research/')
     if (label === 'Skills')      return location.pathname === '/skills'
     if (label === 'About')       return location.pathname === '/about'
+    if (label === 'Lab')         return location.pathname === '/lab'
+    if (label === 'Minimal')     return location.pathname === '/minimal'
     return false
   }
 
@@ -192,6 +196,7 @@ export default function Navbar({ isDark, setIsDark }) {
             >
               {navLinks.map((item) => {
                 const active = isPageActive(item.label)
+                const isSecondary = item.isSecondary
                 return (
                   <li key={item.label} style={{ flexShrink: 0, position: 'relative' }}>
                     <MotionNavLink
@@ -204,20 +209,22 @@ export default function Navbar({ isDark, setIsDark }) {
                         display: 'inline-flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        padding: '8px 14px 10px',
+                        padding: isSecondary ? '8px 12px 10px' : '8px 14px 10px',
                         textDecoration: 'none',
-                        fontSize: '0.8125rem',
-                        fontWeight: 500,
-                        color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
-                        transition: 'color 0.2s ease',
+                        fontSize: isSecondary ? '0.75rem' : '0.8125rem',
+                        fontWeight: isSecondary ? 400 : 500,
+                        color: active ? 'var(--color-accent)' : isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)',
+                        background: active ? 'color-mix(in srgb, var(--color-accent) 10%, transparent)' : 'transparent',
+                        transition: 'color 0.2s ease, background 0.2s ease',
                         borderRadius: 9999,
                         position: 'relative',
+                        fontFamily: isSecondary ? 'var(--font-mono)' : undefined,
                       }}
                       onMouseEnter={(e) => {
                         if (!active) e.currentTarget.style.color = 'var(--color-text)'
                       }}
                       onMouseLeave={(e) => {
-                        if (!active) e.currentTarget.style.color = 'var(--color-text-muted)'
+                        if (!active) e.currentTarget.style.color = isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)'
                       }}
                     >
                       {item.label}
@@ -240,40 +247,6 @@ export default function Navbar({ isDark, setIsDark }) {
               borderLeft: '1px solid var(--color-border)',
             }}
           >
-            {/* Version toggle */}
-            <Link
-              to="/minimal"
-              title="Switch to minimal version"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '6px 11px',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                color: 'var(--color-text-muted)',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease',
-                fontFamily: 'var(--font-display)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-accent)'
-                e.currentTarget.style.color = 'var(--color-accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.color = 'var(--color-text-muted)'
-              }}
-            >
-              <span style={{ fontSize: '0.65rem', lineHeight: 1, opacity: 0.7 }}>&#9632;</span>
-              Minimal
-            </Link>
-
             {/* Command Palette Trigger */}
             <button
               onClick={() => {
@@ -324,12 +297,12 @@ export default function Navbar({ isDark, setIsDark }) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
-              className="glass-btn-primary"
+              className="glass-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                color: '#fff',
-                padding: '7px 16px',
+                color: 'var(--color-text)',
+                padding: '6px 14px',
                 borderRadius: 9999,
                 textDecoration: 'none',
                 fontSize: '0.8125rem',
@@ -337,6 +310,7 @@ export default function Navbar({ isDark, setIsDark }) {
                 whiteSpace: 'nowrap',
                 position: 'relative',
                 overflow: 'hidden',
+                borderColor: 'var(--color-border-strong)',
               }}
             >
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>

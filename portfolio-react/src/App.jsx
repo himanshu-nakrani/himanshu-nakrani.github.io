@@ -18,6 +18,9 @@ const StyleguidePage = lazy(() => import('./pages/StyleguidePage'))
 const MinimalSPA = lazy(() => import('./pages/MinimalSPA'))
 const ThreeDAdaptiveNavDemo = lazy(() => import('./components/ui/3d-adaptive-navigation-bar-demo'))
 const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo'))
+const ProjectDeepDivePage = lazy(() => import('./pages/ProjectDeepDivePage'))
+const ResearchDeepDivePage = lazy(() => import('./pages/ResearchDeepDivePage'))
+const LabPage = lazy(() => import('./pages/LabPage'))
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -54,7 +57,10 @@ export default function App() {
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/profiles"   element={<ProfilesPage />} />
               <Route path="/research"   element={<ResearchPage />} />
+              <Route path="/research/:slug" element={<ResearchDeepDivePage />} />
               <Route path="/skills"     element={<SkillsPage />} />
+              <Route path="/projects/:slug" element={<ProjectDeepDivePage />} />
+              <Route path="/lab"        element={<LabPage />} />
             </Route>
           </Routes>
         </Suspense>
