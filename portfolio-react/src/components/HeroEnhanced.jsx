@@ -121,6 +121,10 @@ export default function HeroEnhanced() {
             <img
               src="/himanshu.jpg"
               alt="Himanshu Nakrani"
+              width="360"
+              height="540"
+              fetchPriority="high"
+              decoding="async"
               style={{ width: '100%', height: 'auto', display: 'block' }}
             />
           </div>
