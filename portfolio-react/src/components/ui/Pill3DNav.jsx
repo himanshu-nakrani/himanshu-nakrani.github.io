@@ -64,8 +64,8 @@ export default function Pill3DNav({ items, isActive, onItemClick }) {
                     position: 'absolute',
                     inset: 0,
                     borderRadius: 9999,
-                    background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-                    boxShadow: '0 0 0 1px color-mix(in srgb, var(--color-accent) 25%, transparent), 0 6px 20px -8px color-mix(in srgb, var(--color-accent) 50%, transparent)',
+                    background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+                    boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 22%, transparent)',
                     zIndex: 0,
                   }}
                 />

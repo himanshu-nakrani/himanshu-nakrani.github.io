@@ -110,7 +110,7 @@ export default function SpotlightGlowCard({
   return (
     <Tag
       ref={ref}
-      data-spotlight={reduce ? undefined : ''}
+      data-spotlight=""
       className={className}
       style={{ '--spotlight-size': `${size}px`, ...style }}
     >

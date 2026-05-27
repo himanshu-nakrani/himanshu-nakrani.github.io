@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import DataIcon from './DataIcon'
 import { caseStudies } from '../data/projects'
-import { useUplift } from '../lib/uplift'
 import SpotlightGlowCard from './ui/SpotlightGlowCard'
 
 export default function CaseStudyWorkbench() {
   const [activeId, setActiveId] = useState(caseStudies[0].id)
   const reduceMotion = useReducedMotion()
-  const uplift = useUplift()
   const study = caseStudies.find(s => s.id === activeId)
 
   return (
@@ -29,9 +27,9 @@ export default function CaseStudyWorkbench() {
               aria-controls={`csw-panel-${s.id}`}
               className={`csw__tab${active ? ' is-active' : ''}`}
               onClick={() => setActiveId(s.id)}
-              style={uplift ? { position: 'relative' } : undefined}
+              style={{ position: 'relative' }}
             >
-              {uplift && active && (
+              {active && (
                 <motion.span
                   layoutId="csw-active-pill"
                   aria-hidden="true"
@@ -119,11 +117,11 @@ export default function CaseStudyWorkbench() {
               </div>
             </>
           )
-          return uplift ? (
+          return (
             <SpotlightGlowCard size={420} style={{ display: 'block', borderRadius: 'var(--radius-lg, 12px)' }}>
               {body}
             </SpotlightGlowCard>
-          ) : body
+          )
         })()}
         </motion.div>
       </AnimatePresence>

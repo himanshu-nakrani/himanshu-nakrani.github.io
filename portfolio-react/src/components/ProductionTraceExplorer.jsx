@@ -2,13 +2,11 @@ import { useRef, useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 import { productionTraceStages } from '../data/lab'
-import { useUplift } from '../lib/uplift'
 import AnimatedBeam from './ui/AnimatedBeam'
 
 export default function ProductionTraceExplorer() {
   const [active, setActive] = useState(productionTraceStages[0].id)
   const reduceMotion = useReducedMotion()
-  const uplift = useUplift()
   const activeStage = productionTraceStages.find(s => s.id === active)
 
   const stagesContainerRef = useRef(null)
@@ -38,7 +36,7 @@ export default function ProductionTraceExplorer() {
         className="trace-stages"
         role="tablist"
         aria-label="Alpha Copilot pipeline stages"
-        style={uplift ? { position: 'relative' } : undefined}
+        style={{ position: 'relative' }}
       >
         {productionTraceStages.map((stage, i) => (
           <div key={stage.id} style={{ display: 'contents' }}>
@@ -50,7 +48,7 @@ export default function ProductionTraceExplorer() {
               aria-controls={`trace-panel-${stage.id}`}
               className={`trace-stage${active === stage.id ? ' is-active' : ''}`}
               onClick={() => setActive(stage.id)}
-              style={uplift ? { position: 'relative', zIndex: 1 } : undefined}
+              style={{ position: 'relative', zIndex: 1 }}
             >
               <span className="trace-stage__idx">{String(i + 1).padStart(2, '0')}</span>
               <span className="trace-stage__label">{stage.label}</span>
@@ -60,12 +58,12 @@ export default function ProductionTraceExplorer() {
               <div
                 className="trace-connector"
                 aria-hidden="true"
-                style={uplift ? { visibility: 'hidden' } : undefined}
+                style={{ visibility: 'hidden' }}
               />
             )}
           </div>
         ))}
-        {uplift && productionTraceStages.map((stage, i) => {
+        {productionTraceStages.map((stage, i) => {
           if (i === productionTraceStages.length - 1) return null
           return (
             <AnimatedBeam

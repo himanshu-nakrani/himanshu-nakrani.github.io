@@ -1,5 +1,4 @@
 import DataIcon from './DataIcon'
-import { useUplift } from '../lib/uplift'
 import SpotlightGlowCard from './ui/SpotlightGlowCard'
 
 /**
@@ -92,19 +91,18 @@ function CardInner({ highlight }) {
   )
 }
 
+function SpotlightWrap({ children }) {
+  return (
+    <SpotlightGlowCard size={300} style={{ display: 'block', borderRadius: 'var(--radius-lg)', height: '100%' }}>
+      {children}
+    </SpotlightGlowCard>
+  )
+}
+
 /**
  * @param {{ highlights: Highlight[] }} props
  */
 export default function FeaturedHighlightsRail({ highlights }) {
-  const uplift = useUplift()
-  const Wrap = uplift
-    ? ({ children }) => (
-        <SpotlightGlowCard size={300} style={{ display: 'block', borderRadius: 'var(--radius-lg)', height: '100%' }}>
-          {children}
-        </SpotlightGlowCard>
-      )
-    : ({ children }) => children
-
   return (
     <section aria-label="Featured highlights">
       <div className="highlights-rail">
@@ -125,12 +123,12 @@ export default function FeaturedHighlightsRail({ highlights }) {
                 aria-label={`${highlight.headline} (opens in new tab)`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                <Wrap>{card}</Wrap>
+                <SpotlightWrap>{card}</SpotlightWrap>
               </a>
             )
           }
 
-          return <Wrap key={highlight.id}>{card}</Wrap>
+          return <SpotlightWrap key={highlight.id}>{card}</SpotlightWrap>
         })}
       </div>
     </section>

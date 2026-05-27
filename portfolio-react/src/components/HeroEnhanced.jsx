@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, ArrowDown, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
-import { useUplift } from '../lib/uplift'
 import AuroraBackground from './ui/AuroraBackground'
 import TextGenerateEffect from './ui/TextGenerateEffect'
 import MagneticButton from './ui/MagneticButton'
@@ -139,7 +138,6 @@ function CurrentFocus({ items }) {
 
 export default function HeroEnhanced() {
   const reduceMotion = useReducedMotion()
-  const uplift = useUplift()
   const magneticRef = useMagnetic({ radius: 80, strength: 4 })
 
   const scrollToSection = useCallback((id) => {
@@ -154,7 +152,7 @@ export default function HeroEnhanced() {
       id="about"
       style={{ paddingTop: 'clamp(5.5rem, 12vh, 7rem)', position: 'relative', overflow: 'hidden' }}
     >
-      {uplift && <AuroraBackground intensity={0.45} />}
+      <AuroraBackground intensity={0.45} />
       <div style={{
         maxWidth: 'var(--container)',
         margin: '0 auto',
@@ -207,31 +205,18 @@ export default function HeroEnhanced() {
                 }}>
                   Generative AI Engineer · State Street
                 </div>
-                {uplift ? (
-                  <TextGenerateEffect
-                    as="h1"
-                    words="Himanshu Nakrani"
-                    style={{
-                      fontSize: 'clamp(1.7rem, 4.5vw, 2.5rem)',
-                      fontFamily: 'var(--font-display)',
-                      fontWeight: 700,
-                      lineHeight: 1.1,
-                      marginBottom: '0.25rem',
-                      color: 'var(--color-text)',
-                    }}
-                  />
-                ) : (
-                  <h1 style={{
+                <TextGenerateEffect
+                  as="h1"
+                  words="Himanshu Nakrani"
+                  style={{
                     fontSize: 'clamp(1.7rem, 4.5vw, 2.5rem)',
                     fontFamily: 'var(--font-display)',
                     fontWeight: 700,
                     lineHeight: 1.1,
                     marginBottom: '0.25rem',
                     color: 'var(--color-text)',
-                  }}>
-                    Himanshu Nakrani
-                  </h1>
-                )}
+                  }}
+                />
                 <p style={{
                   fontSize: '0.88rem',
                   color: 'var(--color-text-muted)',
@@ -301,14 +286,12 @@ export default function HeroEnhanced() {
                     LinkedIn
                   </a>
                 )
-                return uplift ? (
+                return (
                   <>
                     <MagneticButton radius={70} strength={5}>{contact}</MagneticButton>
                     <MagneticButton radius={60} strength={4}>{github}</MagneticButton>
                     <MagneticButton radius={60} strength={4}>{linkedin}</MagneticButton>
                   </>
-                ) : (
-                  <>{contact}{github}{linkedin}</>
                 )
               })()}
             </div>
