@@ -8,7 +8,8 @@ import {
   Search, Command as CommandIcon, ArrowRight, CornerDownLeft,
   FlaskConical, Activity, FileText
 } from 'lucide-react'
-import { projects, skills } from '../data'
+import { projects } from '../data/projects'
+import { skills } from '../data/skills'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -334,6 +335,10 @@ export default function CommandPalette() {
                 placeholder="Search pages, projects, skills..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                aria-controls="cmd-listbox"
+                aria-autocomplete="list"
+                aria-expanded="true"
+                aria-activedescendant={selectedIndex >= 0 ? `cmd-item-${selectedIndex}` : undefined}
                 style={{
                   flex: 1,
                   background: 'transparent',
@@ -361,6 +366,8 @@ export default function CommandPalette() {
 
             {/* Results */}
             <div
+              id="cmd-listbox"
+              role="listbox"
               ref={listRef}
               style={{ flex: 1, overflowY: 'auto', padding: 8 }}
               onClick={handleListClick}
@@ -375,8 +382,9 @@ export default function CommandPalette() {
                   if (items.length === 0) return null
                   const isLastGroup = groupIndex === arr.length - 1
                   return (
-                    <div key={type} style={{ marginBottom: isLastGroup ? 0 : 10 }}>
+                    <div key={type} role="group" aria-label={groupLabels[type]} style={{ marginBottom: isLastGroup ? 0 : 10 }}>
                       <div
+                        aria-hidden="true"
                         style={{
                           padding: '6px 10px 3px',
                           fontSize: '0.62rem',
@@ -398,6 +406,9 @@ export default function CommandPalette() {
                         return (
                           <div
                             key={item.id}
+                            id={`cmd-item-${idx}`}
+                            role="option"
+                            aria-selected={isSelected}
                             data-index={idx}
                             style={{
                               display: 'flex',

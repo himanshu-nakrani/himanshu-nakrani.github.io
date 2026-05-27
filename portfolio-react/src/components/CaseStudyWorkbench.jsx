@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import DataIcon from './DataIcon'
-import { caseStudies } from '../data'
+import { caseStudies } from '../data/projects'
 import { useUplift } from '../lib/uplift'
 import SpotlightGlowCard from './ui/SpotlightGlowCard'
 

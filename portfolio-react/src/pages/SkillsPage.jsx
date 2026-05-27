@@ -3,7 +3,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Award, Sparkles, Layers, TrendingUp, ExternalLink, ChevronRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import DataIcon from '../components/DataIcon'
-import { skills, certifications } from '../data'
+import { skills, certifications } from '../data/skills'
 
 /* Primary tools - showcased in a bento grid */
 const PRIMARY_STACK = [

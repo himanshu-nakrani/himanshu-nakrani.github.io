@@ -6,7 +6,7 @@ import { useUplift } from '../lib/uplift'
 import AuroraBackground from './ui/AuroraBackground'
 import TextGenerateEffect from './ui/TextGenerateEffect'
 import MagneticButton from './ui/MagneticButton'
-import { currentFocusItems, recruiterSummary } from '../data'
+import { currentFocusItems, recruiterSummary } from '../data/hero'
 
 const stats = [
   { num: '2+',   label: 'Years exp.',    detail: 'Intern → Emerging Lead', link: '/experience' },
@@ -186,6 +186,10 @@ export default function HeroEnhanced() {
                 <img
                   src="/himanshu.jpg"
                   alt="Himanshu Nakrani"
+                  width="360"
+                  height="540"
+                  fetchPriority="high"
+                  decoding="async"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>

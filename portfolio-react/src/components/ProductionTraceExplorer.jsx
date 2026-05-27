@@ -1,7 +1,7 @@
 import { useRef, useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
-import { productionTraceStages } from '../data'
+import { productionTraceStages } from '../data/lab'
 import { useUplift } from '../lib/uplift'
 import AnimatedBeam from './ui/AnimatedBeam'
 

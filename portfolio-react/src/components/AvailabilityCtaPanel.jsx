@@ -1,4 +1,4 @@
-import { availabilityStatus } from '../data'
+import { availabilityStatus } from '../data/hero'
 
 export default function AvailabilityCtaPanel({ status = availabilityStatus }) {
   return (

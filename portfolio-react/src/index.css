@@ -564,6 +564,14 @@ section[id] {
   border-radius: var(--radius-sm);
 }
 
+.tag-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tag-pill { transition: none; }
+}
+
 /* ============================================
    GLASS MORPHISM (sparingly used: navbar, modals)
    ============================================ */
@@ -829,6 +837,10 @@ section[id] {
 }
 
 @media (max-width: 768px) {
+  .scroll-progress-rail { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
   .scroll-progress-rail { display: none; }
 }
 
