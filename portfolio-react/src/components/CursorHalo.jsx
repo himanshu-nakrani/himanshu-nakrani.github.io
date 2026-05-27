@@ -6,8 +6,8 @@ import { useReducedMotion } from 'framer-motion'
  * on desktop only. No visible dot, no chromatic flash. The native
  * cursor is preserved; this is purely atmospheric lighting.
  *
- * - Hidden on touch devices and prefers-reduced-motion (returns null
- *   so no listeners or rAF loop run at all)
+ * - Hidden on touch devices and prefers-reduced-motion (effect bails so
+ *   no listeners or rAF loop run; CSS also hides the element)
  * - rAF only runs while easing toward the pointer; idles to zero CPU at rest
  * - Hides when pointer leaves the window
  */
@@ -106,10 +106,11 @@ export default function CursorHalo() {
       document.removeEventListener('mouseleave', onLeave)
       document.removeEventListener('visibilitychange', onVisibility)
       if (rafId.current) cancelAnimationFrame(rafId.current)
+      rafId.current = 0
+      lastTime.current = 0
+      visible.current = false
     }
   }, [reduceMotion])
-
-  if (reduceMotion) return null
 
   return <div ref={haloRef} aria-hidden="true" className="cursor-halo" />
 }

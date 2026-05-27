@@ -7,7 +7,8 @@ import { useReducedMotion } from 'framer-motion'
  * variable on the fill element so we don't trigger React re-renders.
  *
  * - Hidden under 768px (the rail competes with thumb scroll on touch)
- * - Unmounted under prefers-reduced-motion (decorative; no listeners or rAF)
+ * - Hidden under prefers-reduced-motion (decorative; effect bails so no
+ *   listeners or rAF loop run; CSS also hides the element)
  * - Throttled via rAF
  */
 export default function ScrollProgressRail() {
@@ -42,10 +43,9 @@ export default function ScrollProgressRail() {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', update)
       if (rafId.current) cancelAnimationFrame(rafId.current)
+      rafId.current = 0
     }
   }, [reduceMotion])
-
-  if (reduceMotion) return null
 
   return (
     <div className="scroll-progress-rail" aria-hidden="true">
