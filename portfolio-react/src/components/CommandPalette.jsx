@@ -331,13 +331,15 @@ export default function CommandPalette() {
               <input
                 ref={inputRef}
                 type="text"
+                role="combobox"
                 aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-controls="cmd-listbox"
                 aria-autocomplete="list"
-                aria-expanded="true"
+                aria-expanded={open}
+                aria-haspopup="listbox"
                 aria-activedescendant={selectedIndex >= 0 ? `cmd-item-${selectedIndex}` : undefined}
                 style={{
                   flex: 1,
