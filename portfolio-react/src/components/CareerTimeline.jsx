@@ -34,7 +34,7 @@ const stepAbbrev = {
   'Emerging Lead': 'Lead',
 }
 
-function StatCard({ icon: Icon, value, label, color, index }) {
+function StatCard({ icon: _Icon, value, label, color, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
 
@@ -86,7 +86,7 @@ function ProgressionTrack({ steps, currentStep }) {
   )
 }
 
-function CategorySection({ icon: Icon, label, color, bullets, indices }) {
+function CategorySection({ icon: _Icon, label, color, bullets, indices }) {
   const filteredBullets = indices.map(i => bullets[i]).filter(Boolean)
   if (!filteredBullets.length) return null
 
