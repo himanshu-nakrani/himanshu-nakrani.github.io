@@ -65,10 +65,10 @@ const platforms = [
     border: 'rgba(255,157,0,0.25)',
     iconName: 'Bot',
     stats: [
-      { icon: Code2, label: 'Models', value: '9' },
+      { icon: Code2, label: 'Models', value: '10' },
       { icon: GitFork, label: 'Datasets', value: '9' },
       { icon: Star, label: 'Spaces', value: '6' },
-      { icon: Users, label: 'Downloads', value: '1.4K+' },
+      { icon: Users, label: 'Downloads', value: '1.3K+' },
     ],
     badge: 'Models, Datasets & Spaces',
   },
@@ -76,17 +76,17 @@ const platforms = [
 
 /* ─── Kaggle expert tiers ──────────────────────────────── */
 const kaggleTiers = [
-  { title: 'Datasets Expert', rank: '1,211', total: '9,360', highest: '241', silver: 3, bronze: 4 },
-  { title: 'Notebooks Expert', rank: '2,815', total: '61,511', highest: '479', silver: 1, bronze: 16 },
+  { title: 'Datasets Expert', rank: '1,056', total: '9,785', highest: '241', silver: 3, bronze: 4 },
+  { title: 'Notebooks Expert', rank: '2,883', total: '62,296', highest: '479', silver: 1, bronze: 16 },
 ]
 const kaggleCounters = [
-  ['74', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['53', 'Followers'],
+  ['74', 'Notebooks'], ['14', 'Datasets'], ['4', 'Competitions'], ['54', 'Followers'],
 ]
 
 /* ─── GitHub stats ─────────────────────────────────────── */
 const ghStats = [
   { num: '43',          label: 'Public Repos' },
-  { num: '635',         label: 'Lifetime Commits' },
+  { num: '680',         label: 'Lifetime Commits' },
   { num: 'TypeScript',  label: 'Primary Lang' },
   { num: '2021',        label: 'Member Since' },
 ]
