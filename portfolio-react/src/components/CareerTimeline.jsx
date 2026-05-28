@@ -34,7 +34,8 @@ const stepAbbrev = {
   'Emerging Lead': 'Lead',
 }
 
-function StatCard({ icon: _Icon, value, label, color, index }) {
+// eslint-disable-next-line no-unused-vars
+function StatCard({ icon: StatIconValue, value, label, color, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
 
@@ -48,7 +49,7 @@ function StatCard({ icon: _Icon, value, label, color, index }) {
       style={{ '--stat-color': color }}
     >
       <div className="career-stat-icon">
-        <Icon size={16} />
+        <StatIconValue size={16} />
       </div>
       <div className="career-stat-value">{value}</div>
       <div className="career-stat-label">{label}</div>
@@ -86,14 +87,15 @@ function ProgressionTrack({ steps, currentStep }) {
   )
 }
 
-function CategorySection({ icon: _Icon, label, color, bullets, indices }) {
+// eslint-disable-next-line no-unused-vars
+function CategorySection({ icon: CatIconValue, label, color, bullets, indices }) {
   const filteredBullets = indices.map(i => bullets[i]).filter(Boolean)
   if (!filteredBullets.length) return null
 
   return (
     <div className="career-category" style={{ '--cat-color': color }}>
       <div className="career-category-header">
-        <Icon size={12} />
+        <CatIconValue size={12} />
         <span>{label}</span>
       </div>
       <ul className="career-category-list">
@@ -192,16 +194,27 @@ function ExperienceCard({ item, index }) {
                             {categories.map(cat => (
                               <CategorySection 
                                 key={cat.key}
-                                {...cat}
+                                icon={cat.icon}
+                                label={cat.label}
+                                color={cat.color}
+                                indices={cat.indices}
                                 bullets={item.bullets}
                               />
                             ))}
                           </div>
                         ) : (
-                          <CategorySection 
-                            {...categories.find(c => c.key === activeCategory)}
-                            bullets={item.bullets}
-                          />
+                          (() => {
+                            const activeCat = categories.find(c => c.key === activeCategory);
+                            return activeCat ? (
+                              <CategorySection
+                                icon={activeCat.icon}
+                                label={activeCat.label}
+                                color={activeCat.color}
+                                indices={activeCat.indices}
+                                bullets={item.bullets}
+                              />
+                            ) : null;
+                          })()
                         )}
                       </motion.div>
                     </AnimatePresence>
