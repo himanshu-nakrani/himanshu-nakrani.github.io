@@ -207,8 +207,8 @@ export const featuredHighlights = [
 ]
 
 export const proofLinks = [
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '44 repos' },
-  { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9', sublabel: '10 Models, 9 Datasets, 6 Spaces' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '45 repos' },
+  { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9', sublabel: '10 Models, 9 Datasets, 3 Spaces' },
   { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', sublabel: 'Expert' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', sublabel: '180 solved' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
