@@ -134,6 +134,7 @@ export default function FeaturedProjects({ projects }) {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} on GitHub`}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
