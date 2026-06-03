@@ -42,6 +42,7 @@ export default function LazyImage({ src, alt, style, ...props }) {
           alt={alt}
           onLoad={() => setIsLoaded(true)}
           className="lazy-image"
+          referrerPolicy="no-referrer"
           style={{
             width: '100%',
             height: '100%',
