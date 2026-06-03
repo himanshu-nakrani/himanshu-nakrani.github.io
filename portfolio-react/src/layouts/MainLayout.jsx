@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Github, Linkedin, Mail, FileText } from 'lucide-react'
 import AmbientAtmosphere from '../components/AmbientAtmosphere'
 import Navbar from '../components/Navbar'
@@ -9,8 +9,36 @@ import SkipLink from '../components/SkipLink'
 import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
-import CommandPalette from '../components/CommandPalette'
 import CmdKHint from '../components/CmdKHint'
+import RouteFallback from '../components/RouteFallback'
+import { prefetchRoute } from '../lib/routePrefetch'
+
+const CommandPalette = lazy(() => import('../components/CommandPalette'))
+
+function DeferredCommandPalette({ openSignal }) {
+  const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    if (enabled) return undefined
+
+    const enable = () => setEnabled(true)
+    const runWhenIdle = window.requestIdleCallback || ((callback) => window.setTimeout(callback, 1))
+    const cancelIdle = window.cancelIdleCallback || window.clearTimeout
+    const idleId = runWhenIdle(enable, { timeout: 3500 })
+
+    return () => {
+      cancelIdle(idleId)
+    }
+  }, [enabled])
+
+  if (!enabled && openSignal <= 0) return null
+
+  return (
+    <Suspense fallback={null}>
+      <CommandPalette initialOpen={openSignal > 0} openSignal={openSignal} />
+    </Suspense>
+  )
+}
 
 const footerNav = [
   { label: 'About', href: '/#about' },
@@ -33,6 +61,23 @@ const builtWith = ['React', 'Vite', 'Framer Motion', 'Vercel']
 export default function MainLayout({ isDark, setIsDark }) {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
+  const [commandPaletteOpenSignal, setCommandPaletteOpenSignal] = useState(0)
+
+  const openCommandPalette = () => {
+    setCommandPaletteOpenSignal((signal) => signal + 1)
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        openCommandPalette()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   useEffect(() => {
     const hash = location.hash
@@ -64,8 +109,8 @@ export default function MainLayout({ isDark, setIsDark }) {
     ? {}
     : {
         initial: { opacity: 0, y: 10 },
-        animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
-        exit: { opacity: 0, y: -6, transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] } },
+        animate: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.25, 0.1, 0.25, 1] } },
+        exit: { opacity: 0, y: -4, transition: { duration: 0.1, ease: [0.25, 0.1, 0.25, 1] } },
       }
 
   return (
@@ -76,12 +121,13 @@ export default function MainLayout({ isDark, setIsDark }) {
         <AmbientAtmosphere enableAnimation intensity="subtle" />
         <CursorHalo />
         <ScrollProgressRail />
-        <CommandPalette />
+        <DeferredCommandPalette openSignal={commandPaletteOpenSignal} />
         <CmdKHint />
         <div className="app-shell-content">
           <Navbar
             isDark={isDark}
             setIsDark={setIsDark}
+            onCommandPaletteOpen={openCommandPalette}
           />
 
           <main id="main-content">
@@ -93,7 +139,9 @@ export default function MainLayout({ isDark, setIsDark }) {
                 animate="animate"
                 exit="exit"
               >
-                <Outlet />
+                <Suspense fallback={<RouteFallback />}>
+                  <Outlet />
+                </Suspense>
               </motion.div>
             </AnimatePresence>
           </main>
@@ -154,9 +202,15 @@ export default function MainLayout({ isDark, setIsDark }) {
                   </h4>
                   <nav aria-label="Footer navigation" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {footerNav.map(item => (
-                      <a key={item.label} href={item.href} className="footer-nav-link">
+                      <Link
+                        key={item.label}
+                        to={item.href}
+                        className="footer-nav-link"
+                        onMouseEnter={() => prefetchRoute(item.href)}
+                        onFocus={() => prefetchRoute(item.href)}
+                      >
                         {item.label}
-                      </a>
+                      </Link>
                     ))}
                   </nav>
                 </div>

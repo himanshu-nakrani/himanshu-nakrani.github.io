@@ -4,6 +4,7 @@ import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 
 import { NavLink, Link, useLocation } from 'react-router-dom'
+import { prefetchRoute, prefetchRoutesDuringIdle } from '../lib/routePrefetch'
 
 const MotionNavLink = motion(NavLink)
 
@@ -22,28 +23,38 @@ const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-export default function Navbar({ isDark, setIsDark }) {
+export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
   const reduceMotion = useReducedMotion()
   const hamburgerRef = useRef(null)
   const menuRef = useRef(null)
+  const scrolledRef = useRef(false)
+  const tickingRef = useRef(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const updateScrolled = () => {
+      tickingRef.current = false
+      const next = window.scrollY > 20
+      if (next === scrolledRef.current) return
+      scrolledRef.current = next
+      setScrolled(next)
+    }
+
+    const onScroll = () => {
+      if (tickingRef.current) return
+      tickingRef.current = true
+      requestAnimationFrame(updateScrolled)
+    }
+
+    updateScrolled()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const isPageActive = (label) => {
-    if (label === 'Projects')    return location.pathname === '/projects'
-    if (label === 'Experience')  return location.pathname === '/experience'
-    if (label === 'Profiles')    return location.pathname === '/profiles'
-    if (label === 'Research')    return location.pathname === '/research'
-    if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/about'
-    return false
+    return navLinks.some((item) => item.label === label && item.to === location.pathname)
   }
 
   const scrollToId = useCallback((id) => {
@@ -67,7 +78,9 @@ export default function Navbar({ isDark, setIsDark }) {
     window.history.replaceState(null, '', `/#${id}`)
   }
 
-  useEffect(() => { setOpen(false) }, [location.pathname])
+  useEffect(() => {
+    return prefetchRoutesDuringIdle(navLinks.map((item) => item.to), 140)
+  }, [])
 
   useEffect(() => {
     if (!open) return
@@ -214,8 +227,10 @@ export default function Navbar({ isDark, setIsDark }) {
                         position: 'relative',
                       }}
                       onMouseEnter={(e) => {
+                        prefetchRoute(item.to)
                         if (!active) e.currentTarget.style.color = 'var(--color-text)'
                       }}
+                      onFocus={() => prefetchRoute(item.to)}
                       onMouseLeave={(e) => {
                         if (!active) e.currentTarget.style.color = 'var(--color-text-muted)'
                       }}
@@ -244,6 +259,8 @@ export default function Navbar({ isDark, setIsDark }) {
             <Link
               to="/minimal"
               title="Switch to minimal version"
+              onMouseEnter={() => prefetchRoute('/minimal')}
+              onFocus={() => prefetchRoute('/minimal')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -277,8 +294,7 @@ export default function Navbar({ isDark, setIsDark }) {
             {/* Command Palette Trigger */}
             <button
               onClick={() => {
-                const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
-                document.dispatchEvent(event)
+                onCommandPaletteOpen?.()
               }}
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"
@@ -404,6 +420,8 @@ export default function Navbar({ isDark, setIsDark }) {
                       <NavLink
                         to={item.to}
                         onClick={(event) => handleNavClick(item, event)}
+                        onFocus={() => prefetchRoute(item.to)}
+                        onTouchStart={() => prefetchRoute(item.to)}
                         aria-current={active ? 'page' : undefined}
                         style={{
                           display: 'flex',

@@ -7,7 +7,7 @@ import {
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
   Search, Command as CommandIcon, ArrowRight, CornerDownLeft
 } from 'lucide-react'
-import { projects, skills, experience } from '../data'
+import { projects, skills } from '../data'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -29,8 +29,8 @@ const quickActions = [
   { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:him.nakrani@gmail.com', external: true },
 ]
 
-export default function CommandPalette() {
-  const [open, setOpen] = useState(false)
+export default function CommandPalette({ initialOpen = false, openSignal = 0 }) {
+  const [open, setOpen] = useState(initialOpen)
   const [search, setSearch] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const navigate = useNavigate()
@@ -69,12 +69,12 @@ export default function CommandPalette() {
     // Skills (top 4)
     skills.slice(0, 4).forEach((cat) => {
       items.push({
-        id: `skill-${cat.category}`,
+        id: `skill-${cat.label}`,
         type: 'skill',
-        name: cat.category,
+        name: cat.label,
         count: cat.items?.length || 0,
         icon: Code2,
-        keywords: `${cat.category} ${cat.items?.join(' ') || ''}`.toLowerCase(),
+        keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
         action: () => navigate('/skills'),
       })
     })
@@ -139,17 +139,9 @@ export default function CommandPalette() {
     setSelectedIndex(0)
   }, [search])
 
-  // Keyboard shortcut to open
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        setOpen((prev) => !prev)
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
+    if (openSignal > 0) setOpen(true)
+  }, [openSignal])
 
   // Focus input when opened
   useEffect(() => {
