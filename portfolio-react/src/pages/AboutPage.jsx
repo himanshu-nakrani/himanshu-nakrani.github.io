@@ -236,8 +236,9 @@ function Timeline({ items }) {
    ======================================== */
 const stats = [
   { value: '2+', label: 'Years Experience', icon: Briefcase },
-  { value: '100+', label: 'Users Served', icon: Users },
-  { value: '75%', label: 'Latency Reduction', icon: Zap },
+  { value: '10+', label: 'Business Units', icon: Users },
+  { value: '200+', label: 'Total Users', icon: Users },
+  { value: '75%', label: 'Avg Latency Cut', icon: Zap },
   { value: '2', label: 'Publications', icon: BookOpen },
 ]
 
@@ -259,7 +260,7 @@ const journey = [
     year: '2023 - Present',
     title: 'AI Software Developer',
     subtitle: 'State Street Corporation',
-    description: 'Building enterprise LLM systems for financial data analysis. Leading Text-to-SQL and RAG pipelines.',
+    description: 'Building LLM systems for financial-data workflows: Text-to-SQL, RAG, agent tooling, and evaluation.',
   },
   {
     year: '2025',
@@ -348,9 +349,9 @@ export default function AboutPage() {
             marginBottom: '1.5rem',
             maxWidth: 600,
           }}>
-            I build <strong style={{ color: 'var(--color-text)' }}>production AI systems</strong> at 
-            State Street Corporation — enterprise LLM pipelines that transform complex financial data 
-            into actionable insights. From fine-tuning models to shipping scalable APIs.
+            I build <strong style={{ color: 'var(--color-text)' }}>LLM systems for financial-data workflows</strong> at 
+            State Street Corporation — Text-to-SQL, RAG, agent tooling, and evaluation infrastructure. 
+            My work spans backend APIs, retrieval systems, model adaptation, and observability.
           </p>
           
           {/* CTAs */}

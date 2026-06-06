@@ -1,19 +1,32 @@
 import { useMemo, useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2, ChevronDown, ArrowRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
-import { projects } from '../data'
+import DataIcon from '../components/DataIcon'
+import { projects, technicalCaseStudies } from '../data/projects'
 
 /* ─── Badge styles ─────────────────────────────────────── */
 const badgeStyle = {
   Production:   { bg: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent)',  border: 'color-mix(in srgb, var(--color-accent) 30%, transparent)' },
   'In Progress':{ bg: 'color-mix(in srgb, #6b7fff 10%, transparent)',              color: '#8b9fff',              border: 'rgba(107,124,255,0.3)' },
+  Research:     { bg: 'color-mix(in srgb, var(--color-accent) 9%, transparent)',   color: 'var(--color-accent)',  border: 'color-mix(in srgb, var(--color-accent) 24%, transparent)' },
 }
 const metricIcon = { performance: Zap, users: Users, efficiency: BarChart2 }
 
 /* ─── Top-8 most-relevant tags ─────────────────────────── */
 const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'Deep Learning', 'Python', 'AI Agents', 'LSTM']
+
+/* ─── Deep-dive slug lookup ───────────────────────────── */
+const deepDiveSlugs = new Set(technicalCaseStudies.map(s => s.slug))
+
+function getDeepDiveSlug(title) {
+  const slug = title.toLowerCase().replace(/\s+/g, '-')
+  if (deepDiveSlugs.has(slug)) return slug
+  const match = technicalCaseStudies.find(s => s.title === title)
+  return match ? match.slug : null
+}
 
 /* ─── Page-level stats ─────────────────────────────────── */
 const pageStats = [
@@ -61,7 +74,7 @@ function ProjectModal({ project, onClose }) {
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.2rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '2rem' }}>{project.icon}</span>
+                    <span style={{ color: 'var(--color-accent)' }}><DataIcon name={project.icon} size={26} /></span>
                     <div>
                       <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 4 }}>{project.title}</h2>
                       {project.badge && (
@@ -201,8 +214,8 @@ function FeaturedCard({ item, onClick }) {
         {/* Header row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.15 : 1 }} transition={{ duration: 0.2 }} style={{ fontSize: '1.8rem' }}>
-              {item.icon}
+            <motion.span animate={{ scale: hovered ? 1.15 : 1 }} transition={{ duration: 0.2 }} style={{ color: 'var(--color-accent)' }}>
+              <DataIcon name={item.icon} size={24} />
             </motion.span>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', lineHeight: 1.2 }}>{item.title}</h3>
@@ -252,8 +265,35 @@ function FeaturedCard({ item, onClick }) {
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 'auto' }}>
-          {item.tags.map(t => <Tag key={t}>{t}</Tag>)}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginTop: 'auto' }}>
+          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+            {item.tags.slice(0, 3).map(t => <Tag key={t}>{t}</Tag>)}
+            {item.tags.length > 3 && <span style={{ fontSize: '0.68rem', color: 'var(--text2)', opacity: 0.45, alignSelf: 'center' }}>+{item.tags.length - 3}</span>}
+          </div>
+          {getDeepDiveSlug(item.title) && (
+            <Link
+              to={`/projects/${getDeepDiveSlug(item.title)}`}
+              onClick={e => e.stopPropagation()}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                color: 'var(--color-accent)',
+                textDecoration: 'none',
+                fontFamily: 'var(--font-mono)',
+                padding: '4px 10px',
+                borderRadius: 8,
+                border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)',
+                background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              Deep dive <ArrowRight size={11} />
+            </Link>
+          )}
         </div>
       </div>
     </motion.article>
@@ -293,8 +333,8 @@ function ProjectCard({ item, index, onClick }) {
       <div style={{ padding: '1.1rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', flex: 1 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.1 : 1 }} transition={{ duration: 0.18 }} style={{ fontSize: '1.35rem' }}>
-              {item.icon}
+            <motion.span animate={{ scale: hovered ? 1.1 : 1 }} transition={{ duration: 0.18 }} style={{ color: 'var(--color-accent)' }}>
+              <DataIcon name={item.icon} size={20} />
             </motion.span>
             <h3 style={{ fontSize: '0.93rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.25 }}>{item.title}</h3>
           </div>
@@ -349,6 +389,9 @@ export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
+  const [filtersExpanded, setFiltersExpanded] = useState(false)
+
+  const activeFilterCount = (activeFilter !== 'All' ? 1 : 0) + (activeTag !== 'All' ? 1 : 0)
 
   const filteredProjects = useMemo(() =>
     projects.filter(p => {
@@ -366,15 +409,21 @@ export default function ProjectsPage() {
   )
 
   const isFiltered = query || activeFilter !== 'All' || activeTag !== 'All'
-  const featured = !isFiltered ? filteredProjects.filter(p => p.badge === 'Production').slice(0, 2) : []
-  const rest = !isFiltered ? filteredProjects.filter(p => !featured.includes(p)) : filteredProjects
+  const featured = useMemo(
+    () => (!isFiltered ? filteredProjects.filter(p => p.badge === 'Production').slice(0, 2) : []),
+    [filteredProjects, isFiltered],
+  )
+  const rest = useMemo(
+    () => (!isFiltered ? filteredProjects.filter(p => !featured.includes(p)) : filteredProjects),
+    [filteredProjects, featured, isFiltered],
+  )
 
   return (
     <section className="mvp2-page">
       <PageHeader
         kicker="Portfolio"
         title="Selected Works"
-        description="Production LLMs, RAG pipelines, and ML systems built for real-world scale."
+        description="LLM backends, RAG pipelines, Text-to-SQL systems, and applied ML projects."
       />
 
       {/* Stats strip - modern bento style */}
@@ -418,11 +467,11 @@ export default function ProjectsPage() {
       </div>
 
       {/* Modern filter bar with glass effect */}
-      <div style={{ 
-        border: '1px solid var(--color-border)', 
-        borderRadius: 18, 
+      <div style={{
+        border: '1px solid var(--color-border)',
+        borderRadius: 18,
         background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
-        padding: '1rem 1.25rem', 
+        padding: '1rem 1.25rem',
         marginBottom: '2rem',
         boxShadow: 'var(--shadow-sm)',
       }}>
@@ -443,19 +492,20 @@ export default function ProjectsPage() {
             <input
               type="search"
               placeholder="Search projects..."
+              aria-label="Search projects"
               value={query}
               onChange={e => setQuery(e.target.value)}
               style={{
-                flex: 1, 
-                border: 'none', 
+                flex: 1,
+                border: 'none',
                 background: 'transparent',
-                color: 'var(--color-text)', 
-                outline: 'none', 
+                color: 'var(--color-text)',
+                outline: 'none',
                 fontSize: '0.88rem',
               }}
             />
           </div>
-          <div style={{ 
+          <div style={{
             padding: '0.5rem 0.85rem',
             background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
             border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
@@ -464,25 +514,59 @@ export default function ProjectsPage() {
             fontFamily: 'var(--font-mono)',
             color: 'var(--color-accent)',
             fontWeight: 600,
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
           }}>
             {filteredProjects.length} results
           </div>
         </div>
 
-        {/* Filter pills - two rows for better organization */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+        {/* Mobile filter toggle — visible only on small screens */}
+        <button
+          className="mobile-filter-toggle"
+          onClick={() => setFiltersExpanded(v => !v)}
+          aria-expanded={filtersExpanded}
+          aria-controls="project-filter-rows"
+        >
+          <Filter size={12} aria-hidden="true" />
+          <span>Filters</span>
+          {activeFilterCount > 0 && (
+            <span className="mobile-filter-count">{activeFilterCount}</span>
+          )}
+          <ChevronDown
+            size={12}
+            aria-hidden="true"
+            style={{
+              transform: filtersExpanded ? 'rotate(180deg)' : 'none',
+              transition: 'transform 0.18s ease',
+              marginLeft: 'auto',
+            }}
+          />
+        </button>
+
+        {/* Filter rows — collapsible on mobile, always visible on desktop */}
+        <div
+          id="project-filter-rows"
+          className={`project-filter-rows${filtersExpanded ? ' is-expanded' : ''}`}
+        >
           {/* Status filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
+          <div
+            role="group"
+            aria-label="Project status filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
+          >
+            <span style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
+              color: 'var(--color-text-muted)',
               marginRight: 4,
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              flexShrink: 0,
             }}>
               <Filter size={11} />
               Status
@@ -490,35 +574,44 @@ export default function ProjectsPage() {
             {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
               <button
                 key={f}
+                aria-pressed={activeFilter === f}
                 onClick={() => setActiveFilter(f)}
                 style={{
-                  background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
-                  color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
+                  background: activeFilter === f ? 'var(--color-accent)' : 'transparent',
+                  color: activeFilter === f ? 'var(--color-accent-fg)' : 'var(--color-text-subtle)',
                   border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                  borderRadius: 8, 
+                  borderRadius: 8,
                   padding: '5px 12px',
-                  fontSize: '0.74rem', 
-                  fontWeight: 600, 
-                  cursor: 'pointer', 
+                  fontSize: '0.72rem',
+                  fontWeight: activeFilter === f ? 600 : 500,
+                  cursor: 'pointer',
                   transition: 'all 0.18s',
                   boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >{f}</button>
             ))}
           </div>
 
           {/* Tech/tag filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
+          <div
+            role="group"
+            aria-label="Project technology filters"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="filter-scroll-row"
+          >
+            <span style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
+              color: 'var(--color-text-muted)',
               marginRight: 4,
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              flexShrink: 0,
             }}>
               <Sparkles size={11} />
               Tech
@@ -526,18 +619,22 @@ export default function ProjectsPage() {
             {['All', ...FEATURED_TAGS].map(tag => (
               <button
                 key={tag}
+                aria-pressed={activeTag === tag}
                 onClick={() => setActiveTag(tag)}
                 style={{
                   border: '1px solid',
-                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
-                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
-                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                  borderRadius: 6, 
+                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'transparent',
+                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'transparent',
+                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-subtle)',
+                  borderRadius: 6,
                   padding: '4px 10px',
-                  cursor: 'pointer', 
-                  fontSize: '0.7rem', 
+                  cursor: 'pointer',
+                  fontSize: '0.68rem',
                   fontFamily: 'var(--font-mono)',
                   transition: 'all 0.15s',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                  opacity: activeTag === tag ? 1 : 0.6,
                 }}
               >{tag}</button>
             ))}
@@ -569,7 +666,7 @@ export default function ProjectsPage() {
         )}
 
         {/* All other projects */}
-        <motion.div key={`grid-${activeFilter}-${activeTag}-${query}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
           {rest.length > 0 && !isFiltered && (
             <p style={{
               display: 'flex', alignItems: 'center', gap: 6,
@@ -602,11 +699,7 @@ export default function ProjectsPage() {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
-        @media (max-width: 480px) {
-          .projects-stats-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
+        .filter-scroll-row::-webkit-scrollbar { display: none; }
       `}</style>
     </section>
   )

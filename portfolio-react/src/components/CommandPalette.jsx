@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
   ExternalLink, Github, Linkedin, Mail, Sun, Moon,
-  Search, Command as CommandIcon, ArrowRight, CornerDownLeft
+  Search, Command as CommandIcon, ArrowRight, CornerDownLeft,
+  FlaskConical, Activity, FileText
 } from 'lucide-react'
-import { projects, skills } from '../data'
+import { projects } from '../data/projects'
+import { skills } from '../data/skills'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -20,17 +22,27 @@ const pages = [
   { id: 'skills', name: 'Skills', icon: Code2, path: '/skills', keywords: 'tech stack languages' },
   { id: 'projects', name: 'Projects', icon: FolderGit2, path: '/projects', keywords: 'portfolio work apps' },
   { id: 'research', name: 'Research', icon: BookOpen, path: '/research', keywords: 'papers publications' },
+  { id: 'lab', name: 'Demo Lab', icon: FlaskConical, path: '/lab', keywords: 'lab demo interactive trace agent retrieval' },
   { id: 'profiles', name: 'Profiles', icon: User, path: '/profiles', keywords: 'social links contact' },
+]
+
+const deepDivePages = [
+  { id: 'alpha-copilot', name: 'Alpha Copilot Deep Dive', icon: Activity, path: '/projects/alpha-copilot', keywords: 'alpha copilot text-to-sql case study production' },
+  { id: 'agent-forge', name: 'Agent Forge Deep Dive', icon: Activity, path: '/projects/agent-forge', keywords: 'agent forge builder case study production' },
+  { id: 'fund-rag', name: 'Prospectus RAG Deep Dive', icon: Activity, path: '/projects/fund-prospectus-rag', keywords: 'fund prospectus rag retrieval case study production' },
+  { id: 'llama-reasoning', name: 'LLaMA Reasoning Research', icon: FileText, path: '/research/llama-3b-reasoning', keywords: 'llama reasoning fine-tuning qlora research' },
+  { id: 'tinymath', name: 'TinyMathReason Research', icon: FileText, path: '/research/tinymathreason-1b', keywords: 'tinymathreason pretraining tpu research' },
 ]
 
 const quickActions = [
   { id: 'github', name: 'Open GitHub', icon: Github, url: 'https://github.com/himanshu-nakrani', external: true },
   { id: 'linkedin', name: 'Open LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/himanshu-nakrani', external: true },
-  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:him.nakrani@gmail.com', external: true },
+  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:himanshunakrani0@gmail.com', external: true },
+  { id: 'resume', name: 'View Resume', icon: FileText, url: '/resume.pdf', external: true },
 ]
 
-export default function CommandPalette({ initialOpen = false, openSignal = 0 }) {
-  const [open, setOpen] = useState(initialOpen)
+export default function CommandPalette() {
+  const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const navigate = useNavigate()
@@ -45,6 +57,18 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
     pages.forEach((page) => {
       items.push({
         id: `page-${page.id}`,
+        type: 'page',
+        name: page.name,
+        icon: page.icon,
+        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+        action: () => navigate(page.path),
+      })
+    })
+
+    // Deep-dive pages
+    deepDivePages.forEach((page) => {
+      items.push({
+        id: `deepdive-${page.id}`,
         type: 'page',
         name: page.name,
         icon: page.icon,
@@ -132,16 +156,76 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
     return groups
   }, [filteredItems])
 
+  // Create a flattened array of items in the exact render order
+  // to enable O(1) lookup during delegated events via data-index
+  const renderedItems = useMemo(() => {
+    return [
+      ...groupedItems.page,
+      ...groupedItems.project,
+      ...groupedItems.skill,
+      ...groupedItems.action
+    ]
+  }, [groupedItems])
+
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
+
+  // Route path hints for pages
+  const pagePaths = {
+    'Home': '/',
+    'Experience': '/experience',
+    'Skills': '/skills',
+    'Projects': '/projects',
+    'Research': '/research',
+    'Demo Lab': '/lab',
+    'Profiles': '/profiles',
+    'Alpha Copilot Deep Dive': '/projects/alpha-copilot',
+    'Agent Forge Deep Dive': '/projects/agent-forge',
+    'Prospectus RAG Deep Dive': '/projects/fund-prospectus-rag',
+    'LLaMA Reasoning Research': '/research/llama-3b-reasoning',
+    'TinyMathReason Research': '/research/tinymathreason-1b',
+  }
 
   // Reset selection when search changes
   useEffect(() => {
     setSelectedIndex(0)
   }, [search])
 
+  // Memoized event handlers for delegation
+  const handleListMouseOver = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        setSelectedIndex(idx)
+      }
+    }
+  }, [])
+
+  const handleListClick = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        const item = renderedItems[idx]
+        if (item) {
+          item.action()
+          setOpen(false)
+        }
+      }
+    }
+  }, [renderedItems])
+
+  // Keyboard shortcut to open
   useEffect(() => {
-    if (openSignal > 0) setOpen(true)
-  }, [openSignal])
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setOpen((prev) => !prev)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   // Focus input when opened
   useEffect(() => {
@@ -247,10 +331,16 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
               <input
                 ref={inputRef}
                 type="text"
+                role="combobox"
                 aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                aria-controls="cmd-listbox"
+                aria-autocomplete="list"
+                aria-expanded={open}
+                aria-haspopup="listbox"
+                aria-activedescendant={selectedIndex >= 0 ? `cmd-item-${selectedIndex}` : undefined}
                 style={{
                   flex: 1,
                   background: 'transparent',
@@ -277,24 +367,33 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
             </div>
 
             {/* Results */}
-            <div ref={listRef} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+            <div
+              id="cmd-listbox"
+              role="listbox"
+              ref={listRef}
+              style={{ flex: 1, overflowY: 'auto', padding: 8 }}
+              onClick={handleListClick}
+              onMouseOver={handleListMouseOver}
+            >
               {filteredItems.length === 0 ? (
                 <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
                   No results found for "{search}"
                 </div>
               ) : (
-                Object.entries(groupedItems).map(([type, items]) => {
+                Object.entries(groupedItems).map(([type, items], groupIndex, arr) => {
                   if (items.length === 0) return null
+                  const isLastGroup = groupIndex === arr.length - 1
                   return (
-                    <div key={type} style={{ marginBottom: 6 }}>
+                    <div key={type} role="group" aria-label={groupLabels[type]} style={{ marginBottom: isLastGroup ? 0 : 10 }}>
                       <div
+                        aria-hidden="true"
                         style={{
-                          padding: '8px 10px 4px',
-                          fontSize: '0.68rem',
+                          padding: '6px 10px 3px',
+                          fontSize: '0.62rem',
                           fontWeight: 600,
                           textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          color: 'var(--color-accent)',
+                          letterSpacing: '0.08em',
+                          color: 'var(--color-text-subtle)',
                           fontFamily: 'var(--font-mono)',
                         }}
                       >
@@ -305,20 +404,19 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                         const idx = globalIndex
                         const isSelected = idx === selectedIndex
                         const Icon = item.icon
+                        const routePath = pagePaths[item.name]
                         return (
                           <div
                             key={item.id}
+                            id={`cmd-item-${idx}`}
+                            role="option"
+                            aria-selected={isSelected}
                             data-index={idx}
-                            onClick={() => {
-                              item.action()
-                              setOpen(false)
-                            }}
-                            onMouseEnter={() => setSelectedIndex(idx)}
                             style={{
                               display: 'flex',
                               alignItems: 'center',
                               gap: 10,
-                              padding: '9px 10px',
+                              padding: '8px 10px',
                               borderRadius: 8,
                               cursor: 'pointer',
                               background: isSelected ? 'var(--color-surface-raised)' : 'transparent',
@@ -329,9 +427,19 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                               size={15}
                               style={{ color: isSelected ? 'var(--color-accent)' : 'var(--color-text-muted)', flexShrink: 0 }}
                             />
-                            <span style={{ flex: 1, fontSize: '0.875rem', color: 'var(--color-text)', fontWeight: 500 }}>
+                            <span style={{ flex: 1, fontSize: '0.84rem', color: 'var(--color-text)', fontWeight: 500 }}>
                               {item.name}
                             </span>
+                            {routePath && (
+                              <span style={{
+                                fontSize: '0.62rem',
+                                fontFamily: 'var(--font-mono)',
+                                color: 'var(--color-text-subtle)',
+                                opacity: 0.5,
+                              }}>
+                                {routePath}
+                              </span>
+                            )}
                             {item.badge && (
                               <span
                                 style={{

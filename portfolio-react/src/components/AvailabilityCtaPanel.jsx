@@ -1,4 +1,4 @@
-import { availabilityStatus } from '../data'
+import { availabilityStatus } from '../data/hero'
 
 export default function AvailabilityCtaPanel({ status = availabilityStatus }) {
   return (
@@ -70,6 +70,8 @@ export default function AvailabilityCtaPanel({ status = availabilityStatus }) {
           <a
             key={action.label}
             href={action.href}
+            target={action.href.startsWith('http') ? '_blank' : undefined}
+            rel={action.href.startsWith('http') ? 'noopener noreferrer' : undefined}
             className={`btn btn--${action.variant === 'primary' ? 'primary' : 'ghost'}`}
           >
             {action.label}

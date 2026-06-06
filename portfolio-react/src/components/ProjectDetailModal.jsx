@@ -205,6 +205,7 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`View ${project.title} on GitHub`}
                   className="glass-btn-primary"
                   style={{
                     display: 'inline-flex',
@@ -234,6 +235,7 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                   href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`View ${project.title} live demo`}
                   className="glass-btn"
                   style={{
                     display: 'inline-flex',

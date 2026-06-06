@@ -7,14 +7,14 @@ import {
 import { DisclosureGroup, DisclosureItem } from './ui/DisclosureGroup'
 import Tag from './Tag'
 import HighlightedText from './HighlightedText'
-import { experience } from '../data'
+import { experience } from '../data/experience'
 
 // Career stats
 const careerStats = [
   { icon: TrendingUp, value: '2+',   label: 'Years', color: 'var(--color-accent)' },
-  { icon: Users,      value: '100+', label: 'Users', color: 'var(--color-cat-2)' },
-  { icon: Zap,        value: '75%',  label: 'Faster', color: 'var(--color-cat-4)' },
-  { icon: TestTube,   value: '95%',  label: 'Coverage', color: 'var(--color-cat-6)' },
+  { icon: Users,      value: '10+',  label: 'Biz Units', color: 'var(--color-cat-2)' },
+  { icon: Zap,        value: '75%',  label: 'Avg Latency Cut', color: 'var(--color-cat-4)' },
+  { icon: TestTube,   value: '95%',  label: 'Backend Tests', color: 'var(--color-cat-6)' },
 ]
 
 // Category metadata for State Street achievements
@@ -34,7 +34,8 @@ const stepAbbrev = {
   'Emerging Lead': 'Lead',
 }
 
-function StatCard({ icon: Icon, value, label, color, index }) {
+// eslint-disable-next-line no-unused-vars
+function StatCard({ icon: StatIconValue, value, label, color, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
 
@@ -48,7 +49,7 @@ function StatCard({ icon: Icon, value, label, color, index }) {
       style={{ '--stat-color': color }}
     >
       <div className="career-stat-icon">
-        <Icon size={16} />
+        <StatIconValue size={16} />
       </div>
       <div className="career-stat-value">{value}</div>
       <div className="career-stat-label">{label}</div>
@@ -86,14 +87,15 @@ function ProgressionTrack({ steps, currentStep }) {
   )
 }
 
-function CategorySection({ icon: Icon, label, color, bullets, indices }) {
+// eslint-disable-next-line no-unused-vars
+function CategorySection({ icon: CatIconValue, label, color, bullets, indices }) {
   const filteredBullets = indices.map(i => bullets[i]).filter(Boolean)
   if (!filteredBullets.length) return null
 
   return (
     <div className="career-category" style={{ '--cat-color': color }}>
       <div className="career-category-header">
-        <Icon size={12} />
+        <CatIconValue size={12} />
         <span>{label}</span>
       </div>
       <ul className="career-category-list">
@@ -192,16 +194,27 @@ function ExperienceCard({ item, index }) {
                             {categories.map(cat => (
                               <CategorySection 
                                 key={cat.key}
-                                {...cat}
+                                icon={cat.icon}
+                                label={cat.label}
+                                color={cat.color}
+                                indices={cat.indices}
                                 bullets={item.bullets}
                               />
                             ))}
                           </div>
                         ) : (
-                          <CategorySection 
-                            {...categories.find(c => c.key === activeCategory)}
-                            bullets={item.bullets}
-                          />
+                          (() => {
+                            const activeCat = categories.find(c => c.key === activeCategory);
+                            return activeCat ? (
+                              <CategorySection
+                                icon={activeCat.icon}
+                                label={activeCat.label}
+                                color={activeCat.color}
+                                indices={activeCat.indices}
+                                bullets={item.bullets}
+                              />
+                            ) : null;
+                          })()
                         )}
                       </motion.div>
                     </AnimatePresence>

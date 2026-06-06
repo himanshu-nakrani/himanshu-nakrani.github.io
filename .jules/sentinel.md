@@ -1,9 +1,8 @@
-## 2024-05-27 - XSS Vulnerability in Text Highlighting
-**Vulnerability:** The application used `dangerouslySetInnerHTML` with a custom `highlightText` function to generate HTML strings for highlighting technical terms. This pattern is vulnerable to Cross-Site Scripting (XSS) if user input or external data ever flows into these text fields, as the data is treated as unescaped HTML.
-**Learning:** `dangerouslySetInnerHTML` was used unnecessarily for simple text formatting. It's common for developers to reach for this when they need inline styles on specific words, unaware of the React-native alternatives.
-**Prevention:** Avoid `dangerouslySetInnerHTML` for text highlighting. Instead, use a component that splits the text using a capturing regex group and maps the matching parts to safe React elements (like `<strong>`) and non-matching parts to plain strings. This entirely eliminates the need for raw HTML insertion.
-
-## 2026-04-27 - Information Leakage via Anchor Tags
-**Vulnerability:** Found multiple anchor tags (`<a>`, `<motion.a>`) linking to external domains using `target="_blank"` with `rel="noopener"`, but omitting `noreferrer`. This could inadvertently pass the referring URL in the HTTP headers to the external site.
-**Learning:** While `noopener` secures against reverse tabnabbing (preventing the child window from accessing `window.opener`), omitting `noreferrer` means destination sites could still collect referral tracking data or potentially sensitive info from the referring URL. This is a common oversight when adding links.
-**Prevention:** For all outbound links with `target="_blank"`, consistently enforce `rel="noopener noreferrer"`. Consider automating this using ESLint rules like `react/jsx-no-target-blank` to prevent future occurrences.
+## 2024-05-04 - Enforcing Content Security Policy (CSP)
+**Vulnerability:** The Vercel deployment configuration (`vercel.json`) was missing a `Content-Security-Policy` header and instead used the deprecated `X-XSS-Protection` header.
+**Learning:** Modern browsers ignore `X-XSS-Protection`, and relying on it without a CSP leaves the application vulnerable to Cross-Site Scripting (XSS) and data injection attacks. Setting a robust CSP at the edge mitigates these risks by restricting the sources from which resources can be loaded.
+**Prevention:** Always define a strict baseline `Content-Security-Policy` (e.g., `default-src 'self'`) in the deployment configuration (like `vercel.json` or `next.config.js`) instead of relying on outdated headers.
+## 2025-05-20 - Add strict referrerPolicy to external analytics images
+**Vulnerability:** External images in `ProfilesPage.jsx` loaded via `<img>` tags (e.g. `github-readme-stats-phi.vercel.app`, `leetcard.jacoblin.cool`) sent the `Referer` header to third-party domains, potentially leaking full URLs and browsing context.
+**Learning:** Even with `strict-origin-when-cross-origin` in `vercel.json`, the origin itself is still leaked by default. Adding `referrerPolicy="no-referrer"` directly on the image element completely stops the leak, providing defense in depth.
+**Prevention:** Always add `referrerPolicy="no-referrer"` on third-party analytics or dynamic SVG badges when they do not explicitly require the referrer context.

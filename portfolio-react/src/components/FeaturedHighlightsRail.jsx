@@ -1,18 +1,9 @@
+import DataIcon from './DataIcon'
+import SpotlightGlowCard from './ui/SpotlightGlowCard'
+
 /**
  * FeaturedHighlightsRail
  * Renders a scannable grid/rail of high-signal proof point cards.
- * Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6
- */
-
-/**
- * @typedef {Object} Highlight
- * @property {string} id
- * @property {string} icon
- * @property {string} category
- * @property {string} headline
- * @property {string} subtext
- * @property {string} [metric]
- * @property {string} [link]
  */
 
 const cardStyle = {
@@ -30,12 +21,8 @@ function CardInner({ highlight }) {
   return (
     <>
       <header style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span
-          className="highlights-icon"
-          aria-hidden="true"
-          style={{ fontSize: '1.25rem', lineHeight: 1 }}
-        >
-          {highlight.icon}
+        <span className="highlights-icon" aria-hidden="true" style={{ lineHeight: 1, color: 'var(--color-accent)' }}>
+          <DataIcon name={highlight.icon} size={18} />
         </span>
         <span
           className="highlights-category"
@@ -104,6 +91,14 @@ function CardInner({ highlight }) {
   )
 }
 
+function SpotlightWrap({ children }) {
+  return (
+    <SpotlightGlowCard size={300} style={{ display: 'block', borderRadius: 'var(--radius-lg)', height: '100%' }}>
+      {children}
+    </SpotlightGlowCard>
+  )
+}
+
 /**
  * @param {{ highlights: Highlight[] }} props
  */
@@ -112,6 +107,12 @@ export default function FeaturedHighlightsRail({ highlights }) {
     <section aria-label="Featured highlights">
       <div className="highlights-rail">
         {highlights.map((highlight) => {
+          const card = (
+            <article className="interactive-card highlights-card glass-card" style={cardStyle}>
+              <CardInner highlight={highlight} />
+            </article>
+          )
+
           if (highlight.link) {
             return (
               <a
@@ -122,22 +123,12 @@ export default function FeaturedHighlightsRail({ highlights }) {
                 aria-label={`${highlight.headline} (opens in new tab)`}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
               >
-                <article className="interactive-card highlights-card glass-card" style={cardStyle}>
-                  <CardInner highlight={highlight} />
-                </article>
+                <SpotlightWrap>{card}</SpotlightWrap>
               </a>
             )
           }
 
-          return (
-            <article
-              key={highlight.id}
-              className="interactive-card highlights-card glass-card"
-              style={cardStyle}
-            >
-              <CardInner highlight={highlight} />
-            </article>
-          )
+          return <SpotlightWrap key={highlight.id}>{card}</SpotlightWrap>
         })}
       </div>
     </section>

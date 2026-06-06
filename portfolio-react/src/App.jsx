@@ -5,21 +5,22 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
-import { getRouteLoader } from './lib/routePrefetch'
 import MainLayout from './layouts/MainLayout'
-import HomePage from './pages/HomePage'
-import RouteFallback from './components/RouteFallback'
 
-const AboutPage = lazy(getRouteLoader('/about'))
-const ProjectsPage = lazy(getRouteLoader('/projects'))
-const ExperiencePage = lazy(getRouteLoader('/experience'))
-const ProfilesPage = lazy(getRouteLoader('/profiles'))
-const ResearchPage = lazy(getRouteLoader('/research'))
-const SkillsPage = lazy(getRouteLoader('/skills'))
-const StyleguidePage = lazy(getRouteLoader('/styleguide'))
-const MinimalSPA = lazy(getRouteLoader('/minimal'))
-const ThreeDAdaptiveNavDemo = lazy(getRouteLoader('/demo/3d-nav'))
-const SpotlightCardDemo = lazy(getRouteLoader('/demo/spotlight-card'))
+const HomePage = lazy(() => import('./pages/HomePage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
+const ExperiencePage = lazy(() => import('./pages/ExperiencePage'))
+const ProfilesPage = lazy(() => import('./pages/ProfilesPage'))
+const ResearchPage = lazy(() => import('./pages/ResearchPage'))
+const SkillsPage = lazy(() => import('./pages/SkillsPage'))
+const StyleguidePage = lazy(() => import('./pages/StyleguidePage'))
+const MinimalSPA = lazy(() => import('./pages/MinimalSPA'))
+const ThreeDAdaptiveNavDemo = lazy(() => import('./components/ui/3d-adaptive-navigation-bar-demo'))
+const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo'))
+const ProjectDeepDivePage = lazy(() => import('./pages/ProjectDeepDivePage'))
+const ResearchDeepDivePage = lazy(() => import('./pages/ResearchDeepDivePage'))
+const LabPage = lazy(() => import('./pages/LabPage'))
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -36,7 +37,7 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        <Suspense fallback={<RouteFallback />}>
+        <Suspense fallback={null}>
           <Routes>
             <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
             <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
@@ -56,7 +57,10 @@ export default function App() {
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/profiles"   element={<ProfilesPage />} />
               <Route path="/research"   element={<ResearchPage />} />
+              <Route path="/research/:slug" element={<ResearchDeepDivePage />} />
               <Route path="/skills"     element={<SkillsPage />} />
+              <Route path="/projects/:slug" element={<ProjectDeepDivePage />} />
+              <Route path="/lab"        element={<LabPage />} />
             </Route>
           </Routes>
         </Suspense>

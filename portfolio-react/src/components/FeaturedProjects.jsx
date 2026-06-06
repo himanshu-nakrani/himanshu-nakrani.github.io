@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ExternalLink } from 'lucide-react'
+import DataIcon from './DataIcon'
 
 /**
  * FeaturedProjects — shows top 3 projects on the home page with
@@ -57,7 +58,7 @@ export default function FeaturedProjects({ projects }) {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{project.icon}</span>
+              <span style={{ lineHeight: 1, color: 'var(--color-accent)' }}><DataIcon name={project.icon} size={22} /></span>
               <h3
                 style={{
                   fontSize: '1rem',
@@ -133,6 +134,7 @@ export default function FeaturedProjects({ projects }) {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} on GitHub`}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

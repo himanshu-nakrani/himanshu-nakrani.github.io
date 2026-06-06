@@ -7,12 +7,23 @@
     <meta name="description" content="Generative AI Engineer — LLMs, RAG, Text-to-SQL, AI Agents. Senior Associate at State Street Corporation." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://github-readme-stats-phi.vercel.app" />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
     <meta name="theme-color" content="#0a192f" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f8f9fc" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="preload" as="image" href="/himanshu.jpg" fetchpriority="high" />
     <!-- Blocking theme script: runs before first paint to prevent FOUC -->
     <script>
       (function () {
@@ -23,6 +34,27 @@
           : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
         document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <!-- GitHub Pages SPA redirect decoder (pairs with 404.html) -->
+    <script>
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        } else {
+          var l = window.location;
+          if (l.search[1] === '/') {
+            var decoded =
+              l.search.slice(1).split('&')
+              .map(function (s) { return s.replace(/~and~/g, '&'); })
+              .join('?');
+            window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+            );
+          }
+        }
       })();
     </script>
   </head>

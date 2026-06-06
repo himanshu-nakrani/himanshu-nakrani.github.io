@@ -103,14 +103,14 @@ export default function SectionNav({ sections = [] }) {
           <style>{`
             .section-nav {
               position: fixed;
-              left: clamp(1rem, 3vw, 2.5rem);
+              left: max(0.5rem, calc((100vw - var(--container)) / 2 - 4rem));
               top: 50%;
               transform: translateY(-50%);
               z-index: 50;
               display: none;
             }
 
-            @media (min-width: 1200px) {
+            @media (min-width: 1400px) {
               .section-nav {
                 display: block;
               }
@@ -120,20 +120,16 @@ export default function SectionNav({ sections = [] }) {
               list-style: none;
               display: flex;
               flex-direction: column;
-              gap: 0.25rem;
+              gap: 0.1rem;
               padding: 0;
               margin: 0;
-            }
-
-            .section-nav-item {
-              position: relative;
             }
 
             .section-nav-link {
               display: flex;
               align-items: center;
-              gap: 0.75rem;
-              padding: 0.5rem 0.75rem;
+              gap: 0.5rem;
+              padding: 0.3rem 0.4rem;
               background: transparent;
               border: none;
               cursor: pointer;
@@ -144,20 +140,22 @@ export default function SectionNav({ sections = [] }) {
 
             .section-nav-number {
               font-family: var(--font-mono);
-              font-size: 0.7rem;
+              font-size: 0.6rem;
               color: var(--color-text-subtle);
-              transition: color var(--motion-duration-fast) var(--motion-ease);
-              min-width: 1.25rem;
+              opacity: 0.5;
+              transition: color var(--motion-duration-fast) var(--motion-ease), opacity var(--motion-duration-fast) var(--motion-ease);
+              min-width: 0.9rem;
+              text-align: right;
             }
 
             .section-nav-label {
-              font-size: 0.75rem;
+              font-size: 0.65rem;
               font-weight: var(--font-weight-medium);
               color: var(--color-text-muted);
               text-transform: uppercase;
-              letter-spacing: var(--letter-spacing-wide);
+              letter-spacing: 0.04em;
               opacity: 0;
-              transform: translateX(-8px);
+              transform: translateX(-4px);
               transition: all var(--motion-duration-fast) var(--motion-ease);
               white-space: nowrap;
             }
@@ -167,11 +165,12 @@ export default function SectionNav({ sections = [] }) {
               left: 0;
               top: 50%;
               transform: translateY(-50%);
-              width: 2px;
-              height: 16px;
+              width: 1.5px;
+              height: 12px;
               background: var(--color-accent);
               border-radius: 1px;
               transform-origin: left center;
+              opacity: 0.6;
             }
 
             .section-nav-link:hover .section-nav-label,
