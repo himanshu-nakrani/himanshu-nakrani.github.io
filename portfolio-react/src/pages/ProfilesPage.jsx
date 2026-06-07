@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { ExternalLink, GitFork, Star, Users, Trophy, Code2, Flame, Award } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import DataIcon from '../components/DataIcon'
-import ActivityConstellation from '../components/ActivityConstellation'
+import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
 
 /* ─── Platform header cards ───────────────────────────── */
@@ -327,23 +327,11 @@ export default function ProfilesPage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             style={{
               borderRadius: 14, border: '1px solid var(--border)',
-              overflow: 'auto', background: 'var(--surface)',
+              background: 'var(--surface)',
               padding: '1rem 1.25rem',
             }}
           >
-            <p style={{ fontSize: '0.66rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
-              Contribution heatmap
-            </p>
-            <img
-              src={`${import.meta.env.BASE_URL}gh-contributions.svg`}
-              alt="GitHub contribution heatmap"
-              width="663"
-              height="104"
-              style={{ display: 'block', width: '100%', minWidth: 400, height: 'auto' }}
-              loading="lazy"
-              decoding="async"
-              onError={e => { e.currentTarget.style.display = 'none' }}
-            />
+            <GitHubContributionHeatmap username="himanshu-nakrani" />
           </motion.div>
         </div>
 
