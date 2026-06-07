@@ -385,6 +385,7 @@ export default function AIPipelinePlayer() {
         }}>
           <button 
             onClick={togglePlay}
+            aria-label={isPlaying ? 'Pause animation' : 'Play animation'}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -406,6 +407,7 @@ export default function AIPipelinePlayer() {
           
           <button 
             onClick={reset}
+            aria-label="Reset animation"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
