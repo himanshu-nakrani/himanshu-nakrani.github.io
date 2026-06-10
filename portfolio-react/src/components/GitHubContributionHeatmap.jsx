@@ -28,11 +28,6 @@ const LEVEL_BG = [
   'var(--color-accent)',
 ]
 
-function formatDate(iso) {
-  const d = new Date(iso + 'T00:00:00')
-  return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
-}
-
 export default function GitHubContributionHeatmap({
   src = 'gh-contributions.json',
   username = 'himanshu-nakrani',
@@ -59,13 +54,21 @@ export default function GitHubContributionHeatmap({
     const firstDate = new Date(days[0].date + 'T00:00:00')
     const lead = firstDate.getDay() // 0..6
 
+    // ⚡ Bolt Optimization: Pre-calculate formatting using a single Intl formatter
+    // and a single Date object inside the useMemo block. This avoids 371 Intl instantiations
+    // per render when hover state changes.
+    const formatter = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+    const singleDate = new Date()
+
     // Build a column-major grid: each column is a week, each row a weekday (0=Sun..6=Sat).
     const cols = []
     let week = Array(7).fill(null)
     for (let i = 0; i < lead; i++) week[i] = null
     let row = lead
     for (const d of days) {
-      week[row] = d
+      singleDate.setTime(Date.parse(d.date + 'T00:00:00'))
+      // Store the pre-calculated formatted string
+      week[row] = { ...d, formattedDate: formatter.format(singleDate) }
       row++
       if (row === 7) {
         cols.push(week)
@@ -81,7 +84,8 @@ export default function GitHubContributionHeatmap({
     cols.forEach((col, ci) => {
       const firstCell = col.find((c) => c)
       if (!firstCell) return
-      const m = new Date(firstCell.date + 'T00:00:00').getMonth()
+      // Extract month from "YYYY-MM-DD" directly to avoid new Date()
+      const m = parseInt(firstCell.date.substring(5, 7), 10) - 1
       if (m !== prev) {
         // Only label if there's at least ~2 weeks of room (avoid cramped labels at edges).
         if (ci === 0 || ci > 1) monthLabels.push({ col: ci, label: MONTHS[m] })
@@ -259,7 +263,7 @@ export default function GitHubContributionHeatmap({
                       key={`${ci}-${ri}`}
                       tabIndex={0}
                       role="button"
-                      aria-label={`${cell.count} contributions on ${formatDate(cell.date)}`}
+                      aria-label={`${cell.count} contributions on ${cell.formattedDate}`}
                       onMouseEnter={() => setHover({ col: ci, row: ri, day: cell })}
                       onMouseLeave={() => setHover(null)}
                       onFocus={() => setHover({ col: ci, row: ri, day: cell })}
@@ -313,7 +317,7 @@ export default function GitHubContributionHeatmap({
                 </strong>{' '}
                 {hover.day.count === 1 ? 'contribution' : 'contributions'}
                 <span style={{ color: 'var(--text2, var(--color-text-muted))' }}>
-                  {' '}· {formatDate(hover.day.date)}
+                  {' '}· {hover.day.formattedDate}
                 </span>
               </div>
             )}
