@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 
 /**
@@ -28,18 +28,13 @@ const LEVEL_BG = [
   'var(--color-accent)',
 ]
 
-function formatDate(iso) {
-  const d = new Date(iso + 'T00:00:00')
-  return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
-}
-
 export default function GitHubContributionHeatmap({
   src = 'gh-contributions.json',
   username = 'himanshu-nakrani',
 }) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(false)
-  const [hover, setHover] = useState(null) // { row, col, day }
+  const [hover, setHover] = useState(null) // { index }
 
   useEffect(() => {
     let cancelled = false
@@ -59,13 +54,25 @@ export default function GitHubContributionHeatmap({
     const firstDate = new Date(days[0].date + 'T00:00:00')
     const lead = firstDate.getDay() // 0..6
 
+    const dtf = new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+    const mutDate = new Date(days[0].date + 'T00:00:00')
+
     // Build a column-major grid: each column is a week, each row a weekday (0=Sun..6=Sat).
     const cols = []
     let week = Array(7).fill(null)
     for (let i = 0; i < lead; i++) week[i] = null
     let row = lead
     for (const d of days) {
-      week[row] = d
+      // ⚡ Bolt Optimization: Use single mutable date and formatter to avoid N object allocations
+      const [y, m, day] = d.date.split('-')
+      mutDate.setFullYear(y, m - 1, day)
+      const cell = {
+        ...d,
+        formattedDate: dtf.format(mutDate),
+        month: mutDate.getMonth()
+      }
+
+      week[row] = cell
       row++
       if (row === 7) {
         cols.push(week)
@@ -75,17 +82,31 @@ export default function GitHubContributionHeatmap({
     }
     if (week.some((c) => c !== null)) cols.push(week)
 
+    // Flat array for O(1) lookup during event delegation
+    const flatCells = []
+    cols.forEach((col, ci) => {
+      col.forEach((cell, ri) => {
+        flatCells.push({
+          cell,
+          ci,
+          ri,
+          index: ci * 7 + ri
+        })
+      })
+    })
+
     // Month labels: place at the first column where a new month begins.
     const monthLabels = []
     let prev = -1
     cols.forEach((col, ci) => {
-      const firstCell = col.find((c) => c)
+      const firstCell = col.find((c) => c !== null)
       if (!firstCell) return
-      const m = new Date(firstCell.date + 'T00:00:00').getMonth()
-      if (m !== prev) {
+
+      const month = firstCell.month
+      if (month !== prev) {
         // Only label if there's at least ~2 weeks of room (avoid cramped labels at edges).
-        if (ci === 0 || ci > 1) monthLabels.push({ col: ci, label: MONTHS[m] })
-        prev = m
+        if (ci === 0 || ci > 1) monthLabels.push({ col: ci, label: MONTHS[month] })
+        prev = month
       }
     })
 
@@ -104,6 +125,7 @@ export default function GitHubContributionHeatmap({
 
     return {
       cols,
+      flatCells,
       monthLabels,
       total: data.total ?? days.reduce((s, d) => s + (d.count || 0), 0),
       longest,
@@ -113,6 +135,19 @@ export default function GitHubContributionHeatmap({
       lastDate: days[days.length - 1].date,
     }
   }, [data])
+
+  const handleInteraction = useCallback((e) => {
+    const idx = e.target.dataset.index
+    if (idx !== undefined) {
+      setHover(Number(idx))
+    }
+  }, [])
+
+  const handleLeave = useCallback((e) => {
+    if (e.target.dataset.index !== undefined) {
+      setHover(null)
+    }
+  }, [])
 
   if (error || (data && !view)) return null
 
@@ -246,56 +281,55 @@ export default function GitHubContributionHeatmap({
                 gridAutoFlow: 'column',
                 gap: GAP,
               }}
+              onMouseOver={handleInteraction}
+              onMouseOut={handleLeave}
+              onFocusCapture={handleInteraction}
+              onBlurCapture={handleLeave}
             >
-              {view.cols.flatMap((week, ci) =>
-                week.map((cell, ri) => {
-                  if (!cell) {
-                    return <div key={`${ci}-${ri}`} style={{ width: CELL, height: CELL }} />
-                  }
-                  const level = cell.level ?? 0
-                  const isHover = hover && hover.col === ci && hover.row === ri
-                  return (
-                    <motion.div
-                      key={`${ci}-${ri}`}
-                      tabIndex={0}
-                      role="button"
-                      aria-label={`${cell.count} contributions on ${formatDate(cell.date)}`}
-                      onMouseEnter={() => setHover({ col: ci, row: ri, day: cell })}
-                      onMouseLeave={() => setHover(null)}
-                      onFocus={() => setHover({ col: ci, row: ri, day: cell })}
-                      onBlur={() => setHover(null)}
-                      initial={{ opacity: 0, scale: 0.6 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
-                      style={{
-                        width: CELL,
-                        height: CELL,
-                        borderRadius: RADIUS,
-                        background: LEVEL_BG[level],
-                        outline: 'none',
-                        border: isHover
-                          ? '1px solid var(--color-accent)'
-                          : '1px solid transparent',
-                        boxShadow: isHover
-                          ? '0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent)'
-                          : 'none',
-                        cursor: 'pointer',
-                        transition: 'border-color 0.12s ease, box-shadow 0.12s ease',
-                      }}
-                    />
-                  )
-                })
-              )}
+              {view.flatCells.map(({ cell, ci, ri, index }) => {
+                if (!cell) {
+                  return <div key={`${ci}-${ri}`} style={{ width: CELL, height: CELL }} />
+                }
+                const level = cell.level ?? 0
+                const isHover = hover === index
+                return (
+                  <motion.div
+                    key={`${ci}-${ri}`}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`${cell.count} contributions on ${cell.formattedDate}`}
+                    data-index={index}
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
+                    style={{
+                      width: CELL,
+                      height: CELL,
+                      borderRadius: RADIUS,
+                      background: LEVEL_BG[level],
+                      outline: 'none',
+                      border: isHover
+                        ? '1px solid var(--color-accent)'
+                        : '1px solid transparent',
+                      boxShadow: isHover
+                        ? '0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent)'
+                        : 'none',
+                      cursor: 'pointer',
+                      transition: 'border-color 0.12s ease, box-shadow 0.12s ease',
+                    }}
+                  />
+                )
+              })}
             </div>
 
             {/* tooltip */}
-            {hover && (
+            {hover !== null && view.flatCells[hover]?.cell && (
               <div
                 style={{
                   position: 'absolute',
                   pointerEvents: 'none',
-                  left: 28 + 8 + hover.col * (CELL + GAP) + CELL / 2,
-                  top: 14 + 4 + hover.row * (CELL + GAP) - 8,
+                  left: 28 + 8 + view.flatCells[hover].ci * (CELL + GAP) + CELL / 2,
+                  top: 14 + 4 + view.flatCells[hover].ri * (CELL + GAP) - 8,
                   transform: 'translate(-50%, -100%)',
                   background: 'var(--color-bg, #0e0e1a)',
                   border: '1px solid var(--border, var(--color-border))',
@@ -309,11 +343,11 @@ export default function GitHubContributionHeatmap({
                 }}
               >
                 <strong style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-mono)' }}>
-                  {hover.day.count}
+                  {view.flatCells[hover].cell.count}
                 </strong>{' '}
-                {hover.day.count === 1 ? 'contribution' : 'contributions'}
+                {view.flatCells[hover].cell.count === 1 ? 'contribution' : 'contributions'}
                 <span style={{ color: 'var(--text2, var(--color-text-muted))' }}>
-                  {' '}· {formatDate(hover.day.date)}
+                  {' '}· {view.flatCells[hover].cell.formattedDate}
                 </span>
               </div>
             )}
