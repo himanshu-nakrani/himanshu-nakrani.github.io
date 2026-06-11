@@ -1,6 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { NavLink } from 'react-router-dom'
 
+import { prefetchRoute } from '../../lib/routePrefetch'
+
 const LAYOUT_ID = 'uplift-nav-active-pill'
 
 export default function Pill3DNav({ items, isActive, onItemClick }) {
@@ -31,6 +33,8 @@ export default function Pill3DNav({ items, isActive, onItemClick }) {
             <NavLink
               to={item.to}
               onClick={(event) => onItemClick(item, event)}
+              onPointerEnter={() => prefetchRoute(item.to)}
+              onFocus={() => prefetchRoute(item.to)}
               aria-current={active ? 'page' : undefined}
               className={active ? 'nav-link-active' : ''}
               style={{
