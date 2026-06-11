@@ -9,3 +9,7 @@
 ## 2026-05-26 - Avoiding O(N) array allocations in renders
 **Learning:** Computing maximums or aggregates over arrays during render loops by spreading `.flatMap()` results (e.g. `Math.max(...arr.flatMap())`) creates multiple intermediate array allocations per render, causing significant garbage collection churn and memory overhead.
 **Action:** For simple aggregate calculations like maximums, use a single-pass loop (e.g., `for...of`) over the original data structure within a `useMemo` hook to achieve O(1) memory footprint and eliminate allocations.
+
+## 2024-05-18 - [Performance] Hover Re-renders and Date Formatting
+**Learning:** React components that render large grids (like a 365-day GitHub heatmap) and have interactive states (like `onMouseEnter`/`onMouseLeave` triggering `setHover`) often suffer from sluggishness if they perform heavy computations during render. By default, `Date.prototype.toLocaleDateString()` instantiates a new `Intl.DateTimeFormat` object under the hood every time it is called. Running this 371 times per hover re-render is highly inefficient and causes significant garbage collection pressure.
+**Action:** Pre-calculate dates once inside a `useMemo` block. Reuse a single `Intl.DateTimeFormat` instance and a single mutable `Date` object within the memoized calculation loop, storing the `formattedDate` strings in the objects to be rendered.
