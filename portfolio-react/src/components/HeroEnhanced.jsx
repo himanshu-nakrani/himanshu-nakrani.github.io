@@ -52,15 +52,18 @@ export default function HeroEnhanced() {
           {/* Kicker row: small portrait + role */}
           <div className="hero-kicker-row">
             <div className="portrait-frame" style={{ width: 44, flexShrink: 0 }}>
-              <img
-                src="/himanshu.jpg"
-                alt="Himanshu Nakrani"
-                width="360"
-                height="540"
-                fetchPriority="high"
-                decoding="async"
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-              />
+              <picture>
+                <source type="image/webp" srcSet="/himanshu.webp" />
+                <img
+                  src="/himanshu.jpg"
+                  alt="Himanshu Nakrani"
+                  width="360"
+                  height="540"
+                  fetchPriority="high"
+                  decoding="async"
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </picture>
             </div>
             <span className="hero-kicker">Generative AI Engineer · State Street</span>
           </div>

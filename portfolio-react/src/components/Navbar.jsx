@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import Pill3DNav from './ui/Pill3DNav'
+import { prefetchRoute } from '../lib/routePrefetch'
 
 import { NavLink, useLocation } from 'react-router-dom'
 
@@ -143,6 +144,8 @@ export default function Navbar({ isDark, setIsDark }) {
             whileHover={{ opacity: 0.85 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setOpen(false)}
+            onPointerEnter={() => prefetchRoute('/')}
+            onFocus={() => prefetchRoute('/')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -245,6 +248,8 @@ export default function Navbar({ isDark, setIsDark }) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
+              onPointerEnter={() => prefetchRoute(contactItem.to)}
+              onFocus={() => prefetchRoute(contactItem.to)}
               className="glass-btn"
               style={{
                 display: 'inline-flex',
@@ -326,6 +331,8 @@ export default function Navbar({ isDark, setIsDark }) {
                       <NavLink
                         to={item.to}
                         onClick={(event) => handleNavClick(item, event)}
+                        onPointerEnter={() => prefetchRoute(item.to)}
+                        onFocus={() => prefetchRoute(item.to)}
                         aria-current={active ? 'page' : undefined}
                         style={{
                           display: 'flex',

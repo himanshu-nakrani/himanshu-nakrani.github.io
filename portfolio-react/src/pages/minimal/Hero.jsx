@@ -18,20 +18,25 @@ export default function Hero() {
   return (
     <section id="about" className="spa-section" aria-labelledby="hero-name">
       <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'flex-start', marginBottom: '2rem' }}>
-        <img
-          src="/himanshu.jpg"
-          alt="Himanshu Nakrani"
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 10,
-            objectFit: 'contain',
-            objectPosition: 'center top',
-            border: '1px solid var(--color-border)',
-            flexShrink: 0,
-            background: 'var(--color-surface)',
-          }}
-        />
+        <picture style={{ flexShrink: 0 }}>
+          <source type="image/webp" srcSet="/himanshu.webp" />
+          <img
+            src="/himanshu.jpg"
+            alt="Himanshu Nakrani"
+            width="360"
+            height="540"
+            decoding="async"
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 10,
+              objectFit: 'contain',
+              objectPosition: 'center top',
+              border: '1px solid var(--color-border)',
+              background: 'var(--color-surface)',
+            }}
+          />
+        </picture>
         <div>
           <h1 id="hero-name" style={{ fontSize: 'clamp(1.6rem, 4vw, 2.1rem)', fontWeight: 700, letterSpacing: '-0.02em', marginBottom: '0.25rem', fontFamily: 'var(--font-display)' }}>
             Himanshu Nakrani
