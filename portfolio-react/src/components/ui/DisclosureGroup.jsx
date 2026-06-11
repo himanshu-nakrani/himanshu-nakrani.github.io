@@ -286,7 +286,6 @@ export function Disclosure({
   defaultOpen = false,
   className = '',
 }) {
-  const [open, setOpen] = useState(defaultOpen)
 
   return (
     <DisclosureGroup defaultOpen={defaultOpen ? 'solo' : null}>

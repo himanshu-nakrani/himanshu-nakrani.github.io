@@ -1,41 +1,11 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { 
-  Briefcase, GraduationCap, Award, Target, Zap, BookOpen, Users, 
-  Brain, Database, Code2, Layers, Cpu, Network, GitBranch,
-  ArrowRight, ExternalLink, Mail, Github, Linkedin, Terminal,
-  ChevronRight, TrendingUp
+  Briefcase, Award, Target, Zap, BookOpen, Users, GitBranch,
+  Github, Linkedin, Terminal, TrendingUp
 } from 'lucide-react'
-
-/* ========================================
-   ANIMATED COUNTER
-   ======================================== */
-function useCountUp(target, duration, active) {
-  const [count, setCount] = useState(0)
-  const started = useRef(false)
-
-  useEffect(() => {
-    if (!active || started.current) return
-    started.current = true
-    let rafId
-    const startTime = performance.now()
-    const tick = (now) => {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(eased * target))
-      if (progress < 1) {
-        rafId = requestAnimationFrame(tick)
-      } else {
-        setCount(target)
-      }
-    }
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
-  }, [active, target, duration])
-
-  return active ? count : 0
-}
+import SEO from '../components/SEO'
+import { useCountUp } from '../hooks/useCountUp'
 
 /* ========================================
    STAT CARD (minimal)
@@ -297,7 +267,12 @@ export default function AboutPage() {
   const reduceMotion = useReducedMotion()
   
   return (
-    <div className="mvp2-page">
+    <>
+      <SEO
+        title="About | Himanshu Nakrani"
+        description="Learn about Himanshu Nakrani's AI engineering background, production LLM work, skills, and career focus."
+      />
+      <div className="mvp2-page">
       {/* Hero Section */}
       <section ref={heroRef} style={{ marginBottom: '4rem' }}>
         {/* Intro */}
@@ -593,6 +568,7 @@ export default function AboutPage() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   )
 }

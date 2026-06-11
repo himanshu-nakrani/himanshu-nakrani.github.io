@@ -3,27 +3,16 @@ import { ArrowUp } from 'lucide-react'
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 600)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Keep node mounted briefly after `visible` flips false so the exit
-  // animation can play, then unmount.
-  useEffect(() => {
-    if (visible) {
-      setMounted(true)
-      return
-    }
-    if (!mounted) return
-    const t = setTimeout(() => setMounted(false), 250)
-    return () => clearTimeout(t)
-  }, [visible, mounted])
+  if (!visible) return null
 
-  if (!mounted) return null
 
   return (
     <button

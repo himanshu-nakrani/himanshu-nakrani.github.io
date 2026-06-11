@@ -1,3 +1,5 @@
+import { getItem } from './storage'
+
 export const THEME_STORAGE_KEY = 'theme'
 
 const THEME_META_SELECTOR = 'meta[name="theme-color"]'
@@ -9,7 +11,7 @@ const THEME_META_SELECTOR = 'meta[name="theme-color"]'
 export function getPreferredTheme() {
   if (typeof window === 'undefined') return 'light'
 
-  const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY)
+  const savedTheme = getItem(THEME_STORAGE_KEY)
   if (savedTheme === 'dark' || savedTheme === 'light') {
     return savedTheme
   }

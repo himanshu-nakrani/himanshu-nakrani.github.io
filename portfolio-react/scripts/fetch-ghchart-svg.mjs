@@ -1,8 +1,9 @@
 /**
- * Fetches ghchart SVG (GitHub-style green ramp) and rewrites for dark UI:
- * empty cells #161b22, readable month labels. Run via prebuild/predev.
+ * Fetches ghchart SVG (GitHub-style green ramp) and rewrites for dark UI.
+ * Uses the committed public SVG as an offline fallback so dev/build never hard-fail
+ * solely because the external chart service is unavailable.
  */
-import { writeFileSync, mkdirSync } from 'fs'
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -13,12 +14,14 @@ const ACCENT = '39d353'
 const USER = 'himanshu-nakrani'
 const URL = `https://ghchart.rshah.org/${ACCENT}/${USER}`
 
-async function main() {
-  const res = await fetch(URL)
-  if (!res.ok) throw new Error(`ghchart fetch failed: ${res.status}`)
-  let svg = await res.text()
+export function rewriteGhchartForDarkUi(svg) {
+  return svg.replace(/#EEEEEE/gi, '#161b22').replace(/fill:#767676/gi, 'fill:#8b949e')
+}
 
-  svg = svg.replace(/#EEEEEE/gi, '#161b22').replace(/fill:#767676/gi, 'fill:#8b949e')
+async function main() {
+  const res = await fetch(URL, { signal: AbortSignal.timeout(10000) })
+  if (!res.ok) throw new Error(`ghchart fetch failed: ${res.status}`)
+  const svg = rewriteGhchartForDarkUi(await res.text())
 
   mkdirSync(dirname(OUT), { recursive: true })
   writeFileSync(OUT, svg, 'utf8')
@@ -26,6 +29,14 @@ async function main() {
 }
 
 main().catch((e) => {
+  if (existsSync(OUT)) {
+    const existing = readFileSync(OUT, 'utf8')
+    const rewritten = rewriteGhchartForDarkUi(existing)
+    if (rewritten !== existing) writeFileSync(OUT, rewritten, 'utf8')
+    console.warn('ghchart fetch failed, using committed SVG')
+    console.warn(e.message || e)
+    process.exit(0)
+  }
   console.error(e)
   process.exit(1)
 })

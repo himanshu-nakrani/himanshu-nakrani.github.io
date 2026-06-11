@@ -212,8 +212,7 @@ export default function AgentRunViewer({ steps }) {
         minHeight: 300,
       }}>
         {/* Left: event list */}
-        <div
-          role="listbox"
+        <nav
           aria-label="Agent run events"
           style={{
             borderRight: '1px solid var(--color-border)',
@@ -230,7 +229,7 @@ export default function AgentRunViewer({ steps }) {
               onClick={() => handleSelect(step.id)}
             />
           ))}
-        </div>
+        </nav>
 
         {/* Right: detail */}
         <AnimatePresence mode="wait">

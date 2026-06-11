@@ -103,7 +103,7 @@ export default function Contact() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-            minHeight: 44px;
+            min-height: 44px;
             padding: 0.52rem 1.1rem;
             border-radius: 999px;
             border: 1px solid var(--color-border-strong);

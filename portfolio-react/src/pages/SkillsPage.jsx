@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Award, Sparkles, Layers, TrendingUp, ExternalLink, ChevronRight } from 'lucide-react'
+import { Award, Sparkles, Layers, TrendingUp, ChevronRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import DataIcon from '../components/DataIcon'
 import { skills, certifications } from '../data/skills'
+import SEO from '../components/SEO'
 
 /* Primary tools - showcased in a bento grid */
 const PRIMARY_STACK = [
@@ -353,7 +354,12 @@ export default function SkillsPage() {
   const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
 
   return (
-    <section className="mvp2-page">
+    <>
+      <SEO
+        title="Skills | Himanshu Nakrani"
+        description="AI engineering, backend, cloud, data, and frontend skill matrix for production LLM systems."
+      />
+      <section className="mvp2-page">
       <PageHeader
         kicker="Tech Stack"
         title="Skills & Tools"
@@ -449,6 +455,7 @@ export default function SkillsPage() {
           }
         }
       `}</style>
-    </section>
+      </section>
+    </>
   )
 }

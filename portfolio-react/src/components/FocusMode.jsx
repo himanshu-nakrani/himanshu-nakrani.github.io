@@ -1,26 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 
+import { getItem, setItem } from '../lib/storage'
+
 /**
- * FocusMode — distraction-free reading mode
- * Hides decorative elements, dims accents, centers content
+ * FocusMode — distraction-free reading mode style injection.
+ * State lives in FocusModeToggle and the html data attribute.
  */
 export default function FocusMode() {
-  const [focusMode, setFocusMode] = useState(() => {
-    try {
-      return localStorage.getItem('focusMode') === 'true'
-    } catch {
-      return false
-    }
-  })
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-focus-mode', focusMode)
-    try {
-      localStorage.setItem('focusMode', focusMode)
-    } catch {}
-  }, [focusMode])
-
   return (
     <div className="focus-mode-container">
       <style>{`
@@ -43,22 +30,30 @@ export default function FocusMode() {
 }
 
 export function FocusModeToggle() {
-  const [focusMode, setFocusMode] = useState(() => {
-    try {
-      return localStorage.getItem('focusMode') === 'true'
-    } catch {
-      return false
-    }
-  })
+  const [focusMode, setFocusMode] = useState(() => getItem('focusMode') === 'true')
 
-  const handleToggle = () => {
-    const newMode = !focusMode
+  const setMode = (newMode) => {
     setFocusMode(newMode)
-    document.documentElement.setAttribute('data-focus-mode', newMode)
-    try {
-      localStorage.setItem('focusMode', newMode)
-    } catch {}
+    document.documentElement.setAttribute('data-focus-mode', String(newMode))
+    setItem('focusMode', String(newMode))
   }
+
+  const handleToggle = () => setMode(!focusMode)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-focus-mode', String(focusMode))
+  }, [focusMode])
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === 'f') {
+        event.preventDefault()
+        setMode(!focusMode)
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [focusMode])
 
   return (
     <button

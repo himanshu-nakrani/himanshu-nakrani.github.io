@@ -2,7 +2,7 @@
 
 Personal portfolio &mdash; AI/ML engineer focused on production LLM systems, RAG pipelines, and model fine-tuning.
 
-**Live:** [himanshu-nakrani.github.io](https://himanshu-nakrani.github.io)
+**Live:** [www.himanshunakrani.me](https://www.himanshunakrani.me)
 
 ## Stack
 
@@ -11,7 +11,9 @@ Personal portfolio &mdash; AI/ML engineer focused on production LLM systems, RAG
 | Frontend | React 19, Vite 8, Tailwind CSS 3, Framer Motion |
 | Routing | React Router v6 |
 | Analytics | Vercel Analytics, Vercel Speed Insights |
-| Hosting | GitHub Pages (via Vercel) |
+| Hosting | Vercel (`portfolio-react/` project root) |
+
+The legacy `himanshu-nakrani.github.io` GitHub Pages URL is retained only as a redirect to the Vercel-hosted production domain. For the cleanest retirement, disable GitHub Pages in repository Settings → Pages.
 
 ## Pages
 
@@ -27,26 +29,28 @@ Personal portfolio &mdash; AI/ML engineer focused on production LLM systems, RAG
 ## Project structure
 
 ```
-portfolio-react/     # React SPA (current site)
+portfolio-react/     # React SPA (current site; Vercel project root)
+  public/            # Static public assets (favicon, OG image, sitemap, robots)
   src/
     components/      # Reusable UI components
     pages/           # Route-level page components
     layouts/         # Main layout shell
     hooks/           # Custom React hooks
     lib/             # Theme + utility helpers
-    data.js          # All portfolio data (projects, skills, publications, etc.)
-assets/              # Static assets (OG image, favicon)
-index.html           # Root redirect to built SPA
+    data.js          # Portfolio data entry point
+index.html           # Minimal GitHub Pages redirect to the Vercel domain
 ```
 
 ## Development
 
 ```bash
 cd portfolio-react
-npm install
-npm run dev        # Start Vite dev server
-npm run build      # Production build
-npm run preview    # Preview production build
+pnpm install
+pnpm run dev        # Start Vite dev server
+pnpm run lint       # ESLint quality gate
+pnpm test           # Vitest suite
+pnpm run build      # Production build
+pnpm run preview    # Preview production build
 ```
 
 ## License
