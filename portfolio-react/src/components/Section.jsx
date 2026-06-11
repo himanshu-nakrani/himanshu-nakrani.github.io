@@ -38,14 +38,19 @@ export default function Section({ id, title, subtitle, alt, children, number }) 
   return (
     <section
       id={id}
+      className="section-hairline"
       style={{
         padding: 'var(--section-pad-y) var(--page-pad-x)',
         background: alt ? 'var(--color-surface)' : 'var(--color-bg)',
         position: 'relative',
-        borderTop: '1px solid var(--color-border)',
       }}
     >
-      <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto' }}>
+      <div ref={ref} style={{ maxWidth: 'var(--page-max)', margin: '0 auto', position: 'relative' }}>
+        {num && (
+          <span className="section-ghost-num" aria-hidden="true">
+            {num}
+          </span>
+        )}
         <motion.div {...headerAnim}>
           {num && (
             <div className="section-kicker" aria-hidden="true">
@@ -60,9 +65,9 @@ export default function Section({ id, title, subtitle, alt, children, number }) 
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 'var(--section-title-weight)',
-              fontSize: 'clamp(2rem, 5vw, 2.85rem)',
-              lineHeight: 1.05,
-              letterSpacing: 'var(--section-title-tracking)',
+              fontSize: 'var(--text-4xl)',
+              lineHeight: 1.02,
+              letterSpacing: 'var(--letter-spacing-display)',
               color: 'var(--color-text)',
               marginBottom: subtitle ? '1rem' : '3rem',
             }}
