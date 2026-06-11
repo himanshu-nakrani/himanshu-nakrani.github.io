@@ -10,13 +10,21 @@ export default function CaseStudyWorkbench() {
   const [activeId, setActiveId] = useState(caseStudies[0].id)
   const reduceMotion = useReducedMotion()
   const study = caseStudies.find(s => s.id === activeId)
+  const handleTabKeyDown = (event, index) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+    event.preventDefault()
+    const last = caseStudies.length - 1
+    const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? last : event.key === 'ArrowRight' ? (index + 1) % caseStudies.length : (index - 1 + caseStudies.length) % caseStudies.length
+    setActiveId(caseStudies[nextIndex].id)
+    document.getElementById(`csw-tab-${caseStudies[nextIndex].id}`)?.focus()
+  }
 
   return (
     <div className="csw">
 
       {/* Tab bar */}
       <div className="csw__tabs" role="tablist" aria-label="Case studies">
-        {caseStudies.map(s => {
+        {caseStudies.map((s, index) => {
           const active = s.id === activeId
           return (
             <button
@@ -25,6 +33,8 @@ export default function CaseStudyWorkbench() {
               id={`csw-tab-${s.id}`}
               aria-selected={active}
               aria-controls={`csw-panel-${s.id}`}
+              tabIndex={active ? 0 : -1}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
               className={`csw__tab${active ? ' is-active' : ''}`}
               onClick={() => setActiveId(s.id)}
               style={{ position: 'relative' }}

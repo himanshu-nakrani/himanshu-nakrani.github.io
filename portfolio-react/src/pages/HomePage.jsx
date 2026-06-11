@@ -7,6 +7,7 @@ import SectionNav from '../components/SectionNav'
 import ModelOpsSnapshot from '../components/ModelOpsSnapshot'
 import TechnicalDeepDiveRail from '../components/TechnicalDeepDiveRail'
 import { featuredHighlights } from '../data/projects'
+import SEO from '../components/SEO'
 
 const sections = [
   { id: 'about',      label: 'About' },
@@ -20,6 +21,10 @@ const sections = [
 export default function HomePage() {
   return (
     <>
+      <SEO
+        title="Home | Himanshu Nakrani"
+        description="Production LLM systems, RAG pipelines, Text-to-SQL work, research deep dives, and contact details for Himanshu Nakrani."
+      />
       {/* Desktop section navigation */}
       <SectionNav sections={sections} />
 

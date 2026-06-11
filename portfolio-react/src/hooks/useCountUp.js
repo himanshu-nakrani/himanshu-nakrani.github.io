@@ -1,79 +1,44 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * useCountUp — animates from 80% of target to target once the element enters
- * the viewport. Starts near the final value to avoid misleading interim states.
- * Honours prefers-reduced-motion.
- *
- * Supports target as a string with a suffix (e.g. "75%", "100+", "2+").
+ * useCountUp — animates a number once active. Resets when target changes so
+ * refreshed stats animate to their new value instead of freezing at the old one.
  */
-export function useCountUp(target, { duration = 450, decimals = 0 } = {}) {
-  const ref = useRef(null)
-  const parsed = parseTarget(target)
-  const startValue = parsed.num !== null ? Math.round(parsed.num * 0.8) : 0
-  const [value, setValue] = useState(startValue)
+export function useCountUp(target, duration = 450, active = true) {
+  const [count, setCount] = useState(0)
   const startedRef = useRef(false)
+  const previousTargetRef = useRef(target)
 
   useEffect(() => {
-    if (!ref.current) return
-    if (typeof window === 'undefined') return
-    if (parsed.num === null) return
+    if (previousTargetRef.current !== target) {
+      previousTargetRef.current = target
+      startedRef.current = false
+    }
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!active || startedRef.current) return undefined
+    startedRef.current = true
 
-    const node = ref.current
-    let raf = 0
-    const from = Math.round(parsed.num * 0.8)
-    const range = parsed.num - from
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const timer = setTimeout(() => setCount(target), 0)
+      return () => clearTimeout(timer)
+    }
 
-    const animate = (startTime) => {
-      const step = (t) => {
-        const elapsed = t - startTime
-        const progress = Math.min(1, elapsed / duration)
-        const eased = 1 - Math.pow(1 - progress, 3)
-        const next = from + range * eased
-        setValue(decimals > 0 ? Number(next.toFixed(decimals)) : Math.round(next))
-        if (progress < 1) {
-          raf = requestAnimationFrame(step)
-        }
+    let rafId = 0
+    const startTime = performance.now()
+    const tick = (now) => {
+      const elapsed = now - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.round(eased * target))
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick)
+      } else {
+        setCount(target)
       }
-      raf = requestAnimationFrame(step)
     }
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [active, target, duration])
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true
-            observer.unobserve(node)
-            if (reduce) {
-              setValue(parsed.num)
-            } else {
-              requestAnimationFrame((t) => animate(t))
-            }
-          }
-        })
-      },
-      { threshold: 0.4 }
-    )
-
-    observer.observe(node)
-    return () => {
-      observer.disconnect()
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [parsed.num, duration, decimals])
-
-  if (parsed.num === null) {
-    return { ref, value: target, suffix: '' }
-  }
-  return { ref, value, suffix: parsed.suffix }
-}
-
-function parseTarget(target) {
-  if (typeof target === 'number') return { num: target, suffix: '' }
-  if (typeof target !== 'string') return { num: null, suffix: '' }
-  const match = target.match(/^(\d+(?:\.\d+)?)(.*)$/)
-  if (!match) return { num: null, suffix: '' }
-  return { num: parseFloat(match[1]), suffix: match[2] }
+  return active ? count : 0
 }

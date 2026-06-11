@@ -15,7 +15,6 @@ export default function SectionNav({ sections = [] }) {
   useEffect(() => {
     if (!sections.length) return
 
-    const observers = []
     const sectionElements = sections
       .map(s => document.getElementById(s.id))
       .filter(Boolean)

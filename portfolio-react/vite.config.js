@@ -31,7 +31,7 @@ export default defineConfig({
             if (id.includes('framer-motion')) return 'motion'
             if (id.includes('lucide-react')) return 'icons'
             if (id.includes('@vercel')) return 'analytics'
-            if (id.match(/react(-dom|-router-dom)?\//)) return 'react-vendor'
+            if (/\/node_modules\/(react|react-dom|scheduler|react-router(-dom)?|@remix-run\/router)\//.test(id)) return 'react-vendor'
           }
         },
       },

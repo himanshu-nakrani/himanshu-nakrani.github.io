@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
 import { Outlet, useLocation } from 'react-router-dom'
 
@@ -17,6 +17,7 @@ import CmdKHint from '../components/CmdKHint'
 export default function MainLayout({ isDark, setIsDark }) {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
+  const toggleTheme = useCallback(() => setIsDark(!isDark), [isDark, setIsDark])
 
   useEffect(() => {
     const hash = location.hash
@@ -41,7 +42,6 @@ export default function MainLayout({ isDark, setIsDark }) {
         cancelAnimationFrame(raf2)
       }
     }
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [location.pathname, location.hash, reduceMotion])
 
   const pageVariants = reduceMotion
@@ -57,10 +57,10 @@ export default function MainLayout({ isDark, setIsDark }) {
       <SkipLink targetId="main-content" />
       <SEO />
       <div className="app-shell">
-        <AmbientAtmosphere enableAnimation intensity="subtle" />
+        <AmbientAtmosphere enableAnimation />
         <CursorHalo />
         <ScrollProgressRail />
-        <CommandPalette />
+        <CommandPalette toggleTheme={toggleTheme} />
         <CmdKHint />
         <div className="app-shell-content">
           <Navbar
@@ -69,7 +69,7 @@ export default function MainLayout({ isDark, setIsDark }) {
           />
 
           <main id="main-content">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" onExitComplete={() => { if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' }) }}>
               <motion.div
                 key={location.pathname}
                 variants={pageVariants}

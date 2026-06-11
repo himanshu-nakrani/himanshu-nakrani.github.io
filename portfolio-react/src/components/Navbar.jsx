@@ -4,7 +4,7 @@ import { Menu, X, Search, Command } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
 import Pill3DNav from './ui/Pill3DNav'
 
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 const MotionNavLink = motion(NavLink)
 
@@ -71,8 +71,6 @@ export default function Navbar({ isDark, setIsDark }) {
     scrollToId(id)
     window.history.replaceState(null, '', `/#${id}`)
   }
-
-  useEffect(() => { setOpen(false) }, [location.pathname])
 
   useEffect(() => {
     if (!open) return
@@ -201,8 +199,7 @@ export default function Navbar({ isDark, setIsDark }) {
             {/* Command Palette Trigger */}
             <button
               onClick={() => {
-                const event = new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true })
-                document.dispatchEvent(event)
+                document.dispatchEvent(new CustomEvent('open-command-palette'))
               }}
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"

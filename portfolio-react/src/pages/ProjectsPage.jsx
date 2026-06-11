@@ -1,11 +1,12 @@
-import { useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2, ChevronDown, ArrowRight } from 'lucide-react'
+import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Sparkles, FolderGit2, Rocket, Code2, ChevronDown, ArrowRight } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import DataIcon from '../components/DataIcon'
 import { projects, technicalCaseStudies } from '../data/projects'
+import SEO from '../components/SEO'
 
 /* ─── Badge styles ─────────────────────────────────────── */
 const badgeStyle = {
@@ -38,6 +39,45 @@ const pageStats = [
 
 /* ─── Modal ────────────────────────────────────────────── */
 function ProjectModal({ project, onClose }) {
+  const dialogRef = useRef(null)
+  const closeRef = useRef(null)
+  const previousFocusRef = useRef(null)
+
+  useEffect(() => {
+    if (!project) return undefined
+    previousFocusRef.current = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    requestAnimationFrame(() => closeRef.current?.focus())
+
+    const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])') || [])
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+      if (event.key !== 'Tab') return
+      const focusable = getFocusable()
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      previousFocusRef.current?.focus?.()
+    }
+  }, [project, onClose])
+
   return (
     <AnimatePresence>
       {project && (
@@ -59,6 +99,7 @@ function ProjectModal({ project, onClose }) {
             style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem', pointerEvents: 'none' }}
           >
             <div
+              ref={dialogRef}
               onClick={e => e.stopPropagation()}
               style={{
                 pointerEvents: 'auto', width: '100%', maxWidth: 680,
@@ -87,6 +128,7 @@ function ProjectModal({ project, onClose }) {
                     </div>
                   </div>
                   <button
+                    ref={closeRef}
                     onClick={onClose}
                     aria-label="Close dialog"
                     style={{
@@ -194,14 +236,11 @@ function FeaturedCard({ item, onClick }) {
       transition={{ duration: 0.5 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={onClick}
-      tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
       style={{
         borderRadius: 14,
         border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
         background: 'var(--color-surface)',
-        overflow: 'hidden', cursor: 'pointer',
+        overflow: 'hidden',
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
         boxShadow: hovered ? 'var(--shadow-md)' : 'none',
         transition: 'all 0.2s ease',
@@ -270,6 +309,17 @@ function FeaturedCard({ item, onClick }) {
             {item.tags.slice(0, 3).map(t => <Tag key={t}>{t}</Tag>)}
             {item.tags.length > 3 && <span style={{ fontSize: '0.68rem', color: 'var(--text2)', opacity: 0.45, alignSelf: 'center' }}>+{item.tags.length - 3}</span>}
           </div>
+          <button
+            type="button"
+            onClick={onClick}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: '0.72rem', fontWeight: 600,
+              color: 'var(--text)', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)',
+              background: 'var(--color-surface-raised)', cursor: 'pointer', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap',
+            }}
+          >
+            Details
+          </button>
           {getDeepDiveSlug(item.title) && (
             <Link
               to={`/projects/${getDeepDiveSlug(item.title)}`}
@@ -314,14 +364,11 @@ function ProjectCard({ item, index, onClick }) {
       transition={{ duration: 0.4, delay: (index % 3) * 0.07 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      onClick={onClick}
-      tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
       style={{
         borderRadius: 12,
         border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--color-border)'}`,
         background: 'var(--color-surface)',
-        overflow: 'hidden', cursor: 'pointer',
+        overflow: 'hidden',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
         boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
         transition: 'all 0.2s ease',
@@ -374,9 +421,9 @@ function ProjectCard({ item, index, onClick }) {
             ? <span style={{ fontSize: '0.67rem', color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: 3 }}><ExternalLink size={10} /> GitHub</span>
             : <span style={{ fontSize: '0.67rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: 3, opacity: 0.45 }}><Lock size={10} /> Private</span>
           }
-          <span style={{ fontSize: '0.68rem', color: hovered ? 'var(--color-accent)' : 'var(--text2)', fontFamily: 'var(--font-mono)', opacity: hovered ? 1 : 0.35, transition: 'all 0.2s' }}>
+          <button type="button" onClick={onClick} style={{ fontSize: '0.68rem', color: hovered ? 'var(--color-accent)' : 'var(--text2)', fontFamily: 'var(--font-mono)', opacity: hovered ? 1 : 0.7, transition: 'all 0.2s', border: '1px solid var(--color-border)', background: 'var(--color-surface-raised)', borderRadius: 8, padding: '4px 8px', cursor: 'pointer' }}>
             details →
-          </span>
+          </button>
         </div>
       </div>
     </motion.article>
@@ -419,7 +466,12 @@ export default function ProjectsPage() {
   )
 
   return (
-    <section className="mvp2-page">
+    <>
+      <SEO
+        title="Projects | Himanshu Nakrani"
+        description="Explore production AI projects including Text-to-SQL, RAG systems, no-code agents, and ML forecasting work."
+      />
+      <section className="mvp2-page">
       <PageHeader
         kicker="Portfolio"
         title="Selected Works"
@@ -701,6 +753,7 @@ export default function ProjectsPage() {
         }
         .filter-scroll-row::-webkit-scrollbar { display: none; }
       `}</style>
-    </section>
+      </section>
+    </>
   )
 }

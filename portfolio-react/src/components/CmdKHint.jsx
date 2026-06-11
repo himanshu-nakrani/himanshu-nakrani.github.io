@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Command, X } from 'lucide-react'
+import { getItem, setItem } from '../lib/storage'
 
 const STORAGE_KEY = 'cmdk-hint-dismissed'
 const SHOW_DELAY = 3500
@@ -14,9 +15,14 @@ export default function CmdKHint() {
   const [visible, setVisible] = useState(false)
   const [mounted, setMounted] = useState(false)
 
+  const dismiss = useCallback(() => {
+    setVisible(false)
+    setItem(STORAGE_KEY, '1')
+  }, [])
+
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (localStorage.getItem(STORAGE_KEY)) return
+    if (getItem(STORAGE_KEY)) return
     // Don't show on small screens or touch-primary devices — not relevant there
     if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) return
 
@@ -27,14 +33,14 @@ export default function CmdKHint() {
       clearTimeout(showTimer)
       clearTimeout(hideTimer)
     }
-  }, [])
+  }, [dismiss])
 
   useEffect(() => {
     if (visible) {
-      setMounted(true)
-      return
+      const t = setTimeout(() => setMounted(true), 0)
+      return () => clearTimeout(t)
     }
-    if (!mounted) return
+    if (!mounted) return undefined
     const t = setTimeout(() => setMounted(false), EXIT_MS)
     return () => clearTimeout(t)
   }, [visible, mounted])
@@ -49,16 +55,8 @@ export default function CmdKHint() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [visible])
+  }, [visible, dismiss])
 
-  const dismiss = () => {
-    setVisible(false)
-    try {
-      localStorage.setItem(STORAGE_KEY, '1')
-    } catch {
-      // ignore
-    }
-  }
 
   const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 

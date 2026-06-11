@@ -5,6 +5,7 @@ import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp
 import PageHeader from '../components/PageHeader'
 import Tag from '../components/Tag'
 import { publications, researchDeepDives } from '../data/research'
+import SEO from '../components/SEO'
 
 /* ─── Sub-components ───────────────────────────────────── */
 function SectionLabel({ children, icon: Icon }) {
@@ -185,7 +186,7 @@ function PaperCard({ pub, index, isExpanded, onToggle }) {
 }
 
 /* ─── Interactive methodology node ─────────────────────── */
-function MethodologyNode({ label, description, icon: Icon, delay, inView, isActive, onClick }) {
+function MethodologyNode({ label, icon: Icon, delay, inView, isActive, onClick }) {
   const [hovered, setHovered] = useState(false)
   
   return (
@@ -278,7 +279,12 @@ export default function ResearchPage() {
   ]
 
   return (
-    <section className="mvp2-page">
+    <>
+      <SEO
+        title="Research | Himanshu Nakrani"
+        description="Research publications and model training work across Text-to-SQL, Graph-of-Thoughts, fine-tuning, and pretraining."
+      />
+      <section className="mvp2-page">
       <PageHeader
         kicker="Research"
         title="Publications"
@@ -536,6 +542,7 @@ export default function ResearchPage() {
           }
         }
       `}</style>
-    </section>
+      </section>
+    </>
   )
 }

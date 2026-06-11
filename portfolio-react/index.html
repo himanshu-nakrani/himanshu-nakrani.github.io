@@ -3,23 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Himanshu Nakrani | AI Engineer</title>
-    <meta name="description" content="Generative AI Engineer — LLMs, RAG, Text-to-SQL, AI Agents. Senior Associate at State Street Corporation." />
+    <title>Himanshu Nakrani - AI Software Developer</title>
+    <meta name="description" content="AI Software Developer at State Street Corporation. Building production LLM systems: Text-to-SQL, RAG, and AI agents." />
+    <link rel="canonical" href="https://www.himanshunakrani.me/" />
+    <meta property="og:title" content="Himanshu Nakrani - AI Software Developer" />
+    <meta property="og:description" content="AI Software Developer at State Street Corporation. Building production LLM systems: Text-to-SQL, RAG, and AI agents." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.himanshunakrani.me/" />
+    <meta property="og:image" content="https://www.himanshunakrani.me/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Himanshu Nakrani - AI Software Developer" />
+    <meta name="twitter:description" content="AI Software Developer at State Street Corporation. Building production LLM systems: Text-to-SQL, RAG, and AI agents." />
+    <meta name="twitter:image" content="https://www.himanshunakrani.me/og-image.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://github-readme-stats-phi.vercel.app" />
     <link
-      rel="preload"
-      as="style"
+      rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
-      />
-    </noscript>
     <meta name="theme-color" content="#0a192f" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#f8f9fc" media="(prefers-color-scheme: light)" />
     <meta name="color-scheme" content="dark light" />
@@ -27,33 +29,14 @@
     <!-- Blocking theme script: runs before first paint to prevent FOUC -->
     <script>
       (function () {
-        var stored = localStorage.getItem('theme');
-        // Default to dark (matches the deep navy design)
-        var theme = (stored === 'light' || stored === 'dark')
-          ? stored
-          : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-        document.documentElement.style.colorScheme = theme;
-      })();
-    </script>
-    <!-- GitHub Pages SPA redirect decoder (pairs with 404.html) -->
-    <script>
-      (function () {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        } else {
-          var l = window.location;
-          if (l.search[1] === '/') {
-            var decoded =
-              l.search.slice(1).split('&')
-              .map(function (s) { return s.replace(/~and~/g, '&'); })
-              .join('?');
-            window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-            );
-          }
+        try {
+          var stored = localStorage.getItem('theme');
+          var theme = (stored === 'light' || stored === 'dark') ? stored : 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.style.colorScheme = 'dark';
         }
       })();
     </script>

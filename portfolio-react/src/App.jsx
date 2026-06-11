@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
+import { setItem } from './lib/storage'
 import MainLayout from './layouts/MainLayout'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -31,7 +32,7 @@ export default function App() {
 
   const handleThemeChange = (newIsDark) => {
     setIsDark(newIsDark)
-    localStorage.setItem(THEME_STORAGE_KEY, newIsDark ? 'dark' : 'light')
+    setItem(THEME_STORAGE_KEY, newIsDark ? 'dark' : 'light')
   }
 
   return (

@@ -53,6 +53,14 @@ export default function LabPage() {
   )
 
   const ActiveIcon = moduleIcons[activeModule?.type] || Activity
+  const handleTabKeyDown = (event, index) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+    event.preventDefault()
+    const last = demoLabModules.length - 1
+    const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? last : event.key === 'ArrowRight' ? (index + 1) % demoLabModules.length : (index - 1 + demoLabModules.length) % demoLabModules.length
+    setActiveModuleId(demoLabModules[nextIndex].id)
+    document.getElementById(`lab-tab-${demoLabModules[nextIndex].id}`)?.focus()
+  }
 
   const fadeUp = reduceMotion
     ? {}
@@ -131,7 +139,7 @@ export default function LabPage() {
         aria-label="Demo modules"
         className="lab-tab-row"
       >
-        {demoLabModules.map(mod => {
+        {demoLabModules.map((mod, index) => {
           const isActive = mod.id === activeModuleId
           const Icon = moduleIcons[mod.type] || Activity
           return (
@@ -140,7 +148,9 @@ export default function LabPage() {
               role="tab"
               id={`lab-tab-${mod.id}`}
               aria-selected={isActive}
-              aria-controls={`lab-panel-${mod.id}`}
+              aria-controls={isActive ? `lab-panel-${mod.id}` : undefined}
+              tabIndex={isActive ? 0 : -1}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
               onClick={() => setActiveModuleId(mod.id)}
               style={{
                 display: 'inline-flex',

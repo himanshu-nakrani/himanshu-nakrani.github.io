@@ -11,7 +11,6 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
   const toggleTheme = () => {
     const newTheme = !isDark
     setIsDark(newTheme)
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light')
   }
 
   const iconWrap = {

@@ -19,6 +19,8 @@ const NAV_ITEMS = [
   { id: 'contact',    label: 'Contact' },
 ]
 
+const MINIMAL_SECTION_IDS = NAV_ITEMS.map((n) => n.id)
+
 const SOCIALS = [
   { href: 'https://github.com/himanshu-nakrani',          icon: Github,    label: 'GitHub' },
   { href: 'https://www.linkedin.com/in/himanshu-nakrani/', icon: Linkedin,  label: 'LinkedIn' },
@@ -55,8 +57,7 @@ function scrollTo(id) {
 }
 
 export default function MinimalSPA() {
-  const ids = NAV_ITEMS.map((n) => n.id)
-  const active = useActiveSection(ids)
+  const active = useActiveSection(MINIMAL_SECTION_IDS)
 
   return (
     <div className="spa-layout">

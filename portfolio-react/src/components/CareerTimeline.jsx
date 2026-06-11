@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { 
-  Briefcase, Calendar, MapPin, TrendingUp, Users, Zap, TestTube,
-  ChevronRight, Box, FlaskConical, BadgeCheck, Handshake
+  Briefcase, TrendingUp, Users, Zap, TestTube,
+  Box, FlaskConical, BadgeCheck, Handshake
 } from 'lucide-react'
 import { DisclosureGroup, DisclosureItem } from './ui/DisclosureGroup'
 import Tag from './Tag'
@@ -34,7 +34,6 @@ const stepAbbrev = {
   'Emerging Lead': 'Lead',
 }
 
-// eslint-disable-next-line no-unused-vars
 function StatCard({ icon: StatIconValue, value, label, color, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -87,7 +86,6 @@ function ProgressionTrack({ steps, currentStep }) {
   )
 }
 
-// eslint-disable-next-line no-unused-vars
 function CategorySection({ icon: CatIconValue, label, color, bullets, indices }) {
   const filteredBullets = indices.map(i => bullets[i]).filter(Boolean)
   if (!filteredBullets.length) return null

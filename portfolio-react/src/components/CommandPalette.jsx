@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
-  ExternalLink, Github, Linkedin, Mail, Sun, Moon,
-  Search, Command as CommandIcon, ArrowRight, CornerDownLeft,
+  ExternalLink, Github, Linkedin, Mail, Sun,
+  Search, CornerDownLeft,
   FlaskConical, Activity, FileText
 } from 'lucide-react'
 import { projects } from '../data/projects'
@@ -41,7 +41,7 @@ const quickActions = [
   { id: 'resume', name: 'View Resume', icon: FileText, url: '/resume.pdf', external: true },
 ]
 
-export default function CommandPalette() {
+export default function CommandPalette({ toggleTheme }) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -61,6 +61,7 @@ export default function CommandPalette() {
         name: page.name,
         icon: page.icon,
         keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+        path: page.path,
         action: () => navigate(page.path),
       })
     })
@@ -73,6 +74,7 @@ export default function CommandPalette() {
         name: page.name,
         icon: page.icon,
         keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+        path: page.path,
         action: () => navigate(page.path),
       })
     })
@@ -123,22 +125,11 @@ export default function CommandPalette() {
       name: 'Toggle Theme',
       icon: Sun,
       keywords: 'toggle theme dark light mode',
-      action: () => {
-        const current = document.documentElement.getAttribute('data-theme')
-        const next = current === 'dark' ? 'light' : 'dark'
-        if (next === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark')
-          document.documentElement.style.colorScheme = 'dark'
-        } else {
-          document.documentElement.removeAttribute('data-theme')
-          document.documentElement.style.colorScheme = 'light'
-        }
-        localStorage.setItem('theme', next)
-      },
+      action: toggleTheme,
     })
 
     return items
-  }, [navigate])
+  }, [navigate, toggleTheme])
 
   // Filter items based on search
   const filteredItems = useMemo(() => {
@@ -168,22 +159,6 @@ export default function CommandPalette() {
   }, [groupedItems])
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
-
-  // Route path hints for pages
-  const pagePaths = {
-    'Home': '/',
-    'Experience': '/experience',
-    'Skills': '/skills',
-    'Projects': '/projects',
-    'Research': '/research',
-    'Demo Lab': '/lab',
-    'Profiles': '/profiles',
-    'Alpha Copilot Deep Dive': '/projects/alpha-copilot',
-    'Agent Forge Deep Dive': '/projects/agent-forge',
-    'Prospectus RAG Deep Dive': '/projects/fund-prospectus-rag',
-    'LLaMA Reasoning Research': '/research/llama-3b-reasoning',
-    'TinyMathReason Research': '/research/tinymathreason-1b',
-  }
 
   // Reset selection when search changes
   useEffect(() => {
@@ -218,13 +193,18 @@ export default function CommandPalette() {
   // Keyboard shortcut to open
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
         setOpen((prev) => !prev)
       }
     }
+    const handleOpenEvent = () => setOpen(true)
     document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    document.addEventListener('open-command-palette', handleOpenEvent)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('open-command-palette', handleOpenEvent)
+    }
   }, [])
 
   // Focus input when opened
@@ -234,6 +214,51 @@ export default function CommandPalette() {
     } else {
       setSearch('')
       setSelectedIndex(0)
+    }
+  }, [open])
+
+  // Dialog focus management, Escape handling, focus restoration, and scroll lock
+  const dialogRef = useRef(null)
+  const previousFocusRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return undefined
+
+    previousFocusRef.current = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const getFocusable = () => Array.from(
+      dialogRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      ) || []
+    )
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setOpen(false)
+        return
+      }
+      if (event.key !== 'Tab') return
+      const focusable = getFocusable()
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      previousFocusRef.current?.focus?.()
     }
   }, [open])
 
@@ -295,16 +320,16 @@ export default function CommandPalette() {
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            initial={{ opacity: 0, scale: 0.96, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: -10 }}
+            ref={dialogRef}
+            initial={{ opacity: 0, scale: 0.96, y: -10, x: '-50%' }}
+            animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, scale: 0.96, y: -10, x: '-50%' }}
             transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
             onKeyDown={handleKeyDown}
             style={{
               position: 'fixed',
               top: '18%',
               left: '50%',
-              transform: 'translateX(-50%)',
               width: 'min(90vw, 520px)',
               maxHeight: '65vh',
               background: 'var(--color-surface)',
@@ -404,7 +429,7 @@ export default function CommandPalette() {
                         const idx = globalIndex
                         const isSelected = idx === selectedIndex
                         const Icon = item.icon
-                        const routePath = pagePaths[item.name]
+                        const routePath = item.path
                         return (
                           <div
                             key={item.id}

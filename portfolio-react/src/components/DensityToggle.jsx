@@ -1,23 +1,16 @@
 import { useState, useEffect } from 'react'
+import { getItem, setItem } from '../lib/storage'
 
 /**
  * DensityToggle — switch between comfortable and compact view modes
  * Adjusts padding, spacing, and grid density across the site
  */
 export function DensityToggle() {
-  const [density, setDensity] = useState(() => {
-    try {
-      return localStorage.getItem('density') || 'comfortable'
-    } catch {
-      return 'comfortable'
-    }
-  })
+  const [density, setDensity] = useState(() => getItem('density', 'comfortable'))
 
   useEffect(() => {
     document.documentElement.setAttribute('data-density', density)
-    try {
-      localStorage.setItem('density', density)
-    } catch {}
+    setItem('density', density)
   }, [density])
 
   const densityOptions = [

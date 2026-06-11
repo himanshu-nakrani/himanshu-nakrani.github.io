@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader'
 import DataIcon from '../components/DataIcon'
 import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
+import SEO from '../components/SEO'
 
 /* ─── Platform header cards ───────────────────────────── */
 const platforms = [
@@ -160,6 +161,7 @@ function PlatformCard({ p, index }) {
             border: `1px solid ${hovered ? p.border : 'var(--border)'}`,
             transition: 'all 0.22s',
           }}>
+            <Icon size={12} color={p.color} aria-hidden="true" />
             <span style={{ fontSize: '1rem', fontWeight: 800, color: p.color, fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{value}</span>
             <span style={{ fontSize: '0.6rem', color: 'var(--text2)', marginTop: 2, textAlign: 'center' }}>{label}</span>
           </div>
@@ -253,7 +255,12 @@ export default function ProfilesPage() {
   const lcInView = useInView(lcRef, { once: true, margin: '-40px' })
 
   return (
-    <section className="mvp2-page">
+    <>
+      <SEO
+        title="Profiles | Himanshu Nakrani"
+        description="GitHub, Kaggle, LeetCode, Hugging Face, and LinkedIn profile highlights for Himanshu Nakrani."
+      />
+      <section className="mvp2-page">
       <PageHeader
         kicker="Presence"
         title="Profiles & activity"
@@ -455,6 +462,7 @@ export default function ProfilesPage() {
           .platform-grid { grid-template-columns: 1fr 1fr !important; }
         }
       `}</style>
-    </section>
+      </section>
+    </>
   )
 }

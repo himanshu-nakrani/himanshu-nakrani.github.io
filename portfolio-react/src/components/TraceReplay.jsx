@@ -23,13 +23,12 @@ export default function TraceReplay({ steps, defaultStep = 0 }) {
     }
 
     intervalRef.current = setInterval(() => {
+      let reachedEnd = false
       setCurrentStep(prev => {
-        if (prev >= totalSteps - 1) {
-          setIsPlaying(false)
-          return prev
-        }
-        return prev + 1
+        reachedEnd = prev >= totalSteps - 2
+        return Math.min(prev + 1, totalSteps - 1)
       })
+      if (reachedEnd) setIsPlaying(false)
     }, 2000)
 
     return () => {
@@ -38,6 +37,7 @@ export default function TraceReplay({ steps, defaultStep = 0 }) {
       }
     }
   }, [isPlaying, totalSteps])
+
 
   const handlePlay = useCallback(() => {
     if (reduceMotion) return

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Briefcase, Calendar, MapPin, Award } from 'lucide-react'
+import { Briefcase, Calendar, MapPin } from 'lucide-react'
 import Tag from './Tag'
 
 export default function InteractiveTimeline({ experiences }) {
