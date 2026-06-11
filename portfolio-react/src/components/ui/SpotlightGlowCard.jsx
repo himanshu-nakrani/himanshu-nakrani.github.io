@@ -14,8 +14,9 @@ const SPOTLIGHT_CSS = `
     background:
       radial-gradient(
         var(--spotlight-size, 320px) circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
-        color-mix(in srgb, var(--spotlight-color, var(--color-accent)) 55%, transparent),
-        transparent 70%
+        color-mix(in srgb, var(--spotlight-color, var(--color-accent)) 70%, transparent),
+        color-mix(in srgb, var(--color-accent-secondary) 25%, transparent) 55%,
+        transparent 75%
       );
     opacity: var(--spotlight-opacity, 0);
     transition: opacity 240ms ease;
@@ -36,7 +37,7 @@ const SPOTLIGHT_CSS = `
     background:
       radial-gradient(
         var(--spotlight-size, 320px) circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%),
-        color-mix(in srgb, var(--spotlight-color, var(--color-accent)) 14%, transparent),
+        color-mix(in srgb, var(--spotlight-color, var(--color-accent)) 20%, transparent),
         transparent 60%
       );
     opacity: var(--spotlight-opacity, 0);

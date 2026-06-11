@@ -1,4 +1,5 @@
 import HeroEnhanced from '../components/HeroEnhanced'
+import MarqueeStrip from '../components/MarqueeStrip'
 import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
 import CaseStudyWorkbench from '../components/CaseStudyWorkbench'
 import Contact from '../components/Contact'
@@ -30,6 +31,9 @@ export default function HomePage() {
 
       {/* 1 — Hero */}
       <HeroEnhanced />
+
+      {/* Capability ticker */}
+      <MarqueeStrip />
 
       {/* 2 — Proof highlights */}
       <Section

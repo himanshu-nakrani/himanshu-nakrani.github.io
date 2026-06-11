@@ -21,7 +21,7 @@ export default function AuroraBackground({ className = '', style = {}, intensity
             inset: '-20%',
             background:
               'radial-gradient(60% 50% at 30% 30%, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 60%),' +
-              'radial-gradient(50% 40% at 70% 70%, color-mix(in srgb, var(--color-info, var(--color-accent)) 12%, transparent), transparent 65%)',
+              'radial-gradient(50% 40% at 70% 70%, color-mix(in srgb, var(--color-accent-secondary, var(--color-accent)) 12%, transparent), transparent 65%)',
             opacity: intensity,
           }}
         />
@@ -39,7 +39,7 @@ export default function AuroraBackground({ className = '', style = {}, intensity
           position: 'absolute',
           inset: '-30%',
           background:
-            'conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-accent) 24%, transparent), transparent 25%, color-mix(in srgb, var(--color-info, var(--color-accent)) 18%, transparent) 45%, transparent 65%, color-mix(in srgb, var(--color-accent) 22%, transparent) 85%, transparent)',
+            'conic-gradient(from 0deg at 50% 50%, color-mix(in srgb, var(--color-accent) 24%, transparent), transparent 25%, color-mix(in srgb, var(--color-accent-secondary, var(--color-accent)) 18%, transparent) 45%, transparent 65%, color-mix(in srgb, var(--color-accent) 22%, transparent) 85%, transparent)',
           filter: 'blur(70px)',
           opacity: intensity,
           willChange: 'transform',
