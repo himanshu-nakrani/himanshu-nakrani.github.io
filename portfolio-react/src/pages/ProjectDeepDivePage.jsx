@@ -10,7 +10,7 @@ import { technicalCaseStudies } from '../data'
 /* ─── Shared style fragments ────────────────────────────── */
 const sectionLabel = {
   fontSize: '0.68rem',
-  fontWeight: 700,
+  fontWeight: 'var(--font-weight-bold)',
   textTransform: 'uppercase',
   letterSpacing: '0.12em',
   color: 'var(--color-accent)',
@@ -163,13 +163,13 @@ function ProjectDeepDiveContent({ study }) {
 
   // Single page-level reveal — no per-block stagger
   const pageReveal = reduceMotion
-    ? {}
+    ? { initial: false, animate: { opacity: 1, y: 0 } }
     : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4 } }
 
   const bc = badgeColors[study.status] || badgeColors.Production
 
   return (
-    <motion.section className="mvp2-page" {...pageReveal}>
+    <motion.section className="mvp2-page editorial-page" {...pageReveal}>
       <SEO
         title={`${study.title} — Case Study | Himanshu Nakrani`}
         description={study.summary}
@@ -183,66 +183,19 @@ function ProjectDeepDiveContent({ study }) {
       </div>
 
       {/* ── Hero summary ─────────────────────────────────── */}
-      <header style={{ marginBottom: '2.5rem' }}>
+      <header className="article-hero">
         {/* Badges */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: '0.85rem', flexWrap: 'wrap' }}>
-          <span style={{
-            fontSize: '0.68rem',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 600,
-            color: 'var(--color-accent)',
-            background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-            border: '1px solid color-mix(in srgb, var(--color-accent) 28%, transparent)',
-            padding: '3px 10px',
-            borderRadius: 6,
-          }}>
-            {study.type}
-          </span>
-          <span style={{
-            fontSize: '0.68rem',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 600,
-            color: bc.color,
-            background: bc.bg,
-            border: `1px solid ${bc.border}`,
-            padding: '3px 10px',
-            borderRadius: 6,
-          }}>
-            {study.status}
-          </span>
+        <div className="editorial-chip-list" style={{ marginBottom: '1rem' }}>
+          <span className="editorial-chip">{study.type}</span>
+          <span className="editorial-chip" style={{ color: bc.color, background: bc.bg, borderColor: bc.border }}>{study.status}</span>
         </div>
 
-        <h1 style={{
-          fontSize: 'var(--text-3xl)',
-          fontWeight: 800,
-          color: 'var(--color-text)',
-          lineHeight: 'var(--line-height-tight)',
-          letterSpacing: 'var(--letter-spacing-tight)',
-          marginBottom: '0.75rem',
-        }}>
-          {study.title}
-        </h1>
+        <h1 className="article-title">{study.title}</h1>
 
-        <p style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--color-text-muted)',
-          lineHeight: 'var(--line-height-relaxed)',
-          maxWidth: '44rem',
-          marginBottom: '1.25rem',
-        }}>
-          {study.summary}
-        </p>
+        <p className="article-summary">{study.summary}</p>
 
         {/* Metadata row */}
-        <div style={{
-          display: 'flex',
-          gap: '1.5rem',
-          flexWrap: 'wrap',
-          fontSize: '0.82rem',
-          color: 'var(--color-text-subtle)',
-          fontFamily: 'var(--font-mono)',
-          letterSpacing: '0.02em',
-        }}>
+        <div className="editorial-meta-line" style={{ marginTop: '1.25rem' }}>
           {study.organization && (
             <span><strong style={{ color: 'var(--color-text-muted)', fontWeight: 600 }}>Org</strong> {study.organization}</span>
           )}
@@ -269,22 +222,16 @@ function ProjectDeepDiveContent({ study }) {
           {study.metrics.map((m) => (
             <div
               key={m.label}
-              style={{
-                ...cardBorder,
-                borderRadius: 10,
-                padding: '1rem 1.1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.2rem',
-              }}
+              className="editorial-card"
+              style={{ padding: '1rem 1.1rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}
             >
               <span style={{
-                fontSize: '1.2rem',
-                fontWeight: 700,
+                fontSize: 'var(--text-stat)',
+                fontWeight: 'var(--font-weight-bold)',
                 color: 'var(--color-accent)',
                 fontFamily: 'var(--font-mono)',
                 fontFeatureSettings: '"tnum" 1',
-                lineHeight: 1.2,
+                lineHeight: 1,
               }}>
                 {m.value}
               </span>
@@ -309,9 +256,8 @@ function ProjectDeepDiveContent({ study }) {
             display: 'grid',
             gridTemplateColumns: study.constraints?.length ? '1fr 1fr' : '1fr',
             gap: '1.25rem',
-            marginBottom: '2.5rem',
           }}
-          className="pddp-brief-grid"
+          className="pddp-brief-grid article-block section-hairline"
         >
           {study.problem && (
             <div>
@@ -376,7 +322,7 @@ function ProjectDeepDiveContent({ study }) {
 
       {/* ── Architecture map ─────────────────────────────── */}
       {study.architecture && study.architecture.length > 0 && (
-        <div style={{ marginBottom: '2.5rem' }}>
+        <div className="article-block section-hairline">
           <p style={{ ...sectionLabel, marginBottom: '0.85rem' }}>Architecture</p>
           <TechnicalArchitectureMap
             stages={study.architecture}
@@ -467,7 +413,7 @@ function ProjectDeepDiveContent({ study }) {
 
       {/* ── Impact ───────────────────────────────────────── */}
       {study.impact && (
-        <div style={{ marginBottom: '2.5rem' }}>
+        <div className="article-block section-hairline">
           <p style={sectionLabel}>Impact</p>
           <div style={{
             marginTop: '0.85rem',
@@ -497,8 +443,7 @@ function ProjectDeepDiveContent({ study }) {
         display: 'grid',
         gridTemplateColumns: study.ownership ? '1fr 1fr' : '1fr',
         gap: '1.25rem',
-        marginBottom: '2rem',
-      }} className="pddp-brief-grid">
+      }} className="pddp-brief-grid article-block section-hairline">
         {study.ownership && (
           <div>
             <p style={sectionLabel}>Ownership</p>
