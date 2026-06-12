@@ -192,13 +192,16 @@ export default function GitHubContributionHeatmap({
 
       {/* Grid */}
       {view && (
-        <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 4 }}>
           <div style={{
             display: 'inline-grid',
             gridTemplateColumns: `28px ${gridW}px`,
             gridTemplateRows: '14px auto',
             gap: '4px 8px',
             position: 'relative',
+            width: 28 + 8 + gridW,
+            minWidth: 28 + 8 + gridW,
+            maxWidth: 'none',
           }}>
             {/* spacer top-left */}
             <div />

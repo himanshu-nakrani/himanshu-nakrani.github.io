@@ -17,7 +17,7 @@ const platformRows = [
     stats: [
       { value: '46', label: 'Repos' },
       { value: '680', label: 'Commits' },
-      { value: 'TypeScript', label: 'Primary' },
+      { value: 'Python', label: 'Primary' },
       { value: '2021', label: 'Since' },
     ],
   },
