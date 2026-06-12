@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { Activity, Bot, Search, Brain, ArrowRight } from 'lucide-react'
 import SEO from '../components/SEO'
-import PageHeader from '../components/PageHeader'
 import TraceReplay from '../components/TraceReplay'
 import AgentRunViewer from '../components/AgentRunViewer'
 import RetrievalInspector from '../components/RetrievalInspector'
@@ -63,50 +62,39 @@ export default function LabPage() {
   }
 
   const fadeUp = reduceMotion
-    ? {}
+    ? { initial: false, animate: { opacity: 1, y: 0 } }
     : { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 } }
 
   return (
-    <section className="mvp2-page">
+    <main className="mvp2-page editorial-page">
       <SEO
         title="Demo Lab — Interactive AI System Walkthroughs | Himanshu Nakrani"
         description="Interactive, deterministic walkthroughs of production AI systems and model research."
       />
 
-      <PageHeader
-        kicker="Lab"
-        title="Demo Lab"
-        description="Interactive, deterministic walkthroughs of production AI systems and model research."
-      />
+      <header className="editorial-page-header">
+        <p className="editorial-kicker">[ 01 ] · Lab</p>
+        <h1 className="editorial-page-title">
+          Demo lab for <span className="gradient-text">AI systems</span>.
+        </h1>
+        <p className="editorial-page-lede">
+          Interactive, deterministic walkthroughs of production AI systems and model research.
+        </p>
+      </header>
 
       {/* ── Production architecture (Alpha Copilot pipeline) ── */}
       <motion.section
         {...fadeUp}
         transition={{ duration: 0.35 }}
         aria-labelledby="lab-architecture-heading"
-        style={{ marginBottom: '2.25rem' }}
+        className="editorial-section section-hairline"
       >
+        <span className="section-ghost-num" aria-hidden="true">02</span>
         <header style={{ marginBottom: '0.9rem' }}>
-          <p style={{
-            fontSize: '0.68rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-            color: 'var(--color-accent)',
-            margin: '0 0 0.35rem',
-          }}>
-            Architecture
-          </p>
+          <p className="editorial-kicker">[ 02 ] · Architecture</p>
           <h2
             id="lab-architecture-heading"
-            style={{
-              fontSize: 'clamp(1.15rem, 2.4vw, 1.45rem)',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              color: 'var(--color-text)',
-              margin: '0 0 0.35rem',
-              lineHeight: 1.25,
-            }}
+            className="editorial-section-title"
           >
             Alpha Copilot production pipeline
           </h2>
@@ -124,64 +112,49 @@ export default function LabPage() {
       </motion.section>
 
       {/* ── Module selector (tab row) ────────────────────── */}
-      <motion.div
-        {...fadeUp}
-        transition={{ duration: 0.35 }}
-        style={{
-          display: 'flex',
-          gap: '0.4rem',
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch',
-          marginBottom: '1.5rem',
-          paddingBottom: 2,
-        }}
-        role="tablist"
-        aria-label="Demo modules"
-        className="lab-tab-row"
-      >
-        {demoLabModules.map((mod, index) => {
-          const isActive = mod.id === activeModuleId
-          const Icon = moduleIcons[mod.type] || Activity
-          return (
-            <button
-              key={mod.id}
-              role="tab"
-              id={`lab-tab-${mod.id}`}
-              aria-selected={isActive}
-              aria-controls={isActive ? `lab-panel-${mod.id}` : undefined}
-              tabIndex={isActive ? 0 : -1}
-              onKeyDown={(event) => handleTabKeyDown(event, index)}
-              onClick={() => setActiveModuleId(mod.id)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                padding: '0.5rem 0.95rem',
-                fontSize: '0.78rem',
-                fontWeight: isActive ? 600 : 500,
-                fontFamily: 'var(--font-mono)',
-                letterSpacing: '0.02em',
-                border: `1px solid ${isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                borderRadius: 10,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                background: isActive ? 'var(--color-accent-soft)' : 'transparent',
-                color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                transition: 'background 0.15s, border-color 0.15s, color 0.15s',
-                flexShrink: 0,
-                outline: 'none',
-                boxShadow: isActive
-                  ? '0 2px 8px color-mix(in srgb, var(--color-accent) 18%, transparent)'
-                  : 'none',
-              }}
-            >
-              <Icon size={14} />
-              <span className="lab-tab-full">{mod.title}</span>
-              <span className="lab-tab-short">{moduleShortLabels[mod.id] || mod.title}</span>
-            </button>
-          )
-        })}
-      </motion.div>
+      <section className="editorial-section section-hairline">
+        <span className="section-ghost-num" aria-hidden="true">03</span>
+        <p className="editorial-kicker">[ 03 ] · Modules</p>
+        <h2 className="editorial-section-title">Interactive walkthroughs</h2>
+
+        <motion.div
+          {...fadeUp}
+          transition={{ duration: 0.35 }}
+          style={{
+            display: 'flex',
+            gap: '0.4rem',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            marginBottom: '1.5rem',
+            paddingBottom: 2,
+          }}
+          role="tablist"
+          aria-label="Demo modules"
+          className="lab-tab-row"
+        >
+          {demoLabModules.map((mod, index) => {
+            const isActive = mod.id === activeModuleId
+            const Icon = moduleIcons[mod.type] || Activity
+            return (
+              <button
+                key={mod.id}
+                role="tab"
+                id={`lab-tab-${mod.id}`}
+                aria-selected={isActive}
+                aria-controls={isActive ? `lab-panel-${mod.id}` : undefined}
+                tabIndex={isActive ? 0 : -1}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
+                onClick={() => setActiveModuleId(mod.id)}
+                className={isActive ? 'btn btn--primary' : 'btn btn--ghost'}
+                style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap', flexShrink: 0 }}
+              >
+                <Icon size={14} />
+                <span className="lab-tab-full">{mod.title}</span>
+                <span className="lab-tab-short">{moduleShortLabels[mod.id] || mod.title}</span>
+              </button>
+            )
+          })}
+        </motion.div>
 
       {/* ── Main content: module + aside ──────────────────── */}
       <motion.div
@@ -343,6 +316,7 @@ export default function LabPage() {
           </div>
         </aside>
       </motion.div>
+      </section>
 
       {/* ── Responsive ───────────────────────────────────── */}
       <style>{`
@@ -369,6 +343,6 @@ export default function LabPage() {
           }
         }
       `}</style>
-    </section>
+    </main>
   )
 }

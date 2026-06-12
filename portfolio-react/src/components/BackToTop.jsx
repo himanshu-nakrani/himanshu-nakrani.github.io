@@ -31,7 +31,7 @@ export default function BackToTop() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: 'var(--text)',
+        color: 'var(--color-text)',
         cursor: 'pointer',
         overflow: 'hidden',
       }}

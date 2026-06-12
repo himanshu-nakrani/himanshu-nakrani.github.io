@@ -9,7 +9,7 @@ import { researchDeepDives } from '../data'
 /* ─── Shared style fragments ────────────────────────────── */
 const sectionLabel = {
   fontSize: '0.68rem',
-  fontWeight: 700,
+  fontWeight: 'var(--font-weight-bold)',
   textTransform: 'uppercase',
   letterSpacing: '0.12em',
   color: 'var(--color-accent)',
@@ -100,11 +100,11 @@ function ResearchDeepDiveContent({ item }) {
 
   // Single page-level reveal — no per-block stagger
   const pageReveal = reduceMotion
-    ? {}
+    ? { initial: false, animate: { opacity: 1, y: 0 } }
     : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4 } }
 
   return (
-    <motion.section className="mvp2-page" {...pageReveal}>
+    <motion.section className="mvp2-page editorial-page" {...pageReveal}>
       <SEO
         title={`${item.title} | Himanshu Nakrani`}
         description={item.summary}
@@ -118,43 +118,19 @@ function ResearchDeepDiveContent({ item }) {
       </div>
 
       {/* ── Hero ─────────────────────────────────────────── */}
-      <header style={{ marginBottom: '2.5rem' }}>
+      <header className="article-hero">
         {item.badge && (
-          <div style={{ marginBottom: '0.85rem' }}>
-            <span style={{
-              fontSize: '0.68rem',
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 600,
-              color: 'var(--color-accent)',
-              background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-              border: '1px solid color-mix(in srgb, var(--color-accent) 28%, transparent)',
-              padding: '3px 10px',
-              borderRadius: 6,
-            }}>
-              {item.badge}
-            </span>
-          </div>
+          <p className="editorial-kicker">[ {item.badge} ] · Deep dive</p>
         )}
 
-        <h1 style={{
-          fontSize: 'var(--text-3xl)',
-          fontWeight: 800,
-          color: 'var(--color-text)',
-          lineHeight: 'var(--line-height-tight)',
-          letterSpacing: 'var(--letter-spacing-tight)',
-          marginBottom: '0.75rem',
-        }}>
-          {item.title}
-        </h1>
+        <h1 className="article-title">{item.title}</h1>
 
-        <p style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--color-text-muted)',
-          lineHeight: 'var(--line-height-relaxed)',
-          maxWidth: '44rem',
-        }}>
-          {item.summary}
-        </p>
+        <div className="editorial-meta-line">
+          <span>{item.badge || 'Research'}</span>
+          {item.demoModuleId && <span>Lab module · {item.demoModuleId}</span>}
+        </div>
+
+        <p className="article-summary">{item.summary}</p>
       </header>
 
       {/* ── Metrics strip ────────────────────────────────── */}
@@ -171,22 +147,16 @@ function ResearchDeepDiveContent({ item }) {
           {item.metrics.map(m => (
             <div
               key={m.label}
-              style={{
-                ...cardBorder,
-                borderRadius: 10,
-                padding: '1rem 1.1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.2rem',
-              }}
+              className="editorial-card"
+              style={{ padding: '1rem 1.1rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}
             >
               <span style={{
-                fontSize: '1.2rem',
-                fontWeight: 700,
+                fontSize: 'var(--text-stat)',
+                fontWeight: 'var(--font-weight-bold)',
                 color: 'var(--color-accent)',
                 fontFamily: 'var(--font-mono)',
                 fontFeatureSettings: '"tnum" 1',
-                lineHeight: 1.2,
+                lineHeight: 1,
               }}>
                 {m.value}
               </span>
@@ -206,7 +176,7 @@ function ResearchDeepDiveContent({ item }) {
 
       {/* ── Pipeline ─────────────────────────────────────── */}
       {item.pipeline && item.pipeline.length > 0 && (
-        <div style={{ marginBottom: '2.5rem' }}>
+        <div className="article-block section-hairline">
           <p style={{ ...sectionLabel, marginBottom: '0.85rem' }}>Pipeline</p>
           <TechnicalArchitectureMap
             stages={item.pipeline}
@@ -219,7 +189,7 @@ function ResearchDeepDiveContent({ item }) {
 
       {/* ── Setup & Infrastructure ───────────────────────── */}
       {item.stack && item.stack.length > 0 && (
-        <div style={{ marginBottom: '2.5rem' }}>
+        <div className="article-block section-hairline">
           <p style={sectionLabel}>Setup & Infrastructure</p>
           <div style={{
             display: 'flex',
@@ -247,7 +217,7 @@ function ResearchDeepDiveContent({ item }) {
 
       {/* ── Notes / Details ──────────────────────────────── */}
       {item.notes && item.notes.length > 0 && (
-        <div style={{ marginBottom: '2.5rem' }}>
+        <div className="article-block section-hairline">
           <p style={sectionLabel}>Notes</p>
           <ul style={{
             listStyle: 'none',

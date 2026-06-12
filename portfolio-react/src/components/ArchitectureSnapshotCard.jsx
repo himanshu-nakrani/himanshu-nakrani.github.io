@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
 
-function AnimatedConnector({ delay = 0 }) {
+function AnimatedConnector({ delay = 0, reduceMotion }) {
   return (
     <div
       className="arch-connector-wrap"
@@ -18,20 +18,20 @@ function AnimatedConnector({ delay = 0 }) {
       <svg width="32" height="24" viewBox="0 0 32 24" style={{ position: 'absolute', inset: 0 }}>
         <line
           x1="0" y1="12" x2="32" y2="12"
-          stroke="var(--accent)"
+          stroke="var(--color-accent)"
           strokeWidth="1.5"
           strokeOpacity="0.3"
         />
         <polygon
           points="24,7 32,12 24,17"
-          fill="var(--accent)"
+          fill="var(--color-accent)"
           fillOpacity="0.4"
         />
       </svg>
       <motion.div
-        initial={{ x: -6, opacity: 0 }}
-        animate={{ x: [-6, 28], opacity: [0, 1, 1, 0] }}
-        transition={{
+        initial={reduceMotion ? false : { x: -6, opacity: 0 }}
+        animate={reduceMotion ? { x: 12, opacity: 1 } : { x: [-6, 28], opacity: [0, 1, 1, 0] }}
+        transition={reduceMotion ? { duration: 0 } : {
           duration: 1.4,
           delay: delay,
           repeat: Infinity,
@@ -42,8 +42,8 @@ function AnimatedConnector({ delay = 0 }) {
           width: 6,
           height: 6,
           borderRadius: '50%',
-          background: 'var(--accent)',
-          boxShadow: '0 0 8px var(--accent)',
+          background: 'var(--color-accent)',
+          boxShadow: '0 0 8px var(--color-accent)',
           position: 'absolute',
           top: '50%',
           transform: 'translateY(-50%)',
@@ -57,6 +57,7 @@ function AnimatedConnector({ delay = 0 }) {
 export default function ArchitectureSnapshotCard({ pipeline }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
+  const reduceMotion = useReducedMotion()
 
   return (
     <section ref={ref} aria-label={`Architecture snapshot: ${pipeline.title}`}>
@@ -158,9 +159,9 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
           <React.Fragment key={stage.id}>
             <motion.div
               className="arch-stage"
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={reduceMotion ? { opacity: 1, y: 0 } : inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: reduceMotion ? 0 : 0.4, delay: reduceMotion ? 0 : i * 0.1 }}
               role={stage.detail ? 'img' : undefined}
               aria-label={stage.detail ? `${stage.label}: ${stage.detail}` : stage.label}
             >
@@ -171,7 +172,7 @@ export default function ArchitectureSnapshotCard({ pipeline }) {
               )}
             </motion.div>
             {i < pipeline.stages.length - 1 && inView && (
-              <AnimatedConnector delay={i * 0.25 + 0.5} />
+              <AnimatedConnector delay={i * 0.25 + 0.5} reduceMotion={reduceMotion} />
             )}
             {i < pipeline.stages.length - 1 && !inView && (
               <div className="arch-connector-wrap" style={{ width: 32, height: 24 }} />

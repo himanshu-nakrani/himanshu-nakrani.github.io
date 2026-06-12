@@ -46,7 +46,7 @@ function CardInner({ highlight }) {
         style={{
           fontSize: '0.95rem',
           fontWeight: 600,
-          color: 'var(--text)',
+          color: 'var(--color-text)',
           lineHeight: 1.4,
           margin: 0,
         }}
@@ -57,7 +57,7 @@ function CardInner({ highlight }) {
       <p
         style={{
           fontSize: '0.85rem',
-          color: 'var(--text2)',
+          color: 'var(--color-text-muted)',
           lineHeight: 1.5,
           margin: 0,
           flexGrow: 1,

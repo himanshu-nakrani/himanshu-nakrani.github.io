@@ -1,282 +1,93 @@
 import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ExternalLink, GitBranch, BookOpen, Network, FileText, Award, TrendingUp, Brain, ChevronRight, ArrowRight } from 'lucide-react'
-import PageHeader from '../components/PageHeader'
+import { ArrowRight, Award, Brain, ExternalLink, FileText, GitBranch, Network, TrendingUp } from 'lucide-react'
+import SEO from '../components/SEO'
 import Tag from '../components/Tag'
 import { publications, researchDeepDives } from '../data/research'
-import SEO from '../components/SEO'
 
-/* ─── Sub-components ───────────────────────────────────── */
-function SectionLabel({ children, icon: Icon }) {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 8,
-      marginBottom: '1.25rem',
-    }}>
-      {Icon && (
-        <div style={{
-          width: 28, height: 28, borderRadius: 8,
-          background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-          border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Icon size={14} color="var(--color-accent)" />
-        </div>
-      )}
-      <p style={{
-        fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-accent)',
-        textTransform: 'uppercase', letterSpacing: '0.12em',
-        margin: 0,
-      }}>
-        {children}
-      </p>
-    </div>
-  )
+function motionProps(reduceMotion, inView, delay = 0) {
+  if (reduceMotion) return { initial: false, animate: { opacity: 1, y: 0 } }
+  return {
+    initial: { opacity: 0, y: 18 },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
+    transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] },
+  }
 }
 
-function PaperCard({ pub, index, isExpanded, onToggle }) {
+function ResearchStat({ value, label, icon: Icon, index }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-40px' })
-  const isPublished = !!pub.link
-  const [hovered, setHovered] = useState(false)
+  const inView = useInView(ref, { once: true })
+  const reduceMotion = useReducedMotion()
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.12 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{
-        borderRadius: 20,
-        border: `1px solid ${hovered || isExpanded ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--color-border)'}`,
-        background: 'var(--color-surface)',
-        overflow: 'hidden',
-        transition: 'all 0.25s ease',
-        boxShadow: hovered || isExpanded ? 'var(--shadow-sm)' : 'none',
-      }}
-    >
-
-
-      {/* Header - always visible */}
-      <button
-        aria-expanded={isExpanded}
-        onClick={onToggle}
-        style={{
-          width: '100%',
-          padding: '1.5rem',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          textAlign: 'left',
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
-          <div style={{ flex: 1 }}>
-            {/* Venue + status badges */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-              <span style={{
-                fontSize: '0.68rem', fontFamily: 'var(--font-mono)', fontWeight: 600,
-                color: 'var(--color-accent)', 
-                background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--color-accent) 28%, transparent)',
-                padding: '3px 10px', borderRadius: 6,
-              }}>
-                {pub.venue}
-              </span>
-              <span style={{
-                fontSize: '0.68rem', fontFamily: 'var(--font-mono)', fontWeight: 600,
-                color: isPublished ? 'var(--color-success)' : 'var(--color-info)',
-                background: isPublished ? 'rgba(74,222,128,0.1)' : 'rgba(59,130,246,0.1)',
-                border: `1px solid ${isPublished ? 'rgba(74,222,128,0.3)' : 'rgba(59,130,246,0.3)'}`,
-                padding: '3px 10px', borderRadius: 6,
-              }}>
-                {isPublished ? 'IEEE Published' : 'Accepted'}
-              </span>
-            </div>
-
-            {/* Title */}
-            <h3 style={{
-              fontSize: '1.05rem', fontWeight: 700, lineHeight: 1.45,
-              color: 'var(--color-text)',
-              letterSpacing: '-0.01em',
-              margin: 0,
-            }}>
-              {pub.title}
-            </h3>
-          </div>
-
-          {/* Expand indicator */}
-          <motion.div
-            animate={{ rotate: isExpanded ? 90 : 0 }}
-            transition={{ duration: 0.2 }}
-            style={{
-              width: 32, height: 32, borderRadius: 8,
-              background: isExpanded ? 'color-mix(in srgb, var(--color-accent) 15%, transparent)' : 'var(--color-surface-raised)',
-              border: `1px solid ${isExpanded ? 'color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'var(--color-border)'}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}
-          >
-            <ChevronRight size={16} color={isExpanded ? 'var(--color-accent)' : 'var(--color-text-muted)'} />
-          </motion.div>
-        </div>
-      </button>
-
-      {/* Expandable content */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div style={{ padding: '0 1.5rem 1.5rem' }}>
-              {/* Description */}
-              <p style={{
-                fontSize: '0.88rem', color: 'var(--color-text-muted)', lineHeight: 1.75,
-                marginBottom: '1.25rem',
-                padding: '1rem 1.25rem',
-                background: 'color-mix(in srgb, var(--color-accent) 5%, var(--color-bg))',
-                borderLeft: '3px solid var(--color-accent)',
-                borderRadius: '0 10px 10px 0',
-              }}>
-                {pub.desc}
-              </p>
-
-              {/* Tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: '1.25rem' }}>
-                {pub.tags.map(t => <Tag key={t}>{t}</Tag>)}
-              </div>
-
-              {/* Link */}
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                {pub.link ? (
-                  <a
-                    href={pub.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn--primary"
-                    style={{ fontSize: '0.82rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}
-                  >
-                    <ExternalLink size={13} /> View on IEEE Xplore
-                  </a>
-                ) : (
-                  <span style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 5,
-                    fontSize: '0.78rem', color: 'var(--color-info)',
-                    fontFamily: 'var(--font-mono)',
-                    padding: '8px 14px', borderRadius: 10,
-                    background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.25)',
-                  }}>
-                    <BookOpen size={13} /> Proceedings pending
-                  </span>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <motion.div ref={ref} className="editorial-stat" {...motionProps(reduceMotion, inView, index * 0.06)}>
+      <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
+      <span className="editorial-stat-num">{value}</span>
+      <span className="editorial-stat-label">{label}</span>
     </motion.div>
   )
 }
 
-/* ─── Interactive methodology node ─────────────────────── */
-function MethodologyNode({ label, icon: Icon, delay, inView, isActive, onClick }) {
-  const [hovered, setHovered] = useState(false)
-  
+function PublicationRow({ pub, index }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const reduceMotion = useReducedMotion()
+  const number = String(index + 1).padStart(2, '0')
+  const year = pub.venue.match(/\b\d{4}\b/)?.[0] || '2025'
+
   return (
-    <motion.button
-      aria-pressed={isActive}
-      initial={{ opacity: 0, scale: 0.9, y: 10 }}
-      animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-      transition={{ duration: 0.4, delay }}
-      onClick={onClick}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{
-        padding: '1rem 1.25rem',
-        borderRadius: 14,
-        border: `1px solid ${isActive ? 'var(--color-accent)' : hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
-        background: isActive 
-          ? 'color-mix(in srgb, var(--color-accent) 12%, var(--color-surface))'
-          : hovered 
-            ? 'color-mix(in srgb, var(--color-accent) 6%, var(--color-surface))'
-            : 'var(--color-surface)',
-        cursor: 'pointer',
-        flex: 1,
-        minWidth: 140,
-        textAlign: 'center',
-        transform: hovered || isActive ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
-        transition: 'all 0.2s ease',
-      }}
-    >
-      <div style={{
-        width: 36, height: 36, borderRadius: 10,
-        background: isActive 
-          ? 'var(--color-accent)'
-          : 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-        border: `1px solid ${isActive ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-accent) 25%, transparent)'}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        margin: '0 auto 0.6rem',
-        transition: 'all 0.2s',
-      }}>
-        <Icon size={18} color={isActive ? 'white' : 'var(--color-accent)'} />
+    <motion.article ref={ref} className="ledger-row section-hairline" {...motionProps(reduceMotion, inView, index * 0.04)}>
+      <span className="section-ghost-num" aria-hidden="true">{number}</span>
+      <div className="ledger-header">
+        <span className="ledger-title">{pub.venue}</span>
+        <span className="ledger-meta">{year}</span>
       </div>
-      <p style={{ 
-        fontSize: '0.82rem', 
-        fontWeight: 700, 
-        color: isActive ? 'var(--color-accent)' : 'var(--color-text)', 
-        lineHeight: 1.3,
-        margin: 0,
-        transition: 'color 0.2s',
-      }}>
-        {label}
-      </p>
-    </motion.button>
+      {pub.link ? (
+        <a className="ledger-headline-link" href={pub.link} target="_blank" rel="noopener noreferrer">
+          {pub.title} <ExternalLink size={18} aria-hidden="true" />
+        </a>
+      ) : (
+        <h2 className="ledger-headline-link" style={{ margin: 0 }}>{pub.title}</h2>
+      )}
+      <p className="ledger-note">{pub.desc}</p>
+      <div className="editorial-chip-list">
+        {pub.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        <span className="editorial-chip">{pub.link ? 'IEEE Published' : 'Accepted'}</span>
+      </div>
+    </motion.article>
   )
 }
 
-/* ─── Page ──────────────────────────────────────────────── */
+const methodologySteps = [
+  {
+    label: 'NL Query',
+    icon: FileText,
+    description: 'Natural language question input from user - e.g., "What were the top performing funds last quarter?"',
+  },
+  {
+    label: 'GoT Reasoning',
+    icon: Network,
+    description: 'Graph-of-Thoughts decomposes complex queries into sub-problems, exploring multiple reasoning paths simultaneously.',
+  },
+  {
+    label: 'SQL Augmentation',
+    icon: GitBranch,
+    description: 'High-quality synthetic SQL examples generated for training data, improving model accuracy on edge cases.',
+  },
+  {
+    label: 'Fine-tuned LLM',
+    icon: Brain,
+    description: 'Domain-adapted language model trained on augmented data, optimized for structured query generation.',
+  },
+]
+
 export default function ResearchPage() {
-  const statsRef = useRef(null)
-  const statsInView = useInView(statsRef, { once: true })
-  const methodRef = useRef(null)
-  const methodInView = useInView(methodRef, { once: true, margin: '-40px' })
-  
-  const [expandedPaper, setExpandedPaper] = useState(0) // First paper expanded by default
+  const reduceMotion = useReducedMotion()
   const [activeMethodNode, setActiveMethodNode] = useState(0)
-
-  const published = publications.filter(p => p.link).length
-  const accepted = publications.filter(p => !p.link).length
-
-  const methodologySteps = [
-    { 
-      label: 'NL Query', 
-      icon: FileText,
-      description: 'Natural language question input from user - e.g., "What were the top performing funds last quarter?"'
-    },
-    { 
-      label: 'GoT Reasoning', 
-      icon: Network,
-      description: 'Graph-of-Thoughts decomposes complex queries into sub-problems, exploring multiple reasoning paths simultaneously.'
-    },
-    { 
-      label: 'SQL Augmentation', 
-      icon: GitBranch,
-      description: 'High-quality synthetic SQL examples generated for training data, improving model accuracy on edge cases.'
-    },
-    { 
-      label: 'Fine-tuned LLM', 
-      icon: Brain,
-      description: 'Domain-adapted language model trained on augmented data, optimized for structured query generation.'
-    },
-  ]
+  const published = publications.filter((p) => p.link).length
+  const accepted = publications.filter((p) => !p.link).length
+  const activeStep = methodologySteps[activeMethodNode]
 
   return (
     <>
@@ -284,265 +95,110 @@ export default function ResearchPage() {
         title="Research | Himanshu Nakrani"
         description="Research publications and model training work across Text-to-SQL, Graph-of-Thoughts, fine-tuning, and pretraining."
       />
-      <section className="mvp2-page">
-      <PageHeader
-        kicker="Research"
-        title="Publications"
-        description="Graph-of-Thoughts reasoning, Text-to-SQL augmentation, and LLM fine-tuning for structured data."
-      />
+      <main className="mvp2-page editorial-page">
+        <header className="editorial-page-header">
+          <p className="editorial-kicker">[ 01 ] · Research</p>
+          <h1 className="editorial-page-title">
+            Publications on <span className="gradient-text">structured reasoning</span>.
+          </h1>
+          <p className="editorial-page-lede">
+            Graph-of-Thoughts reasoning, Text-to-SQL augmentation, and LLM fine-tuning for structured data.
+          </p>
+        </header>
 
-      {/* Stats grid - modern bento style */}
-      <div ref={statsRef} style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(4, 1fr)', 
-        gap: '0.75rem', 
-        marginBottom: '2.5rem',
-      }} className="research-stats-grid">
-        {[
-          { value: publications.length, label: 'Papers', icon: FileText },
-          { value: published, label: 'Published', icon: Award },
-          { value: accepted, label: 'Accepted', icon: TrendingUp },
-          { value: 'GoT', label: 'Core Method', icon: Network },
-        ].map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0, y: 16, scale: 0.95 }}
-            animate={statsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 0.4, delay: i * 0.08 }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: '0.75rem',
-              padding: '1rem 1.1rem', borderRadius: 14,
-              background: 'var(--color-surface)',
-              border: '1px solid var(--color-border)',
-            }}
-          >
-            <div style={{
-              width: 40, height: 40, borderRadius: 10,
-              background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-              border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}>
-              <s.icon size={18} color="var(--color-accent)" />
-            </div>
-            <div>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{s.value}</div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Papers - collapsible cards */}
-      <SectionLabel icon={FileText}>Selected Papers</SectionLabel>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '3rem' }}>
-        {publications.map((p, i) => (
-          <PaperCard 
-            key={i} 
-            pub={p} 
-            index={i}
-            isExpanded={expandedPaper === i}
-            onToggle={() => setExpandedPaper(expandedPaper === i ? -1 : i)}
-          />
-        ))}
-      </div>
-
-      {/* Interactive GoT methodology diagram */}
-      <div ref={methodRef} style={{ marginBottom: '2.5rem' }}>
-        <SectionLabel icon={Network}>Core Methodology</SectionLabel>
-
-        <div style={{
-          padding: '1.75rem',
-          borderRadius: 20,
-          border: '1px solid var(--color-border)',
-          background: 'var(--color-surface)',
-        }}>
-          {/* Pipeline title */}
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 8, 
-            marginBottom: '1.5rem',
-            padding: '0.5rem 0.85rem',
-            background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)',
-            borderRadius: 10,
-            width: 'fit-content',
-          }}>
-            <Brain size={16} color="var(--color-accent)" />
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Graph-of-Thoughts Pipeline
-            </span>
+        <section className="editorial-section section-hairline" aria-label="Research statistics">
+          <div className="editorial-stat-grid">
+            {[
+              { value: publications.length, label: 'Papers', icon: FileText },
+              { value: published, label: 'Published', icon: Award },
+              { value: accepted, label: 'Accepted', icon: TrendingUp },
+              { value: 'GoT', label: 'Core Method', icon: Network },
+            ].map((stat, index) => <ResearchStat key={stat.label} {...stat} index={index} />)}
           </div>
+        </section>
 
-          {/* Interactive pipeline nodes */}
-          <div style={{ 
-            display: 'flex', 
-            gap: '0.75rem', 
-            marginBottom: '1.5rem',
-            flexWrap: 'wrap',
-          }}>
-            {methodologySteps.map((step, i) => (
-              <MethodologyNode
-                key={step.label}
-                {...step}
-                delay={0.1 * i}
-                inView={methodInView}
-                isActive={activeMethodNode === i}
-                onClick={() => setActiveMethodNode(i)}
-              />
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">02</span>
+          <p className="editorial-kicker">[ 02 ] · Papers</p>
+          <h2 className="editorial-section-title">Selected papers</h2>
+          <div>{publications.map((pub, index) => <PublicationRow key={pub.title} pub={pub} index={index} />)}</div>
+        </section>
+
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">03</span>
+          <p className="editorial-kicker">[ 03 ] · Method</p>
+          <h2 className="editorial-section-title">Graph-of-Thoughts pipeline</h2>
+          <div className="editorial-grid-2">
+            <div style={{ display: 'grid', gap: '0.75rem' }}>
+              {methodologySteps.map((step, index) => {
+                const Icon = step.icon
+                const active = activeMethodNode === index
+                return (
+                  <button
+                    key={step.label}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setActiveMethodNode(index)}
+                    className={`editorial-card${active ? ' is-active' : ''}`}
+                    style={{ padding: '1rem 1.1rem', display: 'flex', alignItems: 'center', gap: '0.8rem', textAlign: 'left', cursor: 'pointer' }}
+                  >
+                    <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
+                    <span style={{ color: active ? 'var(--color-accent)' : 'var(--color-text)', fontWeight: 'var(--font-weight-semibold)' }}>{step.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep.label}
+                className="editorial-card"
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                style={{ padding: '1.25rem' }}
+              >
+                <p className="ledger-subhead">Active node</p>
+                <h3 style={{ margin: '0 0 0.75rem', color: 'var(--color-text)', fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)' }}>{activeStep.label}</h3>
+                <p style={{ margin: 0, color: 'var(--color-text-muted)', lineHeight: 'var(--line-height-relaxed)' }}>{activeStep.description}</p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </section>
+
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">04</span>
+          <p className="editorial-kicker">[ 04 ] · Models</p>
+          <h2 className="editorial-section-title">Research deep dives</h2>
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            {researchDeepDives.map((item) => (
+              <Link key={item.slug} to={`/research/${item.slug}`} className="editorial-card" style={{ padding: '1.2rem', textDecoration: 'none', display: 'grid', gap: '0.75rem' }}>
+                <div className="ledger-header">
+                  <span className="ledger-title">Research</span>
+                  <span className="ledger-meta">View <ArrowRight size={14} aria-hidden="true" /></span>
+                </div>
+                <h3 style={{ margin: 0, color: 'var(--color-text)', fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', lineHeight: 'var(--line-height-tight)' }}>{item.shortTitle}</h3>
+                <p style={{ margin: 0, color: 'var(--color-text-muted)', lineHeight: 'var(--line-height-relaxed)' }}>{item.summary}</p>
+                <div className="editorial-chip-list">
+                  {item.metrics.slice(0, 3).map((metric) => <span key={metric.label} className="editorial-chip">{metric.value} {metric.label}</span>)}
+                </div>
+              </Link>
             ))}
           </div>
+        </section>
 
-          {/* Active step description */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeMethodNode}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                padding: '1rem 1.25rem',
-                borderRadius: 12,
-                background: 'color-mix(in srgb, var(--color-accent) 6%, var(--color-bg))',
-                border: '1px solid color-mix(in srgb, var(--color-accent) 15%, var(--color-border))',
-              }}
-            >
-              <p style={{ 
-                fontSize: '0.88rem', 
-                color: 'var(--color-text-muted)', 
-                lineHeight: 1.7, 
-                margin: 0,
-              }}>
-                <strong style={{ color: 'var(--color-accent)' }}>
-                  {methodologySteps[activeMethodNode].label}:
-                </strong>{' '}
-                {methodologySteps[activeMethodNode].description}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Research Models - deep dive links */}
-      <div style={{ marginBottom: '2.5rem' }}>
-        <SectionLabel icon={Brain}>Research Models</SectionLabel>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-          {researchDeepDives.map(item => (
-            <Link
-              key={item.slug}
-              to={`/research/${item.slug}`}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: '1rem',
-                padding: '1.25rem 1.5rem',
-                borderRadius: 14,
-                border: '1px solid var(--color-border)',
-                background: 'var(--color-surface)',
-                textDecoration: 'none',
-                transition: 'all 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = 'var(--shadow-sm)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.transform = 'none'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
-                  <span style={{
-                    fontSize: '0.65rem', fontFamily: 'var(--font-mono)',
-                    background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-                    color: 'var(--color-accent)', padding: '2px 8px', borderRadius: 6,
-                    border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-                  }}>Research</span>
-                  <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text)', margin: 0 }}>{item.shortTitle}</h3>
-                </div>
-                <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', lineHeight: 1.5, margin: 0 }}>{item.summary}</p>
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: '0.5rem' }}>
-                  {item.metrics.slice(0, 3).map(m => (
-                    <span key={m.label} style={{
-                      fontSize: '0.67rem', padding: '2px 8px',
-                      background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-                      border: '1px solid color-mix(in srgb, var(--color-accent) 22%, transparent)',
-                      borderRadius: 20, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', fontWeight: 600,
-                    }}>
-                      {m.value} {m.label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <ArrowRight size={16} color="var(--color-accent)" style={{ flexShrink: 0, opacity: 0.6 }} />
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Research interests tags */}
-      <div style={{ marginBottom: '2rem' }}>
-        <SectionLabel icon={TrendingUp}>Research Interests</SectionLabel>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          {['Graph-of-Thoughts', 'Text-to-SQL', 'LLM Fine-tuning', 'Data Augmentation', 'Structured Reasoning', 'NL Interfaces'].map(t => (
-            <span key={t} style={{
-              fontSize: '0.76rem', padding: '6px 14px', borderRadius: 10,
-              border: '1px solid color-mix(in srgb, var(--color-accent) 30%, var(--color-border))',
-              background: 'color-mix(in srgb, var(--color-accent) 8%, var(--color-surface))',
-              color: 'var(--color-accent)', fontWeight: 600,
-            }}>{t}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* Research focus callout */}
-      <div style={{
-        padding: '1.5rem 1.75rem', 
-        borderRadius: 16,
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)', 
-        borderLeft: '4px solid var(--color-accent)',
-        display: 'flex', 
-        gap: '1rem', 
-        alignItems: 'flex-start',
-      }}>
-        <div style={{
-          width: 40, height: 40, borderRadius: 10,
-          background: 'color-mix(in srgb, var(--color-accent) 15%, transparent)',
-          border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0,
-        }}>
-          <GitBranch size={18} color="var(--color-accent)" />
-        </div>
-        <div>
-          <p style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-accent)', marginBottom: '0.5rem' }}>
-            Research Focus
-          </p>
-          <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', lineHeight: 1.75, margin: 0 }}>
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">05</span>
+          <p className="editorial-kicker">[ 05 ] · Focus</p>
+          <h2 className="editorial-section-title">Research interests</h2>
+          <div className="editorial-chip-list">
+            {['Graph-of-Thoughts', 'Text-to-SQL', 'LLM Fine-tuning', 'Data Augmentation', 'Structured Reasoning', 'NL Interfaces'].map((tag) => <span key={tag} className="editorial-chip">{tag}</span>)}
+          </div>
+          <p className="editorial-section-lede" style={{ marginTop: '1.5rem' }}>
             My research explores how Graph-of-Thoughts frameworks can improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks, with an eye toward practical structured-data systems.
           </p>
-        </div>
-      </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .research-stats-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .research-stats-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
-      </section>
+        </section>
+      </main>
     </>
   )
 }

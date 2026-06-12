@@ -24,14 +24,14 @@ export default function CurrentFocus({ items, lastUpdated }) {
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: var(--accent);
+          color: var(--color-accent);
           margin-bottom: 0.4rem;
         }
 
         .focus-description {
           margin: 0 0 0.75rem;
           font-size: 0.9rem;
-          color: var(--text);
+          color: var(--color-text);
           line-height: 1.55;
         }
 
@@ -46,15 +46,15 @@ export default function CurrentFocus({ items, lastUpdated }) {
           font-weight: 600;
           padding: 3px 10px;
           border-radius: 9999px;
-          background: color-mix(in srgb, var(--accent) 12%, transparent);
-          color: var(--accent);
-          border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+          background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+          color: var(--color-accent);
+          border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
         }
 
         .focus-last-updated {
           margin-top: 1rem;
           font-size: 0.75rem;
-          color: var(--text2, var(--muted));
+          color: var(--color-text-muted);
         }
       `}</style>
 

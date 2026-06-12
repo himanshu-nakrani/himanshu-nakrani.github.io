@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { X, ExternalLink, Github, TrendingUp, Users, Zap } from 'lucide-react'
 import Tag from './Tag'
 
@@ -13,6 +13,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [ta
 
 export default function ProjectDetailModal({ project, onClose, triggerRef }) {
   const modalRef = useRef(null)
+  const reduceMotion = useReducedMotion()
 
   // Move focus into modal when it opens
   useEffect(() => {
@@ -49,9 +50,9 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
         onClick={handleClose}
         style={{
           position: 'fixed',
@@ -84,28 +85,28 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
             outline: 'none',
           }}
         >
-          <div style={{ position: 'sticky', top: 0, background: 'color-mix(in srgb, var(--surface) 85%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', zIndex: 10, borderBottom: '1px solid var(--glass-border)', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ position: 'sticky', top: 0, background: 'color-mix(in srgb, var(--color-surface) 85%, transparent)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', zIndex: 10, borderBottom: '1px solid var(--glass-border)', padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ fontSize: '2rem' }} aria-hidden="true">{project.icon}</span>
               <div>
                 <h2 id="modal-title" style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>{project.title}</h2>
                 {project.badge && (
-                  <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontFamily: "'Fira Code', monospace" }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-accent)', fontFamily: 'var(--font-mono)' }}>
                     ● {project.badge}
                   </span>
                 )}
               </div>
             </div>
             <motion.button
-              whileHover={{ scale: 1.1, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={reduceMotion ? undefined : { scale: 1.1, rotate: 90 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.9 }}
               aria-label="Close dialog"
               onClick={handleClose}
               style={{
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'var(--text2)',
+                color: 'var(--color-text-muted)',
                 padding: '0.5rem',
                 borderRadius: '50%',
                 display: 'flex',
@@ -118,7 +119,7 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
           </div>
 
           <div style={{ padding: '2rem' }}>
-            <p style={{ fontSize: '1rem', color: 'var(--text2)', lineHeight: 1.7, marginBottom: '2rem' }}>
+            <p style={{ fontSize: '1rem', color: 'var(--color-text-muted)', lineHeight: 1.7, marginBottom: '2rem' }}>
               {project.fullDesc || project.desc}
             </p>
 
@@ -131,18 +132,18 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                     return (
                       <motion.div
                         key={i}
-                        whileHover={{ y: -4 }}
+                        whileHover={reduceMotion ? undefined : { y: -4 }}
                         className="glass-card"
                         style={{
                           borderRadius: 12,
                           padding: '1rem',
                         }}
                       >
-                        <Icon size={20} style={{ color: 'var(--accent)', marginBottom: '0.5rem' }} />
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text)', marginBottom: '0.25rem' }}>
+                        <Icon size={20} style={{ color: 'var(--color-accent)', marginBottom: '0.5rem' }} />
+                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text)', marginBottom: '0.25rem' }}>
                           {metric.value}
                         </div>
-                        <div style={{ fontSize: '0.85rem', color: 'var(--text2)' }}>{metric.label}</div>
+                        <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>{metric.label}</div>
                       </motion.div>
                     )
                   })}
@@ -157,13 +158,13 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                   {project.features.map((feature, i) => (
                     <motion.li
                       key={i}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={reduceMotion ? false : { opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.1 }}
+                      transition={{ delay: reduceMotion ? 0 : i * 0.1 }}
                       style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}
                     >
-                      <span style={{ color: 'var(--accent)', fontSize: '1.2rem', lineHeight: 1 }} aria-hidden="true">✓</span>
-                      <span style={{ color: 'var(--text2)', fontSize: '0.9rem', lineHeight: 1.6 }}>{feature}</span>
+                      <span style={{ color: 'var(--color-accent)', fontSize: '1.2rem', lineHeight: 1 }} aria-hidden="true">✓</span>
+                      <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>{feature}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -185,10 +186,10 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {project.challenges.map((item, i) => (
                     <div key={i} className="glass-card" style={{ borderRadius: 12, padding: '1rem' }}>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.5rem' }}>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-text)', marginBottom: '0.5rem' }}>
                         {item.challenge}
                       </div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text2)', lineHeight: 1.6 }}>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', lineHeight: 1.6 }}>
                         {item.solution}
                       </div>
                     </div>
@@ -200,8 +201,8 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               {project.link && (
                 <motion.a
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
                   href={project.link}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -230,8 +231,8 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
               )}
               {project.liveLink && (
                 <motion.a
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={reduceMotion ? undefined : { scale: 1.02 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
                   href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -241,7 +242,7 @@ export default function ProjectDetailModal({ project, onClose, triggerRef }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    color: 'var(--text)',
+                    color: 'var(--color-text)',
                     padding: '0.75rem 1.5rem',
                     borderRadius: 12,
                     textDecoration: 'none',
