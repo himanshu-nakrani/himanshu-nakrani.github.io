@@ -44,9 +44,9 @@ const platformRows = [
     href: 'https://huggingface.co/himanshunakrani9',
     platformColor: '#ff9d00',
     stats: [
-      { value: '12', label: 'Models' },
-      { value: '2.6K', label: 'Downloads' },
-      { value: '1', label: 'Dataset' },
+      { value: '11', label: 'Models' },
+      { value: '2.8K', label: 'Downloads' },
+      { value: '11', label: 'Datasets' },
     ],
   },
   {
