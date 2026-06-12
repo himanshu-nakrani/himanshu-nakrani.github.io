@@ -1,357 +1,107 @@
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Award, Sparkles, Layers, TrendingUp, ChevronRight } from 'lucide-react'
-import PageHeader from '../components/PageHeader'
+import { useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
+import { Award, ChevronRight, Layers, Sparkles, TrendingUp } from 'lucide-react'
 import DataIcon from '../components/DataIcon'
-import { skills, certifications } from '../data/skills'
 import SEO from '../components/SEO'
+import { certifications, skills } from '../data/skills'
 
-/* Primary tools - showcased in a bento grid */
 const PRIMARY_STACK = [
-  { name: 'Python',       icon: 'Code2',    note: 'Primary language', years: 4, featured: true },
-  { name: 'FastAPI',      icon: 'Zap',      note: 'Backend APIs', years: 2 },
-  { name: 'LangChain',    icon: 'Link',     note: 'LLM orchestration', years: 1.5 },
-  { name: 'Azure OpenAI', icon: 'Cloud',    note: 'LLM infrastructure', years: 1.5, featured: true },
-  { name: 'PostgreSQL',   icon: 'Database', note: 'Primary database', years: 3 },
-  { name: 'pgvector',     icon: 'Hash',     note: 'Vector search', years: 1 },
-  { name: 'RAG',          icon: 'BookOpen', note: 'Retrieval AI', years: 1.5 },
-  { name: 'Docker',       icon: 'Box',      note: 'Containers', years: 2 },
+  { name: 'Python', icon: 'Code2', note: 'Primary language', years: 4, featured: true },
+  { name: 'FastAPI', icon: 'Zap', note: 'Backend APIs', years: 2 },
+  { name: 'LangChain', icon: 'Link', note: 'LLM orchestration', years: 1.5 },
+  { name: 'Azure OpenAI', icon: 'Cloud', note: 'LLM infrastructure', years: 1.5, featured: true },
+  { name: 'PostgreSQL', icon: 'Database', note: 'Primary database', years: 3 },
+  { name: 'pgvector', icon: 'Hash', note: 'Vector search', years: 1 },
+  { name: 'RAG', icon: 'BookOpen', note: 'Retrieval AI', years: 1.5 },
+  { name: 'Docker', icon: 'Box', note: 'Containers', years: 2 },
 ]
 
-/* Cert accent colors — amber-harmonious palette */
-const CERT_COLORS = [
-  { bg: 'rgba(245,166,35,0.12)', border: 'rgba(245,166,35,0.3)', accent: '#f5a623' },
-  { bg: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.3)', accent: '#c084fc' },
-  { bg: 'rgba(103,232,249,0.12)', border: 'rgba(103,232,249,0.3)', accent: '#67e8f9' },
-  { bg: 'rgba(251,113,133,0.12)', border: 'rgba(251,113,133,0.3)', accent: '#fb7185' },
-  { bg: 'rgba(74,222,128,0.12)', border: 'rgba(74,222,128,0.3)', accent: '#4ade80' },
-]
-
-function SectionLabel({ children, icon: Icon }) {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: 8,
-      marginBottom: '1.25rem',
-    }}>
-      {Icon && (
-        <div style={{
-          width: 28, height: 28, borderRadius: 8,
-          background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-          border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Icon size={14} color="var(--color-accent)" />
-        </div>
-      )}
-      <p style={{
-        fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-accent)',
-        textTransform: 'uppercase', letterSpacing: '0.12em',
-        margin: 0,
-      }}>
-        {children}
-      </p>
-    </div>
-  )
+function motionProps(reduceMotion, inView, delay = 0) {
+  if (reduceMotion) return { initial: false, animate: { opacity: 1, y: 0 } }
+  return {
+    initial: { opacity: 0, y: 18 },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
+    transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] },
+  }
 }
 
-/* Hero stat card with animated reveal */
-function HeroStatCard({ icon: Icon, value, label, delay }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
-  
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 16, scale: 0.95 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.4, delay }}
-      style={{
-        display: 'flex', alignItems: 'center', gap: '0.75rem',
-        padding: '1rem 1.25rem', borderRadius: 14,
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
-        flex: 1, minWidth: 140,
-      }}
-    >
-      <div style={{
-        width: 36, height: 36, borderRadius: 10,
-        background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-        border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        <Icon size={18} color="var(--color-accent)" />
-      </div>
-      <div>
-        <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>
-          {value}
-        </div>
-        <div style={{ fontSize: '0.68rem', color: 'var(--color-text-muted)', marginTop: 2 }}>
-          {label}
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
-/* Bento-style tool card */
-function BentoToolCard({ tool, index, large }) {
-  const [hovered, setHovered] = useState(false)
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-30px' })
-  
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20, scale: 0.97 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.4, delay: index * 0.05 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{
-        gridColumn: large ? 'span 2' : 'span 1',
-        padding: large ? '1.5rem' : '1.1rem',
-        borderRadius: 16,
-        background: 'var(--color-surface)',
-        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
-        cursor: 'default',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
-        transition: 'all 0.25s ease',
-        display: 'flex',
-        flexDirection: large ? 'row' : 'column',
-        alignItems: large ? 'center' : 'flex-start',
-        gap: large ? '1.25rem' : '0.6rem',
-      }}
-    >
-      <div style={{
-        lineHeight: 1,
-        color: hovered ? 'var(--color-accent)' : 'var(--color-text-muted)',
-        transition: 'color 0.2s',
-      }}>
-        <DataIcon name={tool.icon} size={large ? 28 : 20} />
-      </div>
-      <div style={{ flex: 1 }}>
-        <div style={{ 
-          fontSize: large ? '1.1rem' : '0.85rem', 
-          fontWeight: 700, 
-          color: 'var(--color-text)',
-          marginBottom: 2,
-        }}>
-          {tool.name}
-        </div>
-        <div style={{ 
-          fontSize: '0.7rem', 
-          color: 'var(--color-text-muted)',
-          fontFamily: 'var(--font-mono)',
-        }}>
-          {tool.note}
-        </div>
-      </div>
-      {tool.years && (
-        <div style={{
-          fontSize: '0.65rem',
-          fontFamily: 'var(--font-mono)',
-          color: hovered ? 'var(--color-accent)' : 'var(--color-text-muted)',
-          padding: '3px 8px',
-          borderRadius: 20,
-          background: hovered ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--color-surface-raised)',
-          border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'var(--color-border)'}`,
-          transition: 'all 0.2s',
-          whiteSpace: 'nowrap',
-        }}>
-          {tool.years}+ yrs
-        </div>
-      )}
-    </motion.div>
-  )
-}
-
-/* Skill category card with expandable items */
-function SkillCategoryCard({ group, index, isExpanded, onToggle }) {
+function StackCard({ tool, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
-  const [hovered, setHovered] = useState(false)
-  
+  const reduceMotion = useReducedMotion()
+
   return (
-    <motion.div
+    <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.45, delay: index * 0.08 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{
-        borderRadius: 18,
-        overflow: 'hidden',
-        background: 'var(--color-surface)',
-        border: `1px solid ${isExpanded ? group.color : hovered ? 'color-mix(in srgb, var(--color-accent) 30%, var(--color-border))' : 'var(--color-border)'}`,
-        transition: 'all 0.3s ease',
-        boxShadow: isExpanded ? 'var(--shadow-sm)' : 'none',
-      }}
+      className="editorial-card"
+      {...motionProps(reduceMotion, inView, index * 0.04)}
+      style={{ padding: tool.featured ? '1.35rem' : '1rem', gridColumn: tool.featured ? 'span 2' : 'span 1', display: 'grid', gap: '0.65rem' }}
     >
-      {/* Header */}
+      <span style={{ color: 'var(--color-accent)', lineHeight: 1 }}><DataIcon name={tool.icon} size={tool.featured ? 28 : 22} /></span>
+      <div>
+        <h3 style={{ margin: '0 0 0.25rem', color: 'var(--color-text)', fontSize: tool.featured ? 'var(--text-lg)' : 'var(--text-base)', fontWeight: 'var(--font-weight-semibold)' }}>{tool.name}</h3>
+        <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>{tool.note}</p>
+      </div>
+      <span className="editorial-chip" style={{ width: 'fit-content' }}>{tool.years}+ yrs</span>
+    </motion.article>
+  )
+}
+
+function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const reduceMotion = useReducedMotion()
+  const number = String(index + 1).padStart(2, '0')
+
+  return (
+    <motion.article
+      ref={ref}
+      className="ledger-row section-hairline"
+      style={{ '--ledger-accent': group.color }}
+      {...motionProps(reduceMotion, inView, index * 0.04)}
+    >
+      <span className="section-ghost-num" aria-hidden="true">{number}</span>
       <button
+        type="button"
+        className="ledger-header"
         aria-expanded={isExpanded}
         onClick={onToggle}
-        style={{
-          width: '100%',
-          padding: '1.25rem 1.4rem',
-          background: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.85rem',
-          textAlign: 'left',
-        }}
+        style={{ background: 'transparent', border: 0, padding: 0, cursor: 'pointer', textAlign: 'left' }}
       >
-        <div style={{
-          width: 42, height: 42, borderRadius: 12,
-          background: `color-mix(in srgb, ${group.color} 15%, transparent)`,
-          border: `1px solid color-mix(in srgb, ${group.color} 30%, transparent)`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: group.color,
-          transition: 'all 0.25s',
-        }}>
-          <DataIcon name={group.icon} size={20} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{
-            fontSize: '0.95rem',
-            fontWeight: 700,
-            color: isExpanded ? group.color : 'var(--color-text)',
-            transition: 'color 0.25s',
-            marginBottom: 2,
-          }}>
-            {group.label}
-          </div>
-          <div style={{
-            fontSize: '0.68rem',
-            color: 'var(--color-text-muted)',
-            fontFamily: 'var(--font-mono)',
-          }}>
-            {group.items.length} skills
-          </div>
-        </div>
-        <motion.div
-          animate={{ rotate: isExpanded ? 90 : 0 }}
-          transition={{ duration: 0.2 }}
-          style={{
-            width: 28, height: 28, borderRadius: 8,
-            background: isExpanded ? `color-mix(in srgb, ${group.color} 15%, transparent)` : 'var(--color-surface-raised)',
-            border: `1px solid ${isExpanded ? `color-mix(in srgb, ${group.color} 30%, transparent)` : 'var(--color-border)'}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <ChevronRight size={14} color={isExpanded ? group.color : 'var(--color-text-muted)'} />
-        </motion.div>
+        <span className="ledger-title" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.65rem' }}>
+          <DataIcon name={group.icon} size={18} />
+          {group.label}
+        </span>
+        <span className="ledger-meta">
+          {group.items.length} skills
+          <motion.span animate={reduceMotion ? { rotate: 0 } : { rotate: isExpanded ? 90 : 0 }} transition={{ duration: 0.2 }}>
+            <ChevronRight size={14} aria-hidden="true" />
+          </motion.span>
+        </span>
       </button>
-      
-      {/* Expandable content */}
-      <AnimatePresence>
+
+      <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            exit={reduceMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
             style={{ overflow: 'hidden' }}
           >
-            <div style={{ 
-              padding: '0 1.4rem 1.4rem',
-              display: 'flex', 
-              flexWrap: 'wrap', 
-              gap: 6,
-            }}>
-              {group.items.map((item, i) => (
-                <motion.span
-                  key={item}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.03 }}
-                  style={{
-                    fontSize: '0.75rem',
-                    padding: '5px 12px',
-                    borderRadius: 20,
-                    background: `color-mix(in srgb, ${group.color} 10%, var(--color-surface-raised))`,
-                    border: `1px solid color-mix(in srgb, ${group.color} 25%, var(--color-border))`,
-                    color: 'var(--color-text)',
-                    fontFamily: 'var(--font-mono)',
-                  }}
-                >
-                  {item}
-                </motion.span>
-              ))}
+            <div className="editorial-chip-list" style={{ paddingTop: '0.25rem' }}>
+              {group.items.map((item) => <span key={item} className="editorial-chip">{item}</span>)}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
-  )
-}
-
-/* Modern certification card */
-function CertCard({ cert, index, colors }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
-  const [hovered, setHovered] = useState(false)
-  
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -20 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        padding: '1rem 1.25rem',
-        borderRadius: 14,
-        background: hovered ? colors.bg : 'var(--color-surface)',
-        border: `1px solid ${hovered ? colors.border : 'var(--color-border)'}`,
-        transform: hovered ? 'translateX(4px)' : 'translateX(0)',
-        transition: 'all 0.22s ease',
-      }}
-    >
-      <div style={{
-        width: 40, height: 40, borderRadius: 10,
-        background: colors.bg,
-        border: `1px solid ${colors.border}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: colors.text || 'var(--color-accent)',
-        flexShrink: 0,
-      }}>
-        <DataIcon name={cert.icon} size={18} />
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ 
-          fontSize: '0.85rem', 
-          fontWeight: 600, 
-          color: 'var(--color-text)',
-          lineHeight: 1.4,
-        }}>
-          {cert.title}
-        </div>
-      </div>
-      <Award 
-        size={16} 
-        color={hovered ? colors.accent : 'var(--color-text-muted)'} 
-        style={{ 
-          flexShrink: 0, 
-          opacity: hovered ? 1 : 0.4,
-          transition: 'all 0.2s',
-        }} 
-      />
-    </motion.div>
+    </motion.article>
   )
 }
 
 export default function SkillsPage() {
-  const [expandedCategory, setExpandedCategory] = useState(null)
-  const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
+  const [expandedCategory, setExpandedCategory] = useState(skills[0]?.label || null)
+  const totalSkills = skills.reduce((acc, group) => acc + group.items.length, 0)
 
   return (
     <>
@@ -359,103 +109,87 @@ export default function SkillsPage() {
         title="Skills | Himanshu Nakrani"
         description="AI engineering, backend, cloud, data, and frontend skill matrix for production LLM systems."
       />
-      <section className="mvp2-page">
-      <PageHeader
-        kicker="Tech Stack"
-        title="Skills & Tools"
-        description="Technologies I work with daily — from LLM backends to cloud infrastructure."
-      />
+      <main className="mvp2-page editorial-page">
+        <header className="editorial-page-header">
+          <p className="editorial-kicker">[ 01 ] · Tech Stack</p>
+          <h1 className="editorial-page-title">
+            Skills for <span className="gradient-text">production LLM</span> systems.
+          </h1>
+          <p className="editorial-page-lede">
+            Technologies I work with daily, from LLM backends to cloud infrastructure.
+          </p>
+        </header>
 
-      {/* Hero stats row */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '0.75rem', 
-        marginBottom: '2.5rem',
-        flexWrap: 'wrap',
-      }}>
-        <HeroStatCard icon={Layers} value={`${totalSkills}+`} label="Total Skills" delay={0} />
-        <HeroStatCard icon={Sparkles} value={skills.length} label="Domains" delay={0.08} />
-        <HeroStatCard icon={TrendingUp} value="3" label="Cloud Platforms" delay={0.16} />
-        <HeroStatCard icon={Award} value={certifications.length} label="Certifications" delay={0.24} />
-      </div>
+        <section className="editorial-section section-hairline" aria-label="Skills statistics">
+          <div className="editorial-stat-grid">
+            {[
+              { icon: Layers, value: `${totalSkills}+`, label: 'Total Skills' },
+              { icon: Sparkles, value: skills.length, label: 'Domains' },
+              { icon: TrendingUp, value: '3', label: 'Cloud Platforms' },
+              { icon: Award, value: certifications.length, label: 'Certifications' },
+            ].map((stat) => {
+              const Icon = stat.icon
+              return (
+                <div key={stat.label} className="editorial-stat">
+                  <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
+                  <span className="editorial-stat-num">{stat.value}</span>
+                  <span className="editorial-stat-label">{stat.label}</span>
+                </div>
+              )
+            })}
+          </div>
+        </section>
 
-      {/* Primary Stack - Bento Grid */}
-      <div style={{ marginBottom: '2.75rem' }}>
-        <SectionLabel icon={Sparkles}>Core Technologies</SectionLabel>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '0.75rem',
-        }} className="skills-bento-grid">
-          {PRIMARY_STACK.map((tool, i) => (
-            <BentoToolCard 
-              key={tool.name} 
-              tool={tool} 
-              index={i}
-              large={tool.featured}
-            />
-          ))}
-        </div>
-      </div>
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">02</span>
+          <p className="editorial-kicker">[ 02 ] · Core</p>
+          <h2 className="editorial-section-title">Core technologies</h2>
+          <div className="skills-bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.85rem' }}>
+            {PRIMARY_STACK.map((tool, index) => <StackCard key={tool.name} tool={tool} index={index} />)}
+          </div>
+        </section>
 
-      {/* Skill Categories */}
-      <div style={{ marginBottom: '2.75rem' }}>
-        <SectionLabel icon={Layers}>All Skills by Domain</SectionLabel>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '0.85rem',
-        }}>
-          {skills.map((group, i) => (
-            <SkillCategoryCard
-              key={group.label}
-              group={group}
-              index={i}
-              isExpanded={expandedCategory === group.label}
-              onToggle={() => setExpandedCategory(
-                expandedCategory === group.label ? null : group.label
-              )}
-            />
-          ))}
-        </div>
-      </div>
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">03</span>
+          <p className="editorial-kicker">[ 03 ] · Domains</p>
+          <h2 className="editorial-section-title">All skills by domain</h2>
+          <div>
+            {skills.map((group, index) => (
+              <SkillCategoryRow
+                key={group.label}
+                group={group}
+                index={index}
+                isExpanded={expandedCategory === group.label}
+                onToggle={() => setExpandedCategory(expandedCategory === group.label ? null : group.label)}
+              />
+            ))}
+          </div>
+        </section>
 
-      {/* Certifications */}
-      <div>
-        <SectionLabel icon={Award}>Certifications</SectionLabel>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '0.65rem',
-        }}>
-          {certifications.map((cert, i) => (
-            <CertCard 
-              key={i} 
-              cert={cert} 
-              index={i}
-              colors={CERT_COLORS[i % CERT_COLORS.length]}
-            />
-          ))}
-        </div>
-      </div>
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">04</span>
+          <p className="editorial-kicker">[ 04 ] · Credentials</p>
+          <h2 className="editorial-section-title">Certifications</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '0.75rem' }}>
+            {certifications.map((cert) => (
+              <article key={cert.title} className="editorial-card" style={{ padding: '1rem 1.1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <DataIcon name={cert.icon} size={18} />
+                <h3 style={{ margin: 0, color: 'var(--color-text)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-snug)', fontWeight: 'var(--font-weight-semibold)' }}>{cert.title}</h3>
+              </article>
+            ))}
+          </div>
+        </section>
 
-      {/* Responsive grid styles */}
-      <style>{`
-        @media (max-width: 900px) {
-          .skills-bento-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
+        <style>{`
+          @media (max-width: 900px) {
+            .skills-bento-grid { grid-template-columns: repeat(2, 1fr) !important; }
           }
-        }
-        @media (max-width: 520px) {
-          .skills-bento-grid {
-            grid-template-columns: 1fr !important;
+          @media (max-width: 520px) {
+            .skills-bento-grid { grid-template-columns: 1fr !important; }
+            .skills-bento-grid > article { grid-column: span 1 !important; }
           }
-          .skills-bento-grid > div {
-            grid-column: span 1 !important;
-          }
-        }
-      `}</style>
-      </section>
+        `}</style>
+      </main>
     </>
   )
 }
