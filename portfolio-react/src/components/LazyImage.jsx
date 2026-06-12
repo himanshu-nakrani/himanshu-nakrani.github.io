@@ -31,7 +31,7 @@ export default function LazyImage({ src, alt, style, ...props }) {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, var(--surface) 0%, var(--surface2) 50%, var(--surface) 100%)',
+            background: 'linear-gradient(90deg, var(--color-surface) 0%, var(--color-surface-raised) 50%, var(--color-surface) 100%)',
             backgroundSize: '200% 100%',
             animation: 'shimmer 1.5s infinite',
           }}

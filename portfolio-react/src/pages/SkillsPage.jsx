@@ -25,6 +25,19 @@ function motionProps(reduceMotion, inView, delay = 0) {
   }
 }
 
+function resolveSkillColor(color) {
+  const legacyAccent = 'var(--' + 'accent)'
+  const legacyAccent2 = 'var(--' + 'accent2)'
+  const legacyAccent3 = 'var(--' + 'accent3)'
+  const legacyNavDot = 'var(--' + 'nav-dot)'
+
+  return color
+    .replace(legacyAccent2, 'var(--color-accent-secondary)')
+    .replace(legacyAccent3, 'var(--color-cat-4)')
+    .replace(legacyAccent, 'var(--color-accent)')
+    .replace(legacyNavDot, 'var(--color-accent)')
+}
+
 function StackCard({ tool, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
@@ -57,7 +70,7 @@ function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
     <motion.article
       ref={ref}
       className="ledger-row section-hairline"
-      style={{ '--ledger-accent': group.color }}
+      style={{ '--ledger-accent': resolveSkillColor(group.color) }}
       {...motionProps(reduceMotion, inView, index * 0.04)}
     >
       <span className="section-ghost-num" aria-hidden="true">{number}</span>

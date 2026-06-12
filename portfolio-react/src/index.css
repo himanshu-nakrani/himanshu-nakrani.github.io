@@ -574,8 +574,8 @@ section[id] {
 }
 
 .tag-pill:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 @media (prefers-reduced-motion: reduce) {
   .tag-pill { transition: none; }

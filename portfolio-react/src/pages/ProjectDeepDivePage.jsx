@@ -52,6 +52,7 @@ const badgeColors = {
 /* ─── Collapsible section ──────────────────────────────── */
 function CollapsibleSection({ label, defaultOpen = false, children }) {
   const [open, setOpen] = useState(defaultOpen)
+  const reduceMotion = useReducedMotion()
   return (
     <div style={{ marginBottom: '2rem' }}>
       <button
@@ -82,10 +83,10 @@ function CollapsibleSection({ label, defaultOpen = false, children }) {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            exit={reduceMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.25 }}
             style={{ overflow: 'hidden' }}
           >
             {children}
