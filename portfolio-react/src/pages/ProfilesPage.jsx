@@ -88,14 +88,14 @@ function PlatformHeader({ row }) {
 
   return (
     <a
-      className="profile-ledger-header"
+      className="profile-ledger-header ledger-header"
       href={row.href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Open ${row.name} profile for ${row.handle}`}
     >
-      <span className="profile-ledger-platform">{label}</span>
-      <span className="profile-ledger-handle">
+      <span className="profile-ledger-platform ledger-title">{label}</span>
+      <span className="profile-ledger-handle ledger-meta">
         {row.handle}
         <ExternalLink size={15} strokeWidth={1.8} aria-hidden="true" />
       </span>
@@ -105,15 +105,15 @@ function PlatformHeader({ row }) {
 
 function StatBand({ stats, inView, reduceMotion }) {
   return (
-    <div className="profile-ledger-stat-band" aria-label="Profile statistics">
+    <div className="profile-ledger-stat-band ledger-stat-band" aria-label="Profile statistics">
       {stats.map((stat, index) => (
         <motion.div
           key={`${stat.label}-${stat.value}`}
-          className="profile-ledger-stat"
+          className="profile-ledger-stat ledger-stat"
           {...getMotionProps(reduceMotion, inView, 0.08 + index * 0.06)}
         >
-          <span className="profile-ledger-stat-num">{stat.value}</span>
-          <span className="profile-ledger-stat-label">{stat.label}</span>
+          <span className="profile-ledger-stat-num ledger-stat-num">{stat.value}</span>
+          <span className="profile-ledger-stat-label ledger-stat-label">{stat.label}</span>
         </motion.div>
       ))}
     </div>
@@ -160,8 +160,8 @@ function LedgerRow({ row }) {
   return (
     <motion.section
       ref={ref}
-      className={`profile-ledger-row section-hairline profile-ledger-row--${row.id}`}
-      style={{ '--profile-platform-color': row.platformColor }}
+      className={`profile-ledger-row ledger-row section-hairline profile-ledger-row--${row.id}`}
+      style={{ '--profile-platform-color': row.platformColor, '--ledger-accent': row.platformColor }}
       aria-labelledby={`profile-${row.id}-title`}
       {...getMotionProps(reduceMotion, inView)}
     >
