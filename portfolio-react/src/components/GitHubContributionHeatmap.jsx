@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
 /**
  * Interactive GitHub contribution heatmap.
@@ -35,6 +35,7 @@ export default function GitHubContributionHeatmap({
   const [data, setData] = useState(null)
   const [error, setError] = useState(false)
   const [hover, setHover] = useState(null) // { row, col, day }
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     let cancelled = false
@@ -191,13 +192,16 @@ export default function GitHubContributionHeatmap({
 
       {/* Grid */}
       {view && (
-        <div style={{ overflowX: 'auto', paddingBottom: 4 }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: 4 }}>
           <div style={{
             display: 'inline-grid',
             gridTemplateColumns: `28px ${gridW}px`,
             gridTemplateRows: '14px auto',
             gap: '4px 8px',
             position: 'relative',
+            width: 28 + 8 + gridW,
+            minWidth: 28 + 8 + gridW,
+            maxWidth: 'none',
           }}>
             {/* spacer top-left */}
             <div />
@@ -268,9 +272,9 @@ export default function GitHubContributionHeatmap({
                       onMouseLeave={() => setHover(null)}
                       onFocus={() => setHover({ col: ci, row: ri, day: cell })}
                       onBlur={() => setHover(null)}
-                      initial={{ opacity: 0, scale: 0.6 }}
+                      initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
+                      transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
                       style={{
                         width: CELL,
                         height: CELL,
