@@ -244,16 +244,19 @@ export default function ProjectsPage() {
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
 
-  const filteredProjects = useMemo(() => projects.filter((project) => {
+  const filteredProjects = useMemo(() => {
+    // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
     const q = query.toLowerCase()
-    const matchesQuery = !query || project.title.toLowerCase().includes(q) || project.desc.toLowerCase().includes(q)
-    const matchesFilter = activeFilter === 'All'
-      || (activeFilter === 'Production' && project.badge === 'Production')
-      || (activeFilter === 'In Progress' && project.badge === 'In Progress')
-      || (activeFilter === 'Open Source' && project.link)
-    const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
-    return matchesQuery && matchesFilter && matchesTag
-  }), [query, activeFilter, activeTag])
+    return projects.filter((project) => {
+      const matchesQuery = !query || project.title.toLowerCase().includes(q) || project.desc.toLowerCase().includes(q)
+      const matchesFilter = activeFilter === 'All'
+        || (activeFilter === 'Production' && project.badge === 'Production')
+        || (activeFilter === 'In Progress' && project.badge === 'In Progress')
+        || (activeFilter === 'Open Source' && project.link)
+      const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
+      return matchesQuery && matchesFilter && matchesTag
+    })
+  }, [query, activeFilter, activeTag])
 
   return (
     <>
