@@ -13,3 +13,6 @@
 ## 2024-04-29 - O(n) array lookup in nested loop rendering
 **Learning:** Checking for elements in an array using `.includes()` within a nested loop inside a React component's render function can become a performance bottleneck, as it creates an O(n) operation inside the nested loop iteration. Array mappings that are derived from props and don't change frequently also cause redundant array memory allocations on every render.
 **Action:** Convert arrays meant for fast inclusion checks into a `Set` via `useMemo` for O(1) lookups. Memoize any constant derivations from props to prevent redundant recreation on re-renders.
+## 2024-06-13 - O(n) String Transformations in Filtering Loops
+**Learning:** Calling string transformations like `.toLowerCase()` inside a `.filter` or `.map` loop causes unnecessary object allocations and redundant calculations, negatively impacting performance when typing rapidly into search fields.
+**Action:** When filtering lists, always hoist redundant standardizations (like query lowercasing) outside of the loop mapping/filtering functions to achieve O(1) evaluation per render.

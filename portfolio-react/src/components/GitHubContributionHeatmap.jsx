@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 /**
@@ -119,10 +119,42 @@ export default function GitHubContributionHeatmap({
     }
   }, [data])
 
+  const handleMouseOver = useCallback((e) => {
+    const cellEl = e.target.closest('[data-col]')
+    if (cellEl) {
+      const col = parseInt(cellEl.getAttribute('data-col'), 10)
+      const row = parseInt(cellEl.getAttribute('data-row'), 10)
+      if (!isNaN(col) && !isNaN(row) && view?.cols[col]?.[row]) {
+        setHover({ col, row, day: view.cols[col][row] })
+      }
+    }
+  }, [view])
+
+  const handleMouseOut = useCallback(() => {
+    setHover(null)
+  }, [])
+
+  const handleFocus = useCallback((e) => {
+    const cellEl = e.target.closest('[data-col]')
+    if (cellEl) {
+      const col = parseInt(cellEl.getAttribute('data-col'), 10)
+      const row = parseInt(cellEl.getAttribute('data-row'), 10)
+      if (!isNaN(col) && !isNaN(row) && view?.cols[col]?.[row]) {
+        setHover({ col, row, day: view.cols[col][row] })
+      }
+    }
+  }, [view])
+
+  const handleBlur = useCallback(() => {
+    setHover(null)
+  }, [])
+
   if (error || (data && !view)) return null
 
   const gridW = view ? view.cols.length * (CELL + GAP) - GAP : 0
   const profileHref = `https://github.com/${username}`
+
+
 
   return (
     <div
@@ -247,6 +279,10 @@ export default function GitHubContributionHeatmap({
             <div
               role="figure"
               aria-label="GitHub daily contribution heatmap"
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               style={{
                 display: 'grid',
                 gridTemplateColumns: `repeat(${view.cols.length}, ${CELL}px)`,
@@ -268,10 +304,8 @@ export default function GitHubContributionHeatmap({
                       tabIndex={0}
                       role="button"
                       aria-label={`${cell.count} contributions on ${cell.formattedDate}`}
-                      onMouseEnter={() => setHover({ col: ci, row: ri, day: cell })}
-                      onMouseLeave={() => setHover(null)}
-                      onFocus={() => setHover({ col: ci, row: ri, day: cell })}
-                      onBlur={() => setHover(null)}
+                      data-col={ci}
+                      data-row={ri}
                       initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
