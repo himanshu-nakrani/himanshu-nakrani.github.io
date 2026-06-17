@@ -99,7 +99,7 @@ function ProjectCard({ item, index, onDetails }) {
       </div>
 
       <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button type="button" className="btn btn--ghost" onClick={onDetails} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
+        <button type="button" className="btn btn--ghost" onClick={onDetails} aria-label={`View details for ${item.title}`} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
           Details
         </button>
         {slug && (
