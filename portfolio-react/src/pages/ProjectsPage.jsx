@@ -238,6 +238,13 @@ function ProjectModal({ project, onClose }) {
   )
 }
 
+// ⚡ Bolt: Pre-compute lowercased title and description for fast O(1) string matching during filter loops
+const projectsWithSearchKeys = projects.map(project => ({
+  ...project,
+  _searchTitle: project.title.toLowerCase(),
+  _searchDesc: project.desc.toLowerCase(),
+}))
+
 export default function ProjectsPage() {
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
@@ -247,8 +254,8 @@ export default function ProjectsPage() {
   const filteredProjects = useMemo(() => {
     // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
     const q = query.toLowerCase()
-    return projects.filter((project) => {
-      const matchesQuery = !query || project.title.toLowerCase().includes(q) || project.desc.toLowerCase().includes(q)
+    return projectsWithSearchKeys.filter((project) => {
+      const matchesQuery = !query || project._searchTitle.includes(q) || project._searchDesc.includes(q)
       const matchesFilter = activeFilter === 'All'
         || (activeFilter === 'Production' && project.badge === 'Production')
         || (activeFilter === 'In Progress' && project.badge === 'In Progress')
