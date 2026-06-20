@@ -17,6 +17,13 @@ const pageStats = [
   { value: projects.filter((p) => p.metrics).length, label: 'With Metrics', icon: BarChart2 },
 ]
 
+// ⚡ Bolt Optimization: Pre-compute static lowercased strings outside of render cycle
+// to prevent O(n) object allocations and redundant transformations inside the filter loop.
+const PROJECTS_WITH_SEARCH = projects.map(p => ({
+  ...p,
+  _searchKey: `${p.title} ${p.desc}`.toLowerCase(),
+}))
+
 function getDeepDiveSlug(title) {
   const slug = title.toLowerCase().replace(/\s+/g, '-')
   if (deepDiveSlugs.has(slug)) return slug
@@ -247,8 +254,8 @@ export default function ProjectsPage() {
   const filteredProjects = useMemo(() => {
     // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
     const q = query.toLowerCase()
-    return projects.filter((project) => {
-      const matchesQuery = !query || project.title.toLowerCase().includes(q) || project.desc.toLowerCase().includes(q)
+    return PROJECTS_WITH_SEARCH.filter((project) => {
+      const matchesQuery = !query || project._searchKey.includes(q)
       const matchesFilter = activeFilter === 'All'
         || (activeFilter === 'Production' && project.badge === 'Production')
         || (activeFilter === 'In Progress' && project.badge === 'In Progress')
