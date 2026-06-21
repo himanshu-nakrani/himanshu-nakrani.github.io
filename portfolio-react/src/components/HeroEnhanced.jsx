@@ -145,7 +145,12 @@ export default function HeroEnhanced() {
       <div className="hero-stat-band" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-stat-band-inner">
           {stats.map((s) => (
-            <a key={s.label} href={s.link} className="hero-stat">
+            <a
+              key={s.label}
+              href={s.link}
+              className="hero-stat"
+              {...(s.link && s.link.startsWith('http') ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            >
               <span className="hero-stat-num">{s.num}</span>
               <span className="hero-stat-label">{s.label}</span>
               <span className="hero-stat-detail">{s.detail}</span>

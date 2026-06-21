@@ -17,6 +17,13 @@ const pageStats = [
   { value: projects.filter((p) => p.metrics).length, label: 'With Metrics', icon: BarChart2 },
 ]
 
+// ⚡ Bolt Optimization: Pre-compute static lowercased strings outside of render cycle
+// to prevent O(n) object allocations and redundant transformations inside the filter loop.
+const PROJECTS_WITH_SEARCH = projects.map(p => ({
+  ...p,
+  _searchKey: `${p.title} ${p.desc}`.toLowerCase(),
+}))
+
 function getDeepDiveSlug(title) {
   const slug = title.toLowerCase().replace(/\s+/g, '-')
   if (deepDiveSlugs.has(slug)) return slug
@@ -107,11 +114,11 @@ function ProjectCard({ item, index, onDetails }) {
       </div>
 
       <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button type="button" className="btn btn--ghost" onClick={onDetails} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
+        <button type="button" className="btn btn--ghost" onClick={onDetails} aria-label={`View details for ${item.title}`} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
           Details
         </button>
         {slug && (
-          <Link to={`/projects/${slug}`} className="btn btn--primary" style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
+          <Link to={`/projects/${slug}`} className="btn btn--primary" aria-label={`Deep dive into ${item.title}`} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
             Deep dive <ArrowRight size={13} aria-hidden="true" />
           </Link>
         )}
@@ -252,17 +259,20 @@ export default function ProjectsPage() {
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
 
-  const filteredProjects = useMemo(() => projects.filter((project) => {
+  const filteredProjects = useMemo(() => {
+    // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
     const q = query.toLowerCase()
-    const matchesQuery = !query || project.title.toLowerCase().includes(q) || project.desc.toLowerCase().includes(q)
-    const matchesFilter = activeFilter === 'All'
-      || (activeFilter === 'Production' && project.badge === 'Production')
-      || (activeFilter === 'In Progress' && project.badge === 'In Progress')
-      || (activeFilter === 'Open Source' && project.link)
-      || (activeFilter === 'Vibe' && project.badge === 'Vibe')
-    const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
-    return matchesQuery && matchesFilter && matchesTag
-  }), [query, activeFilter, activeTag])
+    return PROJECTS_WITH_SEARCH.filter((project) => {
+      const matchesQuery = !query || project._searchKey.includes(q)
+      const matchesFilter = activeFilter === 'All'
+        || (activeFilter === 'Production' && project.badge === 'Production')
+        || (activeFilter === 'In Progress' && project.badge === 'In Progress')
+        || (activeFilter === 'Open Source' && project.link)
+        || (activeFilter === 'Vibe' && project.badge === 'Vibe')
+      const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
+      return matchesQuery && matchesFilter && matchesTag
+    })
+  }, [query, activeFilter, activeTag])
 
   return (
     <>
