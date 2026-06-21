@@ -57,11 +57,19 @@ function PageStat({ stat, index }) {
 
 function MetricStrip({ metrics, compact = false }) {
   if (!metrics?.length) return null
+  const numStyle = compact
+    ? { fontSize: 'clamp(1.05rem, 2.2vw, 1.4rem)' }
+    : { fontSize: 'clamp(1.35rem, 2.4vw, 1.85rem)' }
   return (
-    <div className="ledger-stat-band" style={compact ? { gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' } : undefined}>
+    <div
+      className="ledger-stat-band"
+      style={compact
+        ? { gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }
+        : { gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}
+    >
       {metrics.map((metric) => (
         <div key={metric.label} className="ledger-stat" style={compact ? { padding: '0.85rem' } : undefined}>
-          <span className="ledger-stat-num" style={compact ? { fontSize: 'clamp(1.6rem, 4vw, 2.6rem)' } : undefined}>{metric.value}</span>
+          <span className="ledger-stat-num" style={numStyle}>{metric.value}</span>
           <span className="ledger-stat-label">{metric.label}</span>
         </div>
       ))}
@@ -181,9 +189,9 @@ function ProjectModal({ project, onClose }) {
             aria-modal="true"
             aria-label={`${project.title} project details`}
             {...panelMotion}
-            style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem', pointerEvents: 'none' }}
+            style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', zIndex: 1000, padding: 'clamp(5rem, 9vh, 6.5rem) 1rem 1.5rem', pointerEvents: 'none', overflowY: 'auto' }}
           >
-            <div ref={dialogRef} className="editorial-card" onClick={(event) => event.stopPropagation()} style={{ pointerEvents: 'auto', width: 'min(760px, 100%)', maxHeight: '90dvh', overflowY: 'auto', background: 'var(--color-surface)', padding: '1.5rem' }}>
+            <div ref={dialogRef} className="editorial-card" onClick={(event) => event.stopPropagation()} style={{ pointerEvents: 'auto', width: 'min(760px, 100%)', maxHeight: 'calc(100dvh - clamp(6.5rem, 11vh, 8rem))', overflowY: 'auto', background: 'var(--color-surface)', padding: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1.25rem' }}>
                 <div>
                   <p className="editorial-kicker" style={{ marginBottom: '0.75rem' }}>{project.badge || 'Project'}</p>
@@ -260,6 +268,7 @@ export default function ProjectsPage() {
         || (activeFilter === 'Production' && project.badge === 'Production')
         || (activeFilter === 'In Progress' && project.badge === 'In Progress')
         || (activeFilter === 'Open Source' && project.link)
+        || (activeFilter === 'Vibe' && project.badge === 'Vibe')
       const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
       return matchesQuery && matchesFilter && matchesTag
     })
@@ -312,7 +321,7 @@ export default function ProjectsPage() {
             <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>
               <div role="group" aria-label="Project status filters" style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span className="ledger-subhead" style={{ margin: 0, display: 'inline-flex', gap: 4, alignItems: 'center' }}><Filter size={12} /> Status</span>
-                {['All', 'Production', 'In Progress', 'Open Source'].map((filter) => (
+                {['All', 'Production', 'In Progress', 'Open Source', 'Vibe'].map((filter) => (
                   <button key={filter} type="button" aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)} className={activeFilter === filter ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: '0.75rem', padding: '0.4rem 0.75rem' }}>
                     {filter}
                   </button>
@@ -329,7 +338,7 @@ export default function ProjectsPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 310px), 1fr))', gap: '1rem' }}>
+          <div className="projects-grid" style={{ display: 'grid', gap: '1rem' }}>
             {filteredProjects.map((project, index) => (
               <ProjectCard key={project.title} item={project} index={index} onDetails={() => setSelected(project)} />
             ))}

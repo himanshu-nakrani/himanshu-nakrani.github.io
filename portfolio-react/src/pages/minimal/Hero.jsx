@@ -1,7 +1,7 @@
 import { Github, Linkedin, Mail, FileText, MapPin, Zap } from 'lucide-react'
 
 const STATS = [
-  { value: '2+',   label: 'Years at State Street' },
+  { value: '3+',   label: 'Years at State Street' },
   { value: '10+',  label: 'Business units' },
   { value: '200+', label: 'Total users' },
   { value: '75%',  label: 'Avg latency reduction' },
