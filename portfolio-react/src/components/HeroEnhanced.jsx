@@ -7,7 +7,7 @@ import HeroPipelineSchematic from './HeroPipelineSchematic'
 import { recruiterSummary } from '../data/hero'
 
 const stats = [
-  { num: '2+',  label: 'Years exp.',   detail: 'Intern → Emerging Lead',  link: '/experience' },
+  { num: '3+',  label: 'Years exp.',   detail: 'Intern → Emerging Lead',  link: '/experience' },
   { num: '10+', label: 'Biz units',    detail: '200+ total users',        link: '#projects' },
   { num: '75%', label: 'Latency cut',  detail: 'average response time',   link: '/lab' },
   { num: '2',   label: 'Publications', detail: 'IEEE peer-reviewed',      link: '/research' },

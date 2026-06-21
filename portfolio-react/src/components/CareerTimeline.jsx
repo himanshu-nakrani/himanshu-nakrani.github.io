@@ -11,7 +11,7 @@ import { experience } from '../data/experience'
 
 // Career stats
 const careerStats = [
-  { icon: TrendingUp, value: '2+',   label: 'Years', color: 'var(--color-accent)' },
+  { icon: TrendingUp, value: '3+',   label: 'Years', color: 'var(--color-accent)' },
   { icon: Users,      value: '10+',  label: 'Biz Units', color: 'var(--color-cat-2)' },
   { icon: Zap,        value: '75%',  label: 'Avg Latency Cut', color: 'var(--color-cat-4)' },
   { icon: TestTube,   value: '95%',  label: 'Backend Tests', color: 'var(--color-cat-6)' },

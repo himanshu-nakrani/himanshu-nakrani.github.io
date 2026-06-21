@@ -67,7 +67,7 @@ function TimelineList({ items, reduceMotion }) {
 }
 
 const stats = [
-  { value: '2+', label: 'Years Experience', icon: Briefcase },
+  { value: '3+', label: 'Years Experience', icon: Briefcase },
   { value: '10+', label: 'Business Units', icon: Users },
   { value: '200+', label: 'Total Users', icon: Users },
   { value: '75%', label: 'Avg Latency Cut', icon: Zap },

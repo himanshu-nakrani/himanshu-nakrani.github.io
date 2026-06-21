@@ -112,7 +112,7 @@ export const projects = [
     tags: ['Pretraining', 'LLM', 'JAX', 'MaxText', 'TPU', 'Math Reasoning', 'Orbax'],
     techStack: ['JAX', 'MaxText', 'Orbax', 'TPU v4-64', 'PyTorch', 'Hugging Face', 'GCS', 'tiktoken'],
     badge: 'Research',
-    link: null,
+    link: 'https://github.com/himanshu-nakrani/TinyMathReason-1B',
     metrics: [
       { type: 'performance', value: '1.07B', label: 'Parameters' },
       { type: 'efficiency', value: '57B', label: 'Tokens Trained' },
@@ -176,6 +176,23 @@ export const projects = [
     tags: ['Python', 'Regression', 'Jupyter'],
     badge: null,
     link: 'https://github.com/himanshu-nakrani/Gold-price-prediction'
+  },
+  {
+    icon: 'CreditCard',
+    title: 'Reccur',
+    desc: 'Subscription tracker that reframes recurring charges as a visual ledger — timeline of upcoming charges, opportunity-cost calculator, and a cancellation vault that logs lifetime savings reclaimed.',
+    fullDesc: 'Reccur is a "living ledger" for subscriptions — an instrument, not a spreadsheet. Tracks active subscriptions and monthly totals on a visual monthly timeline grouped by category (Media, Cloud, Infra, Tools, Security, Wellness, Life). The Compounding Lever surfaces opportunity cost by simulating a parallel universe where those dollars were invested instead. The Cancellation Vault logs cut subscriptions as tracked wins with lifetime savings reclaimed.',
+    tags: ['Vibe Coding', 'Lovable', 'React', 'Subscriptions', 'Finance'],
+    techStack: ['Lovable', 'React', 'TypeScript', 'Tailwind'],
+    badge: 'Vibe',
+    link: null,
+    liveLink: 'https://reccur.lovable.app',
+    features: [
+      'Visual monthly timeline of upcoming charges grouped by category',
+      'Compounding Lever calculator surfaces opportunity cost of recurring spend',
+      'Cancellation Vault tracks cut subscriptions and lifetime savings reclaimed',
+      'Dashboard view of active subscriptions, monthly total, and per-category breakdown',
+    ],
   },
 ]
 
