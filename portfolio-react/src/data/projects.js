@@ -194,6 +194,30 @@ export const projects = [
       'Dashboard view of active subscriptions, monthly total, and per-category breakdown',
     ],
   },
+  {
+    icon: 'Brain',
+    title: 'TensorDojo',
+    desc: 'Interactive AI learning lab — 41 lessons across 8 progressive tracks where every concept is something you can drag, edit, and watch respond in real time.',
+    fullDesc: 'TensorDojo is an interactive educational web app for learning AI hands-on: "Learn AI by manipulating it." Rather than videos or quizzes, every concept is presented as something readers can drag, edit, and observe live. 41 lessons span 8 progressive tracks — dot product fundamentals through attention, transformer blocks, backpropagation, regularization, fine-tuning, quantization, and evaluation. A /map page visualizes all tracks as columns with prerequisite arcs. Built with Next.js 15, MDX, KaTeX, and hand-rolled SVG visualizations (no D3 or charting libraries).',
+    tags: ['Vibe Coding', 'Next.js', 'MDX', 'Education', 'AI'],
+    techStack: ['Next.js 15', 'TypeScript', 'Tailwind', 'MDX', 'KaTeX', 'React SVG', 'zod', 'pnpm'],
+    badge: 'Vibe',
+    link: 'https://github.com/himanshu-nakrani/TensorDojo',
+    liveLink: 'https://tensordojo.vercel.app',
+    metrics: [
+      { type: 'performance', value: '41', label: 'Lessons' },
+      { type: 'efficiency', value: '8', label: 'Tracks' },
+      { type: 'performance', value: '492', label: 'Tests' },
+      { type: 'efficiency', value: '~118kB', label: 'First-load JS' },
+    ],
+    features: [
+      'Every concept is interactive — drag a slider, edit a number, read the result',
+      '41 lessons grouped into 8 progressive tracks with prerequisite arcs on /map',
+      'Hand-rolled SVG visualizations with no D3, Canvas, or charting library dependencies',
+      'MDX content authored with KaTeX math and zod-validated build-time schemas',
+      'Heavy interactive components lazy-loaded under a 25 kB per-chunk budget',
+    ],
+  },
 ]
 
 export const featuredHighlights = [
