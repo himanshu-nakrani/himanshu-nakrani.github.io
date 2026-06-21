@@ -76,11 +76,11 @@ const PROJECTS = [
     ],
   },
   {
-    title: 'Document QA',
-    desc: 'Document question-answering system using LLMs and retrieval techniques.',
-    tags: ['Python', 'LLM', 'RAG'],
-    link: 'https://github.com/himanshu-nakrani/document-qa',
-    liveLink: 'https://document-qa-two.vercel.app/',
+    title: 'Sourceful',
+    desc: 'Self-hostable BYOK RAG platform — durable ingestion, streaming cited chat, workspace RBAC, and a split-pane PDF notebook UX.',
+    tags: ['RAG', 'FastAPI', 'Next.js', 'pgvector'],
+    link: 'https://github.com/himanshu-nakrani/sourceful',
+    liveLink: 'https://sourceful.vercel.app',
   },
   {
     title: 'Intrusion Detection System',
