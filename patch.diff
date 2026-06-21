@@ -1,0 +1,23 @@
+<<<<<<< SEARCH
+          {stats.map((s) => (
+            <a key={s.label} href={s.link} className="hero-stat">
+              <span className="hero-stat-num">{s.num}</span>
+              <span className="hero-stat-label">{s.label}</span>
+              <span className="hero-stat-detail">{s.detail}</span>
+            </a>
+          ))}
+=======
+          {stats.map((s) => (
+            <a
+              key={s.label}
+              href={s.link}
+              target={s.link?.startsWith('http') ? '_blank' : undefined}
+              rel={s.link?.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="hero-stat"
+            >
+              <span className="hero-stat-num">{s.num}</span>
+              <span className="hero-stat-label">{s.label}</span>
+              <span className="hero-stat-detail">{s.detail}</span>
+            </a>
+          ))}
+>>>>>>> REPLACE
