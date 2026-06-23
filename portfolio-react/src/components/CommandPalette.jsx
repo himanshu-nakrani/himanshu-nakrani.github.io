@@ -401,8 +401,36 @@ export default function CommandPalette({ toggleTheme }) {
               onMouseOver={handleListMouseOver}
             >
               {filteredItems.length === 0 ? (
-                <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
-                  No results found for "{search}"
+                <div style={{ padding: '40px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                  <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 500 }}>No results found for "{search}"</p>
+                  <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>Try adjusting your search or clear it to see all options.</p>
+                  <button
+                    onClick={() => setSearch('')}
+                    style={{
+                      marginTop: '0.75rem',
+                      background: 'transparent',
+                      border: '1px solid var(--color-border-strong)',
+                      padding: '0.4rem 0.8rem',
+                      borderRadius: 8,
+                      color: 'var(--color-text)',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'var(--color-surface-raised)';
+                      e.currentTarget.style.borderColor = 'var(--color-border)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                    }}
+                  >
+                    Clear search
+                  </button>
                 </div>
               ) : (
                 Object.entries(groupedItems).map(([type, items], groupIndex, arr) => {
