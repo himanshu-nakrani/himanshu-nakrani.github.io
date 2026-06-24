@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
   ExternalLink, Github, Linkedin, Mail, Sun,
-  Search, CornerDownLeft,
+  Search, CornerDownLeft, X,
   FlaskConical, Activity, FileText
 } from 'lucide-react'
 import { projects } from '../data/projects'
@@ -376,6 +376,37 @@ export default function CommandPalette({ toggleTheme }) {
                   fontFamily: 'inherit',
                 }}
               />
+              {search && (
+                <button
+                  type="button"
+                  aria-label="Clear search"
+                  onClick={() => {
+                    setSearch('')
+                    inputRef.current?.focus()
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--color-text-muted)',
+                    cursor: 'pointer',
+                    padding: 4,
+                    borderRadius: 6,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--color-text)'
+                    e.currentTarget.style.background = 'var(--color-surface-raised)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--color-text-muted)'
+                    e.currentTarget.style.background = 'transparent'
+                  }}
+                >
+                  <X size={15} />
+                </button>
+              )}
               <kbd
                 style={{
                   padding: '4px 8px',
