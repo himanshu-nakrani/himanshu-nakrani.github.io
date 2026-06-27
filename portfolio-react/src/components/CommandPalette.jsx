@@ -436,7 +436,10 @@ export default function CommandPalette({ toggleTheme }) {
                   <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 500 }}>No results found for "{search}"</p>
                   <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>Try adjusting your search or clear it to see all options.</p>
                   <button
-                    onClick={() => setSearch('')}
+                    onClick={() => {
+                      setSearch('')
+                      inputRef.current?.focus()
+                    }}
                     style={{
                       marginTop: '0.75rem',
                       background: 'transparent',
