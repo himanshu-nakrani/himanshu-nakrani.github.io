@@ -12,9 +12,9 @@ export const experience = [
       'Emerging Lead',
     ],
     currentRoleStep: 'Emerging Lead',
-    description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 100+ users) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
+    description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 200+ total users across 10+ business units) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
     bullets: [
-      'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 100+ internal users over structured financial data',
+      'Architected Alpha Copilot — enterprise LLM-powered Text-to-SQL chatbot serving 200+ total users across 10+ business units over structured financial data',
       'Engineered FastAPI + SQLAlchemy backend with advanced caching, cutting response time by 75% (25–30s → 6–8s)',
       'Integrated LLM-based data visualization for auto-generating interactive charts from query results',
       'Led backend for WealthAI — real-time portfolio narrative generation from optimizer outputs',

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { projects } from '../data/projects'
 import { skills } from '../data/skills'
+import { RESUME_URL } from '../lib/site'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -38,7 +39,7 @@ const quickActions = [
   { id: 'github', name: 'Open GitHub', icon: Github, url: 'https://github.com/himanshu-nakrani', external: true },
   { id: 'linkedin', name: 'Open LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/himanshu-nakrani', external: true },
   { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:himanshunakrani0@gmail.com', external: true },
-  { id: 'resume', name: 'View Resume', icon: FileText, url: '/resume.pdf', external: true },
+  { id: 'resume', name: 'View Resume', icon: FileText, url: RESUME_URL, external: true },
 ]
 
 export default function CommandPalette({ toggleTheme }) {

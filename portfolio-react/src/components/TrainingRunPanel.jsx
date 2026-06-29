@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { getNextTabIndex } from '../lib/tablist'
 
 /* ───────── status config ───────── */
 
@@ -235,6 +236,14 @@ export default function TrainingRunPanel({ models }) {
   const showTabs = models.length > 1
   const activeModel = models.find((m) => m.id === activeId) || models[0]
 
+  const handleTabKeyDown = (event, index) => {
+    const nextIndex = getNextTabIndex(event, index, models.length)
+    if (nextIndex === null) return
+    const nextModel = models[nextIndex]
+    setActiveId(nextModel.id)
+    document.getElementById(`trp-tab-${nextModel.id}`)?.focus()
+  }
+
   return (
     <div
       style={{
@@ -258,7 +267,7 @@ export default function TrainingRunPanel({ models }) {
           role="tablist"
           aria-label="Training models"
         >
-          {models.map((model) => {
+          {models.map((model, index) => {
             const isActive = model.id === activeId
             return (
               <button
@@ -267,7 +276,9 @@ export default function TrainingRunPanel({ models }) {
                 id={`trp-tab-${model.id}`}
                 aria-selected={isActive}
                 aria-controls={`trp-panel-${model.id}`}
+                tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveId(model.id)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',

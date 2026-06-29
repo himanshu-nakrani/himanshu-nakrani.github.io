@@ -140,6 +140,13 @@ export default function Contact() {
         .contact-pill-link:hover::before {
           opacity: 1;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .contact-pill-link {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+        }
       `}</style>
     </Section>
   )

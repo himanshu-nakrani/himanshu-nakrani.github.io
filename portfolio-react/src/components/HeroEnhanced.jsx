@@ -5,10 +5,12 @@ import AuroraBackground from './ui/AuroraBackground'
 import MagneticButton from './ui/MagneticButton'
 import HeroPipelineSchematic from './HeroPipelineSchematic'
 import { recruiterSummary } from '../data/hero'
+import { RESUME_URL } from '../lib/site'
+import { ALPHA_COPILOT } from '../data/stats'
 
 const stats = [
   { num: '3+',  label: 'Years exp.',   detail: 'Intern → Emerging Lead',  link: '/experience' },
-  { num: '10+', label: 'Biz units',    detail: '200+ total users',        link: '#projects' },
+  { num: ALPHA_COPILOT.businessUnits, label: 'Biz units', detail: `${ALPHA_COPILOT.totalUsers} total users`, link: '#projects' },
   { num: '75%', label: 'Latency cut',  detail: 'average response time',   link: '/lab' },
   { num: '2',   label: 'Publications', detail: 'IEEE peer-reviewed',      link: '/research' },
 ]
@@ -100,7 +102,13 @@ export default function HeroEnhanced() {
                 to Emerging Lead in two years.
               </p>
               <div className="hero-ctas">
-                <a ref={magneticRef} href="/resume.pdf" className="hero-cta hero-cta--primary">
+                <a
+                  ref={magneticRef}
+                  href={RESUME_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-cta hero-cta--primary"
+                >
                   <FileText size={14} />
                   Resume
                 </a>

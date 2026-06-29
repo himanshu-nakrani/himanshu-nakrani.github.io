@@ -6,3 +6,6 @@ dist/
 *.log
 
 .Jules/
+.pnpm-store/
+.kilo/
+.replit

@@ -15,6 +15,7 @@ function getMotionProps(reduceMotion, inView, delay = 0) {
 function extractMetrics(item) {
   const source = [item.description, ...(item.bullets || [])].join(' ')
   const patterns = [
+    { regex: /200\+[^.]*users/i, value: '200+', label: 'Total users' },
     { regex: /100\+[^.]*users/i, value: '100+', label: 'Internal users' },
     { regex: /75%[^.]*reduction|75% latency/i, value: '75%', label: 'Latency reduction' },
     { regex: /95%\+[^.]*coverage/i, value: '95%+', label: 'Test coverage' },

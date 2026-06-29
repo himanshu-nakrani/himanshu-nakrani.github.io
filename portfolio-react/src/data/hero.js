@@ -16,6 +16,8 @@ export const currentFocusItems = [
   },
 ]
 
+import { RESUME_URL } from '../lib/site'
+
 export const availabilityStatus = {
   available: true,
   statusLabel: 'Open to opportunities',
@@ -23,7 +25,7 @@ export const availabilityStatus = {
   actions: [
     { label: 'Send an email', href: 'mailto:himanshunakrani0@gmail.com', variant: 'primary' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/', variant: 'ghost' },
-    { label: 'Resume', href: '/resume.pdf', variant: 'ghost' },
+    { label: 'Resume', href: RESUME_URL, variant: 'ghost', external: true },
   ],
 }
 export const recruiterSummary = [
