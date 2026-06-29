@@ -12,7 +12,7 @@ export default function GitHubContributionHeatmap({
       title="Contribution heatmap"
       unitSingular="contribution"
       unitPlural="contributions"
-      summaryLabel="contributions in the last year"
+
       ariaLabel="GitHub daily contribution heatmap"
     />
   )

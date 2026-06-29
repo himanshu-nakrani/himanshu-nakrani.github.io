@@ -12,7 +12,7 @@ export default function LeetCodeContributionHeatmap({
       title="Submission heatmap"
       unitSingular="submission"
       unitPlural="submissions"
-      summaryLabel="submissions in the last year"
+
       ariaLabel="LeetCode daily submission heatmap"
     />
   )

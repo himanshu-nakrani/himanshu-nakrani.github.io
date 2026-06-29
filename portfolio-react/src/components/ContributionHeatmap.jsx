@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import {
+  buildHeatmapView,
+  normalizeHeatmapPayload,
+  yearLabel,
+  yearSummaryText,
+} from '../lib/heatmapView'
 
-const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 const VISIBLE_WEEKDAY_ROWS = new Set([1, 3, 5])
 
@@ -26,13 +31,14 @@ export default function ContributionHeatmap({
   title = 'Contribution heatmap',
   unitSingular = 'contribution',
   unitPlural = 'contributions',
-  summaryLabel = 'contributions in the last year',
+  summaryLabel,
   ariaLabel = 'Daily contribution heatmap',
   className = '',
 }) {
-  const [data, setData] = useState(null)
+  const [rawData, setRawData] = useState(null)
   const [error, setError] = useState(false)
   const [hover, setHover] = useState(null)
+  const [selectedYear, setSelectedYear] = useState(null)
   const reduceMotion = useReducedMotion()
   const LEVEL_BG = levelBackgrounds()
 
@@ -43,77 +49,29 @@ export default function ContributionHeatmap({
         if (!r.ok) throw new Error('fetch failed')
         return r.json()
       })
-      .then((j) => { if (!cancelled) setData(j) })
+      .then((j) => { if (!cancelled) setRawData(j) })
       .catch(() => { if (!cancelled) setError(true) })
     return () => { cancelled = true }
   }, [src])
 
+  const payload = useMemo(() => normalizeHeatmapPayload(rawData), [rawData])
+
+  const availableYears = payload?.availableYears ?? []
+  const showYearSelector = availableYears.length > 1
+  const activeYear = useMemo(() => {
+    if (!payload) return null
+    if (selectedYear && payload.years[selectedYear]) return selectedYear
+    return payload.defaultYear
+  }, [payload, selectedYear])
+  const activeYearData = activeYear ? payload?.years?.[activeYear] : null
+
   const view = useMemo(() => {
-    if (!data?.contributions?.length) return null
-    const days = data.contributions
-    const firstDate = new Date(days[0].date + 'T00:00:00')
-    const lead = firstDate.getDay()
+    if (!activeYearData?.contributions?.length) return null
+    return buildHeatmapView(activeYearData.contributions, activeYearData.total)
+  }, [activeYearData])
 
-    const formatter = new Intl.DateTimeFormat(undefined, {
-      weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
-    })
-    const singleDate = new Date()
-
-    const cols = []
-    let week = Array(7).fill(null)
-    for (let i = 0; i < lead; i++) week[i] = null
-    let row = lead
-    for (const d of days) {
-      singleDate.setTime(Date.parse(d.date + 'T00:00:00'))
-      week[row] = { ...d, formattedDate: formatter.format(singleDate) }
-      row++
-      if (row === 7) {
-        cols.push(week)
-        week = Array(7).fill(null)
-        row = 0
-      }
-    }
-    if (week.some((c) => c !== null)) cols.push(week)
-
-    const monthLabels = []
-    let prev = -1
-    cols.forEach((col, ci) => {
-      const firstCell = col.find((c) => c)
-      if (!firstCell) return
-      const m = parseInt(firstCell.date.substring(5, 7), 10) - 1
-      if (m !== prev) {
-        if (ci === 0 || ci > 1) monthLabels.push({ col: ci, label: MONTHS[m] })
-        prev = m
-      }
-    })
-
-    let longest = 0
-    let run = 0
-    let current = 0
-    for (const d of days) {
-      if (d.count > 0) {
-        run++
-        if (run > longest) longest = run
-      } else {
-        run = 0
-      }
-    }
-    for (let i = days.length - 1; i >= 0; i--) {
-      if (days[i].count > 0) current++
-      else break
-    }
-
-    const best = days.reduce((acc, d) => (d.count > acc.count ? d : acc), { count: 0, date: '' })
-
-    return {
-      cols,
-      monthLabels,
-      total: data.total ?? days.reduce((s, d) => s + (d.count || 0), 0),
-      longest,
-      current,
-      best,
-    }
-  }, [data])
+  const resolvedSummaryLabel = summaryLabel
+    || (activeYear ? yearSummaryText(activeYear, unitPlural) : `${unitPlural} in the last year`)
 
   const handleMouseOver = useCallback((e) => {
     const cellEl = e.target.closest('[data-col]')
@@ -141,7 +99,7 @@ export default function ContributionHeatmap({
 
   const handleBlur = useCallback(() => setHover(null), [])
 
-  if (error || (data && !view)) return null
+  if (error || (payload && !view)) return null
 
   const gridW = view ? view.cols.length * (CELL + GAP) - GAP : 0
   const href = profileHref || '#'
@@ -173,26 +131,57 @@ export default function ContributionHeatmap({
               }}>
                 {view.total.toLocaleString()}
               </strong>
-              <span style={{ color: 'var(--text2, var(--color-text-muted))' }}> {summaryLabel}</span>
+              <span style={{ color: 'var(--text2, var(--color-text-muted))' }}> {resolvedSummaryLabel}</span>
             </p>
           )}
         </div>
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontSize: '0.7rem',
-            fontFamily: 'var(--font-mono)',
-            color: 'var(--text2, var(--color-text-muted))',
-            textDecoration: 'none',
-            border: '1px solid var(--border, var(--color-border))',
-            borderRadius: 999,
-            padding: '3px 10px',
-          }}
-        >
-          @{username} ↗
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          {showYearSelector && (
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <span className="sr-only">Select year</span>
+              <select
+                value={activeYear || ''}
+                onChange={(event) => {
+                  setSelectedYear(event.target.value)
+                  setHover(null)
+                }}
+                aria-label="Select activity year"
+                style={{
+                  fontSize: '0.7rem',
+                  fontFamily: 'var(--font-mono)',
+                  color: 'var(--text, var(--color-text))',
+                  background: 'var(--color-surface)',
+                  border: '1px solid var(--border, var(--color-border))',
+                  borderRadius: 999,
+                  padding: '4px 10px',
+                  cursor: 'pointer',
+                }}
+              >
+                {availableYears.map((yearKey) => (
+                  <option key={yearKey} value={yearKey}>
+                    {yearLabel(yearKey, payload.years[yearKey])}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontSize: '0.7rem',
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--text2, var(--color-text-muted))',
+              textDecoration: 'none',
+              border: '1px solid var(--border, var(--color-border))',
+              borderRadius: 999,
+              padding: '3px 10px',
+            }}
+          >
+            @{username} ↗
+          </a>
+        </div>
       </div>
 
       {!view && (

@@ -16,8 +16,6 @@ const JSON_OUT = join(PUBLIC_DIR, 'leetcode-contributions.json')
 const USERNAME = 'himanshunakrani0'
 const GRAPHQL_URL = 'https://leetcode.com/graphql/'
 const TIMEOUT_MS = 10000
-const LOOKBACK_DAYS = 366
-
 const PROFILE_QUERY = `
   query leetCodeProfile($username: String!) {
     matchedUser(username: $username) {
@@ -53,17 +51,27 @@ function epochToDate(epochSec) {
   return new Date(Number(epochSec) * 1000).toISOString().slice(0, 10)
 }
 
-function buildDailyContributions(byDate) {
-  const days = []
-  const today = new Date()
-  today.setUTCHours(0, 0, 0, 0)
+function isLeapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+}
 
-  for (let offset = LOOKBACK_DAYS; offset >= 0; offset--) {
-    const d = new Date(today)
-    d.setUTCDate(d.getUTCDate() - offset)
-    const date = d.toISOString().slice(0, 10)
+function buildDailyContributionsForYear(year, calendarEntries) {
+  const byDate = new Map()
+  for (const [epoch, count] of Object.entries(calendarEntries)) {
+    const date = epochToDate(epoch)
+    if (!date.startsWith(`${year}-`)) continue
+    byDate.set(date, (byDate.get(date) || 0) + Number(count))
+  }
+
+  const daysInYear = isLeapYear(year) ? 366 : 365
+  const days = []
+  const cursor = new Date(Date.UTC(year, 0, 1))
+
+  for (let i = 0; i < daysInYear; i++) {
+    const date = cursor.toISOString().slice(0, 10)
     const count = byDate.get(date) || 0
     days.push({ date, count, level: countToLevel(count) })
+    cursor.setUTCDate(cursor.getUTCDate() + 1)
   }
 
   return days
@@ -98,21 +106,32 @@ export function buildLeetCodePayload(profileData, calendarsByYear) {
     (matched.submitStats?.acSubmissionNum || []).map((row) => [row.difficulty, row.count]),
   )
 
-  const byDate = new Map()
-  for (const calendar of Object.values(calendarsByYear)) {
+  const years = {}
+  for (const [yearKey, calendar] of Object.entries(calendarsByYear)) {
     const entries = parseSubmissionCalendar(calendar)
-    for (const [epoch, count] of Object.entries(entries)) {
-      const date = epochToDate(epoch)
-      byDate.set(date, (byDate.get(date) || 0) + Number(count))
+    const contributions = buildDailyContributionsForYear(Number(yearKey), entries)
+    years[yearKey] = {
+      label: String(yearKey),
+      total: contributions.reduce((sum, day) => sum + day.count, 0),
+      contributions,
     }
   }
 
-  const contributions = buildDailyContributions(byDate)
+  const availableYears = Object.keys(years)
+    .map(Number)
+    .sort((a, b) => b - a)
+    .map(String)
+  const currentYear = String(new Date().getUTCFullYear())
+  const defaultYear = availableYears.includes(currentYear)
+    ? currentYear
+    : availableYears[0]
 
   return {
     user: matched.username || USERNAME,
     fetchedAt: new Date().toISOString(),
-    total: contributions.reduce((sum, day) => sum + day.count, 0),
+    defaultYear,
+    availableYears,
+    activeYears: availableYears.map(Number),
     stats: {
       solved: byDifficulty.All ?? 0,
       easy: byDifficulty.Easy ?? 0,
@@ -120,7 +139,7 @@ export function buildLeetCodePayload(profileData, calendarsByYear) {
       hard: byDifficulty.Hard ?? 0,
       ranking: matched.profile?.ranking ?? null,
     },
-    contributions,
+    years,
   }
 }
 
@@ -147,10 +166,11 @@ async function main() {
   try {
     const payload = await fetchPayload()
     writeFileSync(JSON_OUT, JSON.stringify(payload), 'utf8')
+    const defaultView = payload.years[payload.defaultYear]
     console.log(
       'Wrote',
       JSON_OUT,
-      `(${payload.contributions.length} days, ${payload.total} submissions in window, ${payload.stats.solved} solved)`,
+      `(${payload.availableYears.length} years, ${defaultView?.contributions.length ?? 0} days in ${payload.defaultYear}, ${payload.stats.solved} solved)`,
     )
   } catch (error) {
     if (existsSync(JSON_OUT)) {
