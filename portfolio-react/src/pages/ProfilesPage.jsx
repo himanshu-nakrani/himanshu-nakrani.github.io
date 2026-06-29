@@ -3,8 +3,9 @@ import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { Award, ExternalLink } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
+import LeetCodeContributionHeatmap from '../components/LeetCodeContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
-import { GITHUB_REPO_COUNT } from '../data/stats'
+import { GITHUB_REPO_COUNT, LEETCODE_STATS } from '../data/stats'
 import SEO from '../components/SEO'
 
 const platformRows = [
@@ -58,8 +59,10 @@ const platformRows = [
     href: 'https://leetcode.com/u/himanshunakrani0/',
     platformColor: '#ffa116',
     stats: [
-      { value: '180', label: 'Solved' },
-      { value: '~150k', label: 'Global rank' },
+      { value: String(LEETCODE_STATS.solved), label: 'Solved' },
+      { value: String(LEETCODE_STATS.easy), label: 'Easy' },
+      { value: String(LEETCODE_STATS.medium), label: 'Medium' },
+      { value: LEETCODE_STATS.ranking, label: 'Global rank' },
     ],
   },
 ]
@@ -206,9 +209,14 @@ function LedgerRow({ row }) {
       )}
 
       {row.id === 'leetcode' && (
-        <p className="profile-ledger-note profile-ledger-note--prose">
-          Consistent problem solver — sharpening DSA skills alongside AI/ML work.
-        </p>
+        <div className="profile-ledger-detail-stack">
+          <p className="profile-ledger-note profile-ledger-note--prose">
+            {LEETCODE_STATS.solved} problems solved ({LEETCODE_STATS.hard} hard) — sharpening DSA alongside AI/ML work.
+          </p>
+          <div className="profile-heatmap-shell profile-heatmap-shell--leetcode">
+            <LeetCodeContributionHeatmap username={LEETCODE_STATS.username} />
+          </div>
+        </div>
       )}
     </motion.section>
   )

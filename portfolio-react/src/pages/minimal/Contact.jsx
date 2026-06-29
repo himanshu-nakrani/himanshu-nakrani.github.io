@@ -1,6 +1,6 @@
 import { Mail, Github, Linkedin, ExternalLink, FileText } from 'lucide-react'
 import { RESUME_URL } from '../../lib/site'
-import { GITHUB_REPO_COUNT } from '../../data/stats'
+import { GITHUB_REPO_COUNT, LEETCODE_STATS } from '../../data/stats'
 
 const LINKS = [
   { label: 'Email', sublabel: 'himanshunakrani0@gmail.com', href: 'mailto:himanshunakrani0@gmail.com', icon: Mail, external: false },
@@ -8,7 +8,7 @@ const LINKS = [
   { label: 'GitHub', sublabel: `github.com/himanshu-nakrani · ${GITHUB_REPO_COUNT} repos`, href: 'https://github.com/himanshu-nakrani', icon: Github, external: true },
   { label: 'Resume', sublabel: 'View on GitHub', href: RESUME_URL, icon: FileText, external: true },
   { label: 'Kaggle', sublabel: 'kaggle.com/himanshunakrani · Expert', href: 'https://www.kaggle.com/himanshunakrani', icon: ExternalLink, external: true },
-  { label: 'LeetCode', sublabel: '180+ problems solved', href: 'https://leetcode.com/u/himanshunakrani0/', icon: ExternalLink, external: true },
+  { label: 'LeetCode', sublabel: `${LEETCODE_STATS.solved} problems solved`, href: LEETCODE_STATS.href, icon: ExternalLink, external: true },
 ]
 
 export default function Contact() {
