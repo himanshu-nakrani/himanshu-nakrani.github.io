@@ -141,7 +141,7 @@ export default function LabPage() {
                 role="tab"
                 id={`lab-tab-${mod.id}`}
                 aria-selected={isActive}
-                aria-controls={isActive ? `lab-panel-${mod.id}` : undefined}
+                aria-controls={`lab-panel-${mod.id}`}
                 tabIndex={isActive ? 0 : -1}
                 onKeyDown={(event) => handleTabKeyDown(event, index)}
                 onClick={() => setActiveModuleId(mod.id)}
@@ -155,6 +155,18 @@ export default function LabPage() {
             )
           })}
         </motion.div>
+
+        {demoLabModules.map((mod) => (
+          mod.id !== activeModule.id ? (
+            <div
+              key={`placeholder-${mod.id}`}
+              id={`lab-panel-${mod.id}`}
+              role="tabpanel"
+              hidden
+              aria-labelledby={`lab-tab-${mod.id}`}
+            />
+          ) : null
+        ))}
 
       {/* ── Main content: module + aside ──────────────────── */}
       <motion.div

@@ -8,6 +8,7 @@ import Skills from './minimal/Skills'
 import Research from './minimal/Research'
 import Kaggle from './minimal/Kaggle'
 import Contact from './minimal/Contact'
+import { RESUME_URL } from '../lib/site'
 
 const NAV_ITEMS = [
   { id: 'about',      label: 'About' },
@@ -25,7 +26,7 @@ const SOCIALS = [
   { href: 'https://github.com/himanshu-nakrani',          icon: Github,    label: 'GitHub' },
   { href: 'https://www.linkedin.com/in/himanshu-nakrani/', icon: Linkedin,  label: 'LinkedIn' },
   { href: 'mailto:himanshunakrani0@gmail.com',            icon: Mail,      label: 'Email' },
-  { href: '/resume.pdf',                                   icon: FileText,  label: 'Resume' },
+  { href: RESUME_URL,                                      icon: FileText,  label: 'Resume', external: true },
 ]
 
 function useActiveSection(ids) {

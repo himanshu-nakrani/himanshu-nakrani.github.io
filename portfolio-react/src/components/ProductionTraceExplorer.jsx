@@ -2,6 +2,7 @@ import { useRef, useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 import { productionTraceStages } from '../data/lab'
+import { getNextTabIndex } from '../lib/tablist'
 import AnimatedBeam from './ui/AnimatedBeam'
 
 export default function ProductionTraceExplorer() {
@@ -14,6 +15,14 @@ export default function ProductionTraceExplorer() {
     () => productionTraceStages.map(() => ({ current: null })),
     [],
   )
+
+  const handleTabKeyDown = (event, index) => {
+    const nextIndex = getNextTabIndex(event, index, productionTraceStages.length)
+    if (nextIndex === null) return
+    const nextStage = productionTraceStages[nextIndex]
+    setActive(nextStage.id)
+    document.getElementById(`trace-tab-${nextStage.id}`)?.focus()
+  }
 
   return (
     <div className="trace-explorer">
@@ -38,16 +47,20 @@ export default function ProductionTraceExplorer() {
         aria-label="Alpha Copilot pipeline stages"
         style={{ position: 'relative' }}
       >
-        {productionTraceStages.map((stage, i) => (
+        {productionTraceStages.map((stage, i) => {
+          const isActive = active === stage.id
+          return (
           <div key={stage.id} style={{ display: 'contents' }}>
             <button
               ref={(el) => { stageRefs[i].current = el }}
               role="tab"
               id={`trace-tab-${stage.id}`}
-              aria-selected={active === stage.id}
+              aria-selected={isActive}
               aria-controls={`trace-panel-${stage.id}`}
-              className={`trace-stage${active === stage.id ? ' is-active' : ''}`}
+              tabIndex={isActive ? 0 : -1}
+              className={`trace-stage${isActive ? ' is-active' : ''}`}
               onClick={() => setActive(stage.id)}
+              onKeyDown={(event) => handleTabKeyDown(event, i)}
               style={{ position: 'relative', zIndex: 1 }}
             >
               <span className="trace-stage__idx">{String(i + 1).padStart(2, '0')}</span>
@@ -62,7 +75,7 @@ export default function ProductionTraceExplorer() {
               />
             )}
           </div>
-        ))}
+        )})}
         {productionTraceStages.map((stage, i) => {
           if (i === productionTraceStages.length - 1) return null
           return (

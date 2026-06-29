@@ -4,6 +4,7 @@ import { Award, ExternalLink } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
+import { GITHUB_REPO_COUNT } from '../data/stats'
 import SEO from '../components/SEO'
 
 const platformRows = [
@@ -15,7 +16,7 @@ const platformRows = [
     href: 'https://github.com/himanshu-nakrani',
     platformColor: '#6e5494',
     stats: [
-      { value: '46', label: 'Repos' },
+      { value: String(GITHUB_REPO_COUNT), label: 'Repos' },
       { value: '680', label: 'Commits' },
       { value: 'Python', label: 'Primary' },
       { value: '2021', label: 'Since' },

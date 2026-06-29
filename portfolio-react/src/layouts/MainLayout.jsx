@@ -4,7 +4,6 @@ import { Outlet, useLocation } from 'react-router-dom'
 
 import AmbientAtmosphere from '../components/AmbientAtmosphere'
 import Navbar from '../components/Navbar'
-import SEO from '../components/SEO'
 import SkipLink from '../components/SkipLink'
 import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
@@ -60,7 +59,6 @@ export default function MainLayout({ isDark, setIsDark }) {
   return (
     <>
       <SkipLink targetId="main-content" />
-      <SEO />
       <div className="app-shell">
         <AmbientAtmosphere enableAnimation />
         <CursorHalo />

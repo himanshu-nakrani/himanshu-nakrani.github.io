@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { getNextTabIndex } from '../lib/tablist'
 
 /* ───────── shared inline-style fragments ───────── */
 
@@ -414,6 +415,14 @@ export default function RetrievalInspector({ module }) {
 
   const ActivePanel = panelMap[activeStep]
 
+  const handleTabKeyDown = (event, index) => {
+    const nextIndex = getNextTabIndex(event, index, steps.length)
+    if (nextIndex === null) return
+    const nextStep = steps[nextIndex]
+    setActiveStep(nextStep.id)
+    document.getElementById(`ri-tab-${nextStep.id}`)?.focus()
+  }
+
   return (
     <div
       style={{
@@ -434,7 +443,9 @@ export default function RetrievalInspector({ module }) {
               id={`ri-tab-${step.id}`}
               aria-selected={isActive}
               aria-controls={`ri-panel-${step.id}`}
+              tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveStep(step.id)}
+              onKeyDown={(event) => handleTabKeyDown(event, i)}
               style={{
                 ...tabBtnBase,
                 background: isActive ? 'var(--color-accent-soft)' : 'transparent',

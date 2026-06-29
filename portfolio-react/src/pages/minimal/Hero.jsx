@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail, FileText, MapPin, Zap } from 'lucide-react'
+import { RESUME_URL } from '../../lib/site'
 
 const STATS = [
   { value: '3+',   label: 'Years at State Street' },
@@ -77,7 +78,7 @@ export default function Hero() {
           <Mail size={14} />
           Email
         </a>
-        <a href="/resume.pdf" className="spa-btn spa-btn--ghost">
+        <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" className="spa-btn spa-btn--ghost">
           <FileText size={14} />
           Resume
         </a>

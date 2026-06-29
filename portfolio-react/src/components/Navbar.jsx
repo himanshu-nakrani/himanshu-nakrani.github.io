@@ -74,7 +74,11 @@ export default function Navbar({ isDark, setIsDark }) {
   }
 
   useEffect(() => {
-    if (!open) return
+    if (!open) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
     requestAnimationFrame(() => {
       const focusable = menuRef.current?.querySelectorAll(FOCUSABLE)
       focusable?.[0]?.focus()
@@ -102,7 +106,10 @@ export default function Navbar({ isDark, setIsDark }) {
     }
 
     document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = previousOverflow
+    }
   }, [open])
 
   return (

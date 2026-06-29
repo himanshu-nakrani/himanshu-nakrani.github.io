@@ -1,8 +1,11 @@
+import { RESUME_URL } from '../lib/site'
+import { ALPHA_COPILOT, GITHUB_REPO_COUNT } from './stats'
+
 export const projects = [
   {
     icon: 'Bot',
     title: 'Alpha Copilot',
-    desc: 'Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves 100+ internal users at State Street.',
+    desc: `Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves ${ALPHA_COPILOT.totalUsers} total users across ${ALPHA_COPILOT.businessUnits} business units at State Street.`,
     fullDesc: 'Alpha Copilot is a production-grade enterprise chatbot that democratizes data access by allowing non-technical users to query complex financial databases using natural language. Built with FastAPI and Azure OpenAI, it features advanced caching, query optimization, and automatic data visualization.',
     tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy'],
     techStack: ['FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'PostgreSQL', 'Redis', 'React', 'LangChain'],
@@ -10,7 +13,7 @@ export const projects = [
     link: null,
     metrics: [
       { type: 'performance', value: '75%', label: 'Response Time Reduction' },
-      { type: 'users', value: '100+', label: 'Active Users' },
+      { type: 'users', value: ALPHA_COPILOT.totalUsers, label: 'Total Users' },
       { type: 'efficiency', value: '6-8s', label: 'Avg Query Time' },
     ],
     features: [
@@ -236,9 +239,9 @@ export const featuredHighlights = [
     id: 'alpha-copilot',
     icon: 'Bot',
     category: 'Production AI',
-    headline: 'Alpha Copilot — LLM system serving 100+ users',
+    headline: `Alpha Copilot — LLM system serving ${ALPHA_COPILOT.totalUsers} users`,
     subtext: 'Text-to-SQL + RAG pipeline deployed at State Street Corporation',
-    metric: '100+ users',
+    metric: ALPHA_COPILOT.label,
   },
   {
     id: 'latency',
@@ -259,13 +262,13 @@ export const featuredHighlights = [
 ]
 
 export const proofLinks = [
-  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: '46 repos, 94 stars' },
-  { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9', sublabel: '12 Models, 2.6K Downloads' },
+  { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: `${GITHUB_REPO_COUNT} repos` },
+  { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9', sublabel: '11 Models, 2.8K Downloads' },
   { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', sublabel: 'Datasets & Notebooks Expert' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', sublabel: '180 solved' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
   { label: 'Research', href: '#research' },
-  { label: 'Resume', href: '/resume.pdf' },
+  { label: 'Resume', href: RESUME_URL },
 ]
 
 // ─── Case Study Workbench ─────────────────────────────────────────────────────
@@ -275,10 +278,10 @@ export const caseStudies = [
     label: 'Alpha Copilot',
     icon: 'Bot',
     badge: 'Production',
-    summary: 'Enterprise Text-to-SQL chatbot serving 100+ analysts over structured financial data at State Street.',
+    summary: `Enterprise Text-to-SQL chatbot serving ${ALPHA_COPILOT.totalUsers} analysts across ${ALPHA_COPILOT.businessUnits} business units at State Street.`,
     problem: 'Non-technical analysts needed safe, fast access to financial databases without writing SQL or involving engineering every time.',
     system: 'FastAPI backend, Azure OpenAI (GPT-4o), schema linking, Redis query cache, SQL validation layer, auto-generated chart visualization.',
-    impact: '100+ internal users, 75% response latency reduction (25–30 s → 6–8 s), 90%+ SQL accuracy after schema-linking and caching optimization.',
+    impact: `${ALPHA_COPILOT.label} across ${ALPHA_COPILOT.businessUnits} business units, 75% response latency reduction (25–30 s → 6–8 s), 90%+ SQL accuracy after schema-linking and caching optimization.`,
     arch: ['User Query', 'Schema Link', 'Cache Check', 'LLM Gen', 'Validate', 'Execute & Viz'],
     tags: ['Text-to-SQL', 'FastAPI', 'Azure OpenAI', 'SQLAlchemy', 'Redis', 'React'],
   },
