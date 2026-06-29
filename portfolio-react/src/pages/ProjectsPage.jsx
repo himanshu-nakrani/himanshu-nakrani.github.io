@@ -22,6 +22,9 @@ const pageStats = [
 const PROJECTS_WITH_SEARCH = projects.map(p => ({
   ...p,
   _searchKey: `${p.title} ${p.desc}`.toLowerCase(),
+  // ⚡ Bolt Optimization: Pre-compute Set for tags to allow O(1) lookup in filter loop
+  // instead of using Array.includes() which would cause O(N x M) time complexity
+  _tagsSet: new Set(p.tags || []),
 }))
 
 function getDeepDiveSlug(title) {
@@ -269,7 +272,7 @@ export default function ProjectsPage() {
         || (activeFilter === 'In Progress' && project.badge === 'In Progress')
         || (activeFilter === 'Open Source' && project.link)
         || (activeFilter === 'Vibe' && project.badge === 'Vibe')
-      const matchesTag = activeTag === 'All' || project.tags.includes(activeTag)
+      const matchesTag = activeTag === 'All' || project._tagsSet.has(activeTag)
       return matchesQuery && matchesFilter && matchesTag
     })
   }, [query, activeFilter, activeTag])
