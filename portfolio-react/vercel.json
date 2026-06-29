@@ -51,7 +51,7 @@
       ]
     },
     {
-      "source": "/(gh-contributions\\.json|gh-contributions\\.svg)",
+      "source": "/(gh-contributions\\.json|gh-contributions\\.svg|leetcode-contributions\\.json)",
       "headers": [
         {
           "key": "Cache-Control",

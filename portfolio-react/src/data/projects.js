@@ -1,5 +1,5 @@
 import { RESUME_URL } from '../lib/site'
-import { ALPHA_COPILOT, GITHUB_REPO_COUNT } from './stats'
+import { ALPHA_COPILOT, GITHUB_REPO_COUNT, LEETCODE_STATS } from './stats'
 
 export const projects = [
   {
@@ -265,7 +265,7 @@ export const proofLinks = [
   { label: 'GitHub', href: 'https://github.com/himanshu-nakrani', sublabel: `${GITHUB_REPO_COUNT} repos` },
   { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9', sublabel: '11 Models, 2.8K Downloads' },
   { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani', sublabel: 'Datasets & Notebooks Expert' },
-  { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/', sublabel: '180 solved' },
+  { label: 'LeetCode', href: LEETCODE_STATS.href, sublabel: `${LEETCODE_STATS.solved} solved` },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
   { label: 'Research', href: '#research' },
   { label: 'Resume', href: RESUME_URL },

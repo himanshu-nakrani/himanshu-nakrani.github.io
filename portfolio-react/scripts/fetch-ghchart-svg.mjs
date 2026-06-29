@@ -42,25 +42,82 @@ async function fetchSvg() {
   console.log('Wrote', SVG_OUT)
 }
 
-async function fetchJson() {
-  const res = await fetch(JSON_URL, { signal: AbortSignal.timeout(TIMEOUT_MS) })
-  if (!res.ok) throw new Error(`contributions JSON fetch failed: ${res.status}`)
-  const data = await res.json()
+function mapContributions(data) {
   if (!data || !Array.isArray(data.contributions)) {
     throw new Error('contributions JSON payload missing `contributions` array')
   }
+  const contributions = data.contributions.map((day) => ({
+    date: day.date,
+    count: day.count,
+    level: day.level,
+  }))
+  const totalFromApi = data.total?.lastYear
+    ?? data.total?.[Object.keys(data.total || {})[0]]
+    ?? contributions.reduce((sum, day) => sum + (day.count || 0), 0)
+  return { contributions, total: totalFromApi }
+}
+
+async function fetchYearJson(yearKey) {
+  const query = yearKey === 'last' ? 'last' : String(yearKey)
+  const url = `https://github-contributions-api.jogruber.de/v4/${USER}?y=${query}`
+  const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) })
+  if (!res.ok) throw new Error(`contributions JSON fetch failed for ${yearKey}: ${res.status}`)
+  const data = await res.json()
+  const mapped = mapContributions(data)
+  return {
+    label: yearKey === 'last' ? 'Last 12 months' : String(yearKey),
+    total: mapped.total,
+    contributions: mapped.contributions,
+  }
+}
+
+async function fetchJson() {
+  const currentYear = new Date().getUTCFullYear()
+  const calendarYears = []
+  for (let year = 2021; year <= currentYear; year++) calendarYears.push(year)
+
+  const yearKeys = ['last', ...calendarYears]
+  const years = {}
+  const availableYears = []
+
+  await Promise.all(yearKeys.map(async (yearKey) => {
+    try {
+      years[yearKey] = await fetchYearJson(yearKey)
+      availableYears.push(yearKey)
+    } catch (error) {
+      console.warn(`Skipping GitHub year ${yearKey}:`, error.message || error)
+    }
+  }))
+
+  if (!years.last && !existsSync(JSON_OUT)) {
+    throw new Error('GitHub contributions fetch failed for all year views')
+  }
+  if (!years.last) {
+    const existing = JSON.parse(readFileSync(JSON_OUT, 'utf8'))
+    if (existing?.years?.last) years.last = existing.years.last
+    if (!availableYears.includes('last') && years.last) availableYears.unshift('last')
+  }
+
+  const sortedYears = (availableYears.length ? availableYears : yearKeys).sort((a, b) => {
+    if (a === 'last') return -1
+    if (b === 'last') return 1
+    return Number(b) - Number(a)
+  })
+
   const payload = {
     user: USER,
     fetchedAt: new Date().toISOString(),
-    total: data.total?.lastYear ?? data.contributions.reduce((sum, day) => sum + (day.count || 0), 0),
-    contributions: data.contributions.map((day) => ({
-      date: day.date,
-      count: day.count,
-      level: day.level,
-    })),
+    defaultYear: 'last',
+    availableYears: sortedYears,
+    years,
   }
   writeFileSync(JSON_OUT, JSON.stringify(payload), 'utf8')
-  console.log('Wrote', JSON_OUT, `(${payload.contributions.length} days, ${payload.total} total)`)
+  const last = years.last
+  console.log(
+    'Wrote',
+    JSON_OUT,
+    `(${payload.availableYears.length} year views, last=${last?.contributions.length ?? 0} days / ${last?.total ?? 0} total)`,
+  )
 }
 
 async function runWithFallback(label, task, fallbackPath) {

@@ -2346,6 +2346,10 @@ section[id] {
   padding: clamp(0.9rem, 2vw, 1.25rem);
 }
 
+.profile-heatmap-shell--leetcode {
+  --heatmap-accent: #ffa116;
+}
+
 .profile-ledger-detail-stack,
 .kaggle-tier-list {
   display: flex;
