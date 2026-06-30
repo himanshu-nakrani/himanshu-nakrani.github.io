@@ -261,6 +261,7 @@ export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All')
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
+  const searchInputRef = useRef(null)
 
   const filteredProjects = useMemo(() => {
     // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
@@ -311,6 +312,7 @@ export default function ProjectsPage() {
                 <Search size={16} color="var(--color-text-muted)" aria-hidden="true" />
                 <span className="sr-only">Search projects</span>
                 <input
+                  ref={searchInputRef}
                   type="search"
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
@@ -348,9 +350,22 @@ export default function ProjectsPage() {
           </div>
 
           {filteredProjects.length === 0 && (
-            <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-              <p style={{ margin: 0, fontWeight: 'var(--font-weight-semibold)' }}>No projects match</p>
-              <p style={{ margin: '0.25rem 0 0', fontSize: 'var(--text-sm)' }}>Try adjusting your filters or search term.</p>
+            <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--color-text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+              <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 'var(--font-weight-semibold)' }}>No projects match</p>
+              <p style={{ margin: 0, fontSize: 'var(--text-sm)' }}>Try adjusting your filters or search term.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery('')
+                  setActiveFilter('All')
+                  setActiveTag('All')
+                  setTimeout(() => searchInputRef.current?.focus(), 50)
+                }}
+                className="btn btn--ghost"
+                style={{ marginTop: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+              >
+                Clear all filters
+              </button>
             </div>
           )}
         </section>
