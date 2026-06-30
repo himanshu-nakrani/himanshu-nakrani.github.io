@@ -36,7 +36,7 @@ function StatCell({ value, label, icon: Icon, inView, reduceMotion, index }) {
       {...motionProps(reduceMotion, inView, index * 0.06)}
     >
       <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
-      <span className="editorial-stat-num">{numericMatch ? count : value}{numericMatch ? suffix : ''}</span>
+      <span className="editorial-stat-num">{numericMatch ? <motion.span>{count}</motion.span> : value}{numericMatch ? suffix : ''}</span>
       <span className="editorial-stat-label">{label}</span>
     </motion.div>
   )
