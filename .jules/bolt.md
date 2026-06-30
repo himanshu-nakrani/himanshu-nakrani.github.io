@@ -16,3 +16,7 @@
 ## 2024-06-13 - O(n) String Transformations in Filtering Loops
 **Learning:** Calling string transformations like `.toLowerCase()` inside a `.filter` or `.map` loop causes unnecessary object allocations and redundant calculations, negatively impacting performance when typing rapidly into search fields.
 **Action:** When filtering lists, always hoist redundant standardizations (like query lowercasing) outside of the loop mapping/filtering functions to achieve O(1) evaluation per render.
+
+## 2025-06-30 - [Performance] DOM-Level Animations using Framer Motion
+**Learning:** React state updates (via `useState`) triggered repeatedly within a `requestAnimationFrame` loop (e.g. for count-up animations) cause severe garbage collection churn and layout thrashing as React continuously re-renders the component on the main thread during the animation.
+**Action:** Replace custom `requestAnimationFrame` state updates with Framer Motion's `useMotionValue`, `useSpring`, and `useTransform`. Returning the `MotionValue` and wrapping the render node in `<motion.span>` allows the DOM to update directly, completely bypassing the React render cycle for massive performance gains.
