@@ -319,6 +319,26 @@ export default function ProjectsPage() {
                   placeholder="Search projects..."
                   style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', color: 'var(--color-text)', fontSize: 'var(--text-sm)' }}
                 />
+                {query && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    className="btn btn--ghost"
+                    onClick={() => {
+                      setQuery('')
+                      searchInputRef.current?.focus()
+                    }}
+                    style={{
+                      padding: '0.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: 'none',
+                    }}
+                  >
+                    <X size={14} />
+                  </button>
+                )}
               </label>
               <span className="editorial-chip">{filteredProjects.length} results</span>
             </div>
