@@ -12,26 +12,34 @@ function getMotionProps(reduceMotion, inView, delay = 0) {
   }
 }
 
+// ⚡ Bolt Optimization: Move static regex patterns outside to avoid O(n) instantiations during render.
+const METRIC_PATTERNS = [
+  { regex: /200\+[^.]*users/i, value: '200+', label: 'Total users' },
+  { regex: /100\+[^.]*users/i, value: '100+', label: 'Internal users' },
+  { regex: /75%[^.]*reduction|75% latency/i, value: '75%', label: 'Latency reduction' },
+  { regex: /95%\+[^.]*coverage/i, value: '95%+', label: 'Test coverage' },
+  { regex: /25%[^.]*accuracy/i, value: '25%', label: 'SQL accuracy lift' },
+  { regex: /40%[^.]*performance/i, value: '40%', label: 'Performance lift' },
+  { regex: /87%[^.]*accuracy/i, value: '87%', label: 'Model accuracy' },
+]
+
 function extractMetrics(item) {
   const source = [item.description, ...(item.bullets || [])].join(' ')
-  const patterns = [
-    { regex: /200\+[^.]*users/i, value: '200+', label: 'Total users' },
-    { regex: /100\+[^.]*users/i, value: '100+', label: 'Internal users' },
-    { regex: /75%[^.]*reduction|75% latency/i, value: '75%', label: 'Latency reduction' },
-    { regex: /95%\+[^.]*coverage/i, value: '95%+', label: 'Test coverage' },
-    { regex: /25%[^.]*accuracy/i, value: '25%', label: 'SQL accuracy lift' },
-    { regex: /40%[^.]*performance/i, value: '40%', label: 'Performance lift' },
-    { regex: /87%[^.]*accuracy/i, value: '87%', label: 'Model accuracy' },
-  ]
-
-  return patterns.filter((metric) => metric.regex.test(source)).map(({ value, label }) => ({ value, label }))
+  return METRIC_PATTERNS.filter((metric) => metric.regex.test(source)).map(({ value, label }) => ({ value, label }))
 }
+
+// ⚡ Bolt Optimization: Pre-compute static metrics outside of render cycle
+// to prevent expensive string allocations and regex evaluations during scroll interactions.
+const EXPERIENCE_WITH_METRICS = experience.map((item) => ({
+  ...item,
+  _metrics: extractMetrics(item),
+}))
 
 function RoleRow({ item, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
-  const metrics = extractMetrics(item)
+  const metrics = item._metrics || []
   const number = String(index + 1).padStart(2, '0')
 
   return (
@@ -112,7 +120,7 @@ export default function ExperiencePage() {
         </header>
 
         <section aria-label="Experience ledger">
-          {experience.map((item, index) => (
+          {EXPERIENCE_WITH_METRICS.map((item, index) => (
             <RoleRow key={`${item.company}-${item.period}`} item={item} index={index} />
           ))}
         </section>
