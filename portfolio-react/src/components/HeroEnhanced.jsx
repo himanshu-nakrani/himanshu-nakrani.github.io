@@ -3,7 +3,6 @@ import { Github, Linkedin, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
 import AuroraBackground from './ui/AuroraBackground'
 import MagneticButton from './ui/MagneticButton'
-import HeroPipelineSchematic from './HeroPipelineSchematic'
 import { recruiterSummary } from '../data/hero'
 import { RESUME_URL } from '../lib/site'
 import { ALPHA_COPILOT } from '../data/stats'
@@ -31,16 +30,18 @@ function RisingLine({ children, delay = 0, reduceMotion }) {
   )
 }
 
-export default function HeroEnhanced() {
+export default function HeroEnhanced({ designMode = 'classic' }) {
   const reduceMotion = useReducedMotion()
   const magneticRef = useMagnetic({ radius: 80, strength: 4 })
+  const isInstrument = designMode === 'instrument'
 
   return (
     <section
       id="about"
-      style={{ paddingTop: 'clamp(5rem, 11vh, 6.5rem)', position: 'relative', overflow: 'hidden' }}
+      className="hero-section"
+      style={{ position: 'relative', overflow: 'hidden' }}
     >
-      <AuroraBackground intensity={0.6} />
+      <AuroraBackground className="hero-aurora" intensity={0.6} />
       <div
         style={{
           maxWidth: 'var(--container)',
@@ -67,7 +68,9 @@ export default function HeroEnhanced() {
                 />
               </picture>
             </div>
-            <span className="hero-kicker">Generative AI Engineer · State Street</span>
+            <span className="hero-kicker">
+              {isInstrument ? 'Production AI Systems · State Street' : 'Generative AI Engineer · State Street'}
+            </span>
           </div>
 
           {/* Oversized name */}
@@ -78,10 +81,17 @@ export default function HeroEnhanced() {
 
           {/* Statement */}
           <p className="hero-statement">
-            <RisingLine delay={0.24} reduceMotion={reduceMotion}>
-              I build <span className="gradient-text">LLM systems</span>
-              <span style={{ color: 'var(--color-accent)' }}>.</span>
-            </RisingLine>
+            {isInstrument ? (
+              <>
+                I build AI systems that can be <span className="gradient-text">inspected</span>
+                <span style={{ color: 'var(--color-accent)' }}>.</span>
+              </>
+            ) : (
+              <RisingLine delay={0.24} reduceMotion={reduceMotion}>
+                I build <span className="gradient-text">LLM systems</span>
+                <span style={{ color: 'var(--color-accent)' }}>.</span>
+              </RisingLine>
+            )}
           </p>
 
           {/* Capability pill row */}
@@ -92,14 +102,23 @@ export default function HeroEnhanced() {
           </div>
 
           {/* Split: intro + CTAs | schematic */}
-          <div className="hero-split">
+          <div className="hero-split hero-split--single">
             <div className="hero-split-left">
               <p className="hero-intro">
-                Production AI engineer at{' '}
-                <strong style={{ color: 'var(--color-text)' }}>State Street Corporation</strong>
-                {' '}— building Text-to-SQL, RAG, agent tooling, and evaluation
-                infrastructure for financial-data workflows. Progressed from intern
-                to Emerging Lead in two years.
+                {isInstrument ? (
+                  <>
+                    Production LLM workflows, reasoning models, retrieval tools, and
+                    evaluation loops for real-world financial-data systems.
+                  </>
+                ) : (
+                  <>
+                    Production AI engineer at{' '}
+                    <strong style={{ color: 'var(--color-text)' }}>State Street Corporation</strong>
+                    {' '}— building Text-to-SQL, RAG, agent tooling, and evaluation
+                    infrastructure for financial-data workflows. Progressed from intern
+                    to Emerging Lead in two years.
+                  </>
+                )}
               </p>
               <div className="hero-ctas">
                 <a
@@ -141,9 +160,6 @@ export default function HeroEnhanced() {
                   </a>
                 </MagneticButton>
               </div>
-            </div>
-            <div className="hero-split-right">
-              <HeroPipelineSchematic />
             </div>
           </div>
         </div>

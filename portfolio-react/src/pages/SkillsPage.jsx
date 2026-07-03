@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
-import { Award, ChevronRight, Layers, Sparkles, TrendingUp } from 'lucide-react'
+import { Award, ChevronRight, ExternalLink, Layers, Sparkles, TrendingUp } from 'lucide-react'
 import DataIcon from '../components/DataIcon'
 import SEO from '../components/SEO'
 import { certifications, skills } from '../data/skills'
@@ -184,12 +184,40 @@ export default function SkillsPage() {
           <p className="editorial-kicker">[ 04 ] · Credentials</p>
           <h2 className="editorial-section-title">Certifications</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '0.75rem' }}>
-            {certifications.map((cert) => (
-              <article key={cert.title} className="editorial-card" style={{ padding: '1rem 1.1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                <DataIcon name={cert.icon} size={18} />
-                <h3 style={{ margin: 0, color: 'var(--color-text)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-snug)', fontWeight: 'var(--font-weight-semibold)' }}>{cert.title}</h3>
-              </article>
-            ))}
+            {certifications.map((cert) => {
+              const content = (
+                <>
+                  <DataIcon name={cert.icon} size={18} />
+                  <h3 style={{ margin: 0, color: 'var(--color-text)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-snug)', fontWeight: 'var(--font-weight-semibold)', flex: 1 }}>{cert.title}</h3>
+                  {cert.href && <ExternalLink size={14} color="var(--color-text-subtle)" aria-hidden="true" />}
+                </>
+              )
+              const cardStyle = {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.8rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }
+
+              return (
+                <article key={cert.title} className="editorial-card" style={{ padding: '1rem 1.1rem' }}>
+                  {cert.href ? (
+                    <a
+                      href={cert.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View credential for ${cert.title}`}
+                      style={cardStyle}
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div style={cardStyle}>{content}</div>
+                  )}
+                </article>
+              )
+            })}
           </div>
         </section>
 

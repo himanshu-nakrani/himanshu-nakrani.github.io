@@ -38,6 +38,11 @@ export const skills = [
 ]
 
 export const certifications = [
+  {
+    icon: 'Cloud',
+    title: 'AWS Certified AI Practitioner',
+    href: 'https://www.credly.com/badges/dd24a4a1-e038-4e56-b3e9-f3ad9c105f33/linked_in_profile',
+  },
   { icon: 'Cloud', title: 'Oracle Cloud Infrastructure Certified Generative AI Professional' },
   { icon: 'Bot', title: 'Amazon Machine Learning Summer School 2022' },
   { icon: 'Cloud', title: 'AWS Machine Learning Foundations — Udacity' },

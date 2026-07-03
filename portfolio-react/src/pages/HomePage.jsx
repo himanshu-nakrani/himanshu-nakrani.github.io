@@ -1,5 +1,5 @@
+import { useOutletContext } from 'react-router-dom'
 import HeroEnhanced from '../components/HeroEnhanced'
-import MarqueeStrip from '../components/MarqueeStrip'
 import FeaturedHighlightsRail from '../components/FeaturedHighlightsRail'
 import CaseStudyWorkbench from '../components/CaseStudyWorkbench'
 import Contact from '../components/Contact'
@@ -20,6 +20,8 @@ const sections = [
 ]
 
 export default function HomePage() {
+  const { designMode = 'classic' } = useOutletContext() || {}
+
   return (
     <>
       <SEO
@@ -30,10 +32,7 @@ export default function HomePage() {
       <SectionNav sections={sections} />
 
       {/* 1 — Hero */}
-      <HeroEnhanced />
-
-      {/* Capability ticker */}
-      <MarqueeStrip />
+      <HeroEnhanced designMode={designMode} />
 
       {/* 2 — Proof highlights */}
       <Section

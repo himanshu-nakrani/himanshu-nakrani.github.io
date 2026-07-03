@@ -320,6 +320,145 @@
 }
 
 /* ========================================
+   DESIGN V2 — Living Research Instrument
+   Opt-in layer via data-design="instrument".
+   Keeps the current application intact while changing its visual language.
+   ======================================== */
+
+:root[data-design="instrument"] {
+  --color-bg:               #eee8dc;   /* field-note paper */
+  --color-surface:          #fbf7ed;   /* clean paper panel */
+  --color-surface-raised:   #e4dccb;   /* folded map backing */
+  --color-surface-elev:     #d6cdbb;
+
+  --color-border:           rgba(24, 23, 19, 0.13);
+  --color-border-strong:    rgba(24, 23, 19, 0.28);
+  --color-border-solid:     #cfc4b1;
+
+  --color-text:             #181713;   /* graphite ink */
+  --color-text-muted:       #625b50;
+  --color-text-subtle:      #948a7b;
+
+  --color-accent:           #2f6073;   /* blueprint steel */
+  --color-accent-strong:    #214756;
+  --color-accent-soft:      rgba(47, 96, 115, 0.10);
+  --color-accent-fg:        #fbf7ed;
+  --color-accent-secondary: #a55334;   /* clay annotation marker */
+
+  --color-success:          #566f4d;
+  --color-warning:          #a55334;
+  --color-danger:           #a04a42;
+  --color-info:             #2f6073;
+  --color-live:             #566f4d;
+
+  --color-cat-1:            #2f6073;
+  --color-cat-2:            #a55334;
+  --color-cat-3:            #566f4d;
+  --color-cat-4:            #6f6252;
+  --color-cat-5:            #3f6f73;
+  --color-cat-6:            #8b6f3f;
+
+  --gradient-text: linear-gradient(90deg, var(--color-accent), var(--color-accent));
+  --gradient-wash:
+    repeating-linear-gradient(
+      0deg,
+      rgba(24, 23, 19, 0.030) 0,
+      rgba(24, 23, 19, 0.030) 1px,
+      transparent 1px,
+      transparent 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(24, 23, 19, 0.018) 0,
+      rgba(24, 23, 19, 0.018) 1px,
+      transparent 1px,
+      transparent 44px
+    );
+  --gradient-hairline: linear-gradient(
+    90deg,
+    transparent,
+    rgba(24, 23, 19, 0.22) 18%,
+    rgba(47, 96, 115, 0.42) 50%,
+    rgba(24, 23, 19, 0.22) 82%,
+    transparent
+  );
+
+  --backdrop-gradient:
+    radial-gradient(ellipse 80% 40% at 8% 0%, rgba(47, 96, 115, 0.045), transparent 58%),
+    radial-gradient(ellipse 60% 36% at 92% 18%, rgba(165, 83, 52, 0.038), transparent 60%);
+
+  --text-display:   clamp(3.25rem, 2rem + 4.2vw, 5.8rem);
+  --text-statement: clamp(2rem, 1.2rem + 2.4vw, 3.35rem);
+  --line-height-display: 0.98;
+
+  --glass-bg:         rgba(251, 247, 237, 0.92);
+  --glass-border:     rgba(24, 23, 19, 0.16);
+  --glass-blur:       0px;
+  --glass-saturation: 1;
+
+  --shadow-xs: 0 1px 0 rgba(24, 23, 19, 0.06);
+  --shadow-sm: 0 1px 0 rgba(24, 23, 19, 0.08);
+  --shadow-md: 0 8px 22px rgba(24, 23, 19, 0.08);
+  --shadow-lg: 0 14px 34px rgba(24, 23, 19, 0.10);
+  --shadow-xl: 0 20px 48px rgba(24, 23, 19, 0.12);
+
+  --radius-sm:   2px;
+  --radius-md:   3px;
+  --radius-lg:   4px;
+  --radius-xl:   6px;
+  --radius-2xl:  8px;
+
+  --ghost-hover-bg: rgba(47, 96, 115, 0.08);
+  --ambient-grain-opacity: 0.055;
+  --section-number-color: var(--color-accent-secondary);
+}
+
+:root[data-design="instrument"][data-theme="dark"] {
+  --color-bg:               #12130f;
+  --color-surface:          #1a1a15;
+  --color-surface-raised:   #242319;
+  --color-surface-elev:     #302e22;
+
+  --color-border:           rgba(232, 224, 207, 0.13);
+  --color-border-strong:    rgba(232, 224, 207, 0.26);
+  --color-border-solid:     #4a4538;
+
+  --color-text:             #f2ecde;
+  --color-text-muted:       #c8beaa;
+  --color-text-subtle:      #928875;
+
+  --color-accent:           #7fb1c2;
+  --color-accent-strong:    #9fc8d5;
+  --color-accent-soft:      rgba(127, 177, 194, 0.13);
+  --color-accent-fg:        #12130f;
+  --color-accent-secondary: #d08a62;
+
+  --gradient-wash:
+    repeating-linear-gradient(
+      0deg,
+      rgba(242, 236, 222, 0.026) 0,
+      rgba(242, 236, 222, 0.026) 1px,
+      transparent 1px,
+      transparent 28px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(242, 236, 222, 0.016) 0,
+      rgba(242, 236, 222, 0.016) 1px,
+      transparent 1px,
+      transparent 44px
+    );
+  --backdrop-gradient:
+    radial-gradient(ellipse 80% 40% at 8% 0%, rgba(127, 177, 194, 0.06), transparent 58%),
+    radial-gradient(ellipse 60% 36% at 92% 18%, rgba(208, 138, 98, 0.05), transparent 60%);
+
+  --glass-bg:     rgba(26, 26, 21, 0.94);
+  --glass-border: rgba(232, 224, 207, 0.14);
+  --ghost-hover-bg: rgba(127, 177, 194, 0.10);
+  --pill-contact-mobile-bg: rgba(26, 26, 21, 0.94);
+}
+
+/* ========================================
    REDUCED TRANSPARENCY MODE
    ======================================== */
 

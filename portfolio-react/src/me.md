@@ -52,6 +52,7 @@
 
 ## 🏅 Certifications
 
+- ☁️ [AWS Certified AI Practitioner](https://www.credly.com/badges/dd24a4a1-e038-4e56-b3e9-f3ad9c105f33/linked_in_profile)
 - ☁️ Oracle Cloud Infrastructure Certified Generative AI Professional
 - 🤖 Amazon Machine Learning Summer School 2022
 - ☁️ AWS Machine Learning Foundations — Udacity
