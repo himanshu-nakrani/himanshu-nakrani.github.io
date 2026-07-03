@@ -13,7 +13,7 @@ import CmdKHint from '../components/CmdKHint'
 
 
 
-export default function MainLayout({ isDark, setIsDark }) {
+export default function MainLayout({ isDark, setIsDark, designMode, setDesignMode }) {
   const location = useLocation()
   const reduceMotion = useReducedMotion()
   const toggleTheme = useCallback(() => setIsDark(!isDark), [isDark, setIsDark])
@@ -69,6 +69,8 @@ export default function MainLayout({ isDark, setIsDark }) {
           <Navbar
             isDark={isDark}
             setIsDark={setIsDark}
+            designMode={designMode}
+            setDesignMode={setDesignMode}
           />
 
           <main id="main-content">
@@ -80,7 +82,7 @@ export default function MainLayout({ isDark, setIsDark }) {
                 animate="animate"
                 exit="exit"
               >
-                <Outlet />
+                <Outlet context={{ designMode }} />
               </motion.div>
             </AnimatePresence>
           </main>

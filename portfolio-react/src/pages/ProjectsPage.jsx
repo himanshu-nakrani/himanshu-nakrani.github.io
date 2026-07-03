@@ -80,7 +80,7 @@ function MetricStrip({ metrics, compact = false }) {
   )
 }
 
-function ProjectCard({ item, index, onDetails }) {
+function ProjectCard({ item, index, onDetails, featured = false }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
@@ -89,39 +89,45 @@ function ProjectCard({ item, index, onDetails }) {
   return (
     <motion.article
       ref={ref}
-      className="editorial-card"
+      className={`project-card editorial-card${featured ? ' project-card--featured' : ''}`}
       {...motionProps(reduceMotion, inView, (index % 3) * 0.05)}
-      style={{ padding: '1.2rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '100%' }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-          <span style={{ color: 'var(--color-accent)', lineHeight: 1 }}>
+      <div className="project-card__header">
+        <div className="project-card__title-row">
+          <span className="project-card__icon" aria-hidden="true">
             <DataIcon name={item.icon} size={24} />
           </span>
-          <div>
-            <p className="ledger-title" style={{ margin: '0 0 0.35rem' }}>{item.badge || 'Project'}</p>
-            <h2 style={{ margin: 0, color: 'var(--color-text)', fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-tight)' }}>
+          <div className="project-card__heading">
+            <p className="project-card__eyebrow ledger-title">{item.badge || 'Project'}</p>
+            <h2 className="project-card__title">
               {item.title}
             </h2>
           </div>
         </div>
-        {item.link ? <ExternalLink size={16} color="var(--color-accent)" aria-hidden="true" /> : <Lock size={16} color="var(--color-text-muted)" aria-hidden="true" />}
+        <span
+          className={`project-card__availability ${item.link ? 'project-card__availability--public' : 'project-card__availability--private'}`}
+          title={item.link ? 'Open source' : 'Private or internal project'}
+        >
+          {item.link ? <ExternalLink size={16} aria-hidden="true" /> : <Lock size={16} aria-hidden="true" />}
+        </span>
       </div>
 
-      <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-relaxed)' }}>{item.desc}</p>
-      <MetricStrip metrics={item.metrics} compact />
+      <p className="project-card__desc">{item.desc}</p>
+      <div className="project-card__metrics">
+        <MetricStrip metrics={item.metrics} compact />
+      </div>
 
-      <div className="editorial-chip-list" style={{ marginTop: 'auto' }}>
+      <div className="project-card__tags editorial-chip-list">
         {item.tags.slice(0, 4).map((tag) => <Tag key={tag}>{tag}</Tag>)}
         {item.tags.length > 4 && <span className="editorial-chip">+{item.tags.length - 4}</span>}
       </div>
 
-      <div style={{ display: 'flex', gap: '0.65rem', alignItems: 'center', flexWrap: 'wrap' }}>
-        <button type="button" className="btn btn--ghost" onClick={onDetails} aria-label={`View details for ${item.title}`} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
+      <div className="project-card__actions">
+        <button type="button" className="btn btn--ghost project-card__action" onClick={onDetails} aria-label={`View details for ${item.title}`}>
           Details
         </button>
         {slug && (
-          <Link to={`/projects/${slug}`} className="btn btn--primary" aria-label={`Deep dive into ${item.title}`} style={{ fontSize: '0.8rem', padding: '0.45rem 0.9rem' }}>
+          <Link to={`/projects/${slug}`} className="btn btn--primary project-card__action" aria-label={`Deep dive into ${item.title}`}>
             Deep dive <ArrowRight size={13} aria-hidden="true" />
           </Link>
         )}
@@ -141,6 +147,7 @@ function ProjectModal({ project, onClose }) {
     previousFocusRef.current = document.activeElement
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    document.body.dataset.modalOpen = 'true'
     requestAnimationFrame(() => closeRef.current?.focus())
 
     const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])') || [])
@@ -167,6 +174,7 @@ function ProjectModal({ project, onClose }) {
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = previousOverflow
+      delete document.body.dataset.modalOpen
       previousFocusRef.current?.focus?.()
     }
   }, [project, onClose])
@@ -174,6 +182,8 @@ function ProjectModal({ project, onClose }) {
   const panelMotion = reduceMotion
     ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
     : { initial: { opacity: 0, scale: 0.96, y: 18 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 18 }, transition: { duration: 0.25 } }
+  const status = project?.badge || 'Project'
+  const primaryTags = project?.tags?.slice(0, 5) || []
 
   return (
     <AnimatePresence>
@@ -185,51 +195,69 @@ function ProjectModal({ project, onClose }) {
             exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
             onClick={onClose}
             aria-hidden="true"
-            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 999 }}
+            className="project-modal__backdrop"
           />
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label={`${project.title} project details`}
             {...panelMotion}
-            style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', zIndex: 1000, padding: 'clamp(5rem, 9vh, 6.5rem) 1rem 1.5rem', pointerEvents: 'none', overflowY: 'auto' }}
+            className="project-modal__viewport"
           >
-            <div ref={dialogRef} className="editorial-card" onClick={(event) => event.stopPropagation()} style={{ pointerEvents: 'auto', width: 'min(760px, 100%)', maxHeight: 'calc(100dvh - clamp(6.5rem, 11vh, 8rem))', overflowY: 'auto', background: 'var(--color-surface)', padding: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', marginBottom: '1.25rem' }}>
-                <div>
-                  <p className="editorial-kicker" style={{ marginBottom: '0.75rem' }}>{project.badge || 'Project'}</p>
-                  <h2 style={{ margin: 0, color: 'var(--color-text)', fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', lineHeight: 'var(--line-height-tight)', letterSpacing: 'var(--letter-spacing-display)' }}>
-                    {project.title}
-                  </h2>
+            <div ref={dialogRef} className="project-modal editorial-card" onClick={(event) => event.stopPropagation()}>
+              <div className="project-modal__topbar">
+                <div className="project-modal__status">
+                  <DataIcon name={project.icon} size={18} />
+                  <span>{status}</span>
                 </div>
-                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close dialog" className="glass-btn" style={{ width: 36, height: 36, display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close dialog" className="project-modal__close glass-btn">
                   <X size={16} aria-hidden="true" />
                 </button>
               </div>
 
-              <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-base)', lineHeight: 'var(--line-height-relaxed)', marginBottom: '1.25rem' }}>
-                {project.fullDesc || project.desc}
-              </p>
+              <div className="project-modal__hero">
+                <div className="project-modal__hero-main">
+                  <p className="project-modal__coord">Project specimen</p>
+                  <h2 className="project-modal__title">{project.title}</h2>
+                  <p className="project-modal__summary">{project.fullDesc || project.desc}</p>
+                </div>
+                <aside className="project-modal__meta" aria-label="Project metadata">
+                  <div>
+                    <span className="project-modal__meta-label">Visibility</span>
+                    <span className="project-modal__meta-value">{project.link || project.liveLink ? 'Public artifact' : 'Internal / private'}</span>
+                  </div>
+                  <div>
+                    <span className="project-modal__meta-label">Signals</span>
+                    <span className="project-modal__meta-value">{project.metrics?.length ? `${project.metrics.length} measured outputs` : 'Narrative evidence'}</span>
+                  </div>
+                  <div>
+                    <span className="project-modal__meta-label">Primary tags</span>
+                    <span className="project-modal__meta-value">{primaryTags.join(' · ')}</span>
+                  </div>
+                </aside>
+              </div>
 
-              <MetricStrip metrics={project.metrics} />
+              <div className="project-modal__metrics">
+                <MetricStrip metrics={project.metrics} />
+              </div>
 
               {project.features && (
-                <section className="article-block section-hairline">
+                <section className="project-modal__section">
                   <p className="ledger-subhead">Features</p>
-                  <ul style={{ margin: 0, paddingLeft: '1.1rem', color: 'var(--color-text-muted)', lineHeight: 'var(--line-height-relaxed)' }}>
+                  <ul className="project-modal__list">
                     {project.features.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
                 </section>
               )}
 
               {project.challenges && (
-                <section className="article-block section-hairline">
+                <section className="project-modal__section">
                   <p className="ledger-subhead">Challenges & Solutions</p>
-                  <div style={{ display: 'grid', gap: '0.75rem' }}>
+                  <div className="project-modal__challenge-grid">
                     {project.challenges.map((challenge) => (
-                      <article key={challenge.challenge} className="editorial-card" style={{ padding: '0.9rem 1rem' }}>
-                        <p style={{ margin: '0 0 0.4rem', color: 'var(--color-text)', fontWeight: 'var(--font-weight-semibold)' }}>{challenge.challenge}</p>
-                        <p style={{ margin: 0, color: 'var(--color-text-muted)', lineHeight: 'var(--line-height-relaxed)' }}>{challenge.solution}</p>
+                      <article key={challenge.challenge} className="project-modal__challenge editorial-card">
+                        <p className="project-modal__challenge-title">{challenge.challenge}</p>
+                        <p className="project-modal__challenge-body">{challenge.solution}</p>
                       </article>
                     ))}
                   </div>
@@ -237,13 +265,13 @@ function ProjectModal({ project, onClose }) {
               )}
 
               {project.techStack && (
-                <section className="article-block section-hairline">
+                <section className="project-modal__section">
                   <p className="ledger-subhead">Tech Stack</p>
-                  <div className="editorial-chip-list">{project.techStack.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div>
+                  <div className="project-modal__chips editorial-chip-list">{project.techStack.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div>
                 </section>
               )}
 
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', paddingTop: '1rem' }}>
+              <div className="project-modal__footer">
                 {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary">GitHub <ExternalLink size={13} aria-hidden="true" /></a>}
                 {project.liveLink && <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost">Live Demo <ExternalLink size={13} aria-hidden="true" /></a>}
                 {!project.link && !project.liveLink && <span className="ledger-note"><Lock size={13} aria-hidden="true" /> Internal / private project</span>}
@@ -277,6 +305,7 @@ export default function ProjectsPage() {
       return matchesQuery && matchesFilter && matchesTag
     })
   }, [query, activeFilter, activeTag])
+  const showFeaturedLayout = !query && activeFilter === 'All' && activeTag === 'All'
 
   return (
     <>
@@ -363,9 +392,15 @@ export default function ProjectsPage() {
             </div>
           </div>
 
-          <div className="projects-grid" style={{ display: 'grid', gap: '1rem' }}>
+          <div className="projects-grid">
             {filteredProjects.map((project, index) => (
-              <ProjectCard key={project.title} item={project} index={index} onDetails={() => setSelected(project)} />
+              <ProjectCard
+                key={project.title}
+                item={project}
+                index={index}
+                featured={showFeaturedLayout && index === 0}
+                onDetails={() => setSelected(project)}
+              />
             ))}
           </div>
 

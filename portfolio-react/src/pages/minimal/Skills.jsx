@@ -26,6 +26,11 @@ const SKILLS = [
 ]
 
 const CERTIFICATIONS = [
+  {
+    name: 'AWS Certified AI Practitioner',
+    issuer: 'Amazon Web Services',
+    href: 'https://www.credly.com/badges/dd24a4a1-e038-4e56-b3e9-f3ad9c105f33/linked_in_profile',
+  },
   { name: 'Oracle Cloud Infrastructure Certified Generative AI Professional', issuer: 'Oracle' },
   { name: 'Amazon Machine Learning Summer School 2022', issuer: 'Amazon' },
   { name: 'AWS Machine Learning Foundations', issuer: 'Udacity' },
@@ -55,12 +60,40 @@ export default function Skills() {
       <div style={{ marginTop: '3rem' }}>
         <div className="spa-section__label" style={{ marginBottom: '0.85rem' }}>Certifications</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {CERTIFICATIONS.map((c) => (
-            <div key={c.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 7 }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text)' }}>{c.name}</span>
-              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono, monospace)', color: 'var(--color-text-subtle)', flexShrink: 0, marginLeft: '1rem' }}>{c.issuer}</span>
-            </div>
-          ))}
+          {CERTIFICATIONS.map((c) => {
+            const cardStyle = {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0.75rem 1rem',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 7,
+              color: 'inherit',
+              textDecoration: 'none',
+            }
+            const content = (
+              <>
+                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--color-text)' }}>{c.name}</span>
+                <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono, monospace)', color: 'var(--color-text-subtle)', flexShrink: 0, marginLeft: '1rem' }}>{c.issuer}</span>
+              </>
+            )
+
+            return c.href ? (
+              <a
+                key={c.name}
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View credential for ${c.name}`}
+                style={cardStyle}
+              >
+                {content}
+              </a>
+            ) : (
+              <div key={c.name} style={cardStyle}>{content}</div>
+            )
+          })}
         </div>
       </div>
     </section>

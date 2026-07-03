@@ -1,7 +1,6 @@
 // Importers shared with App.jsx lazy() so prefetch and render resolve the same chunk.
 export const routeImporters = {
   '/': () => import('../pages/HomePage'),
-  '/about': () => import('../pages/AboutPage'),
   '/projects': () => import('../pages/ProjectsPage'),
   '/experience': () => import('../pages/ExperiencePage'),
   '/profiles': () => import('../pages/ProfilesPage'),
@@ -33,7 +32,7 @@ export function warmTopRoutes() {
   if (typeof window === 'undefined') return
   const warm = () => {
     if (!connectionAllowsPrefetch()) return
-    ;['/about', '/projects', '/experience'].forEach(prefetchRoute)
+    ;['/', '/projects', '/experience'].forEach(prefetchRoute)
   }
   const schedule = () => {
     if ('requestIdleCallback' in window) {

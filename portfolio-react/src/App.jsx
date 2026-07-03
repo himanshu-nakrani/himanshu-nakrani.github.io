@@ -1,17 +1,23 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 
-import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from './lib/theme'
+import {
+  applyDesignMode,
+  applyTheme,
+  DESIGN_STORAGE_KEY,
+  getPreferredDesignMode,
+  getPreferredTheme,
+  THEME_STORAGE_KEY,
+} from './lib/theme'
 import { setItem } from './lib/storage'
 import { routeImporters, warmTopRoutes } from './lib/routePrefetch'
 import MainLayout from './layouts/MainLayout'
 import RouteLoadingBar from './components/RouteLoadingBar'
 
 const HomePage = lazy(routeImporters['/'])
-const AboutPage = lazy(routeImporters['/about'])
 const ProjectsPage = lazy(routeImporters['/projects'])
 const ExperiencePage = lazy(routeImporters['/experience'])
 const ProfilesPage = lazy(routeImporters['/profiles'])
@@ -27,11 +33,16 @@ const LabPage = lazy(routeImporters['/lab'])
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
+  const [designMode, setDesignMode] = useState(() => getPreferredDesignMode())
   const [analyticsReady, setAnalyticsReady] = useState(false)
 
   useLayoutEffect(() => {
     applyTheme(isDark ? 'dark' : 'light')
   }, [isDark])
+
+  useLayoutEffect(() => {
+    applyDesignMode(designMode)
+  }, [designMode])
 
   useEffect(() => {
     warmTopRoutes()
@@ -49,6 +60,11 @@ export default function App() {
     setItem(THEME_STORAGE_KEY, newIsDark ? 'dark' : 'light')
   }
 
+  const handleDesignModeChange = (newDesignMode) => {
+    setDesignMode(newDesignMode)
+    setItem(DESIGN_STORAGE_KEY, newDesignMode)
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -63,11 +79,13 @@ export default function App() {
                 <MainLayout
                   isDark={isDark}
                   setIsDark={handleThemeChange}
+                  designMode={designMode}
+                  setDesignMode={handleDesignModeChange}
                 />
               }
             >
               <Route path="/"           element={<HomePage />} />
-              <Route path="/about"      element={<AboutPage />} />
+              <Route path="/about"      element={<Navigate to="/" replace />} />
               <Route path="/projects"   element={<ProjectsPage />} />
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/profiles"   element={<ProfilesPage />} />

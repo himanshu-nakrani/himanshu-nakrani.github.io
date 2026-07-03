@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
+import DesignModeToggle from './DesignModeToggle'
 import ThemeToggle from './ThemeToggle'
 import Pill3DNav from './ui/Pill3DNav'
 import { prefetchRoute } from '../lib/routePrefetch'
@@ -11,7 +12,7 @@ const MotionNavLink = motion(NavLink)
 
 // Capped at 8 items — logo handles "/" navigation
 const navLinks = [
-  { label: 'About', to: '/about' },
+  { label: 'About', to: '/' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Skills', to: '/skills' },
@@ -26,7 +27,7 @@ const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-export default function Navbar({ isDark, setIsDark }) {
+export default function Navbar({ isDark, setIsDark, designMode, setDesignMode }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
@@ -46,7 +47,7 @@ export default function Navbar({ isDark, setIsDark }) {
     if (label === 'Profiles')    return location.pathname === '/profiles'
     if (label === 'Research')    return location.pathname === '/research' || location.pathname.startsWith('/research/')
     if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/about'
+    if (label === 'About')       return location.pathname === '/'
     if (label === 'Lab')         return location.pathname === '/lab'
     if (label === 'Minimal')     return location.pathname === '/minimal'
     return false
@@ -249,6 +250,7 @@ export default function Navbar({ isDark, setIsDark }) {
                 <Command size={9} />K
               </span>
             </button>
+            <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <MotionNavLink
               to={contactItem.to}
@@ -279,6 +281,7 @@ export default function Navbar({ isDark, setIsDark }) {
 
           {/* Mobile: theme toggle + hamburger */}
           <div className="nav-mobile-only" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+            <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <button
               ref={hamburgerRef}

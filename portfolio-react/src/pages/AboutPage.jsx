@@ -4,6 +4,7 @@ import {
   Award,
   BookOpen,
   Briefcase,
+  ExternalLink,
   GitBranch,
   Github,
   Linkedin,
@@ -115,6 +116,11 @@ const values = [
 ]
 
 const certifications = [
+  {
+    name: 'AWS Certified AI Practitioner',
+    issuer: 'Amazon Web Services',
+    href: 'https://www.credly.com/badges/dd24a4a1-e038-4e56-b3e9-f3ad9c105f33/linked_in_profile',
+  },
   { name: 'OCI Generative AI Professional', issuer: 'Oracle' },
   { name: 'AWS ML Foundations', issuer: 'Udacity' },
   { name: 'Generative AI Fundamentals', issuer: 'Databricks' },
@@ -216,17 +222,43 @@ export default function AboutPage() {
             <div>
               <p className="ledger-subhead">Certifications</p>
               <div style={{ display: 'grid', gap: '0.65rem' }}>
-                {certifications.map((cert) => (
-                  <article key={cert.name} className="editorial-card" style={{ padding: '0.9rem 1rem' }}>
-                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                {certifications.map((cert) => {
+                  const content = (
+                    <>
                       <Award size={16} color="var(--color-accent)" aria-hidden="true" />
-                      <div>
+                      <div style={{ flex: 1 }}>
                         <p style={{ margin: 0, color: 'var(--color-text)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-weight-medium)' }}>{cert.name}</p>
                         <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.7rem' }}>{cert.issuer}</p>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                      {cert.href && <ExternalLink size={13} color="var(--color-text-subtle)" aria-hidden="true" />}
+                    </>
+                  )
+                  const cardStyle = {
+                    display: 'flex',
+                    gap: '0.75rem',
+                    alignItems: 'center',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  }
+
+                  return (
+                    <article key={cert.name} className="editorial-card" style={{ padding: '0.9rem 1rem' }}>
+                      {cert.href ? (
+                        <a
+                          href={cert.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View credential for ${cert.name}`}
+                          style={cardStyle}
+                        >
+                          {content}
+                        </a>
+                      ) : (
+                        <div style={cardStyle}>{content}</div>
+                      )}
+                    </article>
+                  )
+                })}
               </div>
             </div>
           </div>
