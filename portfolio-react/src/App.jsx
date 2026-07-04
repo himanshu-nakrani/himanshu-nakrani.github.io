@@ -1,8 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import {
   applyDesignMode,
@@ -13,7 +11,7 @@ import {
   THEME_STORAGE_KEY,
 } from './lib/theme'
 import { setItem } from './lib/storage'
-import { routeImporters, warmTopRoutes } from './lib/routePrefetch'
+import { routeImporters } from './lib/routePrefetch'
 import MainLayout from './layouts/MainLayout'
 import RouteLoadingBar from './components/RouteLoadingBar'
 
@@ -34,7 +32,7 @@ const LabPage = lazy(routeImporters['/lab'])
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
   const [designMode, setDesignMode] = useState(() => getPreferredDesignMode())
-  const [analyticsReady, setAnalyticsReady] = useState(false)
+  const [analyticsComponents, setAnalyticsComponents] = useState(null)
 
   useLayoutEffect(() => {
     applyTheme(isDark ? 'dark' : 'light')
@@ -45,8 +43,17 @@ export default function App() {
   }, [designMode])
 
   useEffect(() => {
-    warmTopRoutes()
-    const mountAnalytics = () => setAnalyticsReady(true)
+    const mountAnalytics = () => {
+      Promise.all([
+        import('@vercel/analytics/react'),
+        import('@vercel/speed-insights/react'),
+      ]).then(([analytics, speedInsights]) => {
+        setAnalyticsComponents({
+          Analytics: analytics.Analytics,
+          SpeedInsights: speedInsights.SpeedInsights,
+        })
+      }).catch(() => {})
+    }
     if ('requestIdleCallback' in window) {
       const id = window.requestIdleCallback(mountAnalytics, { timeout: 5000 })
       return () => window.cancelIdleCallback(id)
@@ -98,10 +105,10 @@ export default function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
-      {analyticsReady && (
+      {analyticsComponents && (
         <>
-          <Analytics />
-          <SpeedInsights />
+          <analyticsComponents.Analytics />
+          <analyticsComponents.SpeedInsights />
         </>
       )}
     </>

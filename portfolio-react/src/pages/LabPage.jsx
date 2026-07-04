@@ -78,7 +78,7 @@ export default function LabPage() {
           Demo lab for <span className="gradient-text">AI systems</span>.
         </h1>
         <p className="editorial-page-lede">
-          Interactive, deterministic walkthroughs of production AI systems and model research.
+          Focused walkthroughs of AI system behavior.
         </p>
       </header>
 
@@ -304,7 +304,7 @@ export default function LabPage() {
             )}
 
             {/* Stack tags */}
-            {activeModule.stack && activeModule.stack.length > 0 && (
+          {activeModule.stack && activeModule.stack.length > 0 && (
               <div>
                 <p style={{
                   fontSize: '0.68rem',
@@ -321,7 +321,8 @@ export default function LabPage() {
                   flexWrap: 'wrap',
                   gap: 5,
                 }}>
-                  {activeModule.stack.map(t => <Tag key={t}>{t}</Tag>)}
+                  {activeModule.stack.slice(0, 6).map(t => <Tag key={t}>{t}</Tag>)}
+                  {activeModule.stack.length > 6 && <span className="editorial-chip">+{activeModule.stack.length - 6}</span>}
                 </div>
               </div>
             )}

@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
 import DesignModeToggle from './DesignModeToggle'
 import ThemeToggle from './ThemeToggle'
 import Pill3DNav from './ui/Pill3DNav'
 import { prefetchRoute } from '../lib/routePrefetch'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 import { NavLink, useLocation } from 'react-router-dom'
-
-const MotionNavLink = motion(NavLink)
 
 // Capped at 8 items — logo handles "/" navigation
 const navLinks = [
@@ -31,7 +29,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
   const hamburgerRef = useRef(null)
   const menuRef = useRef(null)
 
@@ -126,11 +124,9 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
       }}
     >
       <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', pointerEvents: 'auto' }}>
-        <motion.div
-          initial={reduceMotion ? false : { y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+        <div
           className="glass-nav"
+          data-reduce-motion={reduceMotion ? 'true' : 'false'}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -147,10 +143,8 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
           }}
         >
           {/* Logo — calm dot + monogram */}
-          <MotionNavLink
+          <NavLink
             to="/"
-            whileHover={{ opacity: 0.85 }}
-            whileTap={{ scale: 0.97 }}
             onClick={() => setOpen(false)}
             onPointerEnter={() => prefetchRoute('/')}
             onFocus={() => prefetchRoute('/')}
@@ -184,7 +178,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
             >
               Himanshu
             </span>
-          </MotionNavLink>
+          </NavLink>
 
           {/* Desktop nav links */}
           <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
@@ -252,10 +246,8 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
             </button>
             <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
-            <MotionNavLink
+            <NavLink
               to={contactItem.to}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
               onPointerEnter={() => prefetchRoute(contactItem.to)}
               onFocus={() => prefetchRoute(contactItem.to)}
@@ -276,7 +268,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               }}
             >
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
-            </MotionNavLink>
+            </NavLink>
           </div>
 
           {/* Mobile: theme toggle + hamburger */}
@@ -308,19 +300,13 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Mobile dropdown menu */}
-        <AnimatePresence mode="wait">
-          {open && (
-            <motion.div
+        {open && (
+            <div
               ref={menuRef}
-              key="mobile-menu"
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="nav-mobile-only glass"
+              className="nav-mobile-only glass nav-mobile-menu"
               style={{
                 marginTop: 10,
                 borderRadius: 16,
@@ -374,14 +360,39 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
                   )
                 })}
               </ul>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
 
       <style>{`
         .nav-pill-links::-webkit-scrollbar { display: none; }
         .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-nav {
+          animation: nav-shell-enter 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+        }
+        .glass-nav[data-reduce-motion="true"] {
+          animation: none;
+        }
+        .glass-nav a:hover {
+          opacity: 0.88;
+        }
+        .nav-mobile-menu {
+          animation: nav-menu-enter 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+        }
+        @keyframes nav-shell-enter {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes nav-menu-enter {
+          from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .glass-nav,
+          .nav-mobile-menu {
+            animation: none;
+          }
+        }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }

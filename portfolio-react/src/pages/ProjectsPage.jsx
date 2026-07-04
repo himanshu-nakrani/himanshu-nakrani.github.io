@@ -7,7 +7,7 @@ import SEO from '../components/SEO'
 import Tag from '../components/Tag'
 import { projects, technicalCaseStudies } from '../data/projects'
 
-const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'Deep Learning', 'Python', 'AI Agents', 'LSTM']
+const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'AI Agents']
 const deepDiveSlugs = new Set(technicalCaseStudies.map((study) => study.slug))
 
 const pageStats = [
@@ -58,8 +58,9 @@ function PageStat({ stat, index }) {
   )
 }
 
-function MetricStrip({ metrics, compact = false }) {
-  if (!metrics?.length) return null
+function MetricStrip({ metrics, compact = false, limit }) {
+  const visibleMetrics = limit ? metrics?.slice(0, limit) : metrics
+  if (!visibleMetrics?.length) return null
   const numStyle = compact
     ? { fontSize: 'clamp(1.05rem, 2.2vw, 1.4rem)' }
     : { fontSize: 'clamp(1.35rem, 2.4vw, 1.85rem)' }
@@ -70,7 +71,7 @@ function MetricStrip({ metrics, compact = false }) {
         ? { gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }
         : { gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}
     >
-      {metrics.map((metric) => (
+      {visibleMetrics.map((metric) => (
         <div key={metric.label} className="ledger-stat" style={compact ? { padding: '0.85rem' } : undefined}>
           <span className="ledger-stat-num" style={numStyle}>{metric.value}</span>
           <span className="ledger-stat-label">{metric.label}</span>
@@ -114,12 +115,12 @@ function ProjectCard({ item, index, onDetails, featured = false }) {
 
       <p className="project-card__desc">{item.desc}</p>
       <div className="project-card__metrics">
-        <MetricStrip metrics={item.metrics} compact />
+        <MetricStrip metrics={item.metrics} compact limit={featured ? 3 : 2} />
       </div>
 
       <div className="project-card__tags editorial-chip-list">
-        {item.tags.slice(0, 4).map((tag) => <Tag key={tag}>{tag}</Tag>)}
-        {item.tags.length > 4 && <span className="editorial-chip">+{item.tags.length - 4}</span>}
+        {item.tags.slice(0, 3).map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        {item.tags.length > 3 && <span className="editorial-chip">+{item.tags.length - 3}</span>}
       </div>
 
       <div className="project-card__actions">
@@ -183,7 +184,10 @@ function ProjectModal({ project, onClose }) {
     ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
     : { initial: { opacity: 0, scale: 0.96, y: 18 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 18 }, transition: { duration: 0.25 } }
   const status = project?.badge || 'Project'
-  const primaryTags = project?.tags?.slice(0, 5) || []
+  const primaryTags = project?.tags?.slice(0, 3) || []
+  const keyFeatures = project?.features?.slice(0, 4) || []
+  const keyChallenges = project?.challenges?.slice(0, 2) || []
+  const keyTechStack = project?.techStack?.slice(0, 8) || []
 
   return (
     <AnimatePresence>
@@ -241,20 +245,20 @@ function ProjectModal({ project, onClose }) {
                 <MetricStrip metrics={project.metrics} />
               </div>
 
-              {project.features && (
+              {keyFeatures.length > 0 && (
                 <section className="project-modal__section">
-                  <p className="ledger-subhead">Features</p>
+                  <p className="ledger-subhead">Key Features</p>
                   <ul className="project-modal__list">
-                    {project.features.map((feature) => <li key={feature}>{feature}</li>)}
+                    {keyFeatures.map((feature) => <li key={feature}>{feature}</li>)}
                   </ul>
                 </section>
               )}
 
-              {project.challenges && (
+              {keyChallenges.length > 0 && (
                 <section className="project-modal__section">
-                  <p className="ledger-subhead">Challenges & Solutions</p>
+                  <p className="ledger-subhead">Challenges</p>
                   <div className="project-modal__challenge-grid">
-                    {project.challenges.map((challenge) => (
+                    {keyChallenges.map((challenge) => (
                       <article key={challenge.challenge} className="project-modal__challenge editorial-card">
                         <p className="project-modal__challenge-title">{challenge.challenge}</p>
                         <p className="project-modal__challenge-body">{challenge.solution}</p>
@@ -264,10 +268,15 @@ function ProjectModal({ project, onClose }) {
                 </section>
               )}
 
-              {project.techStack && (
+              {keyTechStack.length > 0 && (
                 <section className="project-modal__section">
                   <p className="ledger-subhead">Tech Stack</p>
-                  <div className="project-modal__chips editorial-chip-list">{project.techStack.map((tag) => <Tag key={tag}>{tag}</Tag>)}</div>
+                  <div className="project-modal__chips editorial-chip-list">
+                    {keyTechStack.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                    {project.techStack.length > keyTechStack.length && (
+                      <span className="editorial-chip">+{project.techStack.length - keyTechStack.length}</span>
+                    )}
+                  </div>
                 </section>
               )}
 
@@ -320,7 +329,7 @@ export default function ProjectsPage() {
             Selected work across <span className="gradient-text">AI systems</span>.
           </h1>
           <p className="editorial-page-lede">
-            LLM backends, RAG pipelines, Text-to-SQL systems, and applied ML projects.
+            Production AI systems, selected for signal.
           </p>
         </header>
 

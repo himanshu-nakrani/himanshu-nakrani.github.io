@@ -65,6 +65,7 @@ function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
   const number = String(index + 1).padStart(2, '0')
+  const visibleItems = group.items.slice(0, 12)
 
   return (
     <motion.article
@@ -103,7 +104,10 @@ function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
             style={{ overflow: 'hidden' }}
           >
             <div className="editorial-chip-list" style={{ paddingTop: '0.25rem' }}>
-              {group.items.map((item) => <span key={item} className="editorial-chip">{item}</span>)}
+              {visibleItems.map((item) => <span key={item} className="editorial-chip">{item}</span>)}
+              {group.items.length > visibleItems.length && (
+                <span className="editorial-chip">+{group.items.length - visibleItems.length}</span>
+              )}
             </div>
           </motion.div>
         )}
@@ -129,7 +133,7 @@ export default function SkillsPage() {
             Skills for <span className="gradient-text">production LLM</span> systems.
           </h1>
           <p className="editorial-page-lede">
-            Technologies I work with daily, from LLM backends to cloud infrastructure.
+            Core tools for backend AI systems.
           </p>
         </header>
 

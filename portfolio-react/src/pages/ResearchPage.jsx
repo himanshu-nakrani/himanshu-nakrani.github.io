@@ -63,22 +63,22 @@ const methodologySteps = [
   {
     label: 'NL Query',
     icon: FileText,
-    description: 'Natural language question input from user - e.g., "What were the top performing funds last quarter?"',
+    description: 'Natural language question input from the user.',
   },
   {
     label: 'GoT Reasoning',
     icon: Network,
-    description: 'Graph-of-Thoughts decomposes complex queries into sub-problems, exploring multiple reasoning paths simultaneously.',
+    description: 'Graph-of-Thoughts explores several reasoning paths.',
   },
   {
     label: 'SQL Augmentation',
     icon: GitBranch,
-    description: 'High-quality synthetic SQL examples generated for training data, improving model accuracy on edge cases.',
+    description: 'Synthetic SQL examples improve edge-case coverage.',
   },
   {
     label: 'Fine-tuned LLM',
     icon: Brain,
-    description: 'Domain-adapted language model trained on augmented data, optimized for structured query generation.',
+    description: 'A domain-adapted model generates structured queries.',
   },
 ]
 
@@ -102,7 +102,7 @@ export default function ResearchPage() {
             Publications on <span className="gradient-text">structured reasoning</span>.
           </h1>
           <p className="editorial-page-lede">
-            Graph-of-Thoughts reasoning, Text-to-SQL augmentation, and LLM fine-tuning for structured data.
+            Structured reasoning, Text-to-SQL, and model training.
           </p>
         </header>
 
@@ -180,7 +180,7 @@ export default function ResearchPage() {
                 <h3 style={{ margin: 0, color: 'var(--color-text)', fontFamily: 'var(--font-display)', fontSize: 'var(--text-xl)', lineHeight: 'var(--line-height-tight)' }}>{item.shortTitle}</h3>
                 <p style={{ margin: 0, color: 'var(--color-text-muted)', lineHeight: 'var(--line-height-relaxed)' }}>{item.summary}</p>
                 <div className="editorial-chip-list">
-                  {item.metrics.slice(0, 3).map((metric) => <span key={metric.label} className="editorial-chip">{metric.value} {metric.label}</span>)}
+                  {item.metrics.slice(0, 2).map((metric) => <span key={metric.label} className="editorial-chip">{metric.value} {metric.label}</span>)}
                 </div>
               </Link>
             ))}
@@ -195,7 +195,7 @@ export default function ResearchPage() {
             {['Graph-of-Thoughts', 'Text-to-SQL', 'LLM Fine-tuning', 'Data Augmentation', 'Structured Reasoning', 'NL Interfaces'].map((tag) => <span key={tag} className="editorial-chip">{tag}</span>)}
           </div>
           <p className="editorial-section-lede" style={{ marginTop: '1.5rem' }}>
-            My research explores how Graph-of-Thoughts frameworks can improve data augmentation and fine-tuning pipelines for Text-to-SQL tasks, with an eye toward practical structured-data systems.
+            Focused on practical structured-data systems.
           </p>
         </section>
       </main>

@@ -3,7 +3,7 @@
  */
 export default function PageHeader({ kicker, title, description, marginBottom = '2.5rem' }) {
   return (
-    <header style={{ marginBottom, position: 'relative' }}>
+    <header className="mvp2-page-header" style={{ marginBottom }}>
       {kicker && (
         <p className="mvp2-kicker">
           <span style={{ opacity: 0.55 }}>[</span>

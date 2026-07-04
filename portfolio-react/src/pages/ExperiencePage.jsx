@@ -40,6 +40,8 @@ function RoleRow({ item, index }) {
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
   const metrics = item._metrics || []
+  const visibleBullets = item.bullets?.slice(0, 3) || []
+  const visibleTags = item.tags?.slice(0, 6) || []
   const number = String(index + 1).padStart(2, '0')
 
   return (
@@ -79,9 +81,9 @@ function RoleRow({ item, index }) {
 
       <p className="ledger-note" style={{ maxWidth: '58rem' }}>{item.description}</p>
 
-      {item.bullets && item.bullets.length > 0 && (
+      {visibleBullets.length > 0 && (
         <ul style={{ display: 'grid', gap: '0.65rem', margin: 0, padding: 0, listStyle: 'none' }}>
-          {item.bullets.map((bullet) => (
+          {visibleBullets.map((bullet) => (
             <li key={bullet} style={{ display: 'flex', gap: '0.65rem', color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)', lineHeight: 'var(--line-height-relaxed)' }}>
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-accent)', flexShrink: 0, marginTop: '0.75em' }} />
               <span>{bullet}</span>
@@ -90,11 +92,14 @@ function RoleRow({ item, index }) {
         </ul>
       )}
 
-      {item.tags && item.tags.length > 0 && (
+      {visibleTags.length > 0 && (
         <div className="editorial-chip-list">
-          {item.tags.map((tag) => (
+          {visibleTags.map((tag) => (
             <span key={tag} className="editorial-chip">{tag}</span>
           ))}
+          {item.tags.length > visibleTags.length && (
+            <span className="editorial-chip">+{item.tags.length - visibleTags.length}</span>
+          )}
         </div>
       )}
     </motion.article>
@@ -115,7 +120,7 @@ export default function ExperiencePage() {
             Career timeline built around <span className="gradient-text">production AI</span>.
           </h1>
           <p className="editorial-page-lede">
-            LLM backends, RAG pipelines, Text-to-SQL systems, and agent tooling for financial-data workflows.
+            Production AI work across LLM backends, RAG, and Text-to-SQL.
           </p>
         </header>
 
