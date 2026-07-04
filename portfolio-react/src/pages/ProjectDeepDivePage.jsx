@@ -220,33 +220,36 @@ function ProjectDeepDiveContent({ study }) {
           }}
           className="pddp-metrics-grid"
         >
-          {study.metrics.map((m) => (
-            <div
-              key={m.label}
-              className="editorial-card"
-              style={{ padding: '1rem 1.1rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}
-            >
-              <span style={{
-                fontSize: 'var(--text-stat)',
-                fontWeight: 'var(--font-weight-bold)',
-                color: 'var(--color-accent)',
-                fontFamily: 'var(--font-mono)',
-                fontFeatureSettings: '"tnum" 1',
-                lineHeight: 1,
-              }}>
-                {m.value}
-              </span>
-              <span style={{
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                color: 'var(--color-text-subtle)',
-                letterSpacing: '0.03em',
-                lineHeight: 1.3,
-              }}>
-                {m.label}
-              </span>
-            </div>
-          ))}
+          {study.metrics.map((m) => {
+            const metricValue = String(m.value)
+            const isLongMetric = metricValue.length > 8
+            const metricParts = isLongMetric ? metricValue.split(' / ') : [metricValue]
+            return (
+              <div
+                key={m.label}
+                className="editorial-card"
+                style={{ padding: '1rem 1.1rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}
+              >
+                <span className={`pddp-metric-value${isLongMetric ? ' pddp-metric-value--long' : ''}`}>
+                  {metricParts.map((part, index) => (
+                    <span key={part} className="pddp-metric-value__line">
+                      {index > 0 && <span className="pddp-metric-value__slash">/</span>}
+                      {part}
+                    </span>
+                  ))}
+                </span>
+                <span style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  color: 'var(--color-text-subtle)',
+                  letterSpacing: '0.03em',
+                  lineHeight: 1.3,
+                }}>
+                  {m.label}
+                </span>
+              </div>
+            )
+          })}
         </div>
       )}
 
@@ -553,7 +556,40 @@ function ProjectDeepDiveContent({ study }) {
 
       {/* ── Responsive ───────────────────────────────────── */}
       <style>{`
+        .pddp-metric-value {
+          color: var(--color-accent);
+          font-family: var(--font-mono);
+          font-feature-settings: "tnum" 1;
+          font-size: clamp(2rem, 4.5vw, var(--text-stat));
+          font-weight: var(--font-weight-bold);
+          letter-spacing: 0;
+          line-height: 0.95;
+          overflow-wrap: normal;
+        }
+
+        .pddp-metric-value--long {
+          display: flex;
+          flex-direction: column;
+          gap: 0.1em;
+          font-size: clamp(1.55rem, 2.7vw, 2.75rem);
+          line-height: 1.02;
+        }
+
+        .pddp-metric-value__line {
+          display: block;
+          white-space: nowrap;
+        }
+
+        .pddp-metric-value__slash {
+          display: inline-block;
+          margin-right: 0.25em;
+          color: var(--color-text-subtle);
+        }
+
         @media (max-width: 640px) {
+          .pddp-metrics-grid {
+            gap: 0.75rem !important;
+          }
           .pddp-metrics-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
