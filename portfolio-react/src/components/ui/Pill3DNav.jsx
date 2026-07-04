@@ -1,13 +1,8 @@
-import { motion, useReducedMotion } from 'framer-motion'
 import { NavLink } from 'react-router-dom'
 
 import { prefetchRoute } from '../../lib/routePrefetch'
 
-const LAYOUT_ID = 'uplift-nav-active-pill'
-
 export default function Pill3DNav({ items, isActive, onItemClick }) {
-  const reduce = useReducedMotion()
-
   return (
     <ul
       className="nav-pill-links"
@@ -56,14 +51,8 @@ export default function Pill3DNav({ items, isActive, onItemClick }) {
               onMouseLeave={(e) => { if (!active) e.currentTarget.style.color = isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)' }}
             >
               {active && (
-                <motion.span
-                  layoutId={LAYOUT_ID}
+                <span
                   aria-hidden="true"
-                  transition={
-                    reduce
-                      ? { duration: 0 }
-                      : { type: 'spring', stiffness: 380, damping: 32, mass: 0.6 }
-                  }
                   style={{
                     position: 'absolute',
                     inset: 0,
@@ -71,6 +60,7 @@ export default function Pill3DNav({ items, isActive, onItemClick }) {
                     background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
                     boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 22%, transparent)',
                     zIndex: 0,
+                    transition: 'background 0.2s ease, box-shadow 0.2s ease',
                   }}
                 />
               )}

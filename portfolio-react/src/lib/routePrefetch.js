@@ -20,30 +20,3 @@ export function prefetchRoute(path) {
   prefetched.add(clean)
   importer().catch(() => prefetched.delete(clean))
 }
-
-function connectionAllowsPrefetch() {
-  const conn = typeof navigator !== 'undefined' && navigator.connection
-  if (!conn) return true
-  if (conn.saveData) return false
-  return !['slow-2g', '2g'].includes(conn.effectiveType)
-}
-
-export function warmTopRoutes() {
-  if (typeof window === 'undefined') return
-  const warm = () => {
-    if (!connectionAllowsPrefetch()) return
-    ;['/', '/projects', '/experience'].forEach(prefetchRoute)
-  }
-  const schedule = () => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(warm, { timeout: 3000 })
-    } else {
-      setTimeout(warm, 2500)
-    }
-  }
-  if (document.readyState === 'complete') {
-    schedule()
-  } else {
-    window.addEventListener('load', schedule, { once: true })
-  }
-}

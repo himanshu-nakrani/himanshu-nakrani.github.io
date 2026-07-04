@@ -42,8 +42,8 @@ const quickActions = [
   { id: 'resume', name: 'View Resume', icon: FileText, url: RESUME_URL, external: true },
 ]
 
-export default function CommandPalette({ toggleTheme }) {
-  const [open, setOpen] = useState(false)
+export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
+  const [open, setOpen] = useState(initiallyOpen)
   const [search, setSearch] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const navigate = useNavigate()

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 /**
  * ScrollProgressRail — a 2px rail along the right edge of the viewport
@@ -14,7 +14,7 @@ import { useReducedMotion } from 'framer-motion'
 export default function ScrollProgressRail() {
   const fillRef = useRef(null)
   const rafId = useRef(0)
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
 
   useEffect(() => {
     if (reduceMotion) return

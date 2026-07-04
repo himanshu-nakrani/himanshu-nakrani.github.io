@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 /**
  * CursorHalo — a soft, calm radial wash that follows the pointer
@@ -18,7 +18,7 @@ export default function CursorHalo() {
   const rafId = useRef(0)
   const lastTime = useRef(0)
   const visible = useRef(false)
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
 
   useEffect(() => {
     if (reduceMotion) return

@@ -1,5 +1,4 @@
-import { useCallback, useEffect } from 'react'
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import AmbientAtmosphere from '../components/AmbientAtmosphere'
@@ -8,15 +7,35 @@ import SkipLink from '../components/SkipLink'
 import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
-import CommandPalette from '../components/CommandPalette'
 import CmdKHint from '../components/CmdKHint'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
+const CommandPalette = lazy(() => import('../components/CommandPalette'))
 
 
 export default function MainLayout({ isDark, setIsDark, designMode, setDesignMode }) {
   const location = useLocation()
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
+  const [commandPaletteLoaded, setCommandPaletteLoaded] = useState(false)
   const toggleTheme = useCallback(() => setIsDark(!isDark), [isDark, setIsDark])
+
+  useEffect(() => {
+    if (commandPaletteLoaded) return undefined
+    const loadCommandPalette = (event) => {
+      if (event.type === 'keydown') {
+        if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'k') return
+        event.preventDefault()
+      }
+      setCommandPaletteLoaded(true)
+    }
+
+    document.addEventListener('open-command-palette', loadCommandPalette)
+    document.addEventListener('keydown', loadCommandPalette)
+    return () => {
+      document.removeEventListener('open-command-palette', loadCommandPalette)
+      document.removeEventListener('keydown', loadCommandPalette)
+    }
+  }, [commandPaletteLoaded])
 
   useEffect(() => {
     const hash = location.hash
@@ -43,18 +62,9 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
     }
   }, [location.pathname, location.hash, reduceMotion])
 
-  const pageVariants = reduceMotion
-    ? {}
-    : {
-        initial: { clipPath: 'inset(0 0 100% 0)', y: 14, opacity: 0.6 },
-        animate: {
-          clipPath: 'inset(0 0 0% 0)',
-          y: 0,
-          opacity: 1,
-          transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-        },
-        exit: { opacity: 0, y: -8, transition: { duration: 0.18, ease: 'easeIn' } },
-      }
+  useEffect(() => {
+    if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [location.pathname, location.hash])
 
   return (
     <>
@@ -63,7 +73,11 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
         <AmbientAtmosphere enableAnimation />
         <CursorHalo />
         <ScrollProgressRail />
-        <CommandPalette toggleTheme={toggleTheme} />
+        {commandPaletteLoaded && (
+          <Suspense fallback={null}>
+            <CommandPalette toggleTheme={toggleTheme} initiallyOpen />
+          </Suspense>
+        )}
         <CmdKHint />
         <div className="app-shell-content">
           <Navbar
@@ -74,17 +88,7 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
           />
 
           <main id="main-content">
-            <AnimatePresence mode="wait" onExitComplete={() => { if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' }) }}>
-              <motion.div
-                key={location.pathname}
-                variants={pageVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <Outlet context={{ designMode }} />
-              </motion.div>
-            </AnimatePresence>
+            <Outlet context={{ designMode }} />
           </main>
 
           <BackToTop />

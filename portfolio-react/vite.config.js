@@ -28,10 +28,19 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('framer-motion')) return 'motion'
-            if (id.includes('lucide-react')) return 'icons'
-            if (id.includes('@vercel')) return 'analytics'
-            if (/\/node_modules\/(react|react-dom|scheduler|react-router(-dom)?|@remix-run\/router)\//.test(id)) return 'react-vendor'
+            const normalized = id.split(path.sep).join('/')
+            if (
+              normalized.includes('react/index.js') ||
+              normalized.includes('react/jsx-runtime') ||
+              normalized.includes('react-dom/') ||
+              normalized.includes('scheduler/') ||
+              normalized.includes('react-router/') ||
+              normalized.includes('react-router-dom/') ||
+              normalized.includes('@remix-run/router/')
+            ) {
+              return 'react-vendor'
+            }
+            if (normalized.includes('/node_modules/lucide-react/')) return 'icons'
           }
         },
       },
