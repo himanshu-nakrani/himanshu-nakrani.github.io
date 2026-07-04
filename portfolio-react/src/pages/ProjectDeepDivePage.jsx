@@ -570,9 +570,9 @@ function ProjectDeepDiveContent({ study }) {
         .pddp-metric-value--long {
           display: flex;
           flex-direction: column;
-          gap: 0.1em;
-          font-size: clamp(1.55rem, 2.7vw, 2.75rem);
-          line-height: 1.02;
+          gap: 0.18em;
+          font-size: clamp(1.25rem, 2.1vw, 2rem);
+          line-height: 1.08;
         }
 
         .pddp-metric-value__line {
@@ -587,6 +587,10 @@ function ProjectDeepDiveContent({ study }) {
         }
 
         @media (max-width: 640px) {
+          .pddp-metric-value--long {
+            font-size: clamp(1.05rem, 5.2vw, 1.45rem);
+          }
+
           .pddp-metrics-grid {
             gap: 0.75rem !important;
           }
