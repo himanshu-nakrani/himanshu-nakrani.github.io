@@ -935,16 +935,6 @@ section[id] {
   -webkit-text-stroke: 1px color-mix(in srgb, var(--color-text) 15%, transparent);
 }
 
-:root[data-design="instrument"] .portrait-frame {
-  border-radius: 3px;
-  box-shadow: none;
-  filter: saturate(0.82) contrast(1.04);
-}
-
-:root[data-design="instrument"] .portrait-frame::before {
-  background: linear-gradient(135deg, rgba(47, 96, 115, 0.08), transparent 42%, rgba(165, 83, 52, 0.08));
-}
-
 :root[data-design="instrument"] .scroll-progress-rail__fill,
 :root[data-design="instrument"] .status-dot {
   background: var(--color-accent-secondary);
@@ -1182,53 +1172,6 @@ section[id] {
   margin-right: 0.5rem;
   font-family: var(--font-mono);
   opacity: 0.7;
-}
-
-/* ============================================
-   PHOTO TREATMENT (hero portrait)
-   Subtle frame with accent-tinted border glow
-   and quiet scanline overlay. Compact, integrated.
-   ============================================ */
-
-.portrait-frame {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--color-border-strong);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-accent) 15%, transparent),
-    var(--shadow-md);
-  isolation: isolate;
-}
-
-.portrait-frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent 0px,
-    transparent 3px,
-    rgba(255, 255, 255, 0.01) 3px,
-    rgba(255, 255, 255, 0.01) 4px
-  );
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-
-.portrait-frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--color-accent) 3%, transparent) 0%,
-    transparent 30%,
-    transparent 70%,
-    color-mix(in srgb, var(--color-text) 4%, transparent) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
 }
 
 /* ============================================
