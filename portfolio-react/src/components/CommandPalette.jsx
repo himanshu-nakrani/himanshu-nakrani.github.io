@@ -437,31 +437,19 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 500 }}>No results found for "{search}"</p>
                   <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>Try adjusting your search or clear it to see all options.</p>
                   <button
+                    type="button"
                     onClick={() => {
                       setSearch('')
                       inputRef.current?.focus()
                     }}
+                    className="btn btn--ghost"
                     style={{
                       marginTop: '0.75rem',
-                      background: 'transparent',
-                      border: '1px solid var(--color-border-strong)',
                       padding: '0.4rem 0.8rem',
-                      borderRadius: 8,
-                      color: 'var(--color-text)',
                       fontSize: '0.8rem',
-                      cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.35rem',
-                      transition: 'all 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'var(--color-surface-raised)';
-                      e.currentTarget.style.borderColor = 'var(--color-border)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.borderColor = 'var(--color-border-strong)';
                     }}
                   >
                     Clear search
