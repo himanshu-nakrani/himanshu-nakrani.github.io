@@ -5,9 +5,9 @@ import DataIcon from './DataIcon'
 import { projects } from '../data/projects'
 import { modelOpsSnapshots } from '../data/lab'
 
-const featured = projects.find(project => project.title === 'Alpha Copilot')
+const featured = projects.find(project => project.title === 'Agent Forge')
 const selectedProjects = [
-  projects.find(project => project.title === 'Agent Forge'),
+  projects.find(project => project.title === 'Alpha Copilot'),
   projects.find(project => project.title === 'Sourceful'),
 ].filter(Boolean)
 const research = modelOpsSnapshots.find(model => model.id === 'tinymathReason')
@@ -68,15 +68,15 @@ export default function HomeBentoDashboard() {
                 {featured?.tags.slice(0, 4).map(tag => <span key={tag}>{tag}</span>)}
               </div>
             </div>
-            <div className="home-bento-pipeline" aria-label="Alpha Copilot request pipeline">
-              {['Query', 'Schema link', 'LLM', 'Validate', 'Visualize'].map((stage, index) => (
+            <div className="home-bento-pipeline" aria-label="Agent Forge workflow lifecycle">
+              {['Design', 'Register', 'Execute', 'Trace', 'Evaluate'].map((stage, index) => (
                 <div key={stage} className="home-bento-pipeline__stage">
                   <span>{String(index + 1).padStart(2, '0')}</span>
                   <strong>{stage}</strong>
                 </div>
               ))}
             </div>
-            <CardLink to="/projects/alpha-copilot" label="Read the Alpha Copilot case study">Read case study</CardLink>
+            <CardLink to="/projects/agent-forge" label="Read the Agent Forge case study">Read case study</CardLink>
           </Reveal>
 
           <Reveal className="home-bento-card home-bento-card--outcomes" delay={0.05}>
@@ -94,7 +94,7 @@ export default function HomeBentoDashboard() {
           {selectedProjects.map((project, index) => (
             <Reveal key={project.title} className="home-bento-card home-bento-card--project" delay={0.08 + index * 0.05}>
               <div className="home-bento-card__eyebrow">
-                <span>{index === 0 ? 'Agent platform' : 'Open source'}</span>
+                <span>{index === 0 ? 'Enterprise AI' : 'Open source'}</span>
                 <DataIcon name={project.icon} size={16} />
               </div>
               <h3>{project.title}</h3>
