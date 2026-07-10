@@ -4665,12 +4665,81 @@ body[data-modal-open="true"] .back-to-top {
   transform: rotate(45deg);
 }
 
+.hero-system-card__telemetry {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 0.85rem;
+  border-block: 1px solid var(--color-border);
+}
+
+.hero-system-card__telemetry > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.7rem 0.6rem;
+}
+
+.hero-system-card__telemetry > div + div {
+  border-left: 1px solid var(--color-border);
+}
+
+.hero-system-card__telemetry span {
+  color: var(--color-text-subtle);
+  font: 600 0.56rem/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-system-card__telemetry strong {
+  color: var(--color-text);
+  font: 650 1.05rem/1.2 var(--font-display);
+}
+
 .hero-system-card__footer {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding-top: 0.75rem;
   border-top: 1px solid var(--color-border);
   color: var(--color-accent);
+}
+
+.hero-scroll-cue {
+  position: relative;
+  z-index: 1;
+  width: min(var(--container), calc(100% - (2 * var(--page-pad-x))));
+  margin: 1rem auto 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-subtle);
+  font: 600 0.61rem/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.hero-scroll-cue__line {
+  position: relative;
+  display: block;
+  width: 3rem;
+  height: 1px;
+  overflow: hidden;
+  background: var(--color-border-strong);
+}
+
+.hero-scroll-cue__line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-accent);
+  transform: translateX(-100%);
+  animation: hero-line-travel 2.4s ease-in-out infinite;
+}
+
+@keyframes hero-line-travel {
+  45%, 100% { transform: translateX(100%); }
 }
 
 .hero-stat {
@@ -4765,10 +4834,14 @@ body[data-modal-open="true"] .back-to-top {
 
 @media (max-width: 640px) {
   .hero-section { padding-top: 6rem; }
+  .hero-system-card { padding: 0.85rem; }
   .hero-system-card__canvas { flex-direction: column; padding: 1.25rem 0; }
   .hero-system-connector { width: 1px; height: 0.8rem; }
   .hero-system-connector::after { right: -2px; top: auto; bottom: 0; transform: rotate(135deg); }
   .hero-system-node { width: min(100%, 13rem); }
+  .hero-system-card__telemetry > div { padding-inline: 0.4rem; }
+  .hero-system-card__telemetry strong { font-size: 0.9rem; }
+  .hero-scroll-cue { margin-top: 1.5rem; }
   .section-heading { margin-bottom: 2rem; }
   .highlights-card { min-height: 200px; }
 }
@@ -4780,4 +4853,5 @@ body[data-modal-open="true"] .back-to-top {
   .mos__card,
   .csw__panel { transition: none !important; }
   .hero-pill:hover { transform: none; }
+  .hero-scroll-cue__line::after { animation: none; transform: none; }
 }

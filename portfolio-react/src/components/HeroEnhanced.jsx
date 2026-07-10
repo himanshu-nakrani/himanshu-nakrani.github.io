@@ -166,6 +166,20 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
                 <span className="hero-system-connector" />
                 <div className="hero-system-node hero-system-node--output">Trusted output</div>
               </div>
+              <div className="hero-system-card__telemetry" aria-label="Selected production outcomes">
+                <div>
+                  <span>Latency</span>
+                  <strong>−75%</strong>
+                </div>
+                <div>
+                  <span>Adoption</span>
+                  <strong>200+</strong>
+                </div>
+                <div>
+                  <span>Coverage</span>
+                  <strong>95%+</strong>
+                </div>
+              </div>
               <div className="hero-system-card__footer">
                 <span>TEXT-TO-SQL</span>
                 <span>RAG</span>
@@ -176,6 +190,18 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
           </div>
         </div>
       </div>
+
+      <motion.a
+        href="#highlights"
+        className="hero-scroll-cue"
+        aria-label="Scroll to featured highlights"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.5 }}
+      >
+        <span>Selected work</span>
+        <span className="hero-scroll-cue__line" aria-hidden="true" />
+      </motion.a>
 
       {/* Stat band — full width, hairline-bordered */}
       <div className="hero-stat-band" style={{ position: 'relative', zIndex: 1 }}>
