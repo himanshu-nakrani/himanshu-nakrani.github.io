@@ -87,8 +87,8 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
             ))}
           </div>
 
-          {/* Split: intro + CTAs | schematic */}
-          <div className="hero-split hero-split--single">
+          {/* Split: intro + CTAs | systems snapshot */}
+          <div className="hero-split">
             <div className="hero-split-left">
               <p className="hero-intro">
                 {isInstrument ? (
@@ -147,9 +147,61 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
                 </MagneticButton>
               </div>
             </div>
+
+            <motion.aside
+              className="hero-system-card"
+              aria-label="Production AI systems snapshot"
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="hero-system-card__topline">
+                <span><span className="status-dot status-dot--pulse" /> Systems online</span>
+                <span>HYD · 2026</span>
+              </div>
+              <div className="hero-system-card__canvas" aria-hidden="true">
+                <div className="hero-system-node hero-system-node--input">Natural language</div>
+                <span className="hero-system-connector" />
+                <div className="hero-system-node hero-system-node--core">LLM orchestration</div>
+                <span className="hero-system-connector" />
+                <div className="hero-system-node hero-system-node--output">Trusted output</div>
+              </div>
+              <div className="hero-system-card__telemetry" aria-label="Selected production outcomes">
+                <div>
+                  <span>Latency</span>
+                  <strong>−75%</strong>
+                </div>
+                <div>
+                  <span>Adoption</span>
+                  <strong>200+</strong>
+                </div>
+                <div>
+                  <span>Coverage</span>
+                  <strong>95%+</strong>
+                </div>
+              </div>
+              <div className="hero-system-card__footer">
+                <span>TEXT-TO-SQL</span>
+                <span>RAG</span>
+                <span>AGENTS</span>
+                <span>EVALS</span>
+              </div>
+            </motion.aside>
           </div>
         </div>
       </div>
+
+      <motion.a
+        href="#highlights"
+        className="hero-scroll-cue"
+        aria-label="Scroll to featured highlights"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.5 }}
+      >
+        <span>Selected work</span>
+        <span className="hero-scroll-cue__line" aria-hidden="true" />
+      </motion.a>
 
       {/* Stat band — full width, hairline-bordered */}
       <div className="hero-stat-band" style={{ position: 'relative', zIndex: 1 }}>

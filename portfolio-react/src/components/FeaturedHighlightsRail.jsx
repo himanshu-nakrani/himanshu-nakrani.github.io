@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import DataIcon from './DataIcon'
 import SpotlightGlowCard from './ui/SpotlightGlowCard'
 
@@ -103,32 +104,42 @@ function SpotlightWrap({ children }) {
  * @param {{ highlights: Highlight[] }} props
  */
 export default function FeaturedHighlightsRail({ highlights }) {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section aria-label="Featured highlights">
       <div className="highlights-rail">
-        {highlights.map((highlight) => {
+        {highlights.map((highlight, index) => {
           const card = (
             <article className="interactive-card highlights-card glass-card" style={cardStyle}>
               <CardInner highlight={highlight} />
             </article>
           )
 
-          if (highlight.link) {
-            return (
-              <a
-                key={highlight.id}
-                href={highlight.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${highlight.headline} (opens in new tab)`}
-                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-              >
-                <SpotlightWrap>{card}</SpotlightWrap>
-              </a>
-            )
-          }
+          const content = highlight.link ? (
+            <a
+              href={highlight.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${highlight.headline} (opens in new tab)`}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}
+            >
+              <SpotlightWrap>{card}</SpotlightWrap>
+            </a>
+          ) : <SpotlightWrap>{card}</SpotlightWrap>
 
-          return <SpotlightWrap key={highlight.id}>{card}</SpotlightWrap>
+          return (
+            <motion.div
+              key={highlight.id}
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              style={{ height: '100%' }}
+            >
+              {content}
+            </motion.div>
+          )
         })}
       </div>
     </section>
