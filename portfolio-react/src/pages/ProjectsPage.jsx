@@ -355,6 +355,7 @@ export default function ProjectsPage() {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Search projects..."
+                  maxLength={100}
                   style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', color: 'var(--color-text)', fontSize: 'var(--text-sm)' }}
                 />
                 {query && (

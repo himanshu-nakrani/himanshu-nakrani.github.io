@@ -360,6 +360,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                 role="combobox"
                 aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
+                maxLength={100}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 aria-controls="cmd-listbox"
