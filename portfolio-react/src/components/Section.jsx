@@ -51,7 +51,7 @@ export default function Section({ id, title, subtitle, alt, children, number }) 
             {num}
           </span>
         )}
-        <motion.div {...headerAnim}>
+        <motion.div className="section-heading" {...headerAnim}>
           {num && (
             <div className="section-kicker" aria-hidden="true">
               <span style={{ opacity: 0.55 }}>[</span>
