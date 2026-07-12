@@ -26,8 +26,8 @@ const StyleguidePage = lazy(() => import('./pages/StyleguidePage'))
 const MinimalSPA = lazy(routeImporters['/minimal'])
 const ThreeDAdaptiveNavDemo = lazy(() => import('./components/ui/3d-adaptive-navigation-bar-demo'))
 const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo'))
-const ProjectDeepDivePage = lazy(() => import('./pages/ProjectDeepDivePage'))
-const ResearchDeepDivePage = lazy(() => import('./pages/ResearchDeepDivePage'))
+const ProjectDeepDivePage = lazy(routeImporters['/projects/:slug'])
+const ResearchDeepDivePage = lazy(routeImporters['/research/:slug'])
 const LabPage = lazy(routeImporters['/lab'])
 
 export default function App() {

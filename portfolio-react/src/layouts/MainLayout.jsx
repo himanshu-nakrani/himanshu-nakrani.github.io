@@ -9,6 +9,7 @@ import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
 import CmdKHint from '../components/CmdKHint'
 import ContextualRouteTransition from '../components/ContextualRouteTransition'
+import { installLinkPrefetching, warmPrimaryRoutes } from '../lib/routePrefetch'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 const CommandPalette = lazy(() => import('../components/CommandPalette'))
@@ -66,6 +67,13 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
   useEffect(() => {
     if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }, [location.pathname, location.hash])
+
+  useEffect(() => installLinkPrefetching(document), [])
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => warmPrimaryRoutes(location.pathname), 700)
+    return () => window.clearTimeout(timer)
+  }, [location.pathname])
 
   return (
     <>

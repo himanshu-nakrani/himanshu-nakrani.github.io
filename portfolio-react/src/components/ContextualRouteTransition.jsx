@@ -1,16 +1,40 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
-const routeMeta=pathname=>{
- if(pathname.startsWith('/projects/')) return ['Case study','architecture']
- if(pathname.startsWith('/research/')) return ['Research note','telemetry']
- if(pathname==='/experience') return ['Experience','trajectory']
- if(pathname==='/profiles') return ['Profiles','signal']
- if(pathname==='/about') return ['About','capability']
- if(pathname==='/research') return ['Research','experiment']
- if(pathname==='/projects') return ['Projects','systems']
- if(pathname==='/skills') return ['Skills','stack']
- if(pathname==='/lab') return ['Lab','prototype']
- return ['Portfolio','signal field']
+const routeMeta = (pathname) => {
+  if (pathname.startsWith('/projects/')) return 'architecture'
+  if (pathname.startsWith('/research/')) return 'telemetry'
+  if (pathname === '/experience') return 'trajectory'
+  if (pathname === '/profiles') return 'signal'
+  if (pathname === '/about') return 'capability'
+  if (pathname === '/research') return 'experiment'
+  if (pathname === '/projects') return 'systems'
+  if (pathname === '/skills') return 'stack'
+  if (pathname === '/lab') return 'prototype'
+  return 'signal-field'
 }
-export default function ContextualRouteTransition({children}){const location=useLocation();const reduce=useReducedMotion();const [label,mode]=routeMeta(location.pathname);return <motion.div key={location.pathname} className={`context-route context-route--${mode}`} initial={reduce?false:{opacity:0,y:10}} animate={{opacity:1,y:0}} exit={reduce?undefined:{opacity:0,y:-6}} transition={{duration:.38,ease:[.16,1,.3,1]}}><motion.div className="context-route__intro" aria-hidden="true" initial={reduce?false:{scaleX:1}} animate={{scaleX:0}} transition={{duration:.5,ease:[.76,0,.24,1]}}><span>{label}</span><i/></motion.div>{children}</motion.div>}
+
+export default function ContextualRouteTransition({ children }) {
+  const location = useLocation()
+  const reduceMotion = useReducedMotion()
+  const mode = routeMeta(location.pathname)
+
+  return (
+    <motion.div
+      key={location.pathname}
+      className={`context-route context-route--${mode}`}
+      initial={reduceMotion ? false : { opacity: 0, y: 5, filter: 'blur(2px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.19, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <motion.div
+        className="context-route__accent"
+        aria-hidden="true"
+        initial={reduceMotion ? false : { scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: [0, 1, 0], opacity: [0, 0.7, 0] }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      />
+      {children}
+    </motion.div>
+  )
+}

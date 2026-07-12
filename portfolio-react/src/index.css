@@ -5539,10 +5539,23 @@ body[data-modal-open="true"] .back-to-top {
 .capability-radar__evidence p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
 
 /* Contextual Route Transitions */
-.context-route { position: relative; }
-.context-route__intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; pointer-events: none; transform-origin: left; }
-.context-route__intro span { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-family: var(--font-mono); }
-.context-route__intro i { width: 2px; height: 24px; background: var(--color-accent); margin-top: 0.5rem; }
+.context-route { position: relative; min-height: 1px; }
+.context-route__accent {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: 1px;
+  background: var(--color-accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  pointer-events: none;
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .context-route__accent { display: none; }
+}
 
 @media (max-width: 768px) {
   .telemetry__layout, .capability-radar__layout { grid-template-columns: 1fr; }
