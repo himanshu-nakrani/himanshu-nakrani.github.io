@@ -611,60 +611,69 @@ section[id] {
 }
 
 .glass-nav {
+  --glass-x: 50%;
+  --glass-y: 20%;
   position: relative;
   isolation: isolate;
-  background: color-mix(in srgb, var(--color-bg) 54%, transparent);
-  backdrop-filter: blur(28px) saturate(1.45) contrast(1.04);
-  -webkit-backdrop-filter: blur(28px) saturate(1.45) contrast(1.04);
-  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 38%, transparent);
+  backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
   box-shadow:
-    0 14px 42px color-mix(in srgb, var(--color-bg) 48%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--color-text) 28%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--color-text) 7%, transparent);
+    0 8px 28px color-mix(in srgb, var(--color-bg) 38%, transparent),
+    0 1px 2px color-mix(in srgb, var(--color-bg) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 34%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 38%, transparent);
+  transition: background 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+}
+
+.glass-nav[data-scrolled='true'] {
+  background: color-mix(in srgb, var(--color-bg) 52%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 27%, transparent);
+  box-shadow:
+    0 14px 38px color-mix(in srgb, var(--color-bg) 52%, transparent),
+    0 2px 5px color-mix(in srgb, var(--color-bg) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 38%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 42%, transparent);
 }
 
 .glass-nav::before,
 .glass-nav::after {
   content: '';
   position: absolute;
+  inset: 0;
+  border-radius: inherit;
   pointer-events: none;
   z-index: -1;
 }
 
+/* Bright rim and dark lower edge create the lens-like Apple material. */
 .glass-nav::before {
   inset: 1px;
-  border-radius: inherit;
   background:
-    linear-gradient(
-      112deg,
-      color-mix(in srgb, var(--color-text) 14%, transparent) 0%,
-      transparent 28%,
-      color-mix(in srgb, var(--color-accent) 7%, transparent) 58%,
-      transparent 76%
-    );
-  opacity: 0.72;
+    radial-gradient(circle 150px at var(--glass-x) var(--glass-y), color-mix(in srgb, var(--color-text) 24%, transparent), transparent 68%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-text) 13%, transparent), transparent 42%, color-mix(in srgb, var(--color-bg) 12%, transparent));
+  box-shadow:
+    inset 0 1px 1px color-mix(in srgb, var(--color-text) 18%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--color-text) 8%, transparent);
+  opacity: 0.8;
+  transition: background 120ms linear;
 }
 
+/* A restrained caustic follows the pointer instead of an artificial looping shine. */
 .glass-nav::after {
-  top: 3px;
-  left: 8%;
-  width: 42%;
-  height: 42%;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-text) 18%, transparent);
-  filter: blur(12px);
-  opacity: 0.5;
-  transform: skewX(-20deg);
-  animation: liquid-glass-glint 8s var(--motion-ease) infinite alternate;
-}
-
-@keyframes liquid-glass-glint {
-  from { transform: translateX(-8%) skewX(-20deg); opacity: 0.36; }
-  to { transform: translateX(118%) skewX(-20deg); opacity: 0.58; }
+  inset: -45% -8%;
+  background: radial-gradient(ellipse 28% 48% at var(--glass-x) var(--glass-y), color-mix(in srgb, var(--color-text) 16%, transparent), transparent 72%);
+  filter: blur(8px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  transition: background 120ms linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glass-nav::after { animation: none; transform: skewX(-20deg); }
+  .glass-nav::before,
+  .glass-nav::after { transition: none; }
 }
 
 /* Card surface — quiet hairline panel */
@@ -742,8 +751,8 @@ section[id] {
   box-shadow: var(--shadow-md);
 }
 
-.glass-nav {
-  background: rgba(245, 240, 232, 0.82);
+:root[data-theme="light"] .glass-nav {
+  background: color-mix(in srgb, var(--color-bg) 42%, transparent);
 }
 
 .glass {
@@ -766,7 +775,7 @@ section[id] {
 
 /* Dark mode overrides for nav & glass */
 :root[data-theme="dark"] .glass-nav {
-  background: rgba(24, 24, 27, 0.88);
+  background: color-mix(in srgb, var(--color-bg) 44%, transparent);
 }
 
 :root[data-theme="dark"] .glass {

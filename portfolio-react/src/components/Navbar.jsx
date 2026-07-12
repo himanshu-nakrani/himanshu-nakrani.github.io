@@ -127,6 +127,17 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
         <div
           className="glass-nav"
           data-reduce-motion={reduceMotion ? 'true' : 'false'}
+          data-scrolled={scrolled ? 'true' : 'false'}
+          onPointerMove={(event) => {
+            if (reduceMotion) return
+            const bounds = event.currentTarget.getBoundingClientRect()
+            event.currentTarget.style.setProperty('--glass-x', `${event.clientX - bounds.left}px`)
+            event.currentTarget.style.setProperty('--glass-y', `${event.clientY - bounds.top}px`)
+          }}
+          onPointerLeave={(event) => {
+            event.currentTarget.style.removeProperty('--glass-x')
+            event.currentTarget.style.removeProperty('--glass-y')
+          }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -136,10 +147,6 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
             borderRadius: 9999,
             position: 'relative',
             overflow: 'hidden',
-            transition: 'box-shadow 0.3s ease',
-            boxShadow: scrolled
-              ? '0 8px 36px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.06) inset'
-              : '0 4px 16px rgba(0,0,0,0.14)',
           }}
         >
           {/* Logo — calm dot + monogram */}
