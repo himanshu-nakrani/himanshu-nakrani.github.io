@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
-import AuroraBackground from './ui/AuroraBackground'
+import NeuralSignalField from './NeuralSignalField'
 import MagneticButton from './ui/MagneticButton'
 import { recruiterSummary } from '../data/hero'
 import { RESUME_URL } from '../lib/site'
@@ -41,7 +41,8 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
       className="hero-section"
       style={{ position: 'relative', overflow: 'hidden' }}
     >
-      <AuroraBackground className="hero-aurora" intensity={0.6} />
+      <NeuralSignalField />
+      <div className="hero-signal-mask" aria-hidden="true" />
       <div
         style={{
           maxWidth: 'var(--container)',
