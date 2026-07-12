@@ -55,23 +55,28 @@ export default function NeuralSignalField() {
       pointer.x += (pointer.targetX - pointer.x) * 0.055
       pointer.y += (pointer.targetY - pointer.y) * 0.055
 
-      const staticMode = reduceMotion || isMobile()
-      const elapsed = staticMode ? 0 : time * 0.00022
+      const staticMode = reduceMotion
+      const elapsed = staticMode ? 0 : time * 0.00055
       const spacing = height / (LINE_COUNT + 3)
-      const step = Math.max(12, Math.round(width / 90))
+      const step = Math.max(10, Math.round(width / 100))
+      const signalX = staticMode ? width * 0.68 : ((elapsed * 92) % (width + 360)) - 180
+      const signalY = height * (0.46 + Math.sin(elapsed * 0.7) * 0.12)
 
-      context.lineWidth = 0.8
+      context.lineWidth = 0.85
       context.strokeStyle = strokeColor
-      context.globalAlpha = document.documentElement.dataset.theme === 'light' ? 0.15 : 0.2
+      context.globalAlpha = document.documentElement.dataset.theme === 'light' ? 0.17 : 0.24
 
       for (let line = 0; line < LINE_COUNT; line += 1) {
         context.beginPath()
         const baseY = spacing * (line + 2)
 
         for (let x = -step; x <= width + step; x += step) {
-          const wave = Math.sin(x * 0.008 + line * 0.58 + elapsed) * 8
-          const secondary = Math.sin(x * 0.0036 - line * 0.34 - elapsed * 0.72) * 11
+          const wave = Math.sin(x * 0.008 + line * 0.58 + elapsed * 1.45) * 9
+          const secondary = Math.sin(x * 0.0036 - line * 0.34 - elapsed * 0.9) * 12
+          const signalDistance = Math.hypot(x - signalX, baseY - signalY)
+          const signalInfluence = staticMode ? 0 : Math.max(0, 1 - signalDistance / Math.min(width * 0.28, 320))
           let displacement = wave + secondary
+          displacement += Math.sin(signalDistance * 0.035 - elapsed * 7) * signalInfluence * 22
 
           if (!staticMode && pointer.active) {
             const dx = x - pointer.x
