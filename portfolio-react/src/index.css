@@ -612,15 +612,59 @@ section[id] {
 
 .glass-nav {
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(24px) saturate(var(--glass-saturation));
-  border: 1px solid var(--glass-border);
-  /* layered 3D lift: outer drop + inner top gloss + inner bottom shade */
+  isolation: isolate;
+  background: color-mix(in srgb, var(--color-bg) 54%, transparent);
+  backdrop-filter: blur(28px) saturate(1.45) contrast(1.04);
+  -webkit-backdrop-filter: blur(28px) saturate(1.45) contrast(1.04);
+  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
   box-shadow:
-    var(--shadow-sm),
-    inset 0 1px 0 color-mix(in srgb, var(--color-bg) 65%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--color-text) 6%, transparent);
+    0 14px 42px color-mix(in srgb, var(--color-bg) 48%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 28%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+.glass-nav::before,
+.glass-nav::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glass-nav::before {
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      112deg,
+      color-mix(in srgb, var(--color-text) 14%, transparent) 0%,
+      transparent 28%,
+      color-mix(in srgb, var(--color-accent) 7%, transparent) 58%,
+      transparent 76%
+    );
+  opacity: 0.72;
+}
+
+.glass-nav::after {
+  top: 3px;
+  left: 8%;
+  width: 42%;
+  height: 42%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+  filter: blur(12px);
+  opacity: 0.5;
+  transform: skewX(-20deg);
+  animation: liquid-glass-glint 8s var(--motion-ease) infinite alternate;
+}
+
+@keyframes liquid-glass-glint {
+  from { transform: translateX(-8%) skewX(-20deg); opacity: 0.36; }
+  to { transform: translateX(118%) skewX(-20deg); opacity: 0.58; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-nav::after { animation: none; transform: skewX(-20deg); }
 }
 
 /* Card surface — quiet hairline panel */
