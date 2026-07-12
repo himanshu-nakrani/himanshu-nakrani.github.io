@@ -5277,18 +5277,21 @@ body[data-modal-open="true"] .back-to-top {
 .telemetry__chart { position: relative; }
 .telemetry__chart svg { display: block; width: 100%; height: auto; }
 .telemetry__grid line { stroke: var(--color-border); stroke-width: 0.8; opacity: 0.4; }
-.telemetry__loss, .telemetry__eval { fill: none; stroke-width: 2.2; }
-.telemetry__loss { stroke: #ef4444; }
-.telemetry__eval { stroke: var(--color-accent); }
+.telemetry__bar--base { fill: var(--color-text-subtle); }
+.telemetry__bar--sft { fill: var(--color-text-muted); }
+.telemetry__bar--grpo { fill: var(--color-accent); }
+.telemetry__axis-label { fill: var(--color-text-subtle); font-size: 10px; font-family: var(--font-mono); }
 .telemetry__legend { display: flex; gap: 1.25rem; margin-top: 0.75rem; font-size: 0.78rem; font-weight: 500; }
 .telemetry__legend span { display: flex; align-items: center; gap: 0.45rem; }
-.telemetry__legend span::before { content: ''; width: 18px; height: 2px; border-radius: 2px; }
-.telemetry__legend .is-loss::before { background: #ef4444; }
-.telemetry__legend .is-eval::before { background: var(--color-accent); }
+.telemetry__legend span::before { content: ''; width: 18px; height: 3px; border-radius: 2px; }
+.telemetry__legend .is-base::before { background: var(--color-text-subtle); }
+.telemetry__legend .is-sft::before { background: var(--color-text-muted); }
+.telemetry__legend .is-grpo::before { background: var(--color-accent); }
 .telemetry__metrics { display: grid; gap: 0.75rem; }
 .telemetry__metrics > div { padding: 0.8rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; }
 .telemetry__metrics span { display: block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem; font-family: var(--font-mono); }
 .telemetry__metrics strong { display: block; font-size: var(--text-lg); font-weight: 700; color: var(--color-text); }
+.telemetry__note { margin: 1rem 0 0; font-size: 0.75rem; color: var(--color-text-subtle); line-height: var(--line-height-relaxed); font-family: var(--font-mono); }
 
 /* Live Contribution Stream */
 .activity-stream__track { position: relative; display: flex; align-items: center; gap: 6px; padding: 1.5rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 1rem; overflow-x: auto; }
