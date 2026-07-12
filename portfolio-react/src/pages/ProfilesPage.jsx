@@ -7,6 +7,7 @@ import LeetCodeContributionHeatmap from '../components/LeetCodeContributionHeatm
 import { kagglePinned } from '../data/profiles'
 import { GITHUB_REPO_COUNT, LEETCODE_STATS } from '../data/stats'
 import SEO from '../components/SEO'
+import LiveContributionStream from '../components/LiveContributionStream'
 
 const kaggleVoteTotal = kagglePinned.reduce((total, item) => total + item.votes, 0)
 
@@ -324,6 +325,8 @@ export default function ProfilesPage() {
         />
 
         <ProfilesOverview />
+
+        <LiveContributionStream />
 
         <div className="profiles-ledger" aria-label="External profile activity ledger">
           {platformRows.map((row) => (

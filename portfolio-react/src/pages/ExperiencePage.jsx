@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
 import SEO from '../components/SEO'
+import CareerConstellation from '../components/CareerConstellation'
 import { experience } from '../data/experience'
 
 function getMotionProps(reduceMotion, inView, delay = 0) {
@@ -123,6 +124,8 @@ export default function ExperiencePage() {
             Production AI work across LLM backends, RAG, and Text-to-SQL.
           </p>
         </header>
+
+        <CareerConstellation />
 
         <section aria-label="Experience ledger">
           {EXPERIENCE_WITH_METRICS.map((item, index) => (

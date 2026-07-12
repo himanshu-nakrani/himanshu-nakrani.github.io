@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import {
   applyDesignMode,
@@ -16,6 +16,7 @@ import MainLayout from './layouts/MainLayout'
 import RouteLoadingBar from './components/RouteLoadingBar'
 
 const HomePage = lazy(routeImporters['/'])
+const AboutPage = lazy(routeImporters['/about'])
 const ProjectsPage = lazy(routeImporters['/projects'])
 const ExperiencePage = lazy(routeImporters['/experience'])
 const ProfilesPage = lazy(routeImporters['/profiles'])
@@ -25,8 +26,8 @@ const StyleguidePage = lazy(() => import('./pages/StyleguidePage'))
 const MinimalSPA = lazy(routeImporters['/minimal'])
 const ThreeDAdaptiveNavDemo = lazy(() => import('./components/ui/3d-adaptive-navigation-bar-demo'))
 const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo'))
-const ProjectDeepDivePage = lazy(() => import('./pages/ProjectDeepDivePage'))
-const ResearchDeepDivePage = lazy(() => import('./pages/ResearchDeepDivePage'))
+const ProjectDeepDivePage = lazy(routeImporters['/projects/:slug'])
+const ResearchDeepDivePage = lazy(routeImporters['/research/:slug'])
 const LabPage = lazy(routeImporters['/lab'])
 
 export default function App() {
@@ -92,7 +93,7 @@ export default function App() {
               }
             >
               <Route path="/"           element={<HomePage />} />
-              <Route path="/about"      element={<Navigate to="/" replace />} />
+              <Route path="/about"      element={<AboutPage />} />
               <Route path="/projects"   element={<ProjectsPage />} />
               <Route path="/experience" element={<ExperiencePage />} />
               <Route path="/profiles"   element={<ProfilesPage />} />

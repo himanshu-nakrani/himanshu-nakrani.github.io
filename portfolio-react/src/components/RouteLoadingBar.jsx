@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 let stylesInjected = false
 const BAR_CSS = `
   .route-loading-bar {
@@ -17,7 +19,7 @@ const BAR_CSS = `
     inset: 0;
     width: 40%;
     background: linear-gradient(90deg, transparent, var(--color-accent), var(--color-accent-secondary, var(--color-accent)));
-    animation: route-loading-slide 1s ease-in-out infinite;
+    animation: route-loading-slide 0.75s ease-in-out infinite;
   }
   @keyframes route-loading-slide {
     from { transform: translateX(-100%); }
@@ -42,6 +44,14 @@ function injectStyles() {
 }
 
 export default function RouteLoadingBar() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisible(true), 140)
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  if (!visible) return null
   injectStyles()
   return <div className="route-loading-bar" role="status" aria-label="Loading page" />
 }

@@ -611,16 +611,69 @@ section[id] {
 }
 
 .glass-nav {
+  --glass-x: 50%;
+  --glass-y: 20%;
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: blur(24px) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(24px) saturate(var(--glass-saturation));
-  border: 1px solid var(--glass-border);
-  /* layered 3D lift: outer drop + inner top gloss + inner bottom shade */
+  isolation: isolate;
+  background: color-mix(in srgb, var(--color-bg) 38%, transparent);
+  backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
   box-shadow:
-    var(--shadow-sm),
-    inset 0 1px 0 color-mix(in srgb, var(--color-bg) 65%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--color-text) 6%, transparent);
+    0 8px 28px color-mix(in srgb, var(--color-bg) 38%, transparent),
+    0 1px 2px color-mix(in srgb, var(--color-bg) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 34%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 38%, transparent);
+  transition: background 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+}
+
+.glass-nav[data-scrolled='true'] {
+  background: color-mix(in srgb, var(--color-bg) 52%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 27%, transparent);
+  box-shadow:
+    0 14px 38px color-mix(in srgb, var(--color-bg) 52%, transparent),
+    0 2px 5px color-mix(in srgb, var(--color-bg) 24%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text) 38%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-bg) 42%, transparent);
+}
+
+.glass-nav::before,
+.glass-nav::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Bright rim and dark lower edge create the lens-like Apple material. */
+.glass-nav::before {
+  inset: 1px;
+  background:
+    radial-gradient(circle 150px at var(--glass-x) var(--glass-y), color-mix(in srgb, var(--color-text) 24%, transparent), transparent 68%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-text) 13%, transparent), transparent 42%, color-mix(in srgb, var(--color-bg) 12%, transparent));
+  box-shadow:
+    inset 0 1px 1px color-mix(in srgb, var(--color-text) 18%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--color-text) 8%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--color-text) 8%, transparent);
+  opacity: 0.8;
+  transition: background 120ms linear;
+}
+
+/* A restrained caustic follows the pointer instead of an artificial looping shine. */
+.glass-nav::after {
+  inset: -45% -8%;
+  background: radial-gradient(ellipse 28% 48% at var(--glass-x) var(--glass-y), color-mix(in srgb, var(--color-text) 16%, transparent), transparent 72%);
+  filter: blur(8px);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  transition: background 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-nav::before,
+  .glass-nav::after { transition: none; }
 }
 
 /* Card surface — quiet hairline panel */
@@ -698,8 +751,8 @@ section[id] {
   box-shadow: var(--shadow-md);
 }
 
-.glass-nav {
-  background: rgba(245, 240, 232, 0.82);
+:root[data-theme="light"] .glass-nav {
+  background: color-mix(in srgb, var(--color-bg) 42%, transparent);
 }
 
 .glass {
@@ -722,7 +775,7 @@ section[id] {
 
 /* Dark mode overrides for nav & glass */
 :root[data-theme="dark"] .glass-nav {
-  background: rgba(24, 24, 27, 0.88);
+  background: color-mix(in srgb, var(--color-bg) 44%, transparent);
 }
 
 :root[data-theme="dark"] .glass {
@@ -1898,6 +1951,168 @@ section[id] {
   .spa-project-row__metrics {
     display: none;
   }
+}
+
+/* Minimal portfolio — compact technical résumé refinement */
+.spa-layout {
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-attachment: fixed;
+}
+
+.spa-layout .spa-shell {
+  background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+}
+
+.spa-nav {
+  width: 248px;
+  padding: 2.25rem 1.75rem;
+  background: color-mix(in srgb, var(--color-bg) 97%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.spa-nav__eyebrow,
+.spa-document-meta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.spa-nav__eyebrow { margin-bottom: 1.15rem; }
+
+.spa-nav__name {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+.spa-nav__title { margin-bottom: 0.8rem; }
+
+.spa-nav__summary {
+  margin: 0 0 2rem;
+  max-width: 12.5rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--color-text-subtle);
+}
+
+.spa-nav__links { border-top: 1px solid var(--color-border); }
+
+.spa-nav__link {
+  justify-content: flex-start;
+  gap: 0.9rem;
+  padding: 0.62rem 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.spa-nav__link:hover { padding-left: 0.4rem; background: transparent; }
+.spa-nav__link.active { padding-left: 0.4rem; background: transparent; }
+.spa-nav__link-index { width: 1.35rem; color: var(--color-text-subtle); font-size: 0.61rem; }
+.spa-nav__link.active .spa-nav__link-index { color: var(--color-accent); }
+
+.spa-content {
+  margin-left: 248px;
+  width: min(100%, 920px);
+  max-width: none;
+  padding: 3rem clamp(2.5rem, 6vw, 5.5rem) 8rem;
+}
+
+.spa-document-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.spa-section { margin-bottom: 4.5rem; scroll-margin-top: 2rem; }
+.spa-divider { margin: 4.5rem 0; background: var(--color-border-strong); }
+.spa-section__label { display: flex; align-items: center; gap: 0.75rem; }
+.spa-section__label::after { content: ''; width: 2rem; height: 1px; background: var(--color-accent); }
+.spa-section__title { text-transform: uppercase; letter-spacing: -0.025em; }
+
+.spa-project-row {
+  padding: 1.6rem 0;
+  transition: padding 0.18s ease, border-color 0.18s ease;
+}
+
+.spa-project-row:hover {
+  margin: 0;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 0;
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 4%, transparent);
+}
+
+.spa-pub-item,
+.spa-kaggle-item,
+.spa-contact-row,
+.spa-timeline__content {
+  border-radius: 4px;
+}
+
+.spa-tag { border-radius: 2px; }
+
+.spa-btn {
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.spa-nav__link:focus-visible,
+.spa-mobile-link:focus-visible,
+.spa-btn:focus-visible,
+.spa-contact-row:focus-visible,
+.spa-kaggle-item:focus-visible,
+.spa-version-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .spa-content { margin-left: 0; width: 100%; padding: 6.5rem 1.5rem 4rem; }
+  .spa-document-meta { margin-bottom: 3rem; }
+  .spa-mobile-nav { background: color-mix(in srgb, var(--color-bg) 96%, transparent); backdrop-filter: blur(18px); }
+}
+
+@media (max-width: 580px) {
+  .spa-document-meta { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+  .spa-section, .spa-divider { margin-bottom: 3.5rem; }
+  .spa-divider { margin-top: 3.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spa-layout *, .spa-layout *::before, .spa-layout *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .spa-layout { background: #fff !important; color: #111 !important; }
+  .spa-nav, .spa-mobile-nav, .spa-version-toggle, .spa-btn { display: none !important; }
+  .spa-content { margin: 0; width: 100%; max-width: none; padding: 0; }
+  .spa-document-meta { margin-bottom: 1.5rem; }
+  .spa-section, .spa-divider { break-inside: avoid; margin: 1.5rem 0; }
+  .spa-layout * { color: #111 !important; background: transparent !important; border-color: #bbb !important; box-shadow: none !important; }
+  .spa-project-row, .spa-timeline__item, .spa-pub-item, .spa-kaggle-item { break-inside: avoid; }
+  a { text-decoration: none !important; }
 }
 
 /* ============================================
@@ -5232,3 +5447,119 @@ body[data-modal-open="true"] .back-to-top {
 @media (prefers-reduced-motion: reduce) {
   .neural-signal-field { opacity: 0.55; }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Signature Visuals — Topology, Constellation, Telemetry, Stream, Radar, Route Transitions
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.signature-visual { margin: 2.5rem 0; }
+.signature-visual__header { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.75rem; }
+.signature-visual__header > div { display: flex; align-items: baseline; gap: 0.65rem; }
+.signature-visual__header span { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-family: var(--font-mono); }
+.signature-visual__header h2 { margin: 0; font-size: var(--text-2xl); font-weight: 700; color: var(--color-text); font-family: var(--font-display); line-height: var(--line-height-tight); }
+.signature-visual__header p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); max-width: 52rem; }
+
+/* Agent Forge Topology */
+.topology__canvas { width: 100%; max-width: 900px; margin: 0 auto 1.5rem; }
+.topology__canvas svg { display: block; width: 100%; height: auto; }
+.topology__edge { stroke: var(--color-border); stroke-width: 1.2; }
+.topology__pulse { fill: var(--color-accent); }
+.topology__node { cursor: pointer; transition: opacity 0.18s; }
+.topology__node:hover, .topology__node:focus-visible { opacity: 0.88; outline: none; }
+.topology__node.is-active circle { fill: var(--color-accent); stroke: none; }
+.topology__node circle { fill: var(--color-surface); stroke: var(--color-border); stroke-width: 1.5; transition: fill 0.2s, stroke 0.2s; }
+.topology__node text { fill: var(--color-text); font-size: 11px; font-weight: 500; font-family: var(--font-sans); }
+.topology__node-index { fill: var(--color-text-subtle); font-size: 9px; font-weight: 600; font-family: var(--font-mono); }
+.topology__detail { padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.topology__detail span { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.35rem; font-family: var(--font-mono); }
+.topology__detail p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Career Constellation */
+.constellation svg { display: block; width: 100%; max-width: 760px; margin: 0 auto 1.5rem; height: auto; }
+.constellation__path { fill: none; stroke: var(--color-border); stroke-width: 1.8; }
+.constellation__node { cursor: pointer; transition: opacity 0.18s; }
+.constellation__node:hover, .constellation__node:focus-visible { opacity: 0.88; outline: none; }
+.constellation__node.is-active circle { fill: var(--color-accent); r: 16; }
+.constellation__node circle { fill: var(--color-surface); stroke: var(--color-accent); stroke-width: 2; transition: fill 0.2s, r 0.18s; }
+.constellation__node text { fill: var(--color-text-subtle); font-size: 10px; font-weight: 600; text-anchor: middle; font-family: var(--font-mono); }
+.constellation__detail { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.constellation__detail span { font-size: 0.78rem; font-weight: 700; color: var(--color-accent); font-family: var(--font-mono); min-width: 3.5rem; }
+.constellation__detail strong { display: block; font-size: var(--text-base); font-weight: 600; color: var(--color-text); margin-bottom: 0.25rem; }
+.constellation__detail p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Training Telemetry */
+.telemetry__layout { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
+.telemetry__chart { position: relative; }
+.telemetry__chart svg { display: block; width: 100%; height: auto; }
+.telemetry__grid line { stroke: var(--color-border); stroke-width: 0.8; opacity: 0.4; }
+.telemetry__bar--base { fill: var(--color-text-subtle); }
+.telemetry__bar--sft { fill: var(--color-text-muted); }
+.telemetry__bar--grpo { fill: var(--color-accent); }
+.telemetry__axis-label { fill: var(--color-text-subtle); font-size: 10px; font-family: var(--font-mono); }
+.telemetry__legend { display: flex; gap: 1.25rem; margin-top: 0.75rem; font-size: 0.78rem; font-weight: 500; }
+.telemetry__legend span { display: flex; align-items: center; gap: 0.45rem; }
+.telemetry__legend span::before { content: ''; width: 18px; height: 3px; border-radius: 2px; }
+.telemetry__legend .is-base::before { background: var(--color-text-subtle); }
+.telemetry__legend .is-sft::before { background: var(--color-text-muted); }
+.telemetry__legend .is-grpo::before { background: var(--color-accent); }
+.telemetry__metrics { display: grid; gap: 0.75rem; }
+.telemetry__metrics > div { padding: 0.8rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; }
+.telemetry__metrics span { display: block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem; font-family: var(--font-mono); }
+.telemetry__metrics strong { display: block; font-size: var(--text-lg); font-weight: 700; color: var(--color-text); }
+.telemetry__note { margin: 1rem 0 0; font-size: 0.75rem; color: var(--color-text-subtle); line-height: var(--line-height-relaxed); font-family: var(--font-mono); }
+
+/* Live Contribution Stream */
+.activity-stream__track { position: relative; display: flex; align-items: center; gap: 6px; padding: 1.5rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 1rem; overflow-x: auto; }
+.activity-stream__line { position: absolute; left: 1rem; right: 1rem; height: 1px; background: var(--color-border); }
+.activity-stream__event { position: relative; width: var(--event-size); height: var(--event-size); border-radius: 50%; flex-shrink: 0; }
+.activity-stream__event.is-github { background: #6e5494; }
+.activity-stream__event.is-leetcode { background: var(--color-accent); }
+.activity-stream__empty { text-align: center; padding: 2rem; color: var(--color-text-subtle); font-size: var(--text-sm); }
+.activity-stream__legend { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--color-text-subtle); }
+.activity-stream__legend span { display: flex; align-items: center; gap: 0.45rem; }
+.activity-stream__legend i { width: 10px; height: 10px; border-radius: 50%; }
+.activity-stream__legend .is-github { background: #6e5494; }
+.activity-stream__legend .is-leetcode { background: var(--color-accent); }
+
+/* Capability Radar */
+.capability-radar__layout { display: grid; grid-template-columns: 1fr auto; gap: 1.75rem; align-items: center; margin-bottom: 1.25rem; }
+.capability-radar__layout svg { display: block; width: 100%; max-width: 320px; height: auto; }
+.capability-radar__ring { fill: none; stroke: var(--color-border); stroke-width: 0.8; opacity: 0.3; }
+.capability-radar__axis { stroke: var(--color-border); stroke-width: 0.8; opacity: 0.4; }
+.capability-radar__shape { fill: color-mix(in srgb, var(--color-accent) 14%, transparent); stroke: var(--color-accent); stroke-width: 1.8; }
+.capability-radar__core { fill: var(--color-accent); }
+.capability-radar__controls { display: grid; gap: 0.5rem; }
+.capability-radar__controls button { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; text-align: left; }
+.capability-radar__controls button:hover { border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border)); }
+.capability-radar__controls button.is-active { background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)); border-color: var(--color-accent); }
+.capability-radar__controls span { font-size: 0.82rem; font-weight: 500; color: var(--color-text); }
+.capability-radar__controls strong { font-size: 0.76rem; font-weight: 700; color: var(--color-accent); font-family: var(--font-mono); }
+.capability-radar__evidence { padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.capability-radar__evidence span { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.35rem; font-family: var(--font-mono); }
+.capability-radar__evidence p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Contextual Route Transitions */
+.context-route { position: relative; min-height: 1px; }
+.context-route__accent {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: 1px;
+  background: var(--color-accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent) 60%, transparent);
+  pointer-events: none;
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .context-route__accent { display: none; }
+}
+
+@media (max-width: 768px) {
+  .telemetry__layout, .capability-radar__layout { grid-template-columns: 1fr; }
+  .telemetry__metrics { grid-template-columns: repeat(2, 1fr); }
+  .activity-stream__track { padding: 1rem 0.75rem; }
+}
+
