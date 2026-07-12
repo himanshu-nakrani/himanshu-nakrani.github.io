@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-mot
 import { Link } from 'react-router-dom'
 import { ArrowRight, Award, Brain, ExternalLink, FileText, GitBranch, Network, TrendingUp } from 'lucide-react'
 import SEO from '../components/SEO'
+import TrainingTelemetry from '../components/TrainingTelemetry'
 import Tag from '../components/Tag'
 import { publications, researchDeepDives } from '../data/research'
 
@@ -165,6 +166,8 @@ export default function ResearchPage() {
             </AnimatePresence>
           </div>
         </section>
+
+        <TrainingTelemetry />
 
         <section className="editorial-section section-hairline">
           <span className="section-ghost-num" aria-hidden="true">04</span>

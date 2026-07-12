@@ -1,6 +1,7 @@
 // Importers shared with App.jsx lazy() so prefetch and render resolve the same chunk.
 export const routeImporters = {
   '/': () => import('../pages/HomePage'),
+  '/about': () => import('../pages/AboutPage'),
   '/projects': () => import('../pages/ProjectsPage'),
   '/experience': () => import('../pages/ExperiencePage'),
   '/profiles': () => import('../pages/ProfilesPage'),

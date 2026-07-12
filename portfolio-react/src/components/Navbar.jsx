@@ -10,7 +10,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 // Capped at 8 items — logo handles "/" navigation
 const navLinks = [
-  { label: 'About', to: '/' },
+  { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Skills', to: '/skills' },
@@ -45,7 +45,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
     if (label === 'Profiles')    return location.pathname === '/profiles'
     if (label === 'Research')    return location.pathname === '/research' || location.pathname.startsWith('/research/')
     if (label === 'Skills')      return location.pathname === '/skills'
-    if (label === 'About')       return location.pathname === '/'
+    if (label === 'About')       return location.pathname === '/about'
     if (label === 'Lab')         return location.pathname === '/lab'
     if (label === 'Minimal')     return location.pathname === '/minimal'
     return false

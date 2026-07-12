@@ -8,6 +8,7 @@ import BackToTop from '../components/BackToTop'
 import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
 import CmdKHint from '../components/CmdKHint'
+import ContextualRouteTransition from '../components/ContextualRouteTransition'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 const CommandPalette = lazy(() => import('../components/CommandPalette'))
@@ -88,7 +89,9 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
           />
 
           <main id="main-content">
-            <Outlet context={{ designMode }} />
+            <ContextualRouteTransition>
+              <Outlet context={{ designMode }} />
+            </ContextualRouteTransition>
           </main>
 
           <BackToTop />

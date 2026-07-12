@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ExternalLink, Lock, FlaskConical, ChevronDown } from 'lucide-react'
 import SEO from '../components/SEO'
 import TechnicalArchitectureMap from '../components/TechnicalArchitectureMap'
+import AgentForgeTopology from '../components/AgentForgeTopology'
 import Tag from '../components/Tag'
 import { technicalCaseStudies } from '../data'
 
@@ -325,7 +326,11 @@ function ProjectDeepDiveContent({ study }) {
       )}
 
       {/* ── Architecture map ─────────────────────────────── */}
-      {study.architecture && study.architecture.length > 0 && (
+      {study.slug === 'agent-forge' ? (
+        <div className="article-block section-hairline">
+          <AgentForgeTopology />
+        </div>
+      ) : study.architecture && study.architecture.length > 0 ? (
         <div className="article-block section-hairline">
           <p style={{ ...sectionLabel, marginBottom: '0.85rem' }}>Architecture</p>
           <TechnicalArchitectureMap
@@ -335,7 +340,7 @@ function ProjectDeepDiveContent({ study }) {
             variant="pipeline"
           />
         </div>
-      )}
+      ) : null}
 
       {/* ── Implementation Notes (collapsible) ───────────── */}
       {study.implementationNotes && study.implementationNotes.length > 0 && (

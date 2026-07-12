@@ -14,6 +14,7 @@ import {
   Zap,
 } from 'lucide-react'
 import SEO from '../components/SEO'
+import CapabilityRadar from '../components/CapabilityRadar'
 import { useCountUp } from '../hooks/useCountUp'
 
 function motionProps(reduceMotion, inView, delay = 0) {
@@ -263,6 +264,8 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+
+        <CapabilityRadar />
       </main>
     </>
   )

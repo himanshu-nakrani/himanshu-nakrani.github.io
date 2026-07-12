@@ -5232,3 +5232,103 @@ body[data-modal-open="true"] .back-to-top {
 @media (prefers-reduced-motion: reduce) {
   .neural-signal-field { opacity: 0.55; }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Signature Visuals — Topology, Constellation, Telemetry, Stream, Radar, Route Transitions
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.signature-visual { margin: 2.5rem 0; }
+.signature-visual__header { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.75rem; }
+.signature-visual__header > div { display: flex; align-items: baseline; gap: 0.65rem; }
+.signature-visual__header span { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-family: var(--font-mono); }
+.signature-visual__header h2 { margin: 0; font-size: var(--text-2xl); font-weight: 700; color: var(--color-text); font-family: var(--font-display); line-height: var(--line-height-tight); }
+.signature-visual__header p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); max-width: 52rem; }
+
+/* Agent Forge Topology */
+.topology__canvas { width: 100%; max-width: 900px; margin: 0 auto 1.5rem; }
+.topology__canvas svg { display: block; width: 100%; height: auto; }
+.topology__edge { stroke: var(--color-border); stroke-width: 1.2; }
+.topology__pulse { fill: var(--color-accent); }
+.topology__node { cursor: pointer; transition: opacity 0.18s; }
+.topology__node:hover, .topology__node:focus-visible { opacity: 0.88; outline: none; }
+.topology__node.is-active circle { fill: var(--color-accent); stroke: none; }
+.topology__node circle { fill: var(--color-surface); stroke: var(--color-border); stroke-width: 1.5; transition: fill 0.2s, stroke 0.2s; }
+.topology__node text { fill: var(--color-text); font-size: 11px; font-weight: 500; font-family: var(--font-sans); }
+.topology__node-index { fill: var(--color-text-subtle); font-size: 9px; font-weight: 600; font-family: var(--font-mono); }
+.topology__detail { padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.topology__detail span { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.35rem; font-family: var(--font-mono); }
+.topology__detail p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Career Constellation */
+.constellation svg { display: block; width: 100%; max-width: 760px; margin: 0 auto 1.5rem; height: auto; }
+.constellation__path { fill: none; stroke: var(--color-border); stroke-width: 1.8; }
+.constellation__node { cursor: pointer; transition: opacity 0.18s; }
+.constellation__node:hover, .constellation__node:focus-visible { opacity: 0.88; outline: none; }
+.constellation__node.is-active circle { fill: var(--color-accent); r: 16; }
+.constellation__node circle { fill: var(--color-surface); stroke: var(--color-accent); stroke-width: 2; transition: fill 0.2s, r 0.18s; }
+.constellation__node text { fill: var(--color-text-subtle); font-size: 10px; font-weight: 600; text-anchor: middle; font-family: var(--font-mono); }
+.constellation__detail { display: flex; gap: 1rem; align-items: flex-start; padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.constellation__detail span { font-size: 0.78rem; font-weight: 700; color: var(--color-accent); font-family: var(--font-mono); min-width: 3.5rem; }
+.constellation__detail strong { display: block; font-size: var(--text-base); font-weight: 600; color: var(--color-text); margin-bottom: 0.25rem; }
+.constellation__detail p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Training Telemetry */
+.telemetry__layout { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
+.telemetry__chart { position: relative; }
+.telemetry__chart svg { display: block; width: 100%; height: auto; }
+.telemetry__grid line { stroke: var(--color-border); stroke-width: 0.8; opacity: 0.4; }
+.telemetry__loss, .telemetry__eval { fill: none; stroke-width: 2.2; }
+.telemetry__loss { stroke: #ef4444; }
+.telemetry__eval { stroke: var(--color-accent); }
+.telemetry__legend { display: flex; gap: 1.25rem; margin-top: 0.75rem; font-size: 0.78rem; font-weight: 500; }
+.telemetry__legend span { display: flex; align-items: center; gap: 0.45rem; }
+.telemetry__legend span::before { content: ''; width: 18px; height: 2px; border-radius: 2px; }
+.telemetry__legend .is-loss::before { background: #ef4444; }
+.telemetry__legend .is-eval::before { background: var(--color-accent); }
+.telemetry__metrics { display: grid; gap: 0.75rem; }
+.telemetry__metrics > div { padding: 0.8rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; }
+.telemetry__metrics span { display: block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem; font-family: var(--font-mono); }
+.telemetry__metrics strong { display: block; font-size: var(--text-lg); font-weight: 700; color: var(--color-text); }
+
+/* Live Contribution Stream */
+.activity-stream__track { position: relative; display: flex; align-items: center; gap: 6px; padding: 1.5rem 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; margin-bottom: 1rem; overflow-x: auto; }
+.activity-stream__line { position: absolute; left: 1rem; right: 1rem; height: 1px; background: var(--color-border); }
+.activity-stream__event { position: relative; width: var(--event-size); height: var(--event-size); border-radius: 50%; flex-shrink: 0; }
+.activity-stream__event.is-github { background: #6e5494; }
+.activity-stream__event.is-leetcode { background: var(--color-accent); }
+.activity-stream__empty { text-align: center; padding: 2rem; color: var(--color-text-subtle); font-size: var(--text-sm); }
+.activity-stream__legend { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--color-text-subtle); }
+.activity-stream__legend span { display: flex; align-items: center; gap: 0.45rem; }
+.activity-stream__legend i { width: 10px; height: 10px; border-radius: 50%; }
+.activity-stream__legend .is-github { background: #6e5494; }
+.activity-stream__legend .is-leetcode { background: var(--color-accent); }
+
+/* Capability Radar */
+.capability-radar__layout { display: grid; grid-template-columns: 1fr auto; gap: 1.75rem; align-items: center; margin-bottom: 1.25rem; }
+.capability-radar__layout svg { display: block; width: 100%; max-width: 320px; height: auto; }
+.capability-radar__ring { fill: none; stroke: var(--color-border); stroke-width: 0.8; opacity: 0.3; }
+.capability-radar__axis { stroke: var(--color-border); stroke-width: 0.8; opacity: 0.4; }
+.capability-radar__shape { fill: color-mix(in srgb, var(--color-accent) 14%, transparent); stroke: var(--color-accent); stroke-width: 1.8; }
+.capability-radar__core { fill: var(--color-accent); }
+.capability-radar__controls { display: grid; gap: 0.5rem; }
+.capability-radar__controls button { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.65rem 0.9rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; cursor: pointer; transition: border-color 0.15s, background 0.15s; text-align: left; }
+.capability-radar__controls button:hover { border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border)); }
+.capability-radar__controls button.is-active { background: color-mix(in srgb, var(--color-accent) 8%, var(--color-surface)); border-color: var(--color-accent); }
+.capability-radar__controls span { font-size: 0.82rem; font-weight: 500; color: var(--color-text); }
+.capability-radar__controls strong { font-size: 0.76rem; font-weight: 700; color: var(--color-accent); font-family: var(--font-mono); }
+.capability-radar__evidence { padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+.capability-radar__evidence span { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.35rem; font-family: var(--font-mono); }
+.capability-radar__evidence p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+
+/* Contextual Route Transitions */
+.context-route { position: relative; }
+.context-route__intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-bg); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; pointer-events: none; transform-origin: left; }
+.context-route__intro span { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); font-family: var(--font-mono); }
+.context-route__intro i { width: 2px; height: 24px; background: var(--color-accent); margin-top: 0.5rem; }
+
+@media (max-width: 768px) {
+  .telemetry__layout, .capability-radar__layout { grid-template-columns: 1fr; }
+  .telemetry__metrics { grid-template-columns: repeat(2, 1fr); }
+  .activity-stream__track { padding: 1rem 0.75rem; }
+}
+
