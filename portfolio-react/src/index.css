@@ -1900,6 +1900,168 @@ section[id] {
   }
 }
 
+/* Minimal portfolio — compact technical résumé refinement */
+.spa-layout {
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-attachment: fixed;
+}
+
+.spa-layout .spa-shell {
+  background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+}
+
+.spa-nav {
+  width: 248px;
+  padding: 2.25rem 1.75rem;
+  background: color-mix(in srgb, var(--color-bg) 97%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.spa-nav__eyebrow,
+.spa-document-meta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.spa-nav__eyebrow { margin-bottom: 1.15rem; }
+
+.spa-nav__name {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
+
+.spa-nav__title { margin-bottom: 0.8rem; }
+
+.spa-nav__summary {
+  margin: 0 0 2rem;
+  max-width: 12.5rem;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--color-text-subtle);
+}
+
+.spa-nav__links { border-top: 1px solid var(--color-border); }
+
+.spa-nav__link {
+  justify-content: flex-start;
+  gap: 0.9rem;
+  padding: 0.62rem 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.spa-nav__link:hover { padding-left: 0.4rem; background: transparent; }
+.spa-nav__link.active { padding-left: 0.4rem; background: transparent; }
+.spa-nav__link-index { width: 1.35rem; color: var(--color-text-subtle); font-size: 0.61rem; }
+.spa-nav__link.active .spa-nav__link-index { color: var(--color-accent); }
+
+.spa-content {
+  margin-left: 248px;
+  width: min(100%, 920px);
+  max-width: none;
+  padding: 3rem clamp(2.5rem, 6vw, 5.5rem) 8rem;
+}
+
+.spa-document-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.spa-section { margin-bottom: 4.5rem; scroll-margin-top: 2rem; }
+.spa-divider { margin: 4.5rem 0; background: var(--color-border-strong); }
+.spa-section__label { display: flex; align-items: center; gap: 0.75rem; }
+.spa-section__label::after { content: ''; width: 2rem; height: 1px; background: var(--color-accent); }
+.spa-section__title { text-transform: uppercase; letter-spacing: -0.025em; }
+
+.spa-project-row {
+  padding: 1.6rem 0;
+  transition: padding 0.18s ease, border-color 0.18s ease;
+}
+
+.spa-project-row:hover {
+  margin: 0;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 0;
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 4%, transparent);
+}
+
+.spa-pub-item,
+.spa-kaggle-item,
+.spa-contact-row,
+.spa-timeline__content {
+  border-radius: 4px;
+}
+
+.spa-tag { border-radius: 2px; }
+
+.spa-btn {
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.spa-nav__link:focus-visible,
+.spa-mobile-link:focus-visible,
+.spa-btn:focus-visible,
+.spa-contact-row:focus-visible,
+.spa-kaggle-item:focus-visible,
+.spa-version-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .spa-content { margin-left: 0; width: 100%; padding: 6.5rem 1.5rem 4rem; }
+  .spa-document-meta { margin-bottom: 3rem; }
+  .spa-mobile-nav { background: color-mix(in srgb, var(--color-bg) 96%, transparent); backdrop-filter: blur(18px); }
+}
+
+@media (max-width: 580px) {
+  .spa-document-meta { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+  .spa-section, .spa-divider { margin-bottom: 3.5rem; }
+  .spa-divider { margin-top: 3.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spa-layout *, .spa-layout *::before, .spa-layout *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .spa-layout { background: #fff !important; color: #111 !important; }
+  .spa-nav, .spa-mobile-nav, .spa-version-toggle, .spa-btn { display: none !important; }
+  .spa-content { margin: 0; width: 100%; max-width: none; padding: 0; }
+  .spa-document-meta { margin-bottom: 1.5rem; }
+  .spa-section, .spa-divider { break-inside: avoid; margin: 1.5rem 0; }
+  .spa-layout * { color: #111 !important; background: transparent !important; border-color: #bbb !important; box-shadow: none !important; }
+  .spa-project-row, .spa-timeline__item, .spa-pub-item, .spa-kaggle-item { break-inside: avoid; }
+  a { text-decoration: none !important; }
+}
+
 /* ============================================
    HERO — BOLD STACKED COMPOSITION
    ============================================ */

@@ -85,19 +85,21 @@ export default function MinimalSPA() {
       <div className="spa-shell">
         {/* Fixed left nav */}
         <nav className="spa-nav" aria-label="Primary navigation">
+          <div className="spa-nav__eyebrow">Minimal portfolio / 2026</div>
           <div className="spa-nav__name">Himanshu Nakrani</div>
-          <div className="spa-nav__title">AI Engineer</div>
+          <div className="spa-nav__title">AI Systems Engineer</div>
+          <p className="spa-nav__summary">Production LLM systems, agent infrastructure, and applied AI research.</p>
 
           <div className="spa-nav__links">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item, index) => (
               <button
                 key={item.id}
                 className={`spa-nav__link${active === item.id ? ' active' : ''}`}
                 onClick={() => scrollTo(item.id)}
-                aria-current={active === item.id ? 'true' : undefined}
+                aria-current={active === item.id ? 'location' : undefined}
               >
-                <span className="spa-nav__link-dot" aria-hidden="true" />
-                {item.label}
+                <span className="spa-nav__link-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <span>{item.label}</span>
               </button>
             ))}
           </div>
@@ -125,6 +127,11 @@ export default function MinimalSPA() {
 
         {/* Scrollable content */}
         <main className="spa-content" id="main-content">
+          <div className="spa-document-meta" aria-label="Résumé metadata">
+            <span>HN / AI ENGINEERING</span>
+            <span>HYDERABAD, IN</span>
+            <span>UPDATED 2026</span>
+          </div>
           <Hero />
           <div className="spa-divider" aria-hidden="true" />
           <Experience />
