@@ -5188,3 +5188,47 @@ body[data-modal-open="true"] .back-to-top {
   .home-bento__link svg { transition: none !important; }
   .home-bento-card:hover { transform: none; }
 }
+
+/* ============================================
+   HERO NEURAL SIGNAL FIELD
+   ============================================ */
+
+.neural-signal-field,
+.hero-signal-mask {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.neural-signal-field {
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.hero-signal-mask {
+  z-index: 0;
+  background:
+    linear-gradient(90deg, var(--color-bg) 0%, color-mix(in srgb, var(--color-bg) 91%, transparent) 38%, color-mix(in srgb, var(--color-bg) 38%, transparent) 70%, var(--color-bg) 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 12%, transparent) 0%, transparent 46%, var(--color-bg) 96%);
+}
+
+.hero-stack,
+.hero-scroll-cue,
+.hero-stat-band {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .neural-signal-field { opacity: 0.52; }
+
+  .hero-signal-mask {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 42%, transparent), var(--color-bg) 92%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neural-signal-field { opacity: 0.55; }
+}

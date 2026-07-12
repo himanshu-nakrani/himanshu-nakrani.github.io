@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Github, Linkedin, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
-import AuroraBackground from './ui/AuroraBackground'
+import NeuralSignalField from './NeuralSignalField'
 import MagneticButton from './ui/MagneticButton'
 import { recruiterSummary } from '../data/hero'
 import { RESUME_URL } from '../lib/site'
@@ -41,7 +41,8 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
       className="hero-section"
       style={{ position: 'relative', overflow: 'hidden' }}
     >
-      <AuroraBackground className="hero-aurora" intensity={0.6} />
+      <NeuralSignalField />
+      <div className="hero-signal-mask" aria-hidden="true" />
       <div
         style={{
           maxWidth: 'var(--container)',
@@ -87,8 +88,8 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
             ))}
           </div>
 
-          {/* Split: intro + CTAs | systems snapshot */}
-          <div className="hero-split">
+          {/* Intro and primary actions */}
+          <div className="hero-split hero-split--single">
             <div className="hero-split-left">
               <p className="hero-intro">
                 {isInstrument ? (
@@ -147,46 +148,6 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
                 </MagneticButton>
               </div>
             </div>
-
-            <motion.aside
-              className="hero-system-card"
-              aria-label="Production AI systems snapshot"
-              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, delay: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="hero-system-card__topline">
-                <span><span className="status-dot status-dot--pulse" /> Systems online</span>
-                <span>HYD · 2026</span>
-              </div>
-              <div className="hero-system-card__canvas" aria-hidden="true">
-                <div className="hero-system-node hero-system-node--input">Natural language</div>
-                <span className="hero-system-connector" />
-                <div className="hero-system-node hero-system-node--core">LLM orchestration</div>
-                <span className="hero-system-connector" />
-                <div className="hero-system-node hero-system-node--output">Trusted output</div>
-              </div>
-              <div className="hero-system-card__telemetry" aria-label="Selected production outcomes">
-                <div>
-                  <span>Latency</span>
-                  <strong>−75%</strong>
-                </div>
-                <div>
-                  <span>Adoption</span>
-                  <strong>200+</strong>
-                </div>
-                <div>
-                  <span>Coverage</span>
-                  <strong>95%+</strong>
-                </div>
-              </div>
-              <div className="hero-system-card__footer">
-                <span>TEXT-TO-SQL</span>
-                <span>RAG</span>
-                <span>AGENTS</span>
-                <span>EVALS</span>
-              </div>
-            </motion.aside>
           </div>
         </div>
       </div>
