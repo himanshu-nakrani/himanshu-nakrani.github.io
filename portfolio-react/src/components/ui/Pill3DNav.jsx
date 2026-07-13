@@ -31,40 +31,10 @@ export default function Pill3DNav({ items, isActive, onItemClick }) {
               onPointerEnter={() => prefetchRoute(item.to)}
               onFocus={() => prefetchRoute(item.to)}
               aria-current={active ? 'page' : undefined}
-              className={active ? 'nav-link-active' : ''}
-              style={{
-                position: 'relative',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: isSecondary ? '8px 12px 10px' : '8px 14px 10px',
-                textDecoration: 'none',
-                fontSize: isSecondary ? '0.75rem' : '0.8125rem',
-                fontWeight: isSecondary ? 400 : 500,
-                color: active ? 'var(--color-accent)' : isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)',
-                background: 'transparent',
-                transition: 'color 0.2s ease',
-                borderRadius: 9999,
-                fontFamily: isSecondary ? 'var(--font-mono)' : undefined,
-              }}
-              onMouseEnter={(e) => { if (!active) e.currentTarget.style.color = 'var(--color-text)' }}
-              onMouseLeave={(e) => { if (!active) e.currentTarget.style.color = isSecondary ? 'var(--color-text-subtle)' : 'var(--color-text-muted)' }}
+              className={`nav-pill-link${active ? ' nav-link-active' : ''}${isSecondary ? ' nav-pill-link--secondary' : ''}`}
             >
-              {active && (
-                <span
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    borderRadius: 9999,
-                    background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-                    boxShadow: 'inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 22%, transparent)',
-                    zIndex: 0,
-                    transition: 'background 0.2s ease, box-shadow 0.2s ease',
-                  }}
-                />
-              )}
-              <span style={{ position: 'relative', zIndex: 1 }}>{item.label}</span>
+              {active && <span className="nav-pill-link__lens" aria-hidden="true" />}
+              <span className="nav-pill-link__label">{item.label}</span>
             </NavLink>
           </li>
         )

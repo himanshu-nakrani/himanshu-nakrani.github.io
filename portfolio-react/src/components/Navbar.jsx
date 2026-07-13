@@ -155,36 +155,11 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
             onClick={() => setOpen(false)}
             onPointerEnter={() => prefetchRoute('/')}
             onFocus={() => prefetchRoute('/')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              textDecoration: 'none',
-              flexShrink: 0,
-              paddingRight: 10,
-            }}
+            className="nav-brand"
+            aria-label="Himanshu Nakrani — Home"
           >
-            <span
-              style={{
-                display: 'block',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--color-accent)',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: '0.85rem',
-                letterSpacing: '-0.01em',
-                color: 'var(--color-text)',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              Himanshu
-            </span>
+            <span className="nav-brand__mark" aria-hidden="true"><span /></span>
+            <span className="nav-brand__name">Himanshu</span>
           </NavLink>
 
           {/* Desktop nav links */}
@@ -215,27 +190,6 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               }}
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 10px',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                color: 'var(--color-text-muted)',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border-strong)'
-                e.currentTarget.style.color = 'var(--color-text)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.color = 'var(--color-text-muted)'
-              }}
             >
               <Search size={13} />
               <span style={{ 
