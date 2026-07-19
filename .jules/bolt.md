@@ -24,3 +24,7 @@
 ## 2023-10-27 - Pre-computing RegExp metrics inside React render loop
 **Learning:** Instantiating arrays of Regular Expressions and executing `.test()` within a component's render loop (like `extractMetrics` in `ExperiencePage.jsx`) causes unnecessary string allocations and O(n) re-evaluations, especially when triggered repeatedly by scroll-based intersection observers (`useInView`).
 **Action:** When deriving static values from constant data objects using Regex, hoist the patterns outside the function and pre-compute the derived metrics into a static array outside of the component definition, passing the result down as a prop or iterating over the pre-computed array directly.
+
+## 2025-10-24 - [Performance] Memoizing Hover Grid Cells
+**Learning:** In a highly dense visual grid (like a ~370-cell GitHub contribution heatmap), using React event delegation on the parent container (via `onMouseOver`) combined with a `hover` object in state causes massive re-renders. Without `React.memo()`, every time the mouse moves to a new cell, the component state changes, forcing all 371 `<motion.div>` cells to re-render simultaneously, leading to severe main-thread blocking and a sluggish hover UX.
+**Action:** Extract individual cells in dense grids into separate components wrapped in `React.memo()`. Pass primitive props (`isHover`, `levelBg`, etc.) or stable references so that only the two cells whose `isHover` state changes (the one losing hover, and the one gaining hover) will re-render, reducing render workload by ~99%.

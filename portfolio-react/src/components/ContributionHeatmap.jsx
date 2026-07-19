@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState, useCallback, memo } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import {
   buildHeatmapView,
@@ -266,31 +266,15 @@ export default function ContributionHeatmap({
                   const level = cell.level ?? 0
                   const isHover = hover && hover.col === ci && hover.row === ri
                   return (
-                    <motion.div
+                    <HeatmapCell
                       key={`${ci}-${ri}`}
-                      tabIndex={0}
-                      role="button"
-                      aria-label={`${cell.count} ${unit(cell.count)} on ${cell.formattedDate}`}
-                      data-col={ci}
-                      data-row={ri}
-                      initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
-                      style={{
-                        width: CELL,
-                        height: CELL,
-                        borderRadius: RADIUS,
-                        background: LEVEL_BG[level],
-                        outline: 'none',
-                        border: isHover
-                          ? '1px solid var(--heatmap-accent, var(--color-accent))'
-                          : '1px solid transparent',
-                        boxShadow: isHover
-                          ? '0 0 0 2px color-mix(in srgb, var(--heatmap-accent, var(--color-accent)) 35%, transparent)'
-                          : 'none',
-                        cursor: 'pointer',
-                        transition: 'border-color 0.12s ease, box-shadow 0.12s ease',
-                      }}
+                      ci={ci}
+                      ri={ri}
+                      cell={cell}
+                      levelBg={LEVEL_BG[level]}
+                      isHover={isHover}
+                      reduceMotion={reduceMotion}
+                      unitLabel={unit(cell.count)}
                     />
                   )
                 }),
@@ -387,3 +371,33 @@ function Stat({ label, value }) {
     </span>
   )
 }
+
+const HeatmapCell = memo(function HeatmapCell({ ci, ri, cell, levelBg, isHover, reduceMotion, unitLabel }) {
+  return (
+    <motion.div
+      tabIndex={0}
+      role="button"
+      aria-label={`${cell.count} ${unitLabel} on ${cell.formattedDate}`}
+      data-col={ci}
+      data-row={ri}
+      initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={reduceMotion ? { duration: 0 } : { duration: 0.25, delay: Math.min(0.6, ci * 0.005) }}
+      style={{
+        width: CELL,
+        height: CELL,
+        borderRadius: RADIUS,
+        background: levelBg,
+        outline: 'none',
+        border: isHover
+          ? '1px solid var(--heatmap-accent, var(--color-accent))'
+          : '1px solid transparent',
+        boxShadow: isHover
+          ? '0 0 0 2px color-mix(in srgb, var(--heatmap-accent, var(--color-accent)) 35%, transparent)'
+          : 'none',
+        cursor: 'pointer',
+        transition: 'border-color 0.12s ease, box-shadow 0.12s ease',
+      }}
+    />
+  )
+})
