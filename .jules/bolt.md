@@ -24,3 +24,9 @@
 ## 2023-10-27 - Pre-computing RegExp metrics inside React render loop
 **Learning:** Instantiating arrays of Regular Expressions and executing `.test()` within a component's render loop (like `extractMetrics` in `ExperiencePage.jsx`) causes unnecessary string allocations and O(n) re-evaluations, especially when triggered repeatedly by scroll-based intersection observers (`useInView`).
 **Action:** When deriving static values from constant data objects using Regex, hoist the patterns outside the function and pre-compute the derived metrics into a static array outside of the component definition, passing the result down as a prop or iterating over the pre-computed array directly.
+
+## 2023-11-04 - [Performance] Date String Parsing in Loops
+
+**Learning:** When parsing ISO date strings (like 'YYYY-MM-DD') inside a loop (e.g. constructing a heatmap view across a year), calling `Date.parse()` or constructing a new `Date` object each iteration introduces significant overhead. However, attempting to optimize this by using a single mutable `Date` object and blindly incrementing it (`singleDate.setDate(singleDate.getDate() + 1)`) is brittle and assumes perfectly contiguous data. If a day is skipped in the payload, the rendered dates will silently drift out of sync.
+
+**Action:** When extracting date components inside a loop where `Date.parse()` overhead is a concern, use `String.prototype.split()` to extract the year, month, and day strings. Then directly apply them to a single mutable `Date` object using `Date.prototype.setFullYear(year, month - 1, day)`. This avoids both O(N) `Date.parse()` instantiations and the risk of desync on sparse datasets.
