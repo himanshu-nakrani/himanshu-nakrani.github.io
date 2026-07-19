@@ -48,6 +48,8 @@ export function buildHeatmapView(days, totalOverride) {
   const formatter = new Intl.DateTimeFormat(undefined, {
     weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
   })
+  // ⚡ Bolt Optimization: Use a single mutable Date object and extract date parts
+  // without string concatenation to avoid Date.parse() overhead.
   const singleDate = new Date()
 
   const cols = []
@@ -55,7 +57,8 @@ export function buildHeatmapView(days, totalOverride) {
   for (let i = 0; i < lead; i++) week[i] = null
   let row = lead
   for (const d of days) {
-    singleDate.setTime(Date.parse(d.date + 'T00:00:00'))
+    const parts = d.date.split('-')
+    singleDate.setFullYear(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
     week[row] = { ...d, formattedDate: formatter.format(singleDate) }
     row++
     if (row === 7) {
