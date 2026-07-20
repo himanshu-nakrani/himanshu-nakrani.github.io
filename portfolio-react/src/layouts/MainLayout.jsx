@@ -96,7 +96,7 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
             setDesignMode={setDesignMode}
           />
 
-          <main id="main-content">
+          <main id="main-content" tabIndex={-1} style={{ outline: 'none' }}>
             <ContextualRouteTransition>
               <Outlet context={{ designMode }} />
             </ContextualRouteTransition>
