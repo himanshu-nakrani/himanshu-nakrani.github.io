@@ -4,3 +4,6 @@
 ## 2024-06-27 - Command Palette Empty State Clear Button Focus
 **Learning:** The Command Palette 'Clear search' button in the empty state removed search text but left keyboard focus lost in the document, breaking the user's flow.
 **Action:** When implementing 'clear search' functionality or similar in-input buttons, always programmatically refocus the associated input element after the clear action to preserve keyboard accessibility context.
+## 2024-07-20 - Skip Link Target Accessibility
+**Learning:** Skip-to-content links require the target container (e.g., `<main id="main-content">`) to be programmatically focusable so keyboard flow correctly moves there upon clicking the skip link. Without this, focus is lost or incorrectly handled by the browser.
+**Action:** When implementing 'Skip to content' or similar anchor-based skip links, ensure the target destination element (e.g., `<main>`) has `tabIndex={-1}` so it can receive programmatic focus, and optionally `style={{ outline: 'none' }}` to prevent visual artifacts on focus.

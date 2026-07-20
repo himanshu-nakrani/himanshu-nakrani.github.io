@@ -126,7 +126,7 @@ export default function MinimalSPA() {
         </nav>
 
         {/* Scrollable content */}
-        <main className="spa-content" id="main-content">
+        <main className="spa-content" id="main-content" tabIndex={-1} style={{ outline: 'none' }}>
           <div className="spa-document-meta" aria-label="Résumé metadata">
             <span>HN / AI ENGINEERING</span>
             <span>HYDERABAD, IN</span>
