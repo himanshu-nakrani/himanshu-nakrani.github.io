@@ -13,3 +13,7 @@
 ## 2024-05-18 - [Performance] Hover Re-renders and Date Formatting
 **Learning:** React components that render large grids (like a 365-day GitHub heatmap) and have interactive states (like `onMouseEnter`/`onMouseLeave` triggering `setHover`) often suffer from sluggishness if they perform heavy computations during render. By default, `Date.prototype.toLocaleDateString()` instantiates a new `Intl.DateTimeFormat` object under the hood every time it is called. Running this 371 times per hover re-render is highly inefficient and causes significant garbage collection pressure.
 **Action:** Pre-calculate dates once inside a `useMemo` block. Reuse a single `Intl.DateTimeFormat` instance and a single mutable `Date` object within the memoized calculation loop, storing the `formattedDate` strings in the objects to be rendered.
+
+## 2024-05-27 - Memoizing expensive sorts and avoiding O(N) array allocations
+**Learning:** Performing array sorting `.sort()` and creating new arrays for calculations using `Math.max(...events.map())` within a React render loop causes unnecessary garbage collection and performance degradation on every render.
+**Action:** Use `useMemo` to memoize the sorted array generation, and compute maximums in a single pass (`for...of`) instead of intermediate mapping and spreading to achieve O(1) memory footprint for the maximum calculation.
