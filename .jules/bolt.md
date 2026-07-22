@@ -33,3 +33,7 @@
 ## 2025-10-24 - [Performance] Memoizing Hover Grid Cells
 **Learning:** In a highly dense visual grid (like a ~370-cell GitHub contribution heatmap), using React event delegation on the parent container (via `onMouseOver`) combined with a `hover` object in state causes massive re-renders. Without `React.memo()`, every time the mouse moves to a new cell, the component state changes, forcing all 371 `<motion.div>` cells to re-render simultaneously, leading to severe main-thread blocking and a sluggish hover UX.
 **Action:** Extract individual cells in dense grids into separate components wrapped in `React.memo()`. Pass primitive props (`isHover`, `levelBg`, etc.) or stable references so that only the two cells whose `isHover` state changes (the one losing hover, and the one gaining hover) will re-render, reducing render workload by ~99%.
+
+## 2024-07-22 - [Performance] Missing useMemo for Expensive Operations in Render
+**Learning:** Performing `O(N log N)` array operations like `Array.prototype.sort()` directly inside a functional component's render body causes the expensive calculation and array allocation to re-run on every render cycle (e.g. state changes like hovering, selecting an item).
+**Action:** Wrap computationally expensive array derivations (like sorting or filtering) in `useMemo` so they only re-evaluate when their specific dependencies change. This is especially critical when handling frequent interaction state updates in the same component.
