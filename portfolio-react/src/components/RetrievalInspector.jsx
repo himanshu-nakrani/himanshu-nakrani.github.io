@@ -331,6 +331,9 @@ function ComposePanel({ module }) {
 }
 
 function CitePanel({ module }) {
+  // ⚡ Bolt Optimization: Memoize sorted array to avoid O(N log N) re-evaluations and allocations on every render
+  const sorted = useMemo(() => [...module.chunks].sort((a, b) => a.reranked - b.reranked), [module.chunks])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div>
@@ -353,9 +356,7 @@ function CitePanel({ module }) {
       <div>
         <div style={labelStyle}>Sources</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          {module.chunks
-            .sort((a, b) => a.reranked - b.reranked)
-            .map((chunk) => (
+          {sorted.map((chunk) => (
               <div
                 key={chunk.id}
                 style={{
