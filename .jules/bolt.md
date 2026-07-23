@@ -37,3 +37,6 @@
 ## 2024-07-22 - [Performance] Missing useMemo for Expensive Operations in Render
 **Learning:** Performing `O(N log N)` array operations like `Array.prototype.sort()` directly inside a functional component's render body causes the expensive calculation and array allocation to re-run on every render cycle (e.g. state changes like hovering, selecting an item).
 **Action:** Wrap computationally expensive array derivations (like sorting or filtering) in `useMemo` so they only re-evaluate when their specific dependencies change. This is especially critical when handling frequent interaction state updates in the same component.
+## 2026-07-23 - [Performance] Memoize Sorting in React Render
+**Learning:** Calling `.sort()` directly on an array prop inside a React component's render body (e.g., `module.chunks.sort()`) is a severe anti-pattern. Not only does it cause an expensive O(N log N) re-evaluation on every render cycle, but `.sort()` also mutates the original array in place, which can lead to unpredictable side effects and bugs in React's state management.
+**Action:** When a sorted version of an array is needed for rendering, always copy the array first (e.g., `[...arr].sort()`) to prevent in-place mutation, and wrap the operation in a `useMemo` hook. This ensures the expensive sorting logic only runs when the underlying array reference actually changes.
