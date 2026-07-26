@@ -579,7 +579,9 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
             >
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↑↓</kbd> navigate</span>
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↵</kbd> select</span>
-              <span style={{ marginLeft: 'auto' }}>{filteredItems.length} results</span>
+              <span style={{ marginLeft: 'auto' }} aria-live="polite" role="status">
+                {filteredItems.length} {filteredItems.length === 1 ? 'result' : 'results'}
+              </span>
             </div>
           </motion.div>
         </>
