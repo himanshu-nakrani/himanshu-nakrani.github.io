@@ -7,3 +7,6 @@
 ## 2024-07-20 - Skip Link Target Accessibility
 **Learning:** Skip-to-content links require the target container (e.g., `<main id="main-content">`) to be programmatically focusable so keyboard flow correctly moves there upon clicking the skip link. Without this, focus is lost or incorrectly handled by the browser.
 **Action:** When implementing 'Skip to content' or similar anchor-based skip links, ensure the target destination element (e.g., `<main>`) has `tabIndex={-1}` so it can receive programmatic focus, and optionally `style={{ outline: 'none' }}` to prevent visual artifacts on focus.
+## 2024-07-26 - Command Palette Live Region Count
+**Learning:** Command palettes or dynamic search comboboxes with visual result counts exclude screen reader users when those counts update without an `aria-live` region.
+**Action:** Add `aria-live="polite"` and `role="status"` to dynamic result count text to ensure screen reader users receive auditory feedback about changes in search results.
