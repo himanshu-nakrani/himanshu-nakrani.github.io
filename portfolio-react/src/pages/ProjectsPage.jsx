@@ -379,7 +379,7 @@ export default function ProjectsPage() {
                   </button>
                 )}
               </label>
-              <span className="editorial-chip">{filteredProjects.length} results</span>
+              <span className="editorial-chip" role="status" aria-live="polite">{filteredProjects.length} results</span>
             </div>
 
             <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>

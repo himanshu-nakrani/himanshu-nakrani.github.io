@@ -42,6 +42,88 @@ const quickActions = [
   { id: 'resume', name: 'View Resume', icon: FileText, url: RESUME_URL, external: true },
 ]
 
+const STATIC_COMMAND_ITEMS = []
+
+// Pages
+pages.forEach((page) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `page-${page.id}`,
+    type: 'page',
+    name: page.name,
+    icon: page.icon,
+    keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+    path: page.path,
+    actionType: 'navigate',
+    actionValue: page.path,
+  })
+})
+
+// Deep-dive pages
+deepDivePages.forEach((page) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `deepdive-${page.id}`,
+    type: 'page',
+    name: page.name,
+    icon: page.icon,
+    keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+    path: page.path,
+    actionType: 'navigate',
+    actionValue: page.path,
+  })
+})
+
+// Projects (top 5)
+projects.slice(0, 5).forEach((p) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `project-${p.id || p.title}`,
+    type: 'project',
+    name: p.title,
+    badge: p.badge,
+    icon: FolderGit2,
+    keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
+    actionType: 'navigate',
+    actionValue: '/projects',
+  })
+})
+
+// Skills (top 4)
+skills.slice(0, 4).forEach((cat) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `skill-${cat.label}`,
+    type: 'skill',
+    name: cat.label,
+    count: cat.items?.length || 0,
+    icon: Code2,
+    keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
+    actionType: 'navigate',
+    actionValue: '/skills',
+  })
+})
+
+// Quick actions
+quickActions.forEach((action) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `action-${action.id}`,
+    type: 'action',
+    name: action.name,
+    icon: action.icon,
+    external: true,
+    keywords: action.name.toLowerCase(),
+    actionType: 'open',
+    actionValue: action.url,
+  })
+})
+
+// Theme toggle
+STATIC_COMMAND_ITEMS.push({
+  id: 'action-theme',
+  type: 'action',
+  name: 'Toggle Theme',
+  icon: Sun,
+  keywords: 'toggle theme dark light mode',
+  actionType: 'theme',
+})
+
 export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   const [open, setOpen] = useState(initiallyOpen)
   const [search, setSearch] = useState('')
@@ -50,94 +132,14 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   const inputRef = useRef(null)
   const listRef = useRef(null)
 
-  // Build all searchable items
-  const allItems = useMemo(() => {
-    const items = []
 
-    // Pages
-    pages.forEach((page) => {
-      items.push({
-        id: `page-${page.id}`,
-        type: 'page',
-        name: page.name,
-        icon: page.icon,
-        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
-        path: page.path,
-        action: () => navigate(page.path),
-      })
-    })
-
-    // Deep-dive pages
-    deepDivePages.forEach((page) => {
-      items.push({
-        id: `deepdive-${page.id}`,
-        type: 'page',
-        name: page.name,
-        icon: page.icon,
-        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
-        path: page.path,
-        action: () => navigate(page.path),
-      })
-    })
-
-    // Projects (top 5)
-    projects.slice(0, 5).forEach((p) => {
-      items.push({
-        id: `project-${p.id || p.title}`,
-        type: 'project',
-        name: p.title,
-        badge: p.badge,
-        icon: FolderGit2,
-        keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
-        action: () => navigate('/projects'),
-      })
-    })
-
-    // Skills (top 4)
-    skills.slice(0, 4).forEach((cat) => {
-      items.push({
-        id: `skill-${cat.label}`,
-        type: 'skill',
-        name: cat.label,
-        count: cat.items?.length || 0,
-        icon: Code2,
-        keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
-        action: () => navigate('/skills'),
-      })
-    })
-
-    // Quick actions
-    quickActions.forEach((action) => {
-      items.push({
-        id: `action-${action.id}`,
-        type: 'action',
-        name: action.name,
-        icon: action.icon,
-        external: true,
-        keywords: action.name.toLowerCase(),
-        action: () => window.open(action.url, '_blank', 'noopener,noreferrer'),
-      })
-    })
-
-    // Theme toggle
-    items.push({
-      id: 'action-theme',
-      type: 'action',
-      name: 'Toggle Theme',
-      icon: Sun,
-      keywords: 'toggle theme dark light mode',
-      action: toggleTheme,
-    })
-
-    return items
-  }, [navigate, toggleTheme])
 
   // Filter items based on search
   const filteredItems = useMemo(() => {
-    if (!search.trim()) return allItems
+    if (!search.trim()) return STATIC_COMMAND_ITEMS
     const query = search.toLowerCase()
-    return allItems.filter((item) => item.keywords.includes(query))
-  }, [search, allItems])
+    return STATIC_COMMAND_ITEMS.filter((item) => item.keywords.includes(query))
+  }, [search])
 
   // Group by type
   const groupedItems = useMemo(() => {
@@ -177,6 +179,17 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     }
   }, [])
 
+  const executeAction = useCallback((item) => {
+    if (item.actionType === 'navigate') {
+      navigate(item.actionValue)
+    } else if (item.actionType === 'open') {
+      window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+    } else if (item.actionType === 'theme') {
+      toggleTheme()
+    }
+    setOpen(false)
+  }, [navigate, toggleTheme])
+
   const handleListClick = useCallback((e) => {
     const itemEl = e.target.closest('[data-index]')
     if (itemEl) {
@@ -184,12 +197,11 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
       if (!isNaN(idx)) {
         const item = renderedItems[idx]
         if (item) {
-          item.action()
-          setOpen(false)
+          executeAction(item)
         }
       }
     }
-  }, [renderedItems])
+  }, [renderedItems, executeAction])
 
   // Keyboard shortcut to open
   useEffect(() => {
@@ -278,12 +290,11 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
         e.preventDefault()
         const item = filteredItems[selectedIndex]
         if (item) {
-          item.action()
-          setOpen(false)
+          executeAction(item)
         }
       }
     },
-    [filteredItems, selectedIndex]
+    [filteredItems, selectedIndex, executeAction]
   )
 
   // Scroll selected into view
@@ -568,7 +579,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
             >
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↑↓</kbd> navigate</span>
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↵</kbd> select</span>
-              <span style={{ marginLeft: 'auto' }}>{filteredItems.length} results</span>
+              <span style={{ marginLeft: 'auto' }} role="status" aria-live="polite">{filteredItems.length} results</span>
             </div>
           </motion.div>
         </>

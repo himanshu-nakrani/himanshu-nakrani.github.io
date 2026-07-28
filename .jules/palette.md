@@ -9,3 +9,10 @@
 ## 2024-07-20 - Skip Link Keyboard Accessibility
 **Learning:** The `SkipLink` component was implemented as an anchor (`<a>`), but in many browsers (like Chrome/Safari) simply clicking a skip link or navigating via hash fragment doesn`t reliably move programmatic keyboard focus to the target element unless the target element has `tabIndex="-1"`. If the target element (`<main id="main-content">`) lacks this attribute, screen reader and keyboard users get visual scroll but focus remains near the top, making the skip link ineffective.
 **Action:** Always ensure that the destination of a skip link (typically the `<main>` element) has `tabIndex={-1}` so that it can receive programmatic focus and properly shift the user`s keyboard navigation context.
+
+## 2024-07-20 - Skip Link Target Accessibility
+**Learning:** Skip-to-content links require the target container (e.g., `<main id="main-content">`) to be programmatically focusable so keyboard flow correctly moves there upon clicking the skip link. Without this, focus is lost or incorrectly handled by the browser.
+**Action:** When implementing 'Skip to content' or similar anchor-based skip links, ensure the target destination element (e.g., `<main>`) has `tabIndex={-1}` so it can receive programmatic focus, and optionally `style={{ outline: 'none' }}` to prevent visual artifacts on focus.
+## 2025-02-28 - Dynamic Search ARIA Status
+**Learning:** Screen readers won't naturally announce text changes on the page unless explicitly told to. This applies to dynamic search result counts or filter counts in single-page apps.
+**Action:** When implementing any search or filter UI that updates a result count dynamically, always ensure the container holding the count has `role="status"` and `aria-live="polite"` so screen readers will announce the updated count non-disruptively.

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { getNextTabIndex } from '../lib/tablist'
 
@@ -160,7 +160,9 @@ function RewritePanel({ module }) {
 
 function RetrievePanel({ module }) {
   const [selectedId, setSelectedId] = useState(null)
-  const sorted = [...module.chunks].sort((a, b) => b.score - a.score)
+
+  // ⚡ Bolt Optimization: Memoize sorted array to avoid O(N log N) re-evaluations and allocations on every render
+  const sorted = useMemo(() => [...module.chunks].sort((a, b) => b.score - a.score), [module.chunks])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -236,7 +238,8 @@ function RetrievePanel({ module }) {
 }
 
 function RerankPanel({ module }) {
-  const sorted = [...module.chunks].sort((a, b) => a.reranked - b.reranked)
+  // ⚡ Bolt Optimization: Memoize sorted array to avoid O(N log N) re-evaluations and allocations on every render
+  const sorted = useMemo(() => [...module.chunks].sort((a, b) => a.reranked - b.reranked), [module.chunks])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
@@ -328,6 +331,9 @@ function ComposePanel({ module }) {
 }
 
 function CitePanel({ module }) {
+  // ⚡ Bolt Optimization: Memoize sorted array to avoid O(N log N) re-evaluations and allocations on every render
+  const sorted = useMemo(() => [...module.chunks].sort((a, b) => a.reranked - b.reranked), [module.chunks])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div>
@@ -350,9 +356,7 @@ function CitePanel({ module }) {
       <div>
         <div style={labelStyle}>Sources</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          {module.chunks
-            .sort((a, b) => a.reranked - b.reranked)
-            .map((chunk) => (
+          {sorted.map((chunk) => (
               <div
                 key={chunk.id}
                 style={{
