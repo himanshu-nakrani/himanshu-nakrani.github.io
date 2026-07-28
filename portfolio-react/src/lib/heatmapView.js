@@ -20,9 +20,13 @@ export function normalizeHeatmapPayload(data) {
 
   if (!Array.isArray(data.contributions) || data.contributions.length === 0) return null
 
-  const total = typeof data.total === 'number'
-    ? data.total
-    : data.contributions.reduce((sum, day) => sum + (day.count || 0), 0)
+  let total = data.total
+  if (typeof total !== 'number') {
+    total = 0
+    for (const day of data.contributions) {
+      total += (day.count || 0)
+    }
+  }
 
   return {
     user: data.user,
@@ -97,12 +101,17 @@ export function buildHeatmapView(days, totalOverride) {
     else break
   }
 
-  const best = days.reduce((acc, d) => (d.count > acc.count ? d : acc), { count: 0, date: '' })
+  let best = { count: 0, date: '' }
+  let calculatedTotal = 0
+  for (const d of days) {
+    if (d.count > best.count) best = d
+    calculatedTotal += (d.count || 0)
+  }
 
   return {
     cols,
     monthLabels,
-    total: totalOverride ?? days.reduce((s, d) => s + (d.count || 0), 0),
+    total: totalOverride ?? calculatedTotal,
     longest,
     current,
     best,

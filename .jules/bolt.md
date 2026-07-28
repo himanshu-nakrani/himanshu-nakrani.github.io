@@ -44,3 +44,7 @@
 ## 2026-07-25 - [Performance] Move Static Data Arrays Outside Components
 **Learning:** Initializing large arrays of objects with static properties inside a `useMemo` hook causes the array, its objects, and any string manipulations (e.g. `.toLowerCase()`) to be evaluated on component mount and every time dependencies change. In the case of `CommandPalette.jsx`, embedding `navigate` or `toggleTheme` callbacks directly inside the item objects forced the array to be bound to component state.
 **Action:** Extract large, primarily static data structures out of the component entirely to ensure they are created only once per module load. Replace inline closure callbacks on the data objects with static strings (e.g. `actionType: 'navigate'`) and handle the execution logic using those identifiers in a centralized `useCallback` inside the component.
+
+## 2024-05-15 - Fast aggregate calculation loops
+**Learning:** Iterating over object arrays to find aggregate values (like min or max) using `.reduce` can be significantly slower than a single-pass `for` loop because of object allocation and closure overhead on large datasets. Using mapping combined with spreading (`Math.max(...arr.map(...))`) is even worse due to the large intermediate array allocation and call stack limits on very large inputs.
+**Action:** In frequently rendered or large datasets (e.g., ContributionHeatmap stats calculation), replace `.reduce` and spreading with single-pass `for` loops or `for...of` loops, caching the results where appropriate.
