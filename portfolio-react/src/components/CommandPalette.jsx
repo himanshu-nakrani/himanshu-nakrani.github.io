@@ -134,20 +134,19 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
 
 
 
-  // Filter items based on search
-  const filteredItems = useMemo(() => {
-    if (!search.trim()) return STATIC_COMMAND_ITEMS
-    const query = search.toLowerCase()
-    return STATIC_COMMAND_ITEMS.filter((item) => item.keywords.includes(query))
-  }, [search])
-
-  // Group by type and create a flattened array of items in the exact render order
+  // Filter and group by type, creating a flattened array of items in the exact render order
   // to enable O(1) lookup during delegated events via data-index.
-  // Combines groupedItems and renderedItems computations into a single useMemo
-  // to reduce React hook overhead and multiple render passes.
-  const { groupedItems, renderedItems } = useMemo(() => {
+  // Combines filtering, groupedItems, and renderedItems computations into a single useMemo
+  // to reduce React hook overhead, dependency array checking, and multiple render passes.
+  const { filteredItems, groupedItems, renderedItems } = useMemo(() => {
+    let currentFiltered = STATIC_COMMAND_ITEMS
+    if (search.trim()) {
+      const query = search.toLowerCase()
+      currentFiltered = STATIC_COMMAND_ITEMS.filter((item) => item.keywords.includes(query))
+    }
+
     const groups = { page: [], project: [], skill: [], action: [] }
-    filteredItems.forEach((item) => {
+    currentFiltered.forEach((item) => {
       if (groups[item.type]) groups[item.type].push(item)
     })
 
@@ -158,8 +157,8 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
       ...groups.action
     ]
 
-    return { groupedItems: groups, renderedItems: flattened }
-  }, [filteredItems])
+    return { filteredItems: currentFiltered, groupedItems: groups, renderedItems: flattened }
+  }, [search])
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
 
