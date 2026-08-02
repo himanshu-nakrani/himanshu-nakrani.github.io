@@ -364,7 +364,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                 borderBottom: '1px solid var(--color-border)',
               }}
             >
-              <Search size={17} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
+              <Search size={17} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} aria-hidden="true" />
               <input
                 ref={inputRef}
                 type="text"
@@ -417,7 +417,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                     e.currentTarget.style.background = 'transparent'
                   }}
                 >
-                  <X size={15} />
+                  <X size={15} aria-hidden="true" />
                 </button>
               )}
               <kbd

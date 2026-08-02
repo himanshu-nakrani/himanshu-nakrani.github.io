@@ -375,7 +375,7 @@ export default function ProjectsPage() {
                       border: 'none',
                     }}
                   >
-                    <X size={14} />
+                    <X size={14} aria-hidden="true" />
                   </button>
                 )}
               </label>

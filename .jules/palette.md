@@ -16,3 +16,7 @@
 ## 2025-02-28 - Dynamic Search ARIA Status
 **Learning:** Screen readers won't naturally announce text changes on the page unless explicitly told to. This applies to dynamic search result counts or filter counts in single-page apps.
 **Action:** When implementing any search or filter UI that updates a result count dynamically, always ensure the container holding the count has `role="status"` and `aria-live="polite"` so screen readers will announce the updated count non-disruptively.
+
+## 2024-05-18 - Add aria-hidden to decorative icons within interactive elements
+**Learning:** Decorative SVG icons (like magnifying glasses or 'X' clear buttons) placed inside of buttons or labels that already have an explicit `aria-label` attribute can cause redundancy or confusion for screen reader users if left exposed.
+**Action:** Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit `aria-label` or surrounding text of their parent interactive elements.
