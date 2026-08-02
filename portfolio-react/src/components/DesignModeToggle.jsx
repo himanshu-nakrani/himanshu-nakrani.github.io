@@ -52,7 +52,7 @@ export default function DesignModeToggle({ designMode, setDesignMode, compact = 
         e.currentTarget.style.color = isInstrument ? 'var(--color-accent)' : 'var(--color-text-muted)'
       }}
     >
-      <Microscope size={compact ? 15 : 16} strokeWidth={1.8} />
+      <Microscope size={compact ? 15 : 16} strokeWidth={1.8} aria-hidden="true" />
       {!compact && (
         <span
           style={{
