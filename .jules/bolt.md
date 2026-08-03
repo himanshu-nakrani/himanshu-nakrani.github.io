@@ -48,3 +48,9 @@
 ## 2024-05-15 - Fast aggregate calculation loops
 **Learning:** Iterating over object arrays to find aggregate values (like min or max) using `.reduce` can be significantly slower than a single-pass `for` loop because of object allocation and closure overhead on large datasets. Using mapping combined with spreading (`Math.max(...arr.map(...))`) is even worse due to the large intermediate array allocation and call stack limits on very large inputs.
 **Action:** In frequently rendered or large datasets (e.g., ContributionHeatmap stats calculation), replace `.reduce` and spreading with single-pass `for` loops or `for...of` loops, caching the results where appropriate.
+
+## 2024-05-18 - [Performance] Combining Sequential useMemo Hooks
+
+**Learning:** When multiple `useMemo` hooks depend strictly on each other's sequential output in a React component, keeping them separate forces React to evaluate the first, store the intermediate result, check the dependencies of the second, and then evaluate the second. This creates unnecessary hook tracking overhead, extra intermediate dependency allocations, and multiple evaluation steps for what is essentially a single synchronous data transformation pipeline.
+
+**Action:** Combine tightly coupled, sequential data transformations into a single `useMemo` block that depends on the original upstream inputs. Return an object containing all the derived data slices needed by the component. This reduces hook overhead and ensures the entire transformation evaluates in one pass.
