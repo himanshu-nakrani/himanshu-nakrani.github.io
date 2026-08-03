@@ -36,7 +36,7 @@ export default function BackToTop() {
         overflow: 'hidden',
       }}
     >
-      <ArrowUp size={20} style={{ position: 'relative', zIndex: 1 }} />
+      <ArrowUp size={20} style={{ position: 'relative', zIndex: 1 }} aria-hidden="true" />
       <style>{`
         .back-to-top {
           opacity: 0;

@@ -191,7 +191,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"
             >
-              <Search size={13} />
+              <Search size={13} aria-hidden="true" />
               <span style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
@@ -202,7 +202,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.65rem',
               }}>
-                <Command size={9} />K
+                <Command size={9} aria-hidden="true" />K
               </span>
             </button>
             <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
@@ -258,7 +258,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               }}
             >
               <span className="sr-only">{open ? 'Close navigation menu' : 'Open navigation menu'}</span>
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
           </div>
         </div>
