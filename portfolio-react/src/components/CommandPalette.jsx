@@ -162,11 +162,6 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
 
-  // Reset selection when search changes
-  useEffect(() => {
-    setSelectedIndex(0)
-  }, [search])
-
   // Memoized event handlers for delegation
   const handleListMouseOver = useCallback((e) => {
     const itemEl = e.target.closest('[data-index]')
@@ -372,7 +367,13 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                 placeholder="Search pages, projects, skills..."
                 maxLength={100}
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  // ⚡ Bolt Optimization: Batch setSelectedIndex(0) with setSearch in the event handler
+                  // instead of using a dependent useEffect. This prevents cascading double-renders
+                  // during rapid typing, halving the React render overhead per keystroke.
+                  setSelectedIndex(0)
+                }}
                 aria-controls="cmd-listbox"
                 aria-autocomplete="list"
                 aria-expanded={open}
@@ -394,6 +395,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   aria-label="Clear search"
                   onClick={() => {
                     setSearch('')
+                    setSelectedIndex(0)
                     inputRef.current?.focus()
                   }}
                   style={{
@@ -451,6 +453,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                     type="button"
                     onClick={() => {
                       setSearch('')
+                      setSelectedIndex(0)
                       inputRef.current?.focus()
                     }}
                     className="btn btn--ghost"
