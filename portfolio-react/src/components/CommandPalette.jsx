@@ -362,7 +362,6 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
               <input
                 ref={inputRef}
                 type="text"
-                role="combobox"
                 aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
                 maxLength={100}
@@ -374,6 +373,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   // during rapid typing, halving the React render overhead per keystroke.
                   setSelectedIndex(0)
                 }}
+                role="combobox"
                 aria-controls="cmd-listbox"
                 aria-autocomplete="list"
                 aria-expanded={open}
