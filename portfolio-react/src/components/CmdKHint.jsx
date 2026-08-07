@@ -149,7 +149,7 @@ export default function CmdKHint() {
           e.currentTarget.style.background = 'transparent'
         }}
       >
-        <X size={13} />
+        <X size={13} aria-hidden="true" />
       </button>
       <style>{`
         .cmdk-hint {
