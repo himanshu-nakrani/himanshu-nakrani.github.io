@@ -57,3 +57,7 @@
 ## 2026-07-26 - [Performance] Cascading Re-renders from Dependent State Updates
 **Learning:** Using a `useEffect` hook to synchronize state variables in React (like resetting a `selectedIndex` when a `search` query state changes) is a common anti-pattern that causes severe cascading re-renders. React paints the DOM after the first state change, the `useEffect` fires, updates the second state, and React must paint the DOM a second time. This can halve performance during rapid typing.
 **Action:** When one state change logically necessitates another (like a search change resetting selection), batch the state updates directly inside the event handler (e.g. `onChange` or `onClick`). This allows React to batch both updates into a single render pass, eliminating the cascading render completely.
+
+## 2023-11-20 - [Performance] Refactoring in-render reduce to single pass loops
+**Learning:** Using `Array.prototype.reduce` inside a React component's render body (e.g. `skills.reduce((acc, group) => acc + group.items.length, 0)`) evaluates an aggregate value on every render cycle. This generates O(N) intermediate function closures and object allocations per evaluation, negatively impacting frame rate.
+**Action:** When calculating aggregate statistics over a static array, pre-compute the total via a single-pass `for...of` loop outside of the component definition, passing only the final primitive value into the React component. This completely eliminates O(N) calculations and closure allocations during rendering.
