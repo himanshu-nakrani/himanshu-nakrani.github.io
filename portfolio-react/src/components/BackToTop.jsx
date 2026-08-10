@@ -18,6 +18,7 @@ export default function BackToTop() {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Back to top"
+      title="Back to top"
       className="glass-btn back-to-top"
       data-visible={visible ? 'true' : 'false'}
       style={{
