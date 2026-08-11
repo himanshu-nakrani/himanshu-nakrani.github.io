@@ -393,6 +393,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                 <button
                   type="button"
                   aria-label="Clear search"
+                  title="Clear search"
                   onClick={() => {
                     setSearch('')
                     setSelectedIndex(0)
