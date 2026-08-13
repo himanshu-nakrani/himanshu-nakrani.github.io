@@ -126,6 +126,7 @@ export default function CmdKHint() {
         type="button"
         onClick={dismiss}
         aria-label="Dismiss hint"
+        title="Dismiss hint"
         style={{
           display: 'inline-flex',
           alignItems: 'center',

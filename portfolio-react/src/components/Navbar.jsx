@@ -190,6 +190,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               }}
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"
+              title="Open command palette (Cmd+K)"
             >
               <Search size={13} aria-hidden="true" />
               <span style={{ 
@@ -242,6 +243,7 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
               onClick={() => setOpen((prev) => !prev)}
               className="nav-mobile-btn glass-btn"
               aria-label={open ? 'Close menu' : 'Open menu'}
+              title={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-nav-menu"
               style={{
