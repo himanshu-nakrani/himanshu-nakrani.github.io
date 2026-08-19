@@ -130,7 +130,7 @@ export default function ResearchPage() {
           <p className="editorial-kicker">[ 03 ] · Method</p>
           <h2 className="editorial-section-title">Graph-of-Thoughts pipeline</h2>
           <div className="editorial-grid-2">
-            <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div role="group" aria-label="Graph-of-Thoughts methodology steps" style={{ display: 'grid', gap: '0.75rem' }}>
               {methodologySteps.map((step, index) => {
                 const Icon = step.icon
                 const active = activeMethodNode === index
