@@ -362,6 +362,7 @@ export default function ProjectsPage() {
                   <button
                     type="button"
                     aria-label="Clear search"
+                    title="Clear search"
                     className="btn btn--ghost"
                     onClick={() => {
                       setQuery('')
