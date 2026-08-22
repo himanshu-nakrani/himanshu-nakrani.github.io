@@ -535,7 +535,7 @@ ul, ol { margin: 0; padding: 0; }
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
   gap: clamp(2rem, 6vw, 5rem);
-  align-items: end;
+  align-items: start;
   margin-top: clamp(2rem, 6vh, 3.5rem);
 }
 
@@ -1269,7 +1269,7 @@ ul, ol { margin: 0; padding: 0; }
 
 .pub-row__title {
   font-size: var(--text-xl);
-  max-width: 30ch;
+  max-width: 34ch;
 }
 
 .pub-row__desc {
@@ -1409,6 +1409,9 @@ ul, ol { margin: 0; padding: 0; }
   line-height: 2;
   color: var(--color-text-muted);
 }
+
+/* Each item (+ its separator) is an atomic box so lines always wrap. */
+.skill-group__items span { display: inline-block; }
 
 .skill-group__items span::after {
   content: '·';
