@@ -1,48 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { identity, heroStats, socials } from '../content'
 import { currentFocusItems } from '../data'
 import { useCountUp } from '../hooks/useCountUp'
-
-function useTypingEffect(texts, { typingSpeed = 55, deleteSpeed = 26, pause = 2600 } = {}) {
-  const reduceMotion = useReducedMotion()
-  const [displayText, setDisplayText] = useState('')
-  const [textIndex, setTextIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-
-  useEffect(() => {
-    if (reduceMotion) return undefined
-
-    const currentText = texts[textIndex]
-    let timeout
-
-    if (!isDeleting && displayText.length < currentText.length) {
-      timeout = setTimeout(
-        () => setDisplayText(currentText.slice(0, displayText.length + 1)),
-        typingSpeed
-      )
-    } else if (!isDeleting) {
-      timeout = setTimeout(() => setIsDeleting(true), pause)
-    } else if (displayText.length > 0) {
-      timeout = setTimeout(
-        () => setDisplayText(currentText.slice(0, displayText.length - 1)),
-        deleteSpeed
-      )
-    } else {
-      // Finished deleting — brief hold, then advance to the next line.
-      timeout = setTimeout(() => {
-        setIsDeleting(false)
-        setTextIndex((prev) => (prev + 1) % texts.length)
-      }, 400)
-    }
-
-    return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, textIndex, texts, typingSpeed, deleteSpeed, pause, reduceMotion])
-
-  // Reduced motion: show a static line instead of animating.
-  return reduceMotion ? texts[0] : displayText
-}
 
 function Stat({ value, label }) {
   const [active, setActive] = useState(false)
@@ -73,8 +34,9 @@ function reduceMotionSafe() {
 
 export default function Hero() {
   const reduceMotion = useReducedMotion()
-  const focusDescriptions = currentFocusItems.map((item) => item.description)
-  const typed = useTypingEffect(focusDescriptions)
+  const nowBuilding =
+    currentFocusItems.find((item) => item.area === 'Building')?.description ??
+    currentFocusItems[0].description
 
   const ease = [0.22, 0.61, 0.36, 1]
 
@@ -127,10 +89,7 @@ export default function Hero() {
 
             <p className="hero__typing" aria-label="Current focus">
               <span className="hero__typing-label">Now building</span>
-              <span>
-                {typed}
-                <span className="typing-caret" aria-hidden="true" />
-              </span>
+              <span>{nowBuilding}</span>
             </p>
 
             <div className="hero__cta">
@@ -192,10 +151,6 @@ export default function Hero() {
           ))}
         </div>
 
-        <div className="scroll-cue" aria-hidden="true">
-          <span className="scroll-cue__line" />
-          Scroll
-        </div>
       </div>
     </section>
   )
