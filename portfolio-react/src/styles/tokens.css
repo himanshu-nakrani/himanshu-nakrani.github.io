@@ -6,38 +6,38 @@
 
 :root {
   /* Surfaces */
-  --color-bg:               #f4f1e8;
-  --color-surface:          #faf8f2;
-  --color-surface-raised:   #ece7da;
-  --color-surface-elev:     #e0d9c8;
+  --color-bg:               #f5f1ea;
+  --color-surface:          #fbf8f2;
+  --color-surface-raised:   #ece5d9;
+  --color-surface-elev:     #e1d7c7;
 
   /* Borders */
-  --color-border:           rgba(27, 23, 16, 0.14);
-  --color-border-strong:    rgba(27, 23, 16, 0.38);
-  --color-border-solid:     #cfc6b2;
+  --color-border:           rgba(43, 26, 20, 0.14);
+  --color-border-strong:    rgba(43, 26, 20, 0.38);
+  --color-border-solid:     #d3c7b6;
 
   /* Text */
-  --color-text:             #191611;
-  --color-text-muted:       #57503f;
-  --color-text-subtle:      #857b66;
+  --color-text:             #1a1412;
+  --color-text-muted:       #584d44;
+  --color-text-subtle:      #857567;
 
-  /* Accent — rust, used sparingly */
-  --color-accent:           #b4432a;
-  --color-accent-strong:    #8e341e;
-  --color-accent-soft:      rgba(180, 67, 42, 0.08);
-  --color-accent-fg:        #f8f5ee;
+  /* Accent — oxblood */
+  --color-accent:           #7a2230;
+  --color-accent-strong:    #5e181f;
+  --color-accent-soft:      rgba(122, 34, 48, 0.08);
+  --color-accent-fg:        #f8f4ec;
 
   --color-success:          #2f6b3a;
-  --color-warning:          #b4432a;
-  --color-danger:           #b42318;
+  --color-warning:          #7a2230;
+  --color-danger:           #a02c20;
   --color-info:             #2a5db4;
   --color-live:             #2f8f4e;
 
   /* Category colors (data viz only) */
-  --color-cat-1:            #b4432a;
-  --color-cat-2:            #5a4fb4;
-  --color-cat-3:            #b43a78;
-  --color-cat-4:            #2a7ab4;
+  --color-cat-1:            #7a2230;
+  --color-cat-2:            #4a3f8f;
+  --color-cat-3:            #96355c;
+  --color-cat-4:            #2a6a8f;
   --color-cat-5:            #2f6b3a;
   --color-cat-6:            #8a5a17;
 
@@ -99,23 +99,23 @@
    ======================================== */
 
 :root[data-theme='dark'] {
-  --color-bg:               #161310;
-  --color-surface:          #1e1a15;
-  --color-surface-raised:   #262119;
-  --color-surface-elev:     #322b21;
+  --color-bg:               #161210;
+  --color-surface:          #1e1815;
+  --color-surface-raised:   #28201b;
+  --color-surface-elev:     #352a23;
 
-  --color-border:           rgba(237, 228, 210, 0.13);
-  --color-border-strong:    rgba(237, 228, 210, 0.34);
-  --color-border-solid:     #453d30;
+  --color-border:           rgba(239, 230, 222, 0.13);
+  --color-border-strong:    rgba(239, 230, 222, 0.34);
+  --color-border-solid:     #453830;
 
-  --color-text:             #ede7d8;
-  --color-text-muted:       #b3a992;
-  --color-text-subtle:      #847963;
+  --color-text:             #efe6e2;
+  --color-text-muted:       #b7a79d;
+  --color-text-subtle:      #877468;
 
-  --color-accent:           #e07a45;
-  --color-accent-strong:    #ec9061;
-  --color-accent-soft:      rgba(224, 122, 69, 0.11);
-  --color-accent-fg:        #171310;
+  --color-accent:           #e08a8a;
+  --color-accent-strong:    #eda6a6;
+  --color-accent-soft:      rgba(224, 138, 138, 0.10);
+  --color-accent-fg:        #241412;
 
   --color-success:          #6fbf83;
   --color-info:             #82a8e0;
