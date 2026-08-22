@@ -14,8 +14,8 @@ export function getPreferredTheme() {
     return savedTheme
   }
 
-  // Default to light (cream) unless system prefers dark
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  // Default to dark (obsidian) — matches the no-flash script in index.html
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
 /**

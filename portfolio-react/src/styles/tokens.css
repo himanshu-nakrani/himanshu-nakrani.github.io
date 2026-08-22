@@ -1,328 +1,140 @@
 /* ============================================
-   DESIGN TOKENS — "Warm Editorial"
-   ============================================
-   Cream/off-white foundation with terracotta accent.
-   Inspired by JustHireMe — clean, editorial, minimal.
-   
-   4-color system: bg, surface, text, accent
-   Category colors only for data viz / tags.
-*/
+   DESIGN TOKENS — "Paper & Ink"
+   Flat editorial system: warm paper, ink text,
+   one restrained rust accent. No gradients, no glow.
+   ============================================ */
 
 :root {
-  /* ========================================
-     SURFACES — warm cream/ivory, JustHireMe-inspired
-     ======================================== */
+  /* Surfaces */
+  --color-bg:               #f4f1e8;
+  --color-surface:          #faf8f2;
+  --color-surface-raised:   #ece7da;
+  --color-surface-elev:     #e0d9c8;
 
-  --color-bg:               #f5f0e8;   /* warm cream, JustHireMe background */
-  --color-surface:          #ffffff;   /* pure white cards */
-  --color-surface-raised:   #ede8df;   /* warm sand elevated */
-  --color-surface-elev:     #e4ddd2;   /* deeper warm sand */
+  /* Borders */
+  --color-border:           rgba(27, 23, 16, 0.14);
+  --color-border-strong:    rgba(27, 23, 16, 0.38);
+  --color-border-solid:     #cfc6b2;
 
-  /* ========================================
-     BORDERS — warm brown-tinted hairlines
-     ======================================== */
+  /* Text */
+  --color-text:             #191611;
+  --color-text-muted:       #57503f;
+  --color-text-subtle:      #857b66;
 
-  --color-border:           rgba(100, 80, 50, 0.13);   /* warm brown-tinted */
-  --color-border-strong:    rgba(100, 80, 50, 0.25);   /* hover / active */
-  --color-border-solid:     #d4ccbf;                   /* opaque warm beige */
+  /* Accent — rust, used sparingly */
+  --color-accent:           #b4432a;
+  --color-accent-strong:    #8e341e;
+  --color-accent-soft:      rgba(180, 67, 42, 0.08);
+  --color-accent-fg:        #f8f5ee;
 
-  /* ========================================
-     TEXT — very dark warm brown (high contrast)
-     ======================================== */
+  --color-success:          #2f6b3a;
+  --color-warning:          #b4432a;
+  --color-danger:           #b42318;
+  --color-info:             #2a5db4;
+  --color-live:             #2f8f4e;
 
-  --color-text:             #1c1917;   /* stone-900, near-black warm */
-  --color-text-muted:       #44403c;   /* stone-700, readable mid */
-  --color-text-subtle:      #78716c;   /* stone-500, understated */
+  /* Category colors (data viz only) */
+  --color-cat-1:            #b4432a;
+  --color-cat-2:            #5a4fb4;
+  --color-cat-3:            #b43a78;
+  --color-cat-4:            #2a7ab4;
+  --color-cat-5:            #2f6b3a;
+  --color-cat-6:            #8a5a17;
 
-  /* ========================================
-     ACCENT — terracotta/burnt orange (JustHireMe)
-     ======================================== */
+  /* Typography */
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
 
-  --color-accent:           #c2622a;   /* terracotta, main accent */
-  --color-accent-strong:    #a85220;   /* darker for hover */
-  --color-accent-soft:      rgba(194, 98, 42, 0.10);
-  --color-accent-fg:        #ffffff;   /* white on terracotta */
+  --text-xs:   clamp(0.72rem, 0.70rem + 0.12vw, 0.78rem);
+  --text-sm:   clamp(0.82rem, 0.80rem + 0.12vw, 0.88rem);
+  --text-base: clamp(0.95rem, 0.91rem + 0.18vw, 1.02rem);
+  --text-lg:   clamp(1.05rem, 1.00rem + 0.28vw, 1.18rem);
+  --text-xl:   clamp(1.25rem, 1.14rem + 0.55vw, 1.5rem);
+  --text-2xl:  clamp(1.5rem, 1.32rem + 0.9vw, 1.95rem);
+  --text-3xl:  clamp(2rem, 1.65rem + 1.7vw, 2.85rem);
+  --text-hero: clamp(3rem, 1.9rem + 5.6vw, 6.25rem);
 
-  /* ========================================
-     STATUS — warm-harmonious, semantic
-     ======================================== */
+  --line-height-tight:    1.05;
+  --line-height-snug:     1.3;
+  --line-height-normal:   1.55;
+  --line-height-relaxed:  1.72;
 
-  --color-success:          #16a34a;   /* green-600 */
-  --color-warning:          #c2622a;   /* terracotta (accent) */
-  --color-danger:           #dc2626;   /* red-600 */
-  --color-info:             #2563eb;   /* blue-600 */
-  --color-live:             #16a34a;   /* green for live status */
-
-  /* ========================================
-     CATEGORY COLORS (data viz only)
-     ======================================== */
-
-  --color-cat-1:            #c2622a;   /* terracotta (accent) */
-  --color-cat-2:            #7c3aed;   /* violet-600 */
-  --color-cat-3:            #db2777;   /* pink-600 */
-  --color-cat-4:            #0891b2;   /* cyan-600 */
-  --color-cat-5:            #059669;   /* emerald-600 */
-  --color-cat-6:            #d97706;   /* amber-600 */
-
-  /* ========================================
-     TYPOGRAPHY — editorial serif + clean sans
-     Using existing font vars but remapped for editorial feel
-     ======================================== */
-
-  --font-display: 'Space Grotesk', 'Inter', -apple-system, system-ui, sans-serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
-  --font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
-
-  --font-weight-regular:  400;
-  --font-weight-medium:   500;
-  --font-weight-semibold: 600;
-  --font-weight-bold:     700;
-
-  /* Fluid type scale */
-  --text-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
-  --text-sm:   clamp(0.8125rem, 0.79rem + 0.12vw, 0.875rem);
-  --text-base: clamp(0.9375rem, 0.9rem + 0.18vw, 1rem);
-  --text-lg:   clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
-  --text-xl:   clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
-  --text-2xl:  clamp(1.75rem, 1.5rem + 1.2vw, 2.25rem);
-  --text-3xl:  clamp(2rem, 1.7rem + 1.5vw, 2.75rem);
-  --text-4xl:  clamp(2.5rem, 2rem + 2.5vw, 4rem);
-  --text-5xl:  clamp(3rem, 2.4rem + 3vw, 5rem);
-
-  --line-height-tight:    1.1;
-  --line-height-snug:     1.25;
-  --line-height-normal:   1.5;
-  --line-height-relaxed:  1.7;
-  --letter-spacing-tight: -0.025em;
-  --letter-spacing-snug:  -0.01em;
-  --letter-spacing-normal: 0;
-  --letter-spacing-wide:  0.1em;
-  --letter-spacing-mono:  0.05em;
-
-  /* ========================================
-     LAYOUT & SPACING
-     ======================================== */
-
-  --space-1:  0.25rem;
-  --space-2:  0.5rem;
-  --space-3:  0.75rem;
-  --space-4:  1rem;
-  --space-5:  1.25rem;
-  --space-6:  1.5rem;
-  --space-8:  2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-  --space-32: 8rem;
-
+  /* Layout */
+  --container:        1160px;
   --container-narrow: 720px;
-  --container:        1280px;
-  --container-wide:   1440px;
-  --container-full:   1600px;
+  --page-pad-x:       clamp(1.25rem, 4.5vw, 3.25rem);
+  --section-pad-y:    clamp(4.5rem, 11vh, 7.5rem);
+  --navbar-height:    64px;
 
-  --page-pad-x:    clamp(1.25rem, 4vw, 3.5rem);
-  --page-pad-top:  clamp(5rem, 15vh, 8rem);
-  --section-pad-y: clamp(5rem, 12vh, 8rem);
+  /* Radius — sharp, editorial */
+  --radius-xs:  2px;
+  --radius-sm:  3px;
+  --radius-md:  4px;
+  --radius-lg:  6px;
+  --radius-xl:  10px;
+  --radius-pill: 999px;
 
-  --navbar-height: 100px;
+  /* Motion */
+  --motion-fast:   140ms;
+  --motion-base:   240ms;
+  --motion-slow:   420ms;
+  --motion-ease:   cubic-bezier(0.22, 0.61, 0.36, 1);
 
-  /* ========================================
-     RADIUS — minimal, refined
-     ======================================== */
-
-  --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   6px;
-  --radius-lg:   8px;
-  --radius-xl:   12px;
-  --radius-2xl:  16px;
-  --radius-pill: 9999px;
-
-  /* ========================================
-     SHADOWS — subtle, obsidian-tinted
-     ======================================== */
-
-  --shadow-xs: 0 1px 2px rgba(28, 25, 23, 0.06);
-  --shadow-sm: 0 1px 3px rgba(28, 25, 23, 0.08), 0 1px 2px rgba(28, 25, 23, 0.05);
-  --shadow-md: 0 4px 12px rgba(28, 25, 23, 0.10);
-  --shadow-lg: 0 8px 24px rgba(28, 25, 23, 0.12);
-  --shadow-xl: 0 12px 36px rgba(28, 25, 23, 0.15);
-
-  /* ========================================
-     MOTION — deliberate, smooth
-     ======================================== */
-
-  --motion-duration-instant: 0ms;
-  --motion-duration-fast:    150ms;
-  --motion-duration-base:    250ms;
-  --motion-duration-slow:    400ms;
-  --motion-duration-slower:  600ms;
-  
-  --motion-ease:         cubic-bezier(0.645, 0.045, 0.355, 1);
-  --motion-ease-out:     cubic-bezier(0.215, 0.61, 0.355, 1);
-  --motion-ease-in-out:  cubic-bezier(0.645, 0.045, 0.355, 1);
-  --motion-ease-spring:  cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-  /* ========================================
-     GLASS — refined blur, amber-tinted
-     ======================================== */
-
-  --glass-bg:         rgba(245, 240, 232, 0.90);
-  --glass-border:     rgba(100, 80, 50, 0.12);
-  --glass-blur:       10px;
-  --glass-saturation: 1.2;
-
-  /* ========================================
-     LEGACY ALIASES (backwards compat)
-     ======================================== */
-
-  --text:     var(--color-text);
-  --text2:    var(--color-text-muted);
-  --text3:    var(--color-text-subtle);
-  --bg:       var(--color-bg);
-  --bg2:      var(--color-surface);
-  --surface:  var(--color-surface);
-  --surface2: var(--color-surface-raised);
-  --border:   var(--color-border);
-  --border2:  var(--color-border-strong);
-  --accent:   var(--color-accent);
-  --accent2:  var(--color-accent-strong);
-
-  --ghost-border:       var(--color-border-strong);
-  --ghost-bg:           transparent;
-  --ghost-hover-border: var(--color-accent);
-  --ghost-hover-bg:     rgba(194, 98, 42, 0.08);
-
-  --pill-contact-mobile-bg: rgba(245, 240, 232, 0.95);
+  /* Legacy aliases */
+  --text: var(--color-text);
+  --text2: var(--color-text-muted);
+  --bg: var(--color-bg);
+  --surface: var(--color-surface);
+  --border: var(--color-border);
+  --accent: var(--color-accent);
   --nav-dot: var(--color-accent);
   --page-max: var(--container);
 
-  --display-weight:         var(--font-weight-semibold);
-  --display-tracking:       var(--letter-spacing-tight);
-  --section-title-weight:   var(--font-weight-semibold);
-  --section-title-tracking: var(--letter-spacing-tight);
-
-  /* ========================================
-     AMBIENT ATMOSPHERE — amber glow
-     ======================================== */
-
-  --ambient-grain-opacity: 0.025;
-  --backdrop-gradient:
-    radial-gradient(
-      ellipse 80% 50% at 10% 0%,
-      rgba(194, 98, 42, 0.03),
-      transparent 50%
-    );
-
-  /* ========================================
-     INTERACTIVE STATES
-     ======================================== */
-
-  --state-hover-opacity: 0.1;
-  --state-active-opacity: 0.15;
   --focus-ring: 2px solid var(--color-accent);
-  --focus-ring-offset: 3px;
-
-  /* ========================================
-     NUMBERED LIST (left-aligned sections)
-     ======================================== */
-
-  --section-number-color: var(--color-accent);
-  --section-number-font:  var(--font-mono);
-  --section-number-size:  var(--text-sm);
 }
 
 /* ========================================
-   DARK THEME — obsidian with terracotta accent
+   DARK THEME — warm ink
    ======================================== */
 
-:root[data-theme="dark"] {
-  --color-bg:               #0d0d0f;
-  --color-surface:          #18181b;
-  --color-surface-raised:   #27272a;
-  --color-surface-elev:     #3f3f46;
+:root[data-theme='dark'] {
+  --color-bg:               #161310;
+  --color-surface:          #1e1a15;
+  --color-surface-raised:   #262119;
+  --color-surface-elev:     #322b21;
 
-  --color-border:           rgba(194, 98, 42, 0.14);
-  --color-border-strong:    rgba(194, 98, 42, 0.28);
-  --color-border-solid:     #3f3f46;
+  --color-border:           rgba(237, 228, 210, 0.13);
+  --color-border-strong:    rgba(237, 228, 210, 0.34);
+  --color-border-solid:     #453d30;
 
-  --color-text:             #fafaf9;
-  --color-text-muted:       #d4cfc8;
-  --color-text-subtle:      #a39d95;
+  --color-text:             #ede7d8;
+  --color-text-muted:       #b3a992;
+  --color-text-subtle:      #847963;
 
-  --color-accent:           #e8753a;   /* lighter terracotta on dark bg */
-  --color-accent-strong:    #f0855a;
-  --color-accent-soft:      rgba(232, 117, 58, 0.14);
-  --color-accent-fg:        #0d0d0f;
+  --color-accent:           #e07a45;
+  --color-accent-strong:    #ec9061;
+  --color-accent-soft:      rgba(224, 122, 69, 0.11);
+  --color-accent-fg:        #171310;
 
-  --shadow-xs: 0 1px 2px rgba(13, 13, 15, 0.4);
-  --shadow-sm: 0 2px 4px rgba(13, 13, 15, 0.3), 0 1px 2px rgba(13, 13, 15, 0.2);
-  --shadow-md: 0 10px 30px -15px rgba(13, 13, 15, 0.7);
-  --shadow-lg: 0 20px 40px -15px rgba(13, 13, 15, 0.8);
-  --shadow-xl: 0 30px 60px -20px rgba(13, 13, 15, 0.9);
+  --color-success:          #6fbf83;
+  --color-info:             #82a8e0;
+  --color-live:             #63b97f;
 
-  --backdrop-gradient:
-    radial-gradient(
-      ellipse 80% 50% at 10% 0%,
-      rgba(232, 117, 58, 0.05),
-      transparent 50%
-    );
-
-  --glass-bg:     rgba(24, 24, 27, 0.88);
-  --glass-border: rgba(194, 98, 42, 0.14);
-
-  --ghost-hover-bg: rgba(232, 117, 58, 0.10);
-  --pill-contact-mobile-bg: rgba(24, 24, 27, 0.92);
+  --focus-ring: 2px solid var(--color-accent);
 }
-
-/* ========================================
-   REDUCED TRANSPARENCY MODE
-   ======================================== */
-
-@media (prefers-reduced-transparency) {
-  :root {
-    --glass-bg: var(--color-surface);
-    --glass-border: var(--color-border-solid);
-    --ambient-grain-opacity: 0;
-  }
-}
-
-/* ========================================
-   REDUCED MOTION MODE
-   ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --motion-duration-fast: 0ms;
-    --motion-duration-base: 0ms;
-    --motion-duration-slow: 0ms;
-    --motion-duration-slower: 0ms;
-  }
-
-  * {
-    animation-duration: 0ms !important;
-    animation-delay: 0ms !important;
-    transition-duration: 0ms !important;
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
   }
 }
-
-/* ========================================
-   RESPONSIVE ADJUSTMENTS
-   ======================================== */
 
 @media (max-width: 768px) {
   :root {
-    --navbar-height: 80px;
-    --page-pad-x: clamp(1.25rem, 5vw, 2rem);
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --page-pad-x:    1rem;
-    --section-pad-y: clamp(3rem, 10vh, 5rem);
-    --page-pad-top:  clamp(4rem, 12vh, 6rem);
+    --navbar-height: 60px;
+    --page-pad-x: clamp(1.125rem, 5vw, 2rem);
   }
 }
