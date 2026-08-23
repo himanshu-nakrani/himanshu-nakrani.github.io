@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+dist/
+.claude/worktrees/
+.commandcode/
+*.log
+
+.Jules/
+.pnpm-store/
+.kilo/
+.replit
