@@ -1,6 +1,4 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import { applyTheme, getPreferredTheme, THEME_STORAGE_KEY } from '../lib/theme'
 import { SkipLink } from './components/SkipLink'
@@ -82,9 +80,6 @@ export default function OnePager() {
       </main>
 
       <Footer />
-
-      <Analytics />
-      <SpeedInsights />
     </div>
   )
 }

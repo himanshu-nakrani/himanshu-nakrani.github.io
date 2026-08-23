@@ -36,7 +36,7 @@ export default function Hero() {
   const reduceMotion = useReducedMotion()
   const nowBuilding =
     currentFocusItems.find((item) => item.area === 'Building')?.description ??
-    currentFocusItems[0].description
+    currentFocusItems[0]?.description
 
   const ease = [0.22, 0.61, 0.36, 1]
 
