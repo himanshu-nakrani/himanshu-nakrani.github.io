@@ -10,7 +10,7 @@ export default function HighlightedText({ text }) {
         // the captured terms will always be at odd indices (1, 3, 5, etc.)
         if (i % 2 === 1) {
           return (
-            <strong key={i} style={{ color: 'var(--accent2)' }}>
+            <strong key={i} style={{ color: 'var(--color-accent-secondary)' }}>
               {part}
             </strong>
           );

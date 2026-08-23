@@ -1,9 +1,11 @@
 /**
  * Presentation-layer content for the one-pager.
- * Every fact here is carried over verbatim from the previous multi-page
- * portfolio (AboutPage, ProfilesPage, ResearchPage). Mutable facts such as
- * projects, experience and publications live in `data.js`.
+ * Numeric facts mirror src/data/* on main (stats.js, ProfilesPage) so both
+ * experiences stay in sync; mutable project/experience/research facts flow
+ * directly from the data modules.
  */
+
+import { RESUME_URL } from '../lib/site'
 
 export const identity = {
   name: 'Himanshu Nakrani',
@@ -19,16 +21,19 @@ export const identity = {
   ],
 }
 
+export const resumeUrl = RESUME_URL
+
 export const socials = [
   { label: 'GitHub', href: 'https://github.com/himanshu-nakrani' },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshu-nakrani/' },
   { label: 'Kaggle', href: 'https://www.kaggle.com/himanshunakrani' },
   { label: 'LeetCode', href: 'https://leetcode.com/u/himanshunakrani0/' },
+  { label: 'Hugging Face', href: 'https://huggingface.co/himanshunakrani9' },
 ]
 
 export const heroStats = [
-  { value: '2+', label: 'Years experience' },
-  { value: '100+', label: 'Users served' },
+  { value: '3+', label: 'Years experience' },
+  { value: '200+', label: 'Users served' },
   { value: '75%', label: 'Latency reduction' },
   { value: '2', label: 'Publications' },
 ]
@@ -43,7 +48,7 @@ export const journey = [
     year: '2023 – Present',
     title: 'AI Software Developer',
     subtitle: 'State Street Corporation',
-    description: 'Building enterprise LLM systems for financial data analysis. Leading Text-to-SQL and RAG pipelines.',
+    description: 'Building LLM systems for financial-data workflows: Text-to-SQL, RAG, agent tooling, and evaluation.',
   },
   {
     year: '2025',
@@ -81,11 +86,11 @@ export const platforms = [
     handle: '@himanshu-nakrani',
     href: 'https://github.com/himanshu-nakrani',
     stats: [
-      { label: 'Public Repos', value: '31' },
-      { label: 'Stars', value: '156' },
-      { label: 'Followers', value: '7' },
+      { label: 'Repos', value: '46' },
+      { label: 'Commits', value: '680' },
+      { label: 'Since', value: '2021' },
     ],
-    badge: 'Python Primary',
+    badge: 'Python primary',
   },
   {
     id: 'kaggle',
@@ -93,11 +98,23 @@ export const platforms = [
     handle: '@himanshunakrani',
     href: 'https://www.kaggle.com/himanshunakrani',
     stats: [
-      { label: 'Tier', value: 'Expert' },
-      { label: 'Votes', value: '884' },
-      { label: 'Followers', value: '53' },
+      { label: 'Votes', value: '895' },
+      { label: 'Expert', value: '2×' },
+      { label: 'Notebooks', value: '74' },
     ],
-    badge: 'Datasets + Notebooks',
+    badge: 'Datasets & Notebooks Expert',
+  },
+  {
+    id: 'huggingface',
+    name: 'Hugging Face',
+    handle: '@himanshunakrani9',
+    href: 'https://huggingface.co/himanshunakrani9',
+    stats: [
+      { label: 'Models', value: '11' },
+      { label: 'Downloads', value: '2.8K' },
+      { label: 'Datasets', value: '11' },
+    ],
+    badge: 'LoRA · Open models',
   },
   {
     id: 'leetcode',
@@ -105,10 +122,10 @@ export const platforms = [
     handle: '@himanshunakrani0',
     href: 'https://leetcode.com/u/himanshunakrani0/',
     stats: [
-      { label: 'Solved', value: '180' },
-      { label: 'Ranking', value: '~150k' },
+      { label: 'Solved', value: '152' },
+      { label: 'Global rank', value: '1,068,827' },
     ],
-    badge: 'Consistent problem solver',
+    badge: 'DSA · Python',
   },
   {
     id: 'linkedin',
@@ -116,45 +133,40 @@ export const platforms = [
     handle: 'himanshu-nakrani',
     href: 'https://www.linkedin.com/in/himanshu-nakrani/',
     stats: [
-      { label: 'Open to', value: 'AI Roles' },
+      { label: 'Focus', value: 'AI' },
+      { label: 'Years', value: '3+' },
     ],
-    badge: 'Connect on LinkedIn',
+    badge: 'Open to contact',
   },
 ]
 
 export const ghStats = [
-  { num: '31', label: 'Public Repos' },
-  { num: '1,240', label: 'Commits (2024)' },
+  { num: '46', label: 'Public Repos' },
+  { num: '680', label: 'Commits' },
   { num: 'Python', label: 'Primary Lang' },
   { num: '2021', label: 'Member Since' },
 ]
 
 export const kaggleTiers = [
-  { title: 'Datasets Expert', rank: '1,211', total: '9,360', highest: '241', silver: 3, bronze: 4 },
-  { title: 'Notebooks Expert', rank: '2,815', total: '61,511', highest: '479', silver: 1, bronze: 16 },
+  { title: 'Datasets Expert', rank: '1,056', total: '9,785', silver: 3, bronze: 4 },
+  { title: 'Notebooks Expert', rank: '2,883', total: '62,296', silver: 1, bronze: 16 },
 ]
 
 export const kaggleCounters = [
-  ['74', 'Notebooks'], ['13', 'Datasets'], ['4', 'Competitions'], ['53', 'Followers'],
+  ['74', 'Notebooks'], ['14', 'Datasets'], ['895', 'Votes'], ['2×', 'Expert tiers'],
 ]
 
+export const medalByLabel = {
+  Silver: '🥈',
+  Bronze: '🥉',
+  Gold: '🥇',
+}
+
 export const methodologySteps = [
-  {
-    label: 'NL Query',
-    description: 'Natural language question input from user — e.g., “What were the top performing funds last quarter?”',
-  },
-  {
-    label: 'GoT Reasoning',
-    description: 'Graph-of-Thoughts decomposes complex queries into sub-problems, exploring multiple reasoning paths simultaneously.',
-  },
-  {
-    label: 'SQL Augmentation',
-    description: 'High-quality synthetic SQL examples generated for training data, improving model accuracy on edge cases.',
-  },
-  {
-    label: 'Fine-tuned LLM',
-    description: 'Domain-adapted language model trained on augmented data, optimized for structured query generation.',
-  },
+  { label: 'NL Query', description: 'Natural language question input from the user.' },
+  { label: 'GoT Reasoning', description: 'Graph-of-Thoughts explores several reasoning paths.' },
+  { label: 'SQL Augmentation', description: 'Synthetic SQL examples improve edge-case coverage.' },
+  { label: 'Fine-tuned LLM', description: 'A domain-adapted model generates structured queries.' },
 ]
 
 export const researchInterests = [

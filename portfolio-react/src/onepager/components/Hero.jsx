@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
-import { identity, heroStats, socials } from '../content'
+import { identity, heroStats, resumeUrl, socials } from '../content'
 import { currentFocusItems } from '../../data'
 import { useCountUp } from '../hooks/useCountUp'
 
@@ -112,7 +112,7 @@ export default function Hero() {
                   {social.label} ↗
                 </a>
               ))}
-              <a className="text-link" href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+              <a className="text-link" href={resumeUrl} target="_blank" rel="noopener noreferrer">
                 Résumé ↗
               </a>
             </div>

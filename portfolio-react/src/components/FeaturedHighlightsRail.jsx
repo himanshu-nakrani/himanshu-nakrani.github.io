@@ -1,18 +1,10 @@
+import { motion, useReducedMotion } from 'framer-motion'
+import DataIcon from './DataIcon'
+import SpotlightGlowCard from './ui/SpotlightGlowCard'
+
 /**
  * FeaturedHighlightsRail
  * Renders a scannable grid/rail of high-signal proof point cards.
- * Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6
- */
-
-/**
- * @typedef {Object} Highlight
- * @property {string} id
- * @property {string} icon
- * @property {string} category
- * @property {string} headline
- * @property {string} subtext
- * @property {string} [metric]
- * @property {string} [link]
  */
 
 const cardStyle = {
@@ -30,12 +22,8 @@ function CardInner({ highlight }) {
   return (
     <>
       <header style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span
-          className="highlights-icon"
-          aria-hidden="true"
-          style={{ fontSize: '1.25rem', lineHeight: 1 }}
-        >
-          {highlight.icon}
+        <span className="highlights-icon" aria-hidden="true" style={{ lineHeight: 1, color: 'var(--color-accent)' }}>
+          <DataIcon name={highlight.icon} size={18} />
         </span>
         <span
           className="highlights-category"
@@ -59,7 +47,7 @@ function CardInner({ highlight }) {
         style={{
           fontSize: '0.95rem',
           fontWeight: 600,
-          color: 'var(--text)',
+          color: 'var(--color-text)',
           lineHeight: 1.4,
           margin: 0,
         }}
@@ -70,7 +58,7 @@ function CardInner({ highlight }) {
       <p
         style={{
           fontSize: '0.85rem',
-          color: 'var(--text2)',
+          color: 'var(--color-text-muted)',
           lineHeight: 1.5,
           margin: 0,
           flexGrow: 1,
@@ -104,39 +92,53 @@ function CardInner({ highlight }) {
   )
 }
 
+function SpotlightWrap({ children }) {
+  return (
+    <SpotlightGlowCard size={300} style={{ display: 'block', borderRadius: 'var(--radius-lg)', height: '100%' }}>
+      {children}
+    </SpotlightGlowCard>
+  )
+}
+
 /**
  * @param {{ highlights: Highlight[] }} props
  */
 export default function FeaturedHighlightsRail({ highlights }) {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section aria-label="Featured highlights">
       <div className="highlights-rail">
-        {highlights.map((highlight) => {
-          if (highlight.link) {
-            return (
-              <a
-                key={highlight.id}
-                href={highlight.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${highlight.headline} (opens in new tab)`}
-                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-              >
-                <article className="interactive-card highlights-card glass-card" style={cardStyle}>
-                  <CardInner highlight={highlight} />
-                </article>
-              </a>
-            )
-          }
-
-          return (
-            <article
-              key={highlight.id}
-              className="interactive-card highlights-card glass-card"
-              style={cardStyle}
-            >
+        {highlights.map((highlight, index) => {
+          const card = (
+            <article className="interactive-card highlights-card glass-card" style={cardStyle}>
               <CardInner highlight={highlight} />
             </article>
+          )
+
+          const content = highlight.link ? (
+            <a
+              href={highlight.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${highlight.headline} (opens in new tab)`}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}
+            >
+              <SpotlightWrap>{card}</SpotlightWrap>
+            </a>
+          ) : <SpotlightWrap>{card}</SpotlightWrap>
+
+          return (
+            <motion.div
+              key={highlight.id}
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              style={{ height: '100%' }}
+            >
+              {content}
+            </motion.div>
           )
         })}
       </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'framer-motion'
 import { FileText, Menu, Moon, Sun, X } from 'lucide-react'
-import { navSections } from '../content'
+import { navSections, resumeUrl } from '../content'
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll()
@@ -93,7 +93,7 @@ export default function Nav({ isDark, onThemeChange }) {
               ← Full portfolio
             </Link>
             <a
-              href="/resume.pdf"
+              href={resumeUrl}
               className="btn btn--ghost btn--sm nav__resume"
               target="_blank"
               rel="noopener noreferrer"

@@ -1,8 +1,5 @@
-import React from 'react'
-
 export function Button({
   variant = 'primary',
-  size = 'md',
   children,
   className = '',
   ...props
@@ -28,6 +25,7 @@ export function Card({
   children,
   className = '',
   interactive = false,
+  style,
   ...props
 }) {
   return (
@@ -38,7 +36,7 @@ export function Card({
         background: 'var(--color-surface)',
         border: '1px solid var(--color-border)',
         padding: 'var(--space-6)',
-        ...props.style,
+        ...style,
       }}
       {...props}
     >
@@ -181,7 +179,6 @@ export function StatusDot({
 export function Section({
   id,
   children,
-  tone = 'default',
   className = '',
   ...props
 }) {

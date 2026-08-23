@@ -1,5 +1,5 @@
 import Reveal from './Reveal'
-import { socials } from '../content'
+import { resumeUrl, socials } from '../content'
 
 export default function Contact() {
   return (
@@ -36,7 +36,7 @@ export default function Contact() {
               ))}
               <a
                 className="text-link"
-                href="/resume.pdf"
+                href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >

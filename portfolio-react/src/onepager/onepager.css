@@ -121,8 +121,8 @@
   .op { --motion-fast: 0ms; --motion-base: 0ms; --motion-slow: 0ms; }
 }
 
-body.op-active { background: #f5f1ea; color: #1a1412; }
-:root[data-theme='dark'] body.op-active { background: #161210; color: #efe6e2; }
+body.op-active { background: #f5f1ea !important; color: #1a1412 !important; }
+:root[data-theme='dark'] body.op-active { background: #161210 !important; color: #efe6e2 !important; }
 
 /* ============================================================
    ONE-PAGER PORTFOLIO — "Paper & Ink" editorial stylesheet
@@ -1911,4 +1911,9 @@ body.op-active {
 
 @media (max-width: 1080px) {
   .op .nav__back { display: none; }
+}
+
+.op .badge--vibe {
+  color: var(--color-cat-6);
+  background: color-mix(in srgb, var(--color-cat-6) 10%, transparent);
 }

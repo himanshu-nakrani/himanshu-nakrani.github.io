@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, User, Briefcase, Code2, FolderGit2, BookOpen,
-  ExternalLink, Github, Linkedin, Mail, Sun, Moon,
-  Search, Command as CommandIcon, ArrowRight, CornerDownLeft
+  ExternalLink, Github, Linkedin, Mail, Sun,
+  Search, CornerDownLeft, X,
+  FlaskConical, Activity, FileText
 } from 'lucide-react'
-import { projects, skills } from '../data'
+import { projects } from '../data/projects'
+import { skills } from '../data/skills'
+import { RESUME_URL } from '../lib/site'
 
 /**
  * CommandPalette — lightweight command palette built with React + framer-motion
@@ -20,128 +23,196 @@ const pages = [
   { id: 'skills', name: 'Skills', icon: Code2, path: '/skills', keywords: 'tech stack languages' },
   { id: 'projects', name: 'Projects', icon: FolderGit2, path: '/projects', keywords: 'portfolio work apps' },
   { id: 'research', name: 'Research', icon: BookOpen, path: '/research', keywords: 'papers publications' },
+  { id: 'lab', name: 'Demo Lab', icon: FlaskConical, path: '/lab', keywords: 'lab demo interactive trace agent retrieval' },
   { id: 'profiles', name: 'Profiles', icon: User, path: '/profiles', keywords: 'social links contact' },
+]
+
+const deepDivePages = [
+  { id: 'alpha-copilot', name: 'Alpha Copilot Deep Dive', icon: Activity, path: '/projects/alpha-copilot', keywords: 'alpha copilot text-to-sql case study production' },
+  { id: 'agent-forge', name: 'Agent Forge Deep Dive', icon: Activity, path: '/projects/agent-forge', keywords: 'agent forge builder case study production' },
+  { id: 'fund-rag', name: 'Prospectus RAG Deep Dive', icon: Activity, path: '/projects/fund-prospectus-rag', keywords: 'fund prospectus rag retrieval case study production' },
+  { id: 'llama-reasoning', name: 'LLaMA Reasoning Research', icon: FileText, path: '/research/llama-3b-reasoning', keywords: 'llama reasoning fine-tuning qlora research' },
+  { id: 'tinymath', name: 'TinyMathReason Research', icon: FileText, path: '/research/tinymathreason-1b', keywords: 'tinymathreason pretraining tpu research' },
 ]
 
 const quickActions = [
   { id: 'github', name: 'Open GitHub', icon: Github, url: 'https://github.com/himanshu-nakrani', external: true },
   { id: 'linkedin', name: 'Open LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/himanshu-nakrani', external: true },
-  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:him.nakrani@gmail.com', external: true },
+  { id: 'email', name: 'Send Email', icon: Mail, url: 'mailto:himanshunakrani0@gmail.com', external: true },
+  { id: 'resume', name: 'View Resume', icon: FileText, url: RESUME_URL, external: true },
 ]
 
-export default function CommandPalette({ initialOpen = false, openSignal = 0 }) {
-  const [open, setOpen] = useState(initialOpen)
+const STATIC_COMMAND_ITEMS = []
+
+// Pages
+pages.forEach((page) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `page-${page.id}`,
+    type: 'page',
+    name: page.name,
+    icon: page.icon,
+    keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+    path: page.path,
+    actionType: 'navigate',
+    actionValue: page.path,
+  })
+})
+
+// Deep-dive pages
+deepDivePages.forEach((page) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `deepdive-${page.id}`,
+    type: 'page',
+    name: page.name,
+    icon: page.icon,
+    keywords: `${page.name} ${page.keywords}`.toLowerCase(),
+    path: page.path,
+    actionType: 'navigate',
+    actionValue: page.path,
+  })
+})
+
+// Projects (top 5)
+projects.slice(0, 5).forEach((p) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `project-${p.id || p.title}`,
+    type: 'project',
+    name: p.title,
+    badge: p.badge,
+    icon: FolderGit2,
+    keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
+    actionType: 'navigate',
+    actionValue: '/projects',
+  })
+})
+
+// Skills (top 4)
+skills.slice(0, 4).forEach((cat) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `skill-${cat.label}`,
+    type: 'skill',
+    name: cat.label,
+    count: cat.items?.length || 0,
+    icon: Code2,
+    keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
+    actionType: 'navigate',
+    actionValue: '/skills',
+  })
+})
+
+// Quick actions
+quickActions.forEach((action) => {
+  STATIC_COMMAND_ITEMS.push({
+    id: `action-${action.id}`,
+    type: 'action',
+    name: action.name,
+    icon: action.icon,
+    external: true,
+    keywords: action.name.toLowerCase(),
+    actionType: 'open',
+    actionValue: action.url,
+  })
+})
+
+// Theme toggle
+STATIC_COMMAND_ITEMS.push({
+  id: 'action-theme',
+  type: 'action',
+  name: 'Toggle Theme',
+  icon: Sun,
+  keywords: 'toggle theme dark light mode',
+  actionType: 'theme',
+})
+
+export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
+  const [open, setOpen] = useState(initiallyOpen)
   const [search, setSearch] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
   const navigate = useNavigate()
   const inputRef = useRef(null)
   const listRef = useRef(null)
 
-  // Build all searchable items
-  const allItems = useMemo(() => {
-    const items = []
 
-    // Pages
-    pages.forEach((page) => {
-      items.push({
-        id: `page-${page.id}`,
-        type: 'page',
-        name: page.name,
-        icon: page.icon,
-        keywords: `${page.name} ${page.keywords}`.toLowerCase(),
-        action: () => navigate(page.path),
-      })
-    })
 
-    // Projects (top 5)
-    projects.slice(0, 5).forEach((p) => {
-      items.push({
-        id: `project-${p.id || p.title}`,
-        type: 'project',
-        name: p.title,
-        badge: p.badge,
-        icon: FolderGit2,
-        keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
-        action: () => navigate('/projects'),
-      })
-    })
+  // Filter and group by type, creating a flattened array of items in the exact render order
+  // to enable O(1) lookup during delegated events via data-index.
+  // Combines filtering, groupedItems, and renderedItems computations into a single useMemo
+  // to reduce React hook overhead, dependency array checking, and multiple render passes.
+  const { filteredItems, groupedItems, renderedItems } = useMemo(() => {
+    let currentFiltered = STATIC_COMMAND_ITEMS
+    if (search.trim()) {
+      const query = search.toLowerCase()
+      currentFiltered = STATIC_COMMAND_ITEMS.filter((item) => item.keywords.includes(query))
+    }
 
-    // Skills (top 4)
-    skills.slice(0, 4).forEach((cat) => {
-      items.push({
-        id: `skill-${cat.label}`,
-        type: 'skill',
-        name: cat.label,
-        count: cat.items?.length || 0,
-        icon: Code2,
-        keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
-        action: () => navigate('/skills'),
-      })
-    })
-
-    // Quick actions
-    quickActions.forEach((action) => {
-      items.push({
-        id: `action-${action.id}`,
-        type: 'action',
-        name: action.name,
-        icon: action.icon,
-        external: true,
-        keywords: action.name.toLowerCase(),
-        action: () => window.open(action.url, '_blank', 'noopener,noreferrer'),
-      })
-    })
-
-    // Theme toggle
-    items.push({
-      id: 'action-theme',
-      type: 'action',
-      name: 'Toggle Theme',
-      icon: Sun,
-      keywords: 'toggle theme dark light mode',
-      action: () => {
-        const current = document.documentElement.getAttribute('data-theme')
-        const next = current === 'dark' ? 'light' : 'dark'
-        if (next === 'dark') {
-          document.documentElement.setAttribute('data-theme', 'dark')
-          document.documentElement.style.colorScheme = 'dark'
-        } else {
-          document.documentElement.removeAttribute('data-theme')
-          document.documentElement.style.colorScheme = 'light'
-        }
-        localStorage.setItem('theme', next)
-      },
-    })
-
-    return items
-  }, [navigate])
-
-  // Filter items based on search
-  const filteredItems = useMemo(() => {
-    if (!search.trim()) return allItems
-    const query = search.toLowerCase()
-    return allItems.filter((item) => item.keywords.includes(query))
-  }, [search, allItems])
-
-  // Group by type
-  const groupedItems = useMemo(() => {
     const groups = { page: [], project: [], skill: [], action: [] }
-    filteredItems.forEach((item) => {
+    currentFiltered.forEach((item) => {
       if (groups[item.type]) groups[item.type].push(item)
     })
-    return groups
-  }, [filteredItems])
+
+    const flattened = [
+      ...groups.page,
+      ...groups.project,
+      ...groups.skill,
+      ...groups.action
+    ]
+
+    return { filteredItems: currentFiltered, groupedItems: groups, renderedItems: flattened }
+  }, [search])
 
   const groupLabels = { page: 'Navigation', project: 'Projects', skill: 'Skills', action: 'Quick Actions' }
 
-  // Reset selection when search changes
-  useEffect(() => {
-    setSelectedIndex(0)
-  }, [search])
+  // Memoized event handlers for delegation
+  const handleListMouseOver = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        setSelectedIndex(idx)
+      }
+    }
+  }, [])
 
+  const executeAction = useCallback((item) => {
+    if (item.actionType === 'navigate') {
+      navigate(item.actionValue)
+    } else if (item.actionType === 'open') {
+      window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+    } else if (item.actionType === 'theme') {
+      toggleTheme()
+    }
+    setOpen(false)
+  }, [navigate, toggleTheme])
+
+  const handleListClick = useCallback((e) => {
+    const itemEl = e.target.closest('[data-index]')
+    if (itemEl) {
+      const idx = parseInt(itemEl.getAttribute('data-index'), 10)
+      if (!isNaN(idx)) {
+        const item = renderedItems[idx]
+        if (item) {
+          executeAction(item)
+        }
+      }
+    }
+  }, [renderedItems, executeAction])
+
+  // Keyboard shortcut to open
   useEffect(() => {
-    if (openSignal > 0) setOpen(true)
-  }, [openSignal])
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setOpen((prev) => !prev)
+      }
+    }
+    const handleOpenEvent = () => setOpen(true)
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('open-command-palette', handleOpenEvent)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('open-command-palette', handleOpenEvent)
+    }
+  }, [])
 
   // Focus input when opened
   useEffect(() => {
@@ -150,6 +221,51 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
     } else {
       setSearch('')
       setSelectedIndex(0)
+    }
+  }, [open])
+
+  // Dialog focus management, Escape handling, focus restoration, and scroll lock
+  const dialogRef = useRef(null)
+  const previousFocusRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return undefined
+
+    previousFocusRef.current = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const getFocusable = () => Array.from(
+      dialogRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      ) || []
+    )
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setOpen(false)
+        return
+      }
+      if (event.key !== 'Tab') return
+      const focusable = getFocusable()
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      previousFocusRef.current?.focus?.()
     }
   }, [open])
 
@@ -168,12 +284,11 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
         e.preventDefault()
         const item = filteredItems[selectedIndex]
         if (item) {
-          item.action()
-          setOpen(false)
+          executeAction(item)
         }
       }
     },
-    [filteredItems, selectedIndex]
+    [filteredItems, selectedIndex, executeAction]
   )
 
   // Scroll selected into view
@@ -211,16 +326,16 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
             role="dialog"
             aria-modal="true"
             aria-label="Command palette"
-            initial={{ opacity: 0, scale: 0.96, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: -10 }}
+            ref={dialogRef}
+            initial={{ opacity: 0, scale: 0.96, y: -10, x: '-50%' }}
+            animate={{ opacity: 1, scale: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, scale: 0.96, y: -10, x: '-50%' }}
             transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
             onKeyDown={handleKeyDown}
             style={{
               position: 'fixed',
               top: '18%',
               left: '50%',
-              transform: 'translateX(-50%)',
               width: 'min(90vw, 520px)',
               maxHeight: '65vh',
               background: 'var(--color-surface)',
@@ -243,14 +358,27 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                 borderBottom: '1px solid var(--color-border)',
               }}
             >
-              <Search size={17} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
+              <Search size={17} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} aria-hidden="true" />
               <input
                 ref={inputRef}
                 type="text"
                 aria-label="Search command palette"
                 placeholder="Search pages, projects, skills..."
+                maxLength={100}
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  // ⚡ Bolt Optimization: Batch setSelectedIndex(0) with setSearch in the event handler
+                  // instead of using a dependent useEffect. This prevents cascading double-renders
+                  // during rapid typing, halving the React render overhead per keystroke.
+                  setSelectedIndex(0)
+                }}
+                role="combobox"
+                aria-controls="cmd-listbox"
+                aria-autocomplete="list"
+                aria-expanded={open}
+                aria-haspopup="listbox"
+                aria-activedescendant={selectedIndex >= 0 ? `cmd-item-${selectedIndex}` : undefined}
                 style={{
                   flex: 1,
                   background: 'transparent',
@@ -261,6 +389,39 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                   fontFamily: 'inherit',
                 }}
               />
+              {search && (
+                <button
+                  type="button"
+                  aria-label="Clear search"
+                  title="Clear search"
+                  onClick={() => {
+                    setSearch('')
+                    setSelectedIndex(0)
+                    inputRef.current?.focus()
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--color-text-muted)',
+                    cursor: 'pointer',
+                    padding: 4,
+                    borderRadius: 6,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--color-text)'
+                    e.currentTarget.style.background = 'var(--color-surface-raised)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'var(--color-text-muted)'
+                    e.currentTarget.style.background = 'transparent'
+                  }}
+                >
+                  <X size={15} aria-hidden="true" />
+                </button>
+              )}
               <kbd
                 style={{
                   padding: '4px 8px',
@@ -277,24 +438,53 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
             </div>
 
             {/* Results */}
-            <div ref={listRef} style={{ flex: 1, overflowY: 'auto', padding: 8 }}>
+            <div
+              id="cmd-listbox"
+              role="listbox"
+              ref={listRef}
+              style={{ flex: 1, overflowY: 'auto', padding: 8 }}
+              onClick={handleListClick}
+              onMouseOver={handleListMouseOver}
+            >
               {filteredItems.length === 0 ? (
-                <div style={{ padding: '28px 16px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
-                  No results found for "{search}"
+                <div style={{ padding: '40px 16px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                  <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 500 }}>No results found for "{search}"</p>
+                  <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>Try adjusting your search or clear it to see all options.</p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearch('')
+                      setSelectedIndex(0)
+                      inputRef.current?.focus()
+                    }}
+                    className="btn btn--ghost"
+                    style={{
+                      marginTop: '0.75rem',
+                      padding: '0.4rem 0.8rem',
+                      fontSize: '0.8rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                    }}
+                  >
+                    Clear search
+                  </button>
                 </div>
               ) : (
-                Object.entries(groupedItems).map(([type, items]) => {
+                Object.entries(groupedItems).map(([type, items], groupIndex, arr) => {
                   if (items.length === 0) return null
+                  const isLastGroup = groupIndex === arr.length - 1
                   return (
-                    <div key={type} style={{ marginBottom: 6 }}>
+                    <div key={type} role="group" aria-label={groupLabels[type]} style={{ marginBottom: isLastGroup ? 0 : 10 }}>
                       <div
+                        aria-hidden="true"
                         style={{
-                          padding: '8px 10px 4px',
-                          fontSize: '0.68rem',
+                          padding: '6px 10px 3px',
+                          fontSize: '0.62rem',
                           fontWeight: 600,
                           textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          color: 'var(--color-accent)',
+                          letterSpacing: '0.08em',
+                          color: 'var(--color-text-subtle)',
                           fontFamily: 'var(--font-mono)',
                         }}
                       >
@@ -305,20 +495,19 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                         const idx = globalIndex
                         const isSelected = idx === selectedIndex
                         const Icon = item.icon
+                        const routePath = item.path
                         return (
                           <div
                             key={item.id}
+                            id={`cmd-item-${idx}`}
+                            role="option"
+                            aria-selected={isSelected}
                             data-index={idx}
-                            onClick={() => {
-                              item.action()
-                              setOpen(false)
-                            }}
-                            onMouseEnter={() => setSelectedIndex(idx)}
                             style={{
                               display: 'flex',
                               alignItems: 'center',
                               gap: 10,
-                              padding: '9px 10px',
+                              padding: '8px 10px',
                               borderRadius: 8,
                               cursor: 'pointer',
                               background: isSelected ? 'var(--color-surface-raised)' : 'transparent',
@@ -329,9 +518,19 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
                               size={15}
                               style={{ color: isSelected ? 'var(--color-accent)' : 'var(--color-text-muted)', flexShrink: 0 }}
                             />
-                            <span style={{ flex: 1, fontSize: '0.875rem', color: 'var(--color-text)', fontWeight: 500 }}>
+                            <span style={{ flex: 1, fontSize: '0.84rem', color: 'var(--color-text)', fontWeight: 500 }}>
                               {item.name}
                             </span>
+                            {routePath && (
+                              <span style={{
+                                fontSize: '0.62rem',
+                                fontFamily: 'var(--font-mono)',
+                                color: 'var(--color-text-subtle)',
+                                opacity: 0.5,
+                              }}>
+                                {routePath}
+                              </span>
+                            )}
                             {item.badge && (
                               <span
                                 style={{
@@ -383,7 +582,7 @@ export default function CommandPalette({ initialOpen = false, openSignal = 0 }) 
             >
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↑↓</kbd> navigate</span>
               <span><kbd style={{ padding: '2px 5px', background: 'var(--color-surface)', borderRadius: 4 }}>↵</kbd> select</span>
-              <span style={{ marginLeft: 'auto' }}>{filteredItems.length} results</span>
+              <span style={{ marginLeft: 'auto' }} role="status" aria-live="polite">{filteredItems.length} results</span>
             </div>
           </motion.div>
         </>

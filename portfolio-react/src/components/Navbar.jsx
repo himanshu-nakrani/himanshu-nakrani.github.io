@@ -1,21 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Menu, X, Search, Command } from 'lucide-react'
+import DesignModeToggle from './DesignModeToggle'
 import ThemeToggle from './ThemeToggle'
+import Pill3DNav from './ui/Pill3DNav'
+import { prefetchRoute } from '../lib/routePrefetch'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
-import { NavLink, Link, useLocation } from 'react-router-dom'
-import { prefetchRoute, prefetchRoutesDuringIdle } from '../lib/routePrefetch'
+import { NavLink, useLocation } from 'react-router-dom'
 
-const MotionNavLink = motion(NavLink)
-
-// Capped at 6 items — logo handles "/" navigation
+// Capped at 8 items — logo handles "/" navigation
 const navLinks = [
   { label: 'About', to: '/about' },
   { label: 'Experience', to: '/experience' },
   { label: 'Projects', to: '/projects' },
   { label: 'Skills', to: '/skills' },
   { label: 'Research', to: '/research' },
+  { label: 'Lab', to: '/lab' },
   { label: 'Profiles', to: '/profiles' },
+  { label: 'Minimal', to: '/minimal', isSecondary: true },
 ]
 
 const contactItem = { label: 'Contact', to: '/#contact' }
@@ -23,38 +25,30 @@ const navItems = [...navLinks, { ...contactItem, isContact: true }]
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
-export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
+export default function Navbar({ isDark, setIsDark, designMode, setDesignMode }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = usePrefersReducedMotion()
   const hamburgerRef = useRef(null)
   const menuRef = useRef(null)
-  const scrolledRef = useRef(false)
-  const tickingRef = useRef(false)
 
   useEffect(() => {
-    const updateScrolled = () => {
-      tickingRef.current = false
-      const next = window.scrollY > 20
-      if (next === scrolledRef.current) return
-      scrolledRef.current = next
-      setScrolled(next)
-    }
-
-    const onScroll = () => {
-      if (tickingRef.current) return
-      tickingRef.current = true
-      requestAnimationFrame(updateScrolled)
-    }
-
-    updateScrolled()
+    const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const isPageActive = (label) => {
-    return navLinks.some((item) => item.label === label && item.to === location.pathname)
+    if (label === 'Projects')    return location.pathname === '/projects' || location.pathname.startsWith('/projects/')
+    if (label === 'Experience')  return location.pathname === '/experience'
+    if (label === 'Profiles')    return location.pathname === '/profiles'
+    if (label === 'Research')    return location.pathname === '/research' || location.pathname.startsWith('/research/')
+    if (label === 'Skills')      return location.pathname === '/skills'
+    if (label === 'About')       return location.pathname === '/about'
+    if (label === 'Lab')         return location.pathname === '/lab'
+    if (label === 'Minimal')     return location.pathname === '/minimal'
+    return false
   }
 
   const scrollToId = useCallback((id) => {
@@ -79,11 +73,11 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
   }
 
   useEffect(() => {
-    return prefetchRoutesDuringIdle(navLinks.map((item) => item.to), 140)
-  }, [])
+    if (!open) return undefined
 
-  useEffect(() => {
-    if (!open) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
     requestAnimationFrame(() => {
       const focusable = menuRef.current?.querySelectorAll(FOCUSABLE)
       focusable?.[0]?.focus()
@@ -111,7 +105,10 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
     }
 
     document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = previousOverflow
+    }
   }, [open])
 
   return (
@@ -127,11 +124,20 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
       }}
     >
       <div style={{ maxWidth: 'var(--page-max)', margin: '0 auto', pointerEvents: 'auto' }}>
-        <motion.div
-          initial={reduceMotion ? false : { y: -10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+        <div
           className="glass-nav"
+          data-reduce-motion={reduceMotion ? 'true' : 'false'}
+          data-scrolled={scrolled ? 'true' : 'false'}
+          onPointerMove={(event) => {
+            if (reduceMotion) return
+            const bounds = event.currentTarget.getBoundingClientRect()
+            event.currentTarget.style.setProperty('--glass-x', `${event.clientX - bounds.left}px`)
+            event.currentTarget.style.setProperty('--glass-y', `${event.clientY - bounds.top}px`)
+          }}
+          onPointerLeave={(event) => {
+            event.currentTarget.style.removeProperty('--glass-x')
+            event.currentTarget.style.removeProperty('--glass-y')
+          }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -141,106 +147,28 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
             borderRadius: 9999,
             position: 'relative',
             overflow: 'hidden',
-            transition: 'box-shadow 0.3s ease',
-            boxShadow: scrolled
-              ? '0 8px 36px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.06) inset'
-              : '0 4px 16px rgba(0,0,0,0.14)',
           }}
         >
           {/* Logo — calm dot + monogram */}
-          <MotionNavLink
+          <NavLink
             to="/"
-            whileHover={{ opacity: 0.85 }}
-            whileTap={{ scale: 0.97 }}
             onClick={() => setOpen(false)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              textDecoration: 'none',
-              flexShrink: 0,
-              paddingRight: 10,
-            }}
+            onPointerEnter={() => prefetchRoute('/')}
+            onFocus={() => prefetchRoute('/')}
+            className="nav-brand"
+            aria-label="Himanshu Nakrani — Home"
           >
-            <span
-              style={{
-                display: 'block',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: 'var(--color-accent)',
-                flexShrink: 0,
-              }}
-            />
-            <span
-              style={{
-                fontWeight: 600,
-                fontSize: '0.85rem',
-                letterSpacing: '-0.01em',
-                color: 'var(--color-text)',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              Himanshu
-            </span>
-          </MotionNavLink>
+            <span className="nav-brand__mark" aria-hidden="true"><span /></span>
+            <span className="nav-brand__name">Himanshu</span>
+          </NavLink>
 
           {/* Desktop nav links */}
           <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
-            <ul
-              className="nav-pill-links"
-              style={{
-                listStyle: 'none',
-                display: 'flex',
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                margin: 0,
-                padding: '0 4px',
-                minWidth: 0,
-                overflowX: 'auto',
-                position: 'relative',
-              }}
-            >
-              {navLinks.map((item) => {
-                const active = isPageActive(item.label)
-                return (
-                  <li key={item.label} style={{ flexShrink: 0, position: 'relative' }}>
-                    <MotionNavLink
-                      to={item.to}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={(event) => handleNavClick(item, event)}
-                      aria-current={active ? 'page' : undefined}
-                      className={active ? 'nav-link-active' : ''}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '8px 14px 10px',
-                        textDecoration: 'none',
-                        fontSize: '0.8125rem',
-                        fontWeight: 500,
-                        color: active ? 'var(--color-text)' : 'var(--color-text-muted)',
-                        transition: 'color 0.2s ease',
-                        borderRadius: 9999,
-                        position: 'relative',
-                      }}
-                      onMouseEnter={(e) => {
-                        prefetchRoute(item.to)
-                        if (!active) e.currentTarget.style.color = 'var(--color-text)'
-                      }}
-                      onFocus={() => prefetchRoute(item.to)}
-                      onMouseLeave={(e) => {
-                        if (!active) e.currentTarget.style.color = 'var(--color-text-muted)'
-                      }}
-                    >
-                      {item.label}
-                    </MotionNavLink>
-                  </li>
-                )
-              })}
-            </ul>
+            <Pill3DNav
+              items={navLinks}
+              isActive={isPageActive}
+              onItemClick={handleNavClick}
+            />
           </nav>
 
           {/* Desktop right side */}
@@ -255,72 +183,16 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
               borderLeft: '1px solid var(--color-border)',
             }}
           >
-            {/* Version toggle */}
-            <Link
-              to="/minimal"
-              title="Switch to minimal version"
-              onMouseEnter={() => prefetchRoute('/minimal')}
-              onFocus={() => prefetchRoute('/minimal')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '6px 11px',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                color: 'var(--color-text-muted)',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease',
-                fontFamily: 'var(--font-display)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-accent)'
-                e.currentTarget.style.color = 'var(--color-accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.color = 'var(--color-text-muted)'
-              }}
-            >
-              <span style={{ fontSize: '0.65rem', lineHeight: 1, opacity: 0.7 }}>&#9632;</span>
-              Minimal
-            </Link>
-
             {/* Command Palette Trigger */}
             <button
               onClick={() => {
-                onCommandPaletteOpen?.()
+                document.dispatchEvent(new CustomEvent('open-command-palette'))
               }}
               className="nav-cmd-btn"
               aria-label="Open command palette (Cmd+K)"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '6px 10px',
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                color: 'var(--color-text-muted)',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border-strong)'
-                e.currentTarget.style.color = 'var(--color-text)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--color-border)'
-                e.currentTarget.style.color = 'var(--color-text-muted)'
-              }}
+              title="Open command palette (Cmd+K)"
             >
-              <Search size={13} />
+              <Search size={13} aria-hidden="true" />
               <span style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
@@ -331,21 +203,22 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
                 fontFamily: 'var(--font-mono)',
                 fontSize: '0.65rem',
               }}>
-                <Command size={9} />K
+                <Command size={9} aria-hidden="true" />K
               </span>
             </button>
+            <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
-            <MotionNavLink
+            <NavLink
               to={contactItem.to}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
               onClick={(event) => handleNavClick({ ...contactItem, isContact: true }, event)}
-              className="glass-btn-primary"
+              onPointerEnter={() => prefetchRoute(contactItem.to)}
+              onFocus={() => prefetchRoute(contactItem.to)}
+              className="glass-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                color: '#fff',
-                padding: '7px 16px',
+                color: 'var(--color-text)',
+                padding: '6px 14px',
                 borderRadius: 9999,
                 textDecoration: 'none',
                 fontSize: '0.8125rem',
@@ -353,14 +226,16 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
                 whiteSpace: 'nowrap',
                 position: 'relative',
                 overflow: 'hidden',
+                borderColor: 'var(--color-border-strong)',
               }}
             >
               <span style={{ position: 'relative', zIndex: 1 }}>Contact</span>
-            </MotionNavLink>
+            </NavLink>
           </div>
 
           {/* Mobile: theme toggle + hamburger */}
           <div className="nav-mobile-only" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+            <DesignModeToggle designMode={designMode} setDesignMode={setDesignMode} compact />
             <ThemeToggle isDark={isDark} setIsDark={setIsDark} compact />
             <button
               ref={hamburgerRef}
@@ -368,6 +243,7 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
               onClick={() => setOpen((prev) => !prev)}
               className="nav-mobile-btn glass-btn"
               aria-label={open ? 'Close menu' : 'Open menu'}
+              title={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
               aria-controls="mobile-nav-menu"
               style={{
@@ -384,22 +260,16 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
               }}
             >
               <span className="sr-only">{open ? 'Close navigation menu' : 'Open navigation menu'}</span>
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
           </div>
-        </motion.div>
+        </div>
 
         {/* Mobile dropdown menu */}
-        <AnimatePresence mode="wait">
-          {open && (
-            <motion.div
+        {open && (
+            <div
               ref={menuRef}
-              key="mobile-menu"
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="nav-mobile-only glass"
+              className="nav-mobile-only glass nav-mobile-menu"
               style={{
                 marginTop: 10,
                 borderRadius: 16,
@@ -420,8 +290,8 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
                       <NavLink
                         to={item.to}
                         onClick={(event) => handleNavClick(item, event)}
+                        onPointerEnter={() => prefetchRoute(item.to)}
                         onFocus={() => prefetchRoute(item.to)}
-                        onTouchStart={() => prefetchRoute(item.to)}
                         aria-current={active ? 'page' : undefined}
                         style={{
                           display: 'flex',
@@ -453,14 +323,39 @@ export default function Navbar({ isDark, setIsDark, onCommandPaletteOpen }) {
                   )
                 })}
               </ul>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
 
       <style>{`
         .nav-pill-links::-webkit-scrollbar { display: none; }
         .nav-pill-links { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-nav {
+          animation: nav-shell-enter 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+        }
+        .glass-nav[data-reduce-motion="true"] {
+          animation: none;
+        }
+        .glass-nav a:hover {
+          opacity: 0.88;
+        }
+        .nav-mobile-menu {
+          animation: nav-menu-enter 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+        }
+        @keyframes nav-shell-enter {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes nav-menu-enter {
+          from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .glass-nav,
+          .nav-mobile-menu {
+            animation: none;
+          }
+        }
         @media (min-width: 769px) {
           .nav-mobile-only { display: none !important; }
         }

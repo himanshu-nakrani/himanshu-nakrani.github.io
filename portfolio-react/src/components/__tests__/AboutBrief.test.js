@@ -42,7 +42,6 @@ describe('useCountUp property tests', () => {
     fc.assert(
       fc.property(fc.integer({ min: 0, max: 10000 }), (target) => {
         // Simulate the count-up math at various progress points
-        const duration = 800
         const progressPoints = [0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0]
         for (const progress of progressPoints) {
           const eased = 1 - Math.pow(1 - progress, 3)

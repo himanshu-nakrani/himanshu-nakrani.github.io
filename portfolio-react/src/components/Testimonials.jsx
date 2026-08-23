@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { Quote } from 'lucide-react'
+import DataIcon from './DataIcon'
 
 /**
  * Testimonials — displays colleague quotes as social proof on the home page.
@@ -85,7 +86,7 @@ export default function Testimonials({ testimonials }) {
                 }}
                 aria-hidden="true"
               >
-                {t.avatar}
+                <DataIcon name={t.avatar} size={18} />
               </span>
               <div>
                 <div

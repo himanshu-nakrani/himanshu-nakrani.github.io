@@ -1,163 +1,289 @@
-import { useMemo, useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { X, Search, Layers, Zap, Users, BarChart2, ExternalLink, Lock, Filter, Grid3X3, LayoutList, Sparkles, FolderGit2, Rocket, Code2 } from 'lucide-react'
-import PageHeader from '../components/PageHeader'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { ArrowRight, BarChart2, Code2, ExternalLink, Filter, FolderGit2, Lock, Rocket, Search, X } from 'lucide-react'
+import DataIcon from '../components/DataIcon'
+import SEO from '../components/SEO'
 import Tag from '../components/Tag'
-import { projects } from '../data'
+import { projects, technicalCaseStudies } from '../data/projects'
 
-/* ─── Badge styles ─────────────────────────────────────── */
-const badgeStyle = {
-  Production:   { bg: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent)',  border: 'color-mix(in srgb, var(--color-accent) 30%, transparent)' },
-  'In Progress':{ bg: 'color-mix(in srgb, #6b7fff 10%, transparent)',              color: '#8b9fff',              border: 'rgba(107,124,255,0.3)' },
-}
-const metricIcon = { performance: Zap, users: Users, efficiency: BarChart2 }
+const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'AI Agents']
+const deepDiveSlugs = new Set(technicalCaseStudies.map((study) => study.slug))
 
-/* ─── Top-8 most-relevant tags ─────────────────────────── */
-const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'Deep Learning', 'Python', 'AI Agents', 'LSTM']
-
-/* ─── Page-level stats ─────────────────────────────────── */
 const pageStats = [
-  { value: projects.length,                                    label: 'Total', icon: FolderGit2 },
-  { value: projects.filter(p => p.badge === 'Production').length,  label: 'Production', icon: Rocket },
-  { value: projects.filter(p => p.link).length,               label: 'Open Source', icon: Code2 },
-  { value: projects.filter(p => p.metrics).length,            label: 'With Metrics', icon: BarChart2 },
+  { value: projects.length, label: 'Total', icon: FolderGit2 },
+  { value: projects.filter((p) => p.badge === 'Production').length, label: 'Production', icon: Rocket },
+  { value: projects.filter((p) => p.link).length, label: 'Open Source', icon: Code2 },
+  { value: projects.filter((p) => p.metrics).length, label: 'With Metrics', icon: BarChart2 },
 ]
 
-/* ─── Modal ────────────────────────────────────────────── */
+// ⚡ Bolt Optimization: Pre-compute static lowercased strings outside of render cycle
+// to prevent O(n) object allocations and redundant transformations inside the filter loop.
+const PROJECTS_WITH_SEARCH = projects.map(p => ({
+  ...p,
+  _searchKey: `${p.title} ${p.desc}`.toLowerCase(),
+  // ⚡ Bolt Optimization: Pre-compute Set for tags to allow O(1) lookup in filter loop
+  // instead of using Array.includes() which would cause O(N x M) time complexity
+  _tagsSet: new Set(p.tags || []),
+}))
+
+function getDeepDiveSlug(title) {
+  const slug = title.toLowerCase().replace(/\s+/g, '-')
+  if (deepDiveSlugs.has(slug)) return slug
+  const match = technicalCaseStudies.find((study) => study.title === title)
+  return match ? match.slug : null
+}
+
+function motionProps(reduceMotion, inView, delay = 0) {
+  if (reduceMotion) return { initial: false, animate: { opacity: 1, y: 0 } }
+  return {
+    initial: { opacity: 0, y: 18 },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
+    transition: { duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] },
+  }
+}
+
+function PageStat({ stat, index }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true })
+  const reduceMotion = useReducedMotion()
+  const Icon = stat.icon
+
+  return (
+    <motion.div ref={ref} className="editorial-stat" {...motionProps(reduceMotion, inView, index * 0.06)}>
+      <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
+      <span className="editorial-stat-num">{stat.value}</span>
+      <span className="editorial-stat-label">{stat.label}</span>
+    </motion.div>
+  )
+}
+
+function MetricStrip({ metrics, compact = false, limit }) {
+  const visibleMetrics = limit ? metrics?.slice(0, limit) : metrics
+  if (!visibleMetrics?.length) return null
+  const numStyle = compact
+    ? { fontSize: 'clamp(1.05rem, 2.2vw, 1.4rem)' }
+    : { fontSize: 'clamp(1.35rem, 2.4vw, 1.85rem)' }
+  return (
+    <div
+      className="ledger-stat-band"
+      style={compact
+        ? { gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }
+        : { gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}
+    >
+      {visibleMetrics.map((metric) => (
+        <div key={metric.label} className="ledger-stat" style={compact ? { padding: '0.85rem' } : undefined}>
+          <span className="ledger-stat-num" style={numStyle}>{metric.value}</span>
+          <span className="ledger-stat-label">{metric.label}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ProjectCard({ item, index, onDetails, featured = false }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-40px' })
+  const reduceMotion = useReducedMotion()
+  const slug = getDeepDiveSlug(item.title)
+
+  return (
+    <motion.article
+      ref={ref}
+      className={`project-card editorial-card${featured ? ' project-card--featured' : ''}`}
+      {...motionProps(reduceMotion, inView, (index % 3) * 0.05)}
+    >
+      <div className="project-card__header">
+        <div className="project-card__title-row">
+          <span className="project-card__icon" aria-hidden="true">
+            <DataIcon name={item.icon} size={24} />
+          </span>
+          <div className="project-card__heading">
+            <p className="project-card__eyebrow ledger-title">{item.badge || 'Project'}</p>
+            <h2 className="project-card__title">
+              {item.title}
+            </h2>
+          </div>
+        </div>
+        <span
+          className={`project-card__availability ${item.link ? 'project-card__availability--public' : 'project-card__availability--private'}`}
+          title={item.link ? 'Open source' : 'Private or internal project'}
+        >
+          {item.link ? <ExternalLink size={16} aria-hidden="true" /> : <Lock size={16} aria-hidden="true" />}
+        </span>
+      </div>
+
+      <p className="project-card__desc">{item.desc}</p>
+      <div className="project-card__metrics">
+        <MetricStrip metrics={item.metrics} compact limit={featured ? 3 : 2} />
+      </div>
+
+      <div className="project-card__tags editorial-chip-list">
+        {item.tags.slice(0, 3).map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        {item.tags.length > 3 && <span className="editorial-chip">+{item.tags.length - 3}</span>}
+      </div>
+
+      <div className="project-card__actions">
+        <button type="button" className="btn btn--ghost project-card__action" onClick={onDetails} aria-label={`View details for ${item.title}`}>
+          Details
+        </button>
+        {slug && (
+          <Link to={`/projects/${slug}`} className="btn btn--primary project-card__action" aria-label={`Deep dive into ${item.title}`}>
+            Deep dive <ArrowRight size={13} aria-hidden="true" />
+          </Link>
+        )}
+      </div>
+    </motion.article>
+  )
+}
+
 function ProjectModal({ project, onClose }) {
+  const reduceMotion = useReducedMotion()
+  const dialogRef = useRef(null)
+  const closeRef = useRef(null)
+  const previousFocusRef = useRef(null)
+
+  useEffect(() => {
+    if (!project) return undefined
+    previousFocusRef.current = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    document.body.dataset.modalOpen = 'true'
+    requestAnimationFrame(() => closeRef.current?.focus())
+
+    const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])') || [])
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+      if (event.key !== 'Tab') return
+      const focusable = getFocusable()
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      delete document.body.dataset.modalOpen
+      previousFocusRef.current?.focus?.()
+    }
+  }, [project, onClose])
+
+  const panelMotion = reduceMotion
+    ? { initial: false, animate: { opacity: 1 }, exit: { opacity: 1 } }
+    : { initial: { opacity: 0, scale: 0.96, y: 18 }, animate: { opacity: 1, scale: 1, y: 0 }, exit: { opacity: 0, scale: 0.96, y: 18 }, transition: { duration: 0.25 } }
+  const status = project?.badge || 'Project'
+  const primaryTags = project?.tags?.slice(0, 3) || []
+  const keyFeatures = project?.features?.slice(0, 4) || []
+  const keyChallenges = project?.challenges?.slice(0, 2) || []
+  const keyTechStack = project?.techStack?.slice(0, 8) || []
+
   return (
     <AnimatePresence>
       {project && (
         <>
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
             onClick={onClose}
             aria-hidden="true"
-            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', zIndex: 999 }}
+            className="project-modal__backdrop"
           />
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label={project ? `${project.title} project details` : 'Project details'}
-            initial={{ opacity: 0, scale: 0.94, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 24 }}
-            transition={{ duration: 0.28, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem', pointerEvents: 'none' }}
+            aria-label={`${project.title} project details`}
+            {...panelMotion}
+            className="project-modal__viewport"
           >
-            <div
-              onClick={e => e.stopPropagation()}
-              style={{
-                pointerEvents: 'auto', width: '100%', maxWidth: 680,
-                maxHeight: '90dvh', overflowY: 'auto',
-                background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%)',
-                border: '1px solid color-mix(in srgb, var(--color-accent) 25%, var(--border))',
-                borderRadius: 20,
-                boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px color-mix(in srgb, var(--color-accent) 8%, transparent) inset',
-              }}
-            >
-              
-              <div style={{ padding: '1.6rem' }}>
-                {/* Header */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.2rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span style={{ fontSize: '2rem' }}>{project.icon}</span>
-                    <div>
-                      <h2 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: 4 }}>{project.title}</h2>
-                      {project.badge && (
-                        <span style={{
-                          fontSize: '0.67rem', fontFamily: 'var(--font-mono)',
-                          background: badgeStyle[project.badge]?.bg, color: badgeStyle[project.badge]?.color,
-                          border: `1px solid ${badgeStyle[project.badge]?.border}`, padding: '2px 9px', borderRadius: 20,
-                        }}>● {project.badge}</span>
-                      )}
-                    </div>
-                  </div>
-                  <button
-                    onClick={onClose}
-                    aria-label="Close dialog"
-                    style={{
-                      background: 'color-mix(in srgb, var(--border) 40%, transparent)', border: '1px solid var(--border)',
-                      cursor: 'pointer', color: 'var(--text2)', width: 32, height: 32, borderRadius: '50%',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                    }}
-                  >
-                    <X size={15} />
-                  </button>
+            <div ref={dialogRef} className="project-modal editorial-card" onClick={(event) => event.stopPropagation()}>
+              <div className="project-modal__topbar">
+                <div className="project-modal__status">
+                  <DataIcon name={project.icon} size={18} />
+                  <span>{status}</span>
                 </div>
+                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close dialog" className="project-modal__close glass-btn">
+                  <X size={16} aria-hidden="true" />
+                </button>
+              </div>
 
-                <p style={{ fontSize: '0.9rem', color: 'var(--text2)', lineHeight: 1.7, padding: '0.9rem 1rem', marginBottom: '1.2rem', background: 'color-mix(in srgb, var(--color-accent) 5%, var(--surface))', borderLeft: '3px solid var(--color-accent)', borderRadius: '0 8px 8px 0' }}>
-                  {project.fullDesc || project.desc}
-                </p>
-
-                {project.metrics && (
-                  <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.2rem' }}>
-                    {project.metrics.map(m => {
-                      const Icon = metricIcon[m.type] || BarChart2
-                      return (
-                        <div key={m.label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '8px 14px', background: 'color-mix(in srgb, var(--color-accent) 8%, var(--surface))', border: '1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)', borderRadius: 9 }}>
-                          <Icon size={13} color="var(--color-accent)" />
-                          <strong style={{ color: 'var(--color-accent)', fontSize: '0.88rem' }}>{m.value}</strong>
-                          <span style={{ color: 'var(--text2)', fontSize: '0.78rem' }}>{m.label}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-
-                {project.features && (
-                  <div style={{ marginBottom: '1.2rem' }}>
-                    <p style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-accent)', marginBottom: '0.7rem' }}>Features</p>
-                    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 7 }}>
-                      {project.features.map((f, i) => (
-                        <li key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: '0.85rem', color: 'var(--text2)', lineHeight: 1.55, padding: '0.4rem 0.6rem', borderRadius: 7, background: i % 2 === 0 ? 'color-mix(in srgb, var(--surface2) 70%, transparent)' : 'transparent' }}>
-                          <span style={{ flexShrink: 0, marginTop: '0.52em', width: 5, height: 5, borderRadius: '50%', background: 'var(--color-accent)' }} />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {project.techStack && (
-                  <div style={{ marginBottom: '1.2rem' }}>
-                    <p style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-accent)', marginBottom: '0.6rem' }}>Tech Stack</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                      {project.techStack.map(t => <Tag key={t}>{t}</Tag>)}
-                    </div>
-                  </div>
-                )}
-
-                {project.challenges && (
-                  <div style={{ marginBottom: '1.4rem' }}>
-                    <p style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-accent)', marginBottom: '0.6rem' }}>Challenges & Solutions</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {project.challenges.map((c, i) => (
-                        <div key={i} style={{ padding: '0.8rem 1rem', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)', fontSize: '0.82rem' }}>
-                          <p style={{ color: '#f59e0b', fontWeight: 600, marginBottom: 4 }}>⚠ {c.challenge}</p>
-                          <p style={{ color: 'var(--text2)', lineHeight: 1.55, margin: 0 }}>✓ {c.solution}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div style={{ marginBottom: '1.4rem' }}>
-                  <p style={{ fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--color-accent)', marginBottom: '0.6rem' }}>Tags</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {project.tags.map(t => <Tag key={t}>{t}</Tag>)}
-                  </div>
+              <div className="project-modal__hero">
+                <div className="project-modal__hero-main">
+                  <p className="project-modal__coord">Project specimen</p>
+                  <h2 className="project-modal__title">{project.title}</h2>
+                  <p className="project-modal__summary">{project.fullDesc || project.desc}</p>
                 </div>
+                <aside className="project-modal__meta" aria-label="Project metadata">
+                  <div>
+                    <span className="project-modal__meta-label">Visibility</span>
+                    <span className="project-modal__meta-value">{project.link || project.liveLink ? 'Public artifact' : 'Internal / private'}</span>
+                  </div>
+                  <div>
+                    <span className="project-modal__meta-label">Signals</span>
+                    <span className="project-modal__meta-value">{project.metrics?.length ? `${project.metrics.length} measured outputs` : 'Narrative evidence'}</span>
+                  </div>
+                  <div>
+                    <span className="project-modal__meta-label">Primary tags</span>
+                    <span className="project-modal__meta-value">{primaryTags.join(' · ')}</span>
+                  </div>
+                </aside>
+              </div>
 
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
-                  {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary" style={{ fontSize: '0.84rem' }}>GitHub ↗</a>}
-                  {project.liveLink && <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost" style={{ fontSize: '0.84rem' }}>Live Demo ↗</a>}
-                  {!project.link && !project.liveLink && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: '0.79rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', opacity: 0.55 }}>
-                      <Lock size={12} /> Internal / private project
-                    </span>
-                  )}
-                </div>
+              <div className="project-modal__metrics">
+                <MetricStrip metrics={project.metrics} />
+              </div>
+
+              {keyFeatures.length > 0 && (
+                <section className="project-modal__section">
+                  <p className="ledger-subhead">Key Features</p>
+                  <ul className="project-modal__list">
+                    {keyFeatures.map((feature) => <li key={feature}>{feature}</li>)}
+                  </ul>
+                </section>
+              )}
+
+              {keyChallenges.length > 0 && (
+                <section className="project-modal__section">
+                  <p className="ledger-subhead">Challenges</p>
+                  <div className="project-modal__challenge-grid">
+                    {keyChallenges.map((challenge) => (
+                      <article key={challenge.challenge} className="project-modal__challenge editorial-card">
+                        <p className="project-modal__challenge-title">{challenge.challenge}</p>
+                        <p className="project-modal__challenge-body">{challenge.solution}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {keyTechStack.length > 0 && (
+                <section className="project-modal__section">
+                  <p className="ledger-subhead">Tech Stack</p>
+                  <div className="project-modal__chips editorial-chip-list">
+                    {keyTechStack.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+                    {project.techStack.length > keyTechStack.length && (
+                      <span className="editorial-chip">+{project.techStack.length - keyTechStack.length}</span>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              <div className="project-modal__footer">
+                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary">GitHub <ExternalLink size={13} aria-hidden="true" /></a>}
+                {project.liveLink && <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost">Live Demo <ExternalLink size={13} aria-hidden="true" /></a>}
+                {!project.link && !project.liveLink && <span className="ledger-note"><Lock size={13} aria-hidden="true" /> Internal / private project</span>}
               </div>
             </div>
           </motion.div>
@@ -167,447 +293,149 @@ function ProjectModal({ project, onClose }) {
   )
 }
 
-/* ─── Featured (large) card ────────────────────────────── */
-function FeaturedCard({ item, onClick }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-40px' })
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      onClick={onClick}
-      tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
-      style={{
-        borderRadius: 14,
-        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 40%, var(--color-border))' : 'var(--color-border)'}`,
-        background: 'var(--color-surface)',
-        overflow: 'hidden', cursor: 'pointer',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? 'var(--shadow-md)' : 'none',
-        transition: 'all 0.2s ease',
-        outline: 'none',
-        display: 'flex', flexDirection: 'column',
-      }}
-    >
-
-      <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.9rem', flex: 1 }}>
-        {/* Header row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.15 : 1 }} transition={{ duration: 0.2 }} style={{ fontSize: '1.8rem' }}>
-              {item.icon}
-            </motion.span>
-            <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text)', lineHeight: 1.2 }}>{item.title}</h3>
-              {item.badge && (
-                <span style={{
-                  fontSize: '0.65rem', fontFamily: 'var(--font-mono)',
-                  background: badgeStyle[item.badge]?.bg, color: badgeStyle[item.badge]?.color,
-                  border: `1px solid ${badgeStyle[item.badge]?.border}`, padding: '2px 8px', borderRadius: 20,
-                }}>● {item.badge}</span>
-              )}
-            </div>
-          </div>
-          <ExternalLink size={15} color={hovered ? 'var(--color-accent)' : 'var(--text2)'} style={{ opacity: hovered ? 1 : 0.35, transition: 'all 0.2s', marginTop: 4 }} />
-        </div>
-
-        <p style={{ fontSize: '0.88rem', color: 'var(--text2)', lineHeight: 1.65 }}>{item.desc}</p>
-
-        {/* Metrics strip */}
-        {item.metrics && (
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {item.metrics.map(m => {
-              const Icon = metricIcon[m.type] || BarChart2
-              return (
-                <div key={m.label} style={{
-                  display: 'flex', alignItems: 'center', gap: 5, padding: '5px 11px',
-                  background: 'color-mix(in srgb, var(--color-accent) 9%, transparent)',
-                  border: '1px solid color-mix(in srgb, var(--color-accent) 22%, transparent)',
-                  borderRadius: 8,
-                }}>
-                  <Icon size={11} color="var(--color-accent)" />
-                  <strong style={{ color: 'var(--color-accent)', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>{m.value}</strong>
-                  <span style={{ color: 'var(--text2)', fontSize: '0.72rem' }}>{m.label}</span>
-                </div>
-              )
-            })}
-          </div>
-        )}
-
-        {/* Tech stack mini */}
-        {item.techStack && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <Layers size={11} color="var(--text2)" style={{ opacity: 0.5, flexShrink: 0 }} />
-            {item.techStack.slice(0, 5).map(t => (
-              <span key={t} style={{ fontSize: '0.67rem', fontFamily: 'var(--font-mono)', color: 'var(--text2)', opacity: 0.7 }}>{t}</span>
-            ))}
-            {item.techStack.length > 5 && <span style={{ fontSize: '0.67rem', color: 'var(--text2)', opacity: 0.4 }}>+{item.techStack.length - 5}</span>}
-          </div>
-        )}
-
-        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 'auto' }}>
-          {item.tags.map(t => <Tag key={t}>{t}</Tag>)}
-        </div>
-      </div>
-    </motion.article>
-  )
-}
-
-/* ─── Regular (compact) card ───────────────────────────── */
-function ProjectCard({ item, index, onClick }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-40px' })
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.4, delay: (index % 3) * 0.07 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      onClick={onClick}
-      tabIndex={0} role="button" aria-label={`View details for ${item.title}`}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick() } }}
-      style={{
-        borderRadius: 12,
-        border: `1px solid ${hovered ? 'color-mix(in srgb, var(--color-accent) 35%, var(--color-border))' : 'var(--color-border)'}`,
-        background: 'var(--color-surface)',
-        overflow: 'hidden', cursor: 'pointer',
-        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
-        boxShadow: hovered ? 'var(--shadow-sm)' : 'none',
-        transition: 'all 0.2s ease',
-        display: 'flex', flexDirection: 'column',
-        outline: 'none',
-      }}
-    >
-
-      <div style={{ padding: '1.1rem 1.2rem', display: 'flex', flexDirection: 'column', gap: '0.55rem', flex: 1 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <motion.span animate={{ scale: hovered ? 1.1 : 1 }} transition={{ duration: 0.18 }} style={{ fontSize: '1.35rem' }}>
-              {item.icon}
-            </motion.span>
-            <h3 style={{ fontSize: '0.93rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.25 }}>{item.title}</h3>
-          </div>
-          {item.badge && (
-            <span style={{
-              flexShrink: 0, fontSize: '0.63rem', fontFamily: 'var(--font-mono)',
-              background: badgeStyle[item.badge]?.bg, color: badgeStyle[item.badge]?.color,
-              border: `1px solid ${badgeStyle[item.badge]?.border}`, padding: '2px 8px', borderRadius: 20,
-            }}>● {item.badge}</span>
-          )}
-        </div>
-
-        <p style={{ fontSize: '0.82rem', color: 'var(--text2)', lineHeight: 1.6, flex: 1 }}>{item.desc}</p>
-
-        {item.metrics && (
-          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-            {item.metrics.map(m => (
-              <span key={m.label} style={{
-                fontSize: '0.69rem', padding: '2px 8px',
-                background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--color-accent) 24%, transparent)',
-                borderRadius: 20, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', fontWeight: 600,
-              }}>
-                {m.value} {m.label}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-          {item.tags.slice(0, 3).map(t => <Tag key={t}>{t}</Tag>)}
-          {item.tags.length > 3 && <span style={{ fontSize: '0.68rem', color: 'var(--text2)', opacity: 0.45, alignSelf: 'center' }}>+{item.tags.length - 3}</span>}
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 4 }}>
-          {item.link
-            ? <span style={{ fontSize: '0.67rem', color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: 3 }}><ExternalLink size={10} /> GitHub</span>
-            : <span style={{ fontSize: '0.67rem', color: 'var(--text2)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: 3, opacity: 0.45 }}><Lock size={10} /> Private</span>
-          }
-          <span style={{ fontSize: '0.68rem', color: hovered ? 'var(--color-accent)' : 'var(--text2)', fontFamily: 'var(--font-mono)', opacity: hovered ? 1 : 0.35, transition: 'all 0.2s' }}>
-            details →
-          </span>
-        </div>
-      </div>
-    </motion.article>
-  )
-}
-
-/* ─── Page ──────────────────────────────────────────────── */
 export default function ProjectsPage() {
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
+  const searchInputRef = useRef(null)
 
-  const filteredProjects = useMemo(() =>
-    projects.filter(p => {
-      const q = query.toLowerCase()
-      const matchesQuery = !query || p.title.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)
-      const matchesFilter =
-        activeFilter === 'All' ||
-        (activeFilter === 'Production' && p.badge === 'Production') ||
-        (activeFilter === 'In Progress' && p.badge === 'In Progress') ||
-        (activeFilter === 'Open Source' && p.link)
-      const matchesTag = activeTag === 'All' || p.tags.includes(activeTag)
+  const filteredProjects = useMemo(() => {
+    // ⚡ Bolt: Hoist toLowerCase() outside the filter loop to avoid O(n) redundant string allocations
+    const q = query.toLowerCase()
+    return PROJECTS_WITH_SEARCH.filter((project) => {
+      const matchesQuery = !query || project._searchKey.includes(q)
+      const matchesFilter = activeFilter === 'All'
+        || (activeFilter === 'Production' && project.badge === 'Production')
+        || (activeFilter === 'In Progress' && project.badge === 'In Progress')
+        || (activeFilter === 'Open Source' && project.link)
+        || (activeFilter === 'Vibe' && project.badge === 'Vibe')
+      const matchesTag = activeTag === 'All' || project._tagsSet.has(activeTag)
       return matchesQuery && matchesFilter && matchesTag
-    }),
-    [query, activeFilter, activeTag],
-  )
-
-  const isFiltered = query || activeFilter !== 'All' || activeTag !== 'All'
-  const featured = !isFiltered ? filteredProjects.filter(p => p.badge === 'Production').slice(0, 2) : []
-  const rest = !isFiltered ? filteredProjects.filter(p => !featured.includes(p)) : filteredProjects
+    })
+  }, [query, activeFilter, activeTag])
+  const showFeaturedLayout = !query && activeFilter === 'All' && activeTag === 'All'
 
   return (
-    <section className="mvp2-page">
-      <PageHeader
-        kicker="Portfolio"
-        title="Selected Works"
-        description="Production LLMs, RAG pipelines, and ML systems built for real-world scale."
+    <>
+      <SEO
+        title="Projects | Himanshu Nakrani"
+        description="Explore production AI projects including Text-to-SQL, RAG systems, no-code agents, and ML forecasting work."
       />
+      <main className="mvp2-page editorial-page">
+        <header className="editorial-page-header">
+          <p className="editorial-kicker">[ 01 ] · Portfolio</p>
+          <h1 className="editorial-page-title">
+            Selected work across <span className="gradient-text">AI systems</span>.
+          </h1>
+          <p className="editorial-page-lede">
+            Production AI systems, selected for signal.
+          </p>
+        </header>
 
-      {/* Stats strip - modern bento style */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(4, 1fr)', 
-        gap: '0.75rem', 
-        marginBottom: '2rem',
-      }} className="projects-stats-grid">
-        {pageStats.map((s, i) => {
-          const Icon = s.icon
-          return (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 16, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.07, duration: 0.4 }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '0.75rem',
-                padding: '1rem 1.1rem', borderRadius: 14,
-                border: '1px solid var(--color-border)', 
-                background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
-              }}
-            >
-              <div style={{
-                width: 36, height: 36, borderRadius: 10,
-                background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)',
-                border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <Icon size={16} color="var(--color-accent)" />
-              </div>
-              <div>
-                <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.label}</div>
-              </div>
-            </motion.div>
-          )
-        })}
-      </div>
-
-      {/* Modern filter bar with glass effect */}
-      <div style={{ 
-        border: '1px solid var(--color-border)', 
-        borderRadius: 18, 
-        background: 'linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 100%)',
-        padding: '1rem 1.25rem', 
-        marginBottom: '2rem',
-        boxShadow: 'var(--shadow-sm)',
-      }}>
-        {/* Search row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-          <div style={{
-            flex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            background: 'var(--color-bg)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 12,
-            padding: '0.5rem 0.85rem',
-            transition: 'border-color 0.2s, box-shadow 0.2s',
-          }}>
-            <Search size={16} color="var(--color-text-muted)" style={{ flexShrink: 0, opacity: 0.6 }} />
-            <input
-              type="search"
-              placeholder="Search projects..."
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              style={{
-                flex: 1, 
-                border: 'none', 
-                background: 'transparent',
-                color: 'var(--color-text)', 
-                outline: 'none', 
-                fontSize: '0.88rem',
-              }}
-            />
+        <section className="editorial-section section-hairline" aria-label="Project statistics">
+          <div className="editorial-stat-grid">
+            {pageStats.map((stat, index) => <PageStat key={stat.label} stat={stat} index={index} />)}
           </div>
-          <div style={{ 
-            padding: '0.5rem 0.85rem',
-            background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
-            border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-            borderRadius: 10,
-            fontSize: '0.75rem',
-            fontFamily: 'var(--font-mono)',
-            color: 'var(--color-accent)',
-            fontWeight: 600,
-          }}>
-            {filteredProjects.length} results
-          </div>
-        </div>
+        </section>
 
-        {/* Filter pills - two rows for better organization */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-          {/* Status filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
-              marginRight: 4,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}>
-              <Filter size={11} />
-              Status
-            </span>
-            {['All', 'Production', 'In Progress', 'Open Source'].map(f => (
-              <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
-                style={{
-                  background: activeFilter === f ? 'var(--color-accent)' : 'var(--color-surface-raised)',
-                  color: activeFilter === f ? 'white' : 'var(--color-text-muted)',
-                  border: `1px solid ${activeFilter === f ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                  borderRadius: 8, 
-                  padding: '5px 12px',
-                  fontSize: '0.74rem', 
-                  fontWeight: 600, 
-                  cursor: 'pointer', 
-                  transition: 'all 0.18s',
-                  boxShadow: activeFilter === f ? '0 2px 8px color-mix(in srgb, var(--color-accent) 30%, transparent)' : 'none',
-                }}
-              >{f}</button>
-            ))}
-          </div>
+        <section className="editorial-section section-hairline">
+          <span className="section-ghost-num" aria-hidden="true">02</span>
+          <p className="editorial-kicker">[ 02 ] · Index</p>
+          <h2 className="editorial-section-title">Project ledger</h2>
 
-          {/* Tech/tag filters */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 700, 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.1em',
-              color: 'var(--color-text-muted)', 
-              marginRight: 4,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}>
-              <Sparkles size={11} />
-              Tech
-            </span>
-            {['All', ...FEATURED_TAGS].map(tag => (
-              <button
-                key={tag}
-                onClick={() => setActiveTag(tag)}
-                style={{
-                  border: '1px solid',
-                  borderColor: activeTag === tag ? 'var(--color-accent)' : 'var(--color-border)',
-                  background: activeTag === tag ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'transparent',
-                  color: activeTag === tag ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                  borderRadius: 6, 
-                  padding: '4px 10px',
-                  cursor: 'pointer', 
-                  fontSize: '0.7rem', 
-                  fontFamily: 'var(--font-mono)',
-                  transition: 'all 0.15s',
-                }}
-              >{tag}</button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Featured production row */}
-      <AnimatePresence>
-        {featured.length > 0 && (
-          <motion.div key="featured" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <p style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              fontSize: '0.67rem', fontWeight: 700, color: 'var(--color-accent)',
-              textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: '0.85rem',
-            }}>
-              <span style={{ display: 'inline-block', width: 16, height: 1.5, background: 'var(--color-accent)', borderRadius: 2 }} />
-              Featured Production
-            </p>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '1rem',
-              marginBottom: '2rem',
-            }}>
-              {featured.map(item => <FeaturedCard key={item.title} item={item} onClick={() => setSelected(item)} />)}
+          <div className="editorial-card" style={{ padding: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <label style={{ flex: '1 1 260px', display: 'flex', alignItems: 'center', gap: '0.6rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '0.6rem 0.8rem', background: 'var(--color-bg)' }}>
+                <Search size={16} color="var(--color-text-muted)" aria-hidden="true" />
+                <span className="sr-only">Search projects</span>
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Search projects..."
+                  maxLength={100}
+                  style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', color: 'var(--color-text)', fontSize: 'var(--text-sm)' }}
+                />
+                {query && (
+                  <button
+                    type="button"
+                    aria-label="Clear search"
+                    className="btn btn--ghost"
+                    onClick={() => {
+                      setQuery('')
+                      searchInputRef.current?.focus()
+                    }}
+                    style={{
+                      padding: '0.25rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: 'none',
+                    }}
+                  >
+                    <X size={14} aria-hidden="true" />
+                  </button>
+                )}
+              </label>
+              <span className="editorial-chip" role="status" aria-live="polite">{filteredProjects.length} results</span>
             </div>
-          </motion.div>
-        )}
 
-        {/* All other projects */}
-        <motion.div key={`grid-${activeFilter}-${activeTag}-${query}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
-          {rest.length > 0 && !isFiltered && (
-            <p style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              fontSize: '0.67rem', fontWeight: 700, color: 'var(--text2)',
-              textTransform: 'uppercase', letterSpacing: '0.13em', marginBottom: '0.85rem', opacity: 0.6,
-            }}>
-              <span style={{ display: 'inline-block', width: 16, height: 1.5, background: 'var(--text2)', borderRadius: 2, opacity: 0.5 }} />
-              More Projects
-            </p>
-          )}
-          <div style={{ display: 'grid', gap: '0.9rem', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))' }}>
-            {rest.map((item, i) => <ProjectCard key={item.title} item={item} index={i} onClick={() => setSelected(item)} />)}
+            <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>
+              <div role="group" aria-label="Project status filters" style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <span className="ledger-subhead" style={{ margin: 0, display: 'inline-flex', gap: 4, alignItems: 'center' }}><Filter size={12} /> Status</span>
+                {['All', 'Production', 'In Progress', 'Open Source', 'Vibe'].map((filter) => (
+                  <button key={filter} type="button" aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)} className={activeFilter === filter ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: '0.75rem', padding: '0.4rem 0.75rem' }}>
+                    {filter}
+                  </button>
+                ))}
+              </div>
+              <div role="group" aria-label="Project technology filters" style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                <span className="ledger-subhead" style={{ margin: 0 }}>Tech</span>
+                {['All', ...FEATURED_TAGS].map((tag) => (
+                  <button key={tag} type="button" aria-pressed={activeTag === tag} onClick={() => setActiveTag(tag)} className={activeTag === tag ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: '0.75rem', padding: '0.4rem 0.75rem' }}>
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="projects-grid">
+            {filteredProjects.map((project, index) => (
+              <ProjectCard
+                key={project.title}
+                item={project}
+                index={index}
+                featured={showFeaturedLayout && index === 0}
+                onDetails={() => setSelected(project)}
+              />
+            ))}
           </div>
 
           {filteredProjects.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '3.5rem', color: 'var(--text2)' }}>
-              <p style={{ fontSize: '1.5rem', marginBottom: 8 }}>🔍</p>
-              <p style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: 4 }}>No projects match</p>
-              <p style={{ fontSize: '0.82rem', opacity: 0.6 }}>Try adjusting your filters or search term.</p>
+            <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--color-text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+              <p style={{ margin: 0, color: 'var(--color-text)', fontWeight: 'var(--font-weight-semibold)' }}>No projects match</p>
+              <p style={{ margin: 0, fontSize: 'var(--text-sm)' }}>Try adjusting your filters or search term.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery('')
+                  setActiveFilter('All')
+                  setActiveTag('All')
+                  setTimeout(() => searchInputRef.current?.focus(), 50)
+                }}
+                className="btn btn--ghost"
+                style={{ marginTop: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+              >
+                Clear all filters
+              </button>
             </div>
           )}
-        </motion.div>
-      </AnimatePresence>
-
+        </section>
+      </main>
       <ProjectModal project={selected} onClose={() => setSelected(null)} />
-
-      <style>{`
-        @media (max-width: 768px) {
-          .projects-stats-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .projects-stats-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
-    </section>
+    </>
   )
 }

@@ -1,82 +1,36 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
+import { useSpring, useTransform, useMotionValue } from 'framer-motion'
 
 /**
- * useCountUp — animates a numeric value from 0 to `target` once when the
- * referenced element enters the viewport. Honours prefers-reduced-motion.
+ * useCountUp — animates a number once active. Resets when target changes so
+ * refreshed stats animate to their new value instead of freezing at the old one.
  *
- * Returns: { ref, value }
- *   - ref: attach to the element you want to observe
- *   - value: current displayed number (starts at 0, ends at target)
- *
- * Supports `target` as a string with a suffix (e.g. "75%", "100+", "2+")
- * by parsing the leading integer; non-numeric returns target verbatim.
+ * ⚡ Bolt Optimization: Migrated from custom requestAnimationFrame and React state
+ * to Framer Motion's useSpring and useMotionValue. This allows DOM-level updates
+ * (via <motion.span>) that completely bypass React re-renders, eliminating garbage
+ * collection churn and reducing layout thrashing on the main thread during animations.
  */
-export function useCountUp(target, { duration = 900, decimals = 0 } = {}) {
-  const ref = useRef(null)
-  const [value, setValue] = useState(0)
-  const startedRef = useRef(false)
+export function useCountUp(target, duration = 450, active = true) {
+  const node = useMotionValue(0)
+  const spring = useSpring(node, {
+    duration,
+    bounce: 0,
+  })
 
-  // Parse "75%" → { num: 75, suffix: "%" }, "100+" → { num: 100, suffix: "+" }
-  const parsed = parseTarget(target)
+  const display = useTransform(spring, (current) => Math.round(current))
 
   useEffect(() => {
-    if (!ref.current) return
-    if (typeof window === 'undefined') return
-    if (parsed.num === null) return
-
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduce) {
-      setValue(parsed.num)
-      return
-    }
-
-    const node = ref.current
-    let raf = 0
-    let startTime = 0
-
-    const step = (t) => {
-      if (!startTime) startTime = t
-      const elapsed = t - startTime
-      const progress = Math.min(1, elapsed / duration)
-      // ease-out-cubic for a calm, decelerating curve
-      const eased = 1 - Math.pow(1 - progress, 3)
-      const next = parsed.num * eased
-      setValue(decimals > 0 ? Number(next.toFixed(decimals)) : Math.round(next))
-      if (progress < 1) {
-        raf = requestAnimationFrame(step)
+    if (active) {
+      if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        node.set(target)
+        spring.set(target) // snap to target
+      } else {
+        node.set(target)
       }
     }
+  }, [active, target, node, spring])
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true
-            raf = requestAnimationFrame(step)
-            observer.unobserve(node)
-          }
-        })
-      },
-      { threshold: 0.4 }
-    )
-
-    observer.observe(node)
-    return () => {
-      observer.disconnect()
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [parsed.num, duration, decimals])
-
-  if (parsed.num === null) {
-    return { ref, value: target, suffix: '' }
-  }
-  return { ref, value, suffix: parsed.suffix }
-}
-
-function parseTarget(target) {
-  if (typeof target === 'number') return { num: target, suffix: '' }
-  if (typeof target !== 'string') return { num: null, suffix: '' }
-  const match = target.match(/^(\d+(?:\.\d+)?)(.*)$/)
-  if (!match) return { num: null, suffix: '' }
-  return { num: parseFloat(match[1]), suffix: match[2] }
+  // Instead of a primitive number, return the MotionValue so the caller can render it
+  // without triggering a React render phase. Return 0 directly if inactive to match prior logic.
+  return active ? display : 0
 }

@@ -34,7 +34,7 @@ export default function Skills() {
         <h3 className="subhead">Certifications</h3>
         <ul className="cert-list">
           {certifications.map((cert) => (
-            <li key={cert.title}>{cert.title}</li>
+            <li key={cert.name}>{cert.name}</li>
           ))}
         </ul>
       </Reveal>

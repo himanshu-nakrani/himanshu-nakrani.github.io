@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
 export default function LazyImage({ src, alt, style, ...props }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const imgRef = useRef(null)
 
   useEffect(() => {
@@ -26,26 +26,53 @@ export default function LazyImage({ src, alt, style, ...props }) {
 
   return (
     <div ref={imgRef} style={{ position: 'relative', overflow: 'hidden', ...style }}>
-      {!isLoaded && (
+      {!isLoaded && !hasError && (
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, var(--surface) 0%, var(--surface2) 50%, var(--surface) 100%)',
+            background: 'linear-gradient(90deg, var(--color-surface) 0%, var(--color-surface-raised) 50%, var(--color-surface) 100%)',
             backgroundSize: '200% 100%',
             animation: 'shimmer 1.5s infinite',
           }}
         />
       )}
-      {isInView && (
-        <motion.img
+      {hasError && (
+        <div
+          role="img"
+          aria-label={alt}
+          style={{
+            minHeight: 160,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1rem',
+            textAlign: 'center',
+            background: 'var(--color-surface)',
+            color: 'var(--color-text-muted)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'inherit',
+            fontSize: '0.85rem',
+          }}
+        >
+          {alt || 'Image unavailable'}
+        </div>
+      )}
+      {isInView && !hasError && (
+        <img
           src={src}
           alt={alt}
           onLoad={() => setIsLoaded(true)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isLoaded ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          onError={() => setHasError(true)}
+          className="lazy-image"
+          referrerPolicy="no-referrer"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
           {...props}
         />
       )}
@@ -53,6 +80,9 @@ export default function LazyImage({ src, alt, style, ...props }) {
         @keyframes shimmer {
           0% { background-position: -200% 0; }
           100% { background-position: 200% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .lazy-image { transition: none !important; }
         }
       `}</style>
     </div>

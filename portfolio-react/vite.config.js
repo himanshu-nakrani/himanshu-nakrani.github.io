@@ -19,6 +19,33 @@ export default defineConfig({
     port: 5000,
     allowedHosts: true,
   },
+  build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 600,
+    reportCompressedSize: false,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            const normalized = id.split(path.sep).join('/')
+            if (
+              normalized.includes('react/index.js') ||
+              normalized.includes('react/jsx-runtime') ||
+              normalized.includes('react-dom/') ||
+              normalized.includes('scheduler/') ||
+              normalized.includes('react-router/') ||
+              normalized.includes('react-router-dom/') ||
+              normalized.includes('@remix-run/router/')
+            ) {
+              return 'react-vendor'
+            }
+            if (normalized.includes('/node_modules/lucide-react/')) return 'icons'
+          }
+        },
+      },
+    },
+  },
   test: {
     environment: 'node',
   },

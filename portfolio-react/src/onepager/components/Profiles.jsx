@@ -2,7 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import Section from './Section'
 import Reveal from './Reveal'
 import { kagglePinned } from '../../data'
-import { ghStats, kaggleCounters, kaggleTiers, platforms } from '../content'
+import { ghStats, kaggleCounters, kaggleTiers, medalByLabel, platforms } from '../content'
 
 export default function Profiles() {
   return (
@@ -80,7 +80,7 @@ export default function Profiles() {
                   <div>
                     <p className="kg-tier__title">{tier.title}</p>
                     <p className="kg-tier__rank">
-                      Rank <strong>{tier.rank}</strong> of {tier.total} · Best: {tier.highest}
+                      Rank <strong>{tier.rank}</strong> of {tier.total}{tier.highest ? ` · Best: ${tier.highest}` : ''}
                     </p>
                     <div className="kg-tier__medals">
                       <span className="medal-chip">🥈 {tier.silver} Silver</span>
@@ -112,7 +112,7 @@ export default function Profiles() {
                     rel="noopener noreferrer"
                   >
                     <span className="work-list__type">
-                      {item.medal && `${item.medal} `}
+                      {item.medal && `${medalByLabel[item.medal] ?? ''} `}
                       {item.type === 'notebook' ? 'Notebook' : 'Dataset'}
                     </span>
                     <span className="work-list__title">{item.title}</span>

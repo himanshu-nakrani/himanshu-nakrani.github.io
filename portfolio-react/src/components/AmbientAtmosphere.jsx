@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 /**
  * Atmospheric backdrop — three quiet layers:
@@ -12,7 +12,17 @@ export default function AmbientAtmosphere({
   enableAnimation = true,
   ariaHidden = true,
 }) {
-  const reduceMotion = useReducedMotion()
+  const [reduceMotion, setReduceMotion] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduceMotion(mq.matches)
+    update()
+    mq.addEventListener?.('change', update)
+    return () => mq.removeEventListener?.('change', update)
+  }, [])
+
   const shouldAnimate = enableAnimation && !reduceMotion
 
   return (

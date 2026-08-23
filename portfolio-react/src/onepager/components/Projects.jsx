@@ -7,12 +7,14 @@ const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'production', label: 'Production', match: (p) => p.badge === 'Production' },
   { id: 'research', label: 'Research', match: (p) => p.badge === 'Research' },
+  { id: 'vibe', label: 'Vibe', match: (p) => p.badge === 'Vibe' },
   { id: 'opensource', label: 'Open Source', match: (p) => !p.badge && p.link },
 ]
 
 function badgeClass(badge) {
   if (badge === 'Production') return 'badge badge--production'
   if (badge === 'Research') return 'badge badge--research'
+  if (badge === 'Vibe') return 'badge badge--vibe'
   return 'badge badge--opensource'
 }
 

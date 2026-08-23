@@ -46,7 +46,7 @@ export default function Contact() {
               fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
               lineHeight: 1.14,
               letterSpacing: '-0.02em',
-              color: 'var(--text)',
+              color: 'var(--color-text)',
               marginBottom: '1rem',
             }}
           >
@@ -54,7 +54,7 @@ export default function Contact() {
           </h3>
           <p
             style={{
-              color: 'var(--text2)',
+              color: 'var(--color-text-muted)',
               fontSize: 'clamp(0.97rem, 2.8vw, 1.08rem)',
               maxWidth: 620,
               margin: '0 auto 2rem',
@@ -103,7 +103,7 @@ export default function Contact() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-            minHeight: 44px;
+            min-height: 44px;
             padding: 0.52rem 1.1rem;
             border-radius: 999px;
             border: 1px solid var(--color-border-strong);
@@ -139,6 +139,13 @@ export default function Contact() {
         }
         .contact-pill-link:hover::before {
           opacity: 1;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .contact-pill-link {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
         }
       `}</style>
     </Section>

@@ -19,8 +19,8 @@ export default function About() {
               <p>
                 I'm an <strong>AI Software Developer at State Street Corporation</strong>,
                 building enterprise-grade LLM systems and AI agents for financial data —
-                including <strong>Alpha Copilot</strong>, a Text-to-SQL assistant serving 100+
-                internal users, and <strong>Agent Forge</strong>, a no-code AI agent builder.
+                including <strong>Alpha Copilot</strong>, a Text-to-SQL assistant serving 200+
+                total users, and <strong>Agent Forge</strong>, a no-code AI agent builder.
               </p>
             </div>
             <ul className="fact-list">
@@ -52,7 +52,7 @@ export default function About() {
           </h3>
           <ul className="cert-list">
             {certifications.map((cert) => (
-              <li key={cert.title}>{cert.title}</li>
+              <li key={cert.name}>{cert.name}</li>
             ))}
           </ul>
         </div>
