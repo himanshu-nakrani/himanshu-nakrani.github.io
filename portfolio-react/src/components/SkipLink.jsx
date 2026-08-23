@@ -1,6 +1,6 @@
-export function SkipLink({ targetId }) {
+export default function SkipLink({ targetId = 'main-content' }) {
   return (
-    <a className="skip-link" href={`#${targetId}`}>
+    <a href={`#${targetId}`} className="skip-link">
       Skip to content
     </a>
   )

@@ -28,6 +28,29 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]|^motion$' }],
     },
   },
+
+  // The legacy portfolio restored from main predates the stricter
+  // react-hooks v7 rules; keep it exactly as shipped and lint only
+  // correctness-essential rules there. New code (src/onepager, App.jsx)
+  // stays under full strictness above.
+  {
+    files: [
+      'src/pages/**',
+      'src/layouts/**',
+      'src/components/**',
+      'src/hooks/**',
+      'src/lib/**',
+    ],
+    rules: {
+      'no-unused-vars': 'off',
+      'no-empty': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/globals': 'off',
+      'react-hooks/immutability': 'off',
+    },
+  },
   ...tseslint.config({
     files: ['**/*.{ts,tsx}'],
     extends: [
