@@ -20,3 +20,6 @@
 ## 2024-05-18 - Add aria-hidden to decorative icons within interactive elements
 **Learning:** Decorative SVG icons (like magnifying glasses or 'X' clear buttons) placed inside of buttons or labels that already have an explicit `aria-label` attribute can cause redundancy or confusion for screen reader users if left exposed.
 **Action:** Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit `aria-label` or surrounding text of their parent interactive elements.
+## 2024-08-28 - Avoid Abrupt DOM Removal for CSS Exit Transitions
+**Learning:** Conditionally rendering `null` for visually toggled UI elements (like a "Back to Top" button) entirely prevents CSS exit transitions (e.g. fade out, scale down) from playing, resulting in a jarring disappearance.
+**Action:** Keep the element in the DOM to allow transitions to play, but ensure it is functionally and semantically hidden by applying `aria-hidden={!visible}`, `tabIndex={visible ? 0 : -1}`, and `pointerEvents: visible ? 'auto' : 'none'`.
