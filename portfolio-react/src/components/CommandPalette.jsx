@@ -218,9 +218,6 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50)
-    } else {
-      setSearch('')
-      setSelectedIndex(0)
     }
   }, [open])
 
@@ -274,6 +271,8 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     (e) => {
       if (e.key === 'Escape') {
         setOpen(false)
+        setSearch('')
+        setSelectedIndex(0)
       } else if (e.key === 'ArrowDown') {
         e.preventDefault()
         setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1))

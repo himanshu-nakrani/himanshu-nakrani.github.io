@@ -1,0 +1,13 @@
+--- portfolio-react/package.json
++++ portfolio-react/package.json
+@@ -43,10 +43,9 @@
+     "vite": "^8.0.16",
+     "vitest": "^4.1.2"
+   },
+-  "packageManager": "pnpm@11.5.3",
+-  "pnpm": {
+-    "overrides": {
+-      "nanoid": "3.3.18"
+-    }
++  "packageManager": "pnpm@11.5.3"
++}

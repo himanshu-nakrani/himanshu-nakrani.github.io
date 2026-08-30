@@ -1,0 +1,29 @@
+--- portfolio-react/src/components/CommandPalette.jsx
++++ portfolio-react/src/components/CommandPalette.jsx
+@@ -218,10 +218,6 @@
+   useEffect(() => {
+     if (open) {
+       setTimeout(() => inputRef.current?.focus(), 50)
+-    } else {
+-      setSearch('')
+-      setSelectedIndex(0)
+     }
+   }, [open])
+
+@@ -253,6 +249,8 @@
+     (e) => {
+       if (e.key === 'Escape') {
+         setOpen(false)
++        setSearch('')
++        setSelectedIndex(0)
+       } else if (e.key === 'ArrowDown') {
+         e.preventDefault()
+         setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1))
+@@ -275,6 +273,8 @@
+   const handleBackdropClick = (e) => {
+     if (e.target === dialogRef.current) {
+       setOpen(false)
++      setSearch('')
++      setSelectedIndex(0)
+     }
+   }
