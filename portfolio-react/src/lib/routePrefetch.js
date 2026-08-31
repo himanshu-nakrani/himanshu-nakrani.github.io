@@ -10,7 +10,7 @@ export const routeImporters = {
   '/research/:slug': () => import('../pages/ResearchDeepDivePage'),
   '/skills': () => import('../pages/SkillsPage'),
   '/lab': () => import('../pages/LabPage'),
-  '/minimal': () => import('../pages/MinimalSPA'),
+  '/minimal': () => import('../onepager/OnePager'),
 }
 
 const prefetched = new Set()

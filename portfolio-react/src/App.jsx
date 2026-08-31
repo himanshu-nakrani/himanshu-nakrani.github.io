@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 
 import {
   applyDesignMode,
@@ -15,6 +15,21 @@ import { routeImporters } from './lib/routePrefetch'
 import MainLayout from './layouts/MainLayout'
 import RouteLoadingBar from './components/RouteLoadingBar'
 
+/**
+ * Re-reads persisted theme/design-mode on navigation so the host app adopts
+ * changes made by the standalone one-pager (which manages them directly).
+ */
+function RouteSync({ onThemeSync, onDesignSync }) {
+  const location = useLocation()
+
+  useEffect(() => {
+    onThemeSync(getPreferredTheme() === 'dark')
+    onDesignSync(getPreferredDesignMode())
+  }, [location.pathname, onThemeSync, onDesignSync])
+
+  return null
+}
+
 const HomePage = lazy(routeImporters['/'])
 const AboutPage = lazy(routeImporters['/about'])
 const ProjectsPage = lazy(routeImporters['/projects'])
@@ -23,7 +38,7 @@ const ProfilesPage = lazy(routeImporters['/profiles'])
 const ResearchPage = lazy(routeImporters['/research'])
 const SkillsPage = lazy(routeImporters['/skills'])
 const StyleguidePage = lazy(() => import('./pages/StyleguidePage'))
-const MinimalSPA = lazy(routeImporters['/minimal'])
+const OnePager = lazy(routeImporters['/minimal'])
 const ThreeDAdaptiveNavDemo = lazy(() => import('./components/ui/3d-adaptive-navigation-bar-demo'))
 const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo'))
 const ProjectDeepDivePage = lazy(routeImporters['/projects/:slug'])
@@ -76,12 +91,13 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+        <RouteSync onThemeSync={setIsDark} onDesignSync={setDesignMode} />
         <Suspense fallback={<RouteLoadingBar />}>
           <Routes>
             <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
             <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
             <Route path="/styleguide" element={<StyleguidePage />} />
-            <Route path="/minimal" element={<MinimalSPA />} />
+            <Route path="/minimal" element={<OnePager />} />
             <Route
               element={
                 <MainLayout

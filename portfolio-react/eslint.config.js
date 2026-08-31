@@ -61,4 +61,26 @@ export default defineConfig([
       ],
     },
   }),
+
+  // Legacy portfolio code predates the stricter react-hooks v7 rules;
+  // keep it as shipped on main. New code (src/onepager, App.jsx) stays
+  // under full strictness above.
+  {
+    files: [
+      'src/pages/**',
+      'src/layouts/**',
+      'src/components/**',
+      'src/hooks/**',
+      'src/lib/**',
+    ],
+    rules: {
+      'no-unused-vars': 'off',
+      'no-empty': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/globals': 'off',
+      'react-hooks/immutability': 'off',
+    },
+  },
 ])
