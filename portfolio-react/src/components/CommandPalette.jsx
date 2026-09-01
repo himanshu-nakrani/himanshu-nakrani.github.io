@@ -177,7 +177,16 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     if (item.actionType === 'navigate') {
       navigate(item.actionValue)
     } else if (item.actionType === 'open') {
-      window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+      try {
+        const url = new URL(item.actionValue, window.location.origin)
+        if (['http:', 'https:', 'mailto:'].includes(url.protocol)) {
+          window.open(url.href, '_blank', 'noopener,noreferrer')
+        } else {
+          console.error('🛡️ Sentinel: Blocked unsafe URL navigation protocol:', url.protocol)
+        }
+      } catch (e) {
+        console.error('🛡️ Sentinel: Failed to parse URL for navigation:', item.actionValue)
+      }
     } else if (item.actionType === 'theme') {
       toggleTheme()
     }
