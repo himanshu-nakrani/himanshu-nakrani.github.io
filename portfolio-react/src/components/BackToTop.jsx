@@ -11,13 +11,12 @@ export default function BackToTop() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  if (!visible) return null
-
-
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Back to top"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
       title="Back to top"
       className="glass-btn back-to-top"
       data-visible={visible ? 'true' : 'false'}
@@ -35,6 +34,7 @@ export default function BackToTop() {
         color: 'var(--color-text)',
         cursor: 'pointer',
         overflow: 'hidden',
+        pointerEvents: visible ? 'auto' : 'none',
       }}
     >
       <ArrowUp size={20} style={{ position: 'relative', zIndex: 1 }} aria-hidden="true" />
