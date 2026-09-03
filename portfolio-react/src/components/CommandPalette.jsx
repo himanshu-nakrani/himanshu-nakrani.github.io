@@ -177,7 +177,17 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     if (item.actionType === 'navigate') {
       navigate(item.actionValue)
     } else if (item.actionType === 'open') {
-      window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+      try {
+        // 🛡️ Sentinel: Validate URL to prevent XSS via malicious javascript: URIs
+        const url = new URL(item.actionValue, window.location.origin)
+        if (['http:', 'https:', 'mailto:'].includes(url.protocol)) {
+          window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+        } else {
+          console.error('Security Block: Invalid URL protocol detected')
+        }
+      } catch (e) {
+        console.error('Security Block: Invalid URL detected')
+      }
     } else if (item.actionType === 'theme') {
       toggleTheme()
     }
