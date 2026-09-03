@@ -61,3 +61,7 @@
 ## 2023-11-20 - [Performance] Refactoring in-render reduce to single pass loops
 **Learning:** Using `Array.prototype.reduce` inside a React component's render body (e.g. `skills.reduce((acc, group) => acc + group.items.length, 0)`) evaluates an aggregate value on every render cycle. This generates O(N) intermediate function closures and object allocations per evaluation, negatively impacting frame rate.
 **Action:** When calculating aggregate statistics over a static array, pre-compute the total via a single-pass `for...of` loop outside of the component definition, passing only the final primitive value into the React component. This completely eliminates O(N) calculations and closure allocations during rendering.
+
+## 2026-07-27 - [Performance] O(N log N) Array Operations in High-Frequency Observer Callbacks
+**Learning:** Using chained array methods like `.filter().sort()[0]` inside the callback of an `IntersectionObserver` (or similar high-frequency event listeners) introduces unnecessary O(N log N) computational overhead and intermediate array allocations on every scroll tick.
+**Action:** Replace chained `.filter().sort()` calls with a single-pass `for...of` loop to find maximum values (like highest `intersectionRatio`). This guarantees O(N) performance and eliminates intermediate garbage collection pressure during critical rendering paths.

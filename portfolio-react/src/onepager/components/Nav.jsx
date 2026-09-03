@@ -34,9 +34,17 @@ export default function Nav({ isDark, onThemeChange }) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        // ⚡ Bolt Optimization: Use a single-pass loop to find the most visible entry
+        // instead of O(N log N) chained array methods (.filter().sort()[0]) to avoid
+        // unnecessary array allocations in high-frequency observer callbacks.
+        let visible = null
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            if (!visible || entry.intersectionRatio > visible.intersectionRatio) {
+              visible = entry
+            }
+          }
+        }
         if (visible) setActiveId(visible.target.id)
       },
       { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.2, 0.5] }
