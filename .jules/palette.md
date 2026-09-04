@@ -20,3 +20,6 @@
 ## 2024-05-18 - Add aria-hidden to decorative icons within interactive elements
 **Learning:** Decorative SVG icons (like magnifying glasses or 'X' clear buttons) placed inside of buttons or labels that already have an explicit `aria-label` attribute can cause redundancy or confusion for screen reader users if left exposed.
 **Action:** Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit `aria-label` or surrounding text of their parent interactive elements.
+## 2024-08-01 - Conditionally Rendered Component CSS Exit Transitions
+**Learning:** Returning `null` to unmount a conditionally visible component (like a "Back to top" button) instantly removes it from the DOM, entirely preventing any CSS exit transitions (e.g., fade out, scale down) from playing.
+**Action:** To ensure CSS exit transitions play correctly, avoid immediately unmounting the component with `if (!visible) return null`. Instead, keep it in the DOM and apply `aria-hidden={!visible}`, `tabIndex={visible ? 0 : -1}`, and `pointerEvents: visible ? 'auto' : 'none'` to make it semantically and functionally invisible without breaking the animation.
