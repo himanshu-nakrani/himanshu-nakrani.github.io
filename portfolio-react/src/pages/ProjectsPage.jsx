@@ -214,7 +214,7 @@ function ProjectModal({ project, onClose }) {
                   <DataIcon name={project.icon} size={18} />
                   <span>{status}</span>
                 </div>
-                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close dialog" className="project-modal__close glass-btn">
+                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close dialog" title="Close dialog" className="project-modal__close glass-btn">
                   <X size={16} aria-hidden="true" />
                 </button>
               </div>
@@ -362,6 +362,7 @@ export default function ProjectsPage() {
                   <button
                     type="button"
                     aria-label="Clear search"
+                    title="Clear search"
                     className="btn btn--ghost"
                     onClick={() => {
                       setQuery('')
