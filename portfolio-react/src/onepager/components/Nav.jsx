@@ -34,8 +34,6 @@ export default function Nav({ isDark, onThemeChange }) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // ⚡ Bolt Optimization: Use single-pass loop instead of chained .filter().sort()
-        // to avoid O(N log N) overhead and intermediate array allocations in frequent scroll events
         let visible = null
         for (const entry of entries) {
           if (entry.isIntersecting && (!visible || entry.intersectionRatio > visible.intersectionRatio)) {
