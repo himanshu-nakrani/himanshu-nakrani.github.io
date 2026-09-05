@@ -7,3 +7,7 @@
 **Learning:** Even with `strict-origin-when-cross-origin` in `vercel.json`, the origin itself is still leaked by default. Adding `referrerPolicy="no-referrer"` directly on the image element completely stops the leak, providing defense in depth.
 **Prevention:** Always add `referrerPolicy="no-referrer"` on third-party analytics or dynamic SVG badges when they do not explicitly require the referrer context.
 ## 2025-05-20 - Prevent Resource Exhaustion via Input Length Limits\n**Vulnerability:** Search inputs in `CommandPalette.jsx` and `ProjectsPage.jsx` lacked length restrictions, potentially allowing excessive input processing.\n**Learning:** Unrestricted text inputs can lead to client-side performance degradation or DoS when processing extremely long strings, particularly when filtering large datasets or triggering rapid DOM updates.\n**Prevention:** Always enforce a reasonable `maxLength` attribute on text inputs (e.g., `maxLength={100}` for search fields) as a basic defense-in-depth measure against resource exhaustion.
+## 2026-09-05 - Safelist window.open protocols
+**Vulnerability:** Command Palette quick actions pass static URLs to `window.open` with no protocol check. That is not attacker-controlled today, but a future dynamic URL would make `javascript:` a sink.
+**Learning:** Parse with `new URL(value, window.location.origin)`, safelist `http:` / `https:` / `mailto:`, and open `url.href` (the value that was checked), not the original string.
+**Prevention:** Never pass an unchecked string to `window.open`. Keep the protocol list explicit.
