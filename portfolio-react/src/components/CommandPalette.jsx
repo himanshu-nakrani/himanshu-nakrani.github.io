@@ -177,7 +177,14 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     if (item.actionType === 'navigate') {
       navigate(item.actionValue)
     } else if (item.actionType === 'open') {
-      window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+      try {
+        const parsedUrl = new URL(item.actionValue, window.location.origin)
+        if (['http:', 'https:', 'mailto:'].includes(parsedUrl.protocol)) {
+          window.open(item.actionValue, '_blank', 'noopener,noreferrer')
+        }
+      } catch (e) {
+        // Invalid URL, do nothing
+      }
     } else if (item.actionType === 'theme') {
       toggleTheme()
     }
