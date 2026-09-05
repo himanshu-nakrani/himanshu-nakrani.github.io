@@ -20,6 +20,6 @@
 ## 2024-05-18 - Add aria-hidden to decorative icons within interactive elements
 **Learning:** Decorative SVG icons (like magnifying glasses or 'X' clear buttons) placed inside of buttons or labels that already have an explicit `aria-label` attribute can cause redundancy or confusion for screen reader users if left exposed.
 **Action:** Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit `aria-label` or surrounding text of their parent interactive elements.
-## 2024-08-01 - Conditionally Rendered Component CSS Exit Transitions
-**Learning:** Returning `null` to unmount a conditionally visible component (like a "Back to top" button) instantly removes it from the DOM, entirely preventing any CSS exit transitions (e.g., fade out, scale down) from playing.
-**Action:** To ensure CSS exit transitions play correctly, avoid immediately unmounting the component with `if (!visible) return null`. Instead, keep it in the DOM and apply `aria-hidden={!visible}`, `tabIndex={visible ? 0 : -1}`, and `pointerEvents: visible ? 'auto' : 'none'` to make it semantically and functionally invisible without breaking the animation.
+## 2026-09-05 - Keep mounted controls inert during CSS exit
+**Learning:** Returning `null` to unmount a conditionally visible control (like a Back to top button) skips CSS exit transitions. `aria-hidden` plus `tabIndex={-1}` is not enough: the node stays programmatically focusable, so after click the hidden button can keep keyboard focus.
+**Action:** Keep the node mounted so the exit animation can play, and set `inert` while it is hidden so hit-testing, sequential focus, and the accessibility tree are all removed. Do not put `aria-hidden` on a native button.
