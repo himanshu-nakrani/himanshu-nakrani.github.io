@@ -178,15 +178,12 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
       navigate(item.actionValue)
     } else if (item.actionType === 'open') {
       try {
-        // 🛡️ Sentinel: Validate URL to prevent XSS via malicious javascript: URIs
         const url = new URL(item.actionValue, window.location.origin)
         if (['http:', 'https:', 'mailto:'].includes(url.protocol)) {
-          window.open(item.actionValue, '_blank', 'noopener,noreferrer')
-        } else {
-          console.error('Security Block: Invalid URL protocol detected')
+          window.open(url.href, '_blank', 'noopener,noreferrer')
         }
-      } catch (e) {
-        console.error('Security Block: Invalid URL detected')
+      } catch {
+        // Ignore malformed action URLs.
       }
     } else if (item.actionType === 'theme') {
       toggleTheme()
