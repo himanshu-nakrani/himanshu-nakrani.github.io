@@ -42,11 +42,8 @@ const quickActions = [
   { id: 'resume', name: 'View Resume', icon: FileText, url: RESUME_URL, external: true },
 ]
 
-const STATIC_COMMAND_ITEMS = []
-
-// Pages
-pages.forEach((page) => {
-  STATIC_COMMAND_ITEMS.push({
+const STATIC_COMMAND_ITEMS = [
+  ...pages.map((page) => ({
     id: `page-${page.id}`,
     type: 'page',
     name: page.name,
@@ -55,12 +52,8 @@ pages.forEach((page) => {
     path: page.path,
     actionType: 'navigate',
     actionValue: page.path,
-  })
-})
-
-// Deep-dive pages
-deepDivePages.forEach((page) => {
-  STATIC_COMMAND_ITEMS.push({
+  })),
+  ...deepDivePages.map((page) => ({
     id: `deepdive-${page.id}`,
     type: 'page',
     name: page.name,
@@ -69,26 +62,18 @@ deepDivePages.forEach((page) => {
     path: page.path,
     actionType: 'navigate',
     actionValue: page.path,
-  })
-})
-
-// Projects (top 5)
-projects.slice(0, 5).forEach((p) => {
-  STATIC_COMMAND_ITEMS.push({
+  })),
+  ...projects.slice(0, 5).map((p) => ({
     id: `project-${p.id || p.title}`,
     type: 'project',
     name: p.title,
     badge: p.badge,
     icon: FolderGit2,
-    keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.description || ''}`.toLowerCase(),
+    keywords: `${p.title} ${p.tags?.join(' ') || ''} ${p.desc || ''}`.toLowerCase(),
     actionType: 'navigate',
     actionValue: '/projects',
-  })
-})
-
-// Skills (top 4)
-skills.slice(0, 4).forEach((cat) => {
-  STATIC_COMMAND_ITEMS.push({
+  })),
+  ...skills.slice(0, 4).map((cat) => ({
     id: `skill-${cat.label}`,
     type: 'skill',
     name: cat.label,
@@ -97,12 +82,8 @@ skills.slice(0, 4).forEach((cat) => {
     keywords: `${cat.label} ${cat.items?.join(' ') || ''}`.toLowerCase(),
     actionType: 'navigate',
     actionValue: '/skills',
-  })
-})
-
-// Quick actions
-quickActions.forEach((action) => {
-  STATIC_COMMAND_ITEMS.push({
+  })),
+  ...quickActions.map((action) => ({
     id: `action-${action.id}`,
     type: 'action',
     name: action.name,
@@ -111,18 +92,16 @@ quickActions.forEach((action) => {
     keywords: action.name.toLowerCase(),
     actionType: 'open',
     actionValue: action.url,
-  })
-})
-
-// Theme toggle
-STATIC_COMMAND_ITEMS.push({
-  id: 'action-theme',
-  type: 'action',
-  name: 'Toggle Theme',
-  icon: Sun,
-  keywords: 'toggle theme dark light mode',
-  actionType: 'theme',
-})
+  })),
+  {
+    id: 'action-theme',
+    type: 'action',
+    name: 'Toggle Theme',
+    icon: Sun,
+    keywords: 'toggle theme dark light mode',
+    actionType: 'theme',
+  },
+]
 
 export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   const [open, setOpen] = useState(initiallyOpen)
