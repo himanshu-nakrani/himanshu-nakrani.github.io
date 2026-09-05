@@ -11,9 +11,6 @@ export default function BackToTop() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  if (!visible) return null
-
-
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -21,6 +18,7 @@ export default function BackToTop() {
       title="Back to top"
       className="glass-btn back-to-top"
       data-visible={visible ? 'true' : 'false'}
+      inert={visible ? undefined : true}
       style={{
         position: 'fixed',
         bottom: 'max(1.5rem, env(safe-area-inset-bottom))',
