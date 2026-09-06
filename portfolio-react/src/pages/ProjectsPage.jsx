@@ -366,7 +366,7 @@ export default function ProjectsPage() {
                     className="btn btn--ghost"
                     onClick={() => {
                       setQuery('')
-                      searchInputRef.current?.focus()
+                      requestAnimationFrame(() => searchInputRef.current?.focus())
                     }}
                     style={{
                       padding: '0.25rem',
@@ -425,7 +425,7 @@ export default function ProjectsPage() {
                   setQuery('')
                   setActiveFilter('All')
                   setActiveTag('All')
-                  setTimeout(() => searchInputRef.current?.focus(), 50)
+                  requestAnimationFrame(() => searchInputRef.current?.focus())
                 }}
                 className="btn btn--ghost"
                 style={{ marginTop: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
