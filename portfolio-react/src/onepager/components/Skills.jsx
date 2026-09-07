@@ -2,9 +2,15 @@ import Section from './Section'
 import Reveal from './Reveal'
 import { certifications, skills } from '../../data'
 
-export default function Skills() {
-  const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
+// ⚡ Bolt Optimization: Pre-compute total skills outside of render cycle
+// using a single-pass loop instead of an in-render .reduce() to prevent
+// O(N) intermediate function closures and object allocations per render.
+let totalSkills = 0
+for (const group of skills) {
+  totalSkills += group.items.length
+}
 
+export default function Skills() {
   return (
     <Section
       id="skills"
