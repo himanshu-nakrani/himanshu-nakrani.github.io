@@ -383,7 +383,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   onClick={() => {
                     setSearch('')
                     setSelectedIndex(0)
-                    inputRef.current?.focus()
+                    requestAnimationFrame(() => inputRef.current?.focus())
                   }}
                   style={{
                     display: 'flex',
@@ -441,7 +441,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                     onClick={() => {
                       setSearch('')
                       setSelectedIndex(0)
-                      inputRef.current?.focus()
+                      requestAnimationFrame(() => inputRef.current?.focus())
                     }}
                     className="btn btn--ghost"
                     style={{

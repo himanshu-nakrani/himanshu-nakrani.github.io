@@ -23,3 +23,6 @@
 ## 2026-09-05 - Keep mounted controls inert during CSS exit
 **Learning:** Returning `null` to unmount a conditionally visible control (like a Back to top button) skips CSS exit transitions. `aria-hidden` plus `tabIndex={-1}` is not enough: the node stays programmatically focusable, so after click the hidden button can keep keyboard focus.
 **Action:** Keep the node mounted so the exit animation can play, and set `inert` while it is hidden so hit-testing, sequential focus, and the accessibility tree are all removed. Do not put `aria-hidden` on a native button.
+## 2024-09-07 - Ensure Accessible Focus Re-Targeting After Actions
+**Learning:** In React command palettes or custom input fields with internal clear buttons, synchronously calling `.focus()` on an `inputRef` during an `onClick` event can sometimes fail because React render cycles or browser default click behaviors (like shifting focus to the clicked button) override it.
+**Action:** When implementing 'clear search' functionality, wrap the input focus logic inside a `requestAnimationFrame(() => inputRef.current?.focus())` to guarantee it safely executes *after* the browser events and React re-renders have settled, preserving smooth keyboard navigation for screen reader and keyboard-only users.
