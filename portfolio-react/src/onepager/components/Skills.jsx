@@ -2,16 +2,21 @@ import Section from './Section'
 import Reveal from './Reveal'
 import { certifications, skills } from '../../data'
 
-export default function Skills() {
-  const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
+// ⚡ Bolt Optimization: Pre-calculate TOTAL_SKILLS via single-pass loop instead of in-render .reduce()
+// to prevent O(N) aggregate calculations and intermediate closure allocations on every render cycle.
+let TOTAL_SKILLS = 0;
+for (const g of skills) {
+  TOTAL_SKILLS += g.items.length;
+}
 
+export default function Skills() {
   return (
     <Section
       id="skills"
       index="05"
       kicker="Tech Stack"
       title="Skills & tools"
-      subtitle={`${totalSkills}+ technologies across ${skills.length} domains — from LLM backends to cloud infrastructure.`}
+      subtitle={`${TOTAL_SKILLS}+ technologies across ${skills.length} domains — from LLM backends to cloud infrastructure.`}
     >
       <Reveal y={14}>
         <div className="skill-columns">
