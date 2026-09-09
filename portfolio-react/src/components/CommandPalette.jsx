@@ -111,6 +111,12 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   const inputRef = useRef(null)
   const listRef = useRef(null)
 
+  const clearSearch = () => {
+    setSearch('')
+    setSelectedIndex(0)
+    inputRef.current?.focus()
+  }
+
 
 
   // Filter and group by type, creating a flattened array of items in the exact render order
@@ -200,11 +206,9 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     }
   }, [])
 
-  // Focus input when opened
+  // Reset search when closed
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50)
-    } else {
+    if (!open) {
       setSearch('')
       setSelectedIndex(0)
     }
@@ -218,6 +222,7 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
     if (!open) return undefined
 
     previousFocusRef.current = document.activeElement
+    inputRef.current?.focus()
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
@@ -380,11 +385,8 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   type="button"
                   aria-label="Clear search"
                   title="Clear search"
-                  onClick={() => {
-                    setSearch('')
-                    setSelectedIndex(0)
-                    inputRef.current?.focus()
-                  }}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={clearSearch}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -438,11 +440,8 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
                   <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>Try adjusting your search or clear it to see all options.</p>
                   <button
                     type="button"
-                    onClick={() => {
-                      setSearch('')
-                      setSelectedIndex(0)
-                      inputRef.current?.focus()
-                    }}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={clearSearch}
                     className="btn btn--ghost"
                     style={{
                       marginTop: '0.75rem',

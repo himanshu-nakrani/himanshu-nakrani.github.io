@@ -2,9 +2,9 @@ import Section from './Section'
 import Reveal from './Reveal'
 import { certifications, skills } from '../../data'
 
-export default function Skills() {
-  const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
+const totalSkills = skills.reduce((acc, g) => acc + g.items.length, 0)
 
+export default function Skills() {
   return (
     <Section
       id="skills"
