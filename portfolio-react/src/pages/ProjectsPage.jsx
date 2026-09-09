@@ -364,6 +364,7 @@ export default function ProjectsPage() {
                     aria-label="Clear search"
                     title="Clear search"
                     className="btn btn--ghost"
+                    onMouseDown={(event) => event.preventDefault()}
                     onClick={() => {
                       setQuery('')
                       searchInputRef.current?.focus()
@@ -421,11 +422,12 @@ export default function ProjectsPage() {
               <p style={{ margin: 0, fontSize: 'var(--text-sm)' }}>Try adjusting your filters or search term.</p>
               <button
                 type="button"
+                onMouseDown={(event) => event.preventDefault()}
                 onClick={() => {
                   setQuery('')
                   setActiveFilter('All')
                   setActiveTag('All')
-                  setTimeout(() => searchInputRef.current?.focus(), 50)
+                  searchInputRef.current?.focus()
                 }}
                 className="btn btn--ghost"
                 style={{ marginTop: '0.5rem', padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
