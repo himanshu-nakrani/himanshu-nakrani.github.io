@@ -11,6 +11,12 @@ const FILTERS = [
   { id: 'opensource', label: 'Open Source', match: (p) => !p.badge && p.link },
 ]
 
+// ⚡ Bolt: Pre-calculate counts outside the render cycle to avoid O(N * M) filtering on every render
+const FILTER_COUNTS = FILTERS.reduce((acc, filter) => {
+  acc[filter.id] = filter.id === 'all' ? projects.length : projects.filter(filter.match).length
+  return acc
+}, {})
+
 function badgeClass(badge) {
   if (badge === 'Production') return 'badge badge--production'
   if (badge === 'Research') return 'badge badge--research'
@@ -95,8 +101,8 @@ export default function Projects() {
     >
       <Reveal y={12}>
         <div className="filters" role="group" aria-label="Filter projects">
-          {FILTERS.map(({ id, label, match }) => {
-            const count = id === 'all' ? projects.length : projects.filter(match).length
+          {FILTERS.map(({ id, label }) => {
+            const count = FILTER_COUNTS[id]
             return (
               <button
                 key={id}
