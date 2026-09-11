@@ -23,3 +23,6 @@
 ## 2026-09-05 - Keep mounted controls inert during CSS exit
 **Learning:** Returning `null` to unmount a conditionally visible control (like a Back to top button) skips CSS exit transitions. `aria-hidden` plus `tabIndex={-1}` is not enough: the node stays programmatically focusable, so after click the hidden button can keep keyboard focus.
 **Action:** Keep the node mounted so the exit animation can play, and set `inert` while it is hidden so hit-testing, sequential focus, and the accessibility tree are all removed. Do not put `aria-hidden` on a native button.
+## 2024-09-12 - One-Pager Accessibility (Skip Link & Icon Buttons)
+**Learning:** Skip-to-content links require the target container (e.g., `<main>`) to be programmatically focusable so keyboard flow correctly moves there upon clicking the skip link. Without `tabIndex={-1}`, focus may not shift correctly in all browsers. Furthermore, SVG icons inside buttons that already have an explicit `aria-label` can cause redundancy for screen reader users.
+**Action:** When implementing anchor-based skip links, ensure the target destination element has `tabIndex={-1}` and `style={{ outline: 'none' }}` to prevent visual artifacts on focus. Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit `aria-label` of their parent interactive elements.

@@ -66,7 +66,7 @@ export default function OnePager() {
       <SkipLink targetId="op-main-content" />
       <Nav isDark={isDark} onThemeChange={toggleTheme} />
 
-      <main id="op-main-content">
+      <main id="op-main-content" tabIndex={-1} style={{ outline: 'none' }}>
         <Hero />
         <StackStrip />
         <About />
