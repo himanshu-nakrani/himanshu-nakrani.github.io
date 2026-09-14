@@ -61,3 +61,6 @@
 ## 2023-11-20 - [Performance] Refactoring in-render reduce to single pass loops
 **Learning:** Using `Array.prototype.reduce` inside a React component's render body (e.g. `skills.reduce((acc, group) => acc + group.items.length, 0)`) evaluates an aggregate value on every render cycle. This generates O(N) intermediate function closures and object allocations per evaluation, negatively impacting frame rate.
 **Action:** When calculating aggregate statistics over a static array, pre-compute the total via a single-pass `for...of` loop outside of the component definition, passing only the final primitive value into the React component. This completely eliminates O(N) calculations and closure allocations during rendering.
+## 2024-09-11 - [Hoist Component Constants]
+**Learning:** Pre-calculating derived values from static imports at the module scope prevents O(n) or O(N*M) calculation cycles from unnecessarily occurring on each React component render state update (like filtering).
+**Action:** Move static reductions and filters outside of components using constant variables at module level to save CPU cycles and garbage collection.
