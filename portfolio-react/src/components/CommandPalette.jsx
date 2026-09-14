@@ -114,7 +114,9 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   const clearSearch = () => {
     setSearch('')
     setSelectedIndex(0)
-    inputRef.current?.focus()
+    requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
   }
 
 
