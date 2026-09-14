@@ -367,9 +367,9 @@ export default function ProjectsPage() {
                     onMouseDown={(event) => event.preventDefault()}
                     onClick={() => {
                       setQuery('')
-                    requestAnimationFrame(() => {
-                      searchInputRef.current?.focus()
-                    })
+                      requestAnimationFrame(() => {
+                        searchInputRef.current?.focus()
+                      })
                     }}
                     style={{
                       padding: '0.25rem',
