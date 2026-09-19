@@ -66,7 +66,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
             transform: isDark ? 'rotate(0deg) scale(1)' : 'rotate(45deg) scale(0.6)',
           }}
         >
-          <Sun size={iconSize} strokeWidth={1.8} />
+          <Sun size={iconSize} strokeWidth={1.8} aria-hidden="true" />
         </span>
         <span
           aria-hidden={isDark}
@@ -76,7 +76,7 @@ export default function ThemeToggle({ isDark, setIsDark, compact = false }) {
             transform: isDark ? 'rotate(-45deg) scale(0.6)' : 'rotate(0deg) scale(1)',
           }}
         >
-          <Moon size={iconSize} strokeWidth={1.8} />
+          <Moon size={iconSize} strokeWidth={1.8} aria-hidden="true" />
         </span>
       </span>
       <style>{`
