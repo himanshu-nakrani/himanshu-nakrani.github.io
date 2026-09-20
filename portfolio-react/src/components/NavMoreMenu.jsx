@@ -28,6 +28,12 @@ export default function NavMoreMenu({ items, isActive, onItemClick }) {
   const anyActive = items.some((item) => isActive(item.label))
 
   const updateCoords = useCallback(() => {
+    // The desktop trigger is hidden ≤768px (matches .nav-desktop CSS). If the
+    // viewport crosses into mobile while open, close rather than orphan the menu.
+    if (window.innerWidth <= 768) {
+      setOpen(false)
+      return
+    }
     const rect = triggerRef.current?.getBoundingClientRect()
     if (!rect) return
     setCoords({ top: rect.bottom + 8, right: Math.max(8, window.innerWidth - rect.right) })
@@ -49,6 +55,13 @@ export default function NavMoreMenu({ items, isActive, onItemClick }) {
       window.removeEventListener('scroll', updateCoords)
     }
   }, [open, updateCoords])
+
+  // Move focus into the portaled menu when it opens: it renders after the app
+  // in DOM order, so without this Tab would skip past it into page content.
+  useLayoutEffect(() => {
+    if (!open || !coords) return
+    menuRef.current?.querySelector('a')?.focus()
+  }, [open, coords])
 
   useEffect(() => {
     if (!open) return undefined
