@@ -109,6 +109,7 @@ export default function Nav({ isDark, onThemeChange }) {
               className="theme-toggle"
               onClick={onThemeChange}
               aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+              title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
             >
               {isDark ? <Sun size={17} aria-hidden="true" /> : <Moon size={17} aria-hidden="true" />}
             </button>
@@ -118,6 +119,7 @@ export default function Nav({ isDark, onThemeChange }) {
               onClick={() => setMenuOpen((open) => !open)}
               aria-expanded={menuOpen}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              title={menuOpen ? 'Close menu' : 'Open menu'}
             >
               {menuOpen ? <X size={19} aria-hidden="true" /> : <Menu size={19} aria-hidden="true" />}
             </button>
