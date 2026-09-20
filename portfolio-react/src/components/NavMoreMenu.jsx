@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown } from 'lucide-react'
 
@@ -8,28 +9,54 @@ import { prefetchRoute } from '../lib/routePrefetch'
  * NavMoreMenu — desktop overflow dropdown for secondary destinations.
  * Keeps the primary nav to a scannable set while preserving access to
  * Research / Lab / Profiles / Skills / Minimal behind one control.
+ *
+ * The dropdown is portaled to <body> because the navbar shell (`.glass-nav`)
+ * uses `overflow: hidden` to clip its glass glow — an in-flow menu would be
+ * clipped and unreachable. Positioning is computed from the trigger rect;
+ * the navbar is `position: fixed`, so viewport coordinates stay stable.
  */
 export default function NavMoreMenu({ items, isActive, onItemClick }) {
   const [open, setOpen] = useState(false)
+  const [coords, setCoords] = useState(null)
   const location = useLocation()
-  const wrapRef = useRef(null)
   const triggerRef = useRef(null)
+  const menuRef = useRef(null)
 
   const close = useCallback(() => setOpen(false), [])
 
   // Any secondary destination active highlights the trigger.
   const anyActive = items.some((item) => isActive(item.label))
 
+  const updateCoords = useCallback(() => {
+    const rect = triggerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setCoords({ top: rect.bottom + 8, right: Math.max(8, window.innerWidth - rect.right) })
+  }, [])
+
   // Close on route change.
   useEffect(() => {
     setOpen(false)
   }, [location.pathname])
 
+  // Position before paint when opening, and keep it aligned on resize/scroll.
+  useLayoutEffect(() => {
+    if (!open) return undefined
+    updateCoords()
+    window.addEventListener('resize', updateCoords)
+    window.addEventListener('scroll', updateCoords, { passive: true })
+    return () => {
+      window.removeEventListener('resize', updateCoords)
+      window.removeEventListener('scroll', updateCoords)
+    }
+  }, [open, updateCoords])
+
   useEffect(() => {
     if (!open) return undefined
 
     const handlePointerDown = (event) => {
-      if (!wrapRef.current?.contains(event.target)) close()
+      if (triggerRef.current?.contains(event.target)) return
+      if (menuRef.current?.contains(event.target)) return
+      close()
     }
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -47,7 +74,7 @@ export default function NavMoreMenu({ items, isActive, onItemClick }) {
   }, [open, close])
 
   return (
-    <div ref={wrapRef} style={{ position: 'relative', flexShrink: 0 }}>
+    <div style={{ position: 'relative', flexShrink: 0 }}>
       <button
         ref={triggerRef}
         type="button"
@@ -62,21 +89,22 @@ export default function NavMoreMenu({ items, isActive, onItemClick }) {
         <ChevronDown size={12} aria-hidden="true" style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
       </button>
 
-      {open && (
+      {open && coords && createPortal(
         <div
+          ref={menuRef}
           aria-label="More destinations"
           className="glass nav-more-menu"
           style={{
-            position: 'absolute',
-            top: 'calc(100% + 8px)',
-            right: 0,
+            position: 'fixed',
+            top: coords.top,
+            right: coords.right,
             minWidth: 180,
             padding: 6,
             borderRadius: 14,
             display: 'flex',
             flexDirection: 'column',
             gap: 2,
-            zIndex: 120,
+            zIndex: 200,
           }}
         >
           {items.map((item) => {
@@ -110,7 +138,8 @@ export default function NavMoreMenu({ items, isActive, onItemClick }) {
               </NavLink>
             )
           })}
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )
