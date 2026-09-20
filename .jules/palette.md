@@ -29,6 +29,9 @@
 ## 2024-03-24 - Reliable Input Refocusing on Search Clear
 **Learning:** React state updates (`setSearch`, `setQuery`) combined with DOM manipulations (`input.focus()`) within an `onClick` handler can sometimes lead to race conditions where the focus is lost or reset by the render cycle, breaking keyboard accessibility context for screen reader users.
 **Action:** When implementing 'clear search' functionality or similar in-input buttons, always programmatically refocus the associated input element using a reliable mechanism (like `requestAnimationFrame`) after the clear action to preserve keyboard accessibility context and avoid brittle `setTimeout` implementations.
+## 2024-03-24 - Add native title tooltips for better accessibility
+**Learning:** For icon-only or visually ambiguous buttons, an `aria-label` is great for screen readers, but it leaves sighted users (especially on desktop) guessing. Supplementing it with a native `title` attribute allows browsers to render a tooltip automatically, giving a small but meaningful UX enhancement for mouse users without needing custom UI.
+**Action:** Always provide a `title` attribute on icon-only buttons or buttons that primarily communicate state via visual cues (like a reset or toggle button), mirroring the `aria-label`.
 ## 2024-08-25 - Icon-only Buttons Missing Native Tooltips
 **Learning:** Icon-only buttons (like theme toggles or hamburger menus) that only have an `aria-label` are accessible to screen readers, but sighted mouse users have no way to discover what the icon does without clicking it if it lacks a `title` attribute.
 **Action:** For icon-only buttons, always supplement the semantic `aria-label` with a native `title` attribute containing the same descriptive text to provide a visible, native tooltip on hover for mouse users.

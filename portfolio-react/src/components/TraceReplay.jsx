@@ -115,6 +115,7 @@ export default function TraceReplay({ steps, defaultStep = 0 }) {
         <button
           onClick={handleReset}
           aria-label="Reset trace replay"
+          title="Reset trace replay"
           style={{
             display: 'inline-flex',
             alignItems: 'center',

@@ -83,11 +83,14 @@ const methodologySteps = [
   },
 ]
 
+// ⚡ Bolt Optimization: Pre-calculate derived metrics from static data at the module level
+// outside the component to avoid O(N) filtering operations on every render.
+const published = publications.filter((p) => p.link).length
+const accepted = publications.filter((p) => !p.link).length
+
 export default function ResearchPage() {
   const reduceMotion = useReducedMotion()
   const [activeMethodNode, setActiveMethodNode] = useState(0)
-  const published = publications.filter((p) => p.link).length
-  const accepted = publications.filter((p) => !p.link).length
   const activeStep = methodologySteps[activeMethodNode]
 
   return (
