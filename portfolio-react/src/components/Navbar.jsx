@@ -3,25 +3,38 @@ import { Menu, X, Search, Command } from 'lucide-react'
 import DesignModeToggle from './DesignModeToggle'
 import ThemeToggle from './ThemeToggle'
 import Pill3DNav from './ui/Pill3DNav'
+import NavMoreMenu from './NavMoreMenu'
 import { prefetchRoute } from '../lib/routePrefetch'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 import { NavLink, useLocation } from 'react-router-dom'
 
-// Capped at 8 items — logo handles "/" navigation
-const navLinks = [
-  { label: 'About', to: '/about' },
-  { label: 'Experience', to: '/experience' },
+// Primary destinations — kept scannable so a first-timer finds the hire path fast.
+const primaryLinks = [
   { label: 'Projects', to: '/projects' },
-  { label: 'Skills', to: '/skills' },
+  { label: 'Experience', to: '/experience' },
+  { label: 'About', to: '/about' },
+]
+
+// Secondary destinations live behind the "More" overflow (desktop) / a divider (mobile).
+const secondaryLinks = [
   { label: 'Research', to: '/research' },
   { label: 'Lab', to: '/lab' },
   { label: 'Profiles', to: '/profiles' },
+  { label: 'Skills', to: '/skills' },
   { label: 'Minimal', to: '/minimal', isSecondary: true },
 ]
 
 const contactItem = { label: 'Contact', to: '/#contact' }
-const navItems = [...navLinks, { ...contactItem, isContact: true }]
+
+// Mobile drawer prioritises the hire path: primary links + Contact first,
+// then a divider, then secondary destinations.
+const mobileNavItems = [
+  ...primaryLinks,
+  { ...contactItem, isContact: true },
+  { label: '__more-divider', isDivider: true },
+  ...secondaryLinks,
+]
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -163,9 +176,14 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
           </NavLink>
 
           {/* Desktop nav links */}
-          <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', minWidth: 0 }}>
+          <nav aria-label="Main navigation" className="nav-desktop" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, minWidth: 0 }}>
             <Pill3DNav
-              items={navLinks}
+              items={primaryLinks}
+              isActive={isPageActive}
+              onItemClick={handleNavClick}
+            />
+            <NavMoreMenu
+              items={secondaryLinks}
               isActive={isPageActive}
               onItemClick={handleNavClick}
             />
@@ -283,7 +301,12 @@ export default function Navbar({ isDark, setIsDark, designMode, setDesignMode })
                 aria-label="Navigation links"
                 style={{ listStyle: 'none', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}
               >
-                {navItems.map((item) => {
+                {mobileNavItems.map((item) => {
+                  if (item.isDivider) {
+                    return (
+                      <li key={item.label} aria-hidden="true" style={{ margin: '6px 4px 2px', height: 1, background: 'var(--color-border)' }} />
+                    )
+                  }
                   const active = !item.isContact && isPageActive(item.label)
                   return (
                     <li key={item.label}>

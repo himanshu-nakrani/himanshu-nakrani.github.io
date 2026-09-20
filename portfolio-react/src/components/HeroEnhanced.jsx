@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { Github, Linkedin, Mail, FileText } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, Github, Linkedin, Mail, FileText } from 'lucide-react'
 import { useMagnetic } from '../hooks/useMagnetic'
 import NeuralSignalField from './NeuralSignalField'
 import MagneticButton from './ui/MagneticButton'
@@ -108,44 +109,54 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
                 )}
               </p>
               <div className="hero-ctas">
-                <a
+                <Link
                   ref={magneticRef}
+                  to="/projects"
+                  className="hero-cta hero-cta--primary"
+                >
+                  See selected work
+                  <ArrowRight size={14} aria-hidden="true" />
+                </Link>
+                <a
                   href={RESUME_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hero-cta hero-cta--primary"
+                  className="hero-cta hero-cta--secondary"
                 >
-                  <FileText size={14} />
+                  <FileText size={14} aria-hidden="true" />
                   Resume
                 </a>
-                <MagneticButton radius={70} strength={5}>
-                  <a href="mailto:himanshunakrani0@gmail.com" className="hero-cta hero-cta--secondary">
-                    <Mail size={14} />
-                    Contact
-                  </a>
-                </MagneticButton>
-                <MagneticButton radius={60} strength={4}>
-                  <a
-                    href="https://github.com/himanshu-nakrani"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-cta hero-cta--quiet"
-                  >
-                    <Github size={13} />
-                    GitHub
-                  </a>
-                </MagneticButton>
-                <MagneticButton radius={60} strength={4}>
-                  <a
-                    href="https://linkedin.com/in/himanshu-nakrani"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hero-cta hero-cta--quiet"
-                  >
-                    <Linkedin size={13} />
-                    LinkedIn
-                  </a>
-                </MagneticButton>
+                <div className="hero-social-row" role="group" aria-label="Contact and profiles">
+                  <MagneticButton radius={60} strength={4}>
+                    <a href="mailto:himanshunakrani0@gmail.com" className="hero-cta hero-cta--icon" aria-label="Email Himanshu" title="Email">
+                      <Mail size={16} aria-hidden="true" />
+                    </a>
+                  </MagneticButton>
+                  <MagneticButton radius={60} strength={4}>
+                    <a
+                      href="https://github.com/himanshu-nakrani"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hero-cta hero-cta--icon"
+                      aria-label="GitHub profile"
+                      title="GitHub"
+                    >
+                      <Github size={16} aria-hidden="true" />
+                    </a>
+                  </MagneticButton>
+                  <MagneticButton radius={60} strength={4}>
+                    <a
+                      href="https://linkedin.com/in/himanshu-nakrani"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hero-cta hero-cta--icon"
+                      aria-label="LinkedIn profile"
+                      title="LinkedIn"
+                    >
+                      <Linkedin size={16} aria-hidden="true" />
+                    </a>
+                  </MagneticButton>
+                </div>
               </div>
             </div>
           </div>

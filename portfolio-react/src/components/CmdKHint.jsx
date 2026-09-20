@@ -3,12 +3,11 @@ import { Command, X } from 'lucide-react'
 import { getItem, setItem } from '../lib/storage'
 
 const STORAGE_KEY = 'cmdk-hint-dismissed'
-const SHOW_DELAY = 3500
 const EXIT_MS = 300
 
 /**
  * CmdKHint — one-time discoverability nudge for the command palette.
- * Appears bottom-right after a short delay on first visit only.
+ * Appears bottom-right only after the visitor scrolls past the hero, on first visit.
  * Auto-dismisses on first ⌘K press, X click, or after 12s.
  */
 export default function CmdKHint() {
@@ -21,15 +20,27 @@ export default function CmdKHint() {
   }, [])
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (getItem(STORAGE_KEY)) return
+    if (typeof window === 'undefined') return undefined
+    if (getItem(STORAGE_KEY)) return undefined
     // Don't show on small screens or touch-primary devices — not relevant there
-    if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) return
+    if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches) return undefined
 
-    const showTimer = setTimeout(() => setVisible(true), SHOW_DELAY)
-    const hideTimer = setTimeout(() => dismiss(), SHOW_DELAY + 12000)
+    // Never show on first paint: wait until the visitor scrolls past the hero,
+    // so the hint can't compete with the proof metrics above the fold.
+    let showTimer = 0
+    let hideTimer = 0
+    const reveal = () => {
+      window.removeEventListener('scroll', onScroll)
+      showTimer = setTimeout(() => setVisible(true), 400)
+      hideTimer = setTimeout(() => dismiss(), 400 + 12000)
+    }
+    const onScroll = () => {
+      if (window.scrollY > 600) reveal()
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     return () => {
+      window.removeEventListener('scroll', onScroll)
       clearTimeout(showTimer)
       clearTimeout(hideTimer)
     }

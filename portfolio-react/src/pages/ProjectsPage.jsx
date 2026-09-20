@@ -124,13 +124,22 @@ function ProjectCard({ item, index, onDetails, featured = false }) {
       </div>
 
       <div className="project-card__actions">
-        <button type="button" className="btn btn--ghost project-card__action" onClick={onDetails} aria-label={`View details for ${item.title}`}>
-          Details
-        </button>
-        {slug && (
+        {slug ? (
           <Link to={`/projects/${slug}`} className="btn btn--primary project-card__action" aria-label={`Deep dive into ${item.title}`}>
             Deep dive <ArrowRight size={13} aria-hidden="true" />
           </Link>
+        ) : item.link ? (
+          <a href={item.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`View source for ${item.title}`}>
+            View source <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        ) : item.liveLink ? (
+          <a href={item.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`Open live demo for ${item.title}`}>
+            Live demo <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        ) : (
+          <button type="button" className="btn btn--primary project-card__action" onClick={onDetails} aria-label={`View details for ${item.title}`}>
+            Details <ArrowRight size={13} aria-hidden="true" />
+          </button>
         )}
       </div>
     </motion.article>
@@ -221,7 +230,7 @@ function ProjectModal({ project, onClose }) {
 
               <div className="project-modal__hero">
                 <div className="project-modal__hero-main">
-                  <p className="project-modal__coord">Project specimen</p>
+                  <p className="project-modal__coord">Overview</p>
                   <h2 className="project-modal__title">{project.title}</h2>
                   <p className="project-modal__summary">{project.fullDesc || project.desc}</p>
                 </div>
@@ -295,7 +304,7 @@ function ProjectModal({ project, onClose }) {
 
 export default function ProjectsPage() {
   const [query, setQuery] = useState('')
-  const [activeFilter, setActiveFilter] = useState('All')
+  const [activeFilter, setActiveFilter] = useState('Production')
   const [activeTag, setActiveTag] = useState('All')
   const [selected, setSelected] = useState(null)
   const searchInputRef = useRef(null)
@@ -314,7 +323,14 @@ export default function ProjectsPage() {
       return matchesQuery && matchesFilter && matchesTag
     })
   }, [query, activeFilter, activeTag])
-  const showFeaturedLayout = !query && activeFilter === 'All' && activeTag === 'All'
+  const showFeaturedLayout = !query && activeTag === 'All' && (activeFilter === 'Production' || activeFilter === 'All')
+  const setDescription = query
+    ? `${filteredProjects.length} result${filteredProjects.length === 1 ? '' : 's'} for “${query}”`
+    : activeFilter === 'Production'
+    ? `Showing ${filteredProjects.length} production system${filteredProjects.length === 1 ? '' : 's'}`
+    : activeFilter === 'All'
+    ? `Showing all ${filteredProjects.length} projects`
+    : `Showing ${filteredProjects.length} ${activeFilter.toLowerCase()} project${filteredProjects.length === 1 ? '' : 's'}`
 
   return (
     <>
@@ -383,7 +399,7 @@ export default function ProjectsPage() {
                   </button>
                 )}
               </label>
-              <span className="editorial-chip" role="status" aria-live="polite">{filteredProjects.length} results</span>
+              <span className="editorial-chip" role="status" aria-live="polite">{setDescription}</span>
             </div>
 
             <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>

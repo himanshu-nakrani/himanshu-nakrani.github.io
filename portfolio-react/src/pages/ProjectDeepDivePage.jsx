@@ -384,7 +384,7 @@ function ProjectDeepDiveContent({ study }) {
 
       {/* ── Tradeoffs (collapsible) ──────────────────────── */}
       {study.tradeoffs && study.tradeoffs.length > 0 && (
-        <CollapsibleSection label="Tradeoffs" defaultOpen={false}>
+        <CollapsibleSection label="Tradeoffs" defaultOpen={true}>
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -552,11 +552,19 @@ function ProjectDeepDiveContent({ study }) {
         </div>
       )}
 
-      {/* ── Back link (bottom) ───────────────────────────── */}
-      <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
-        <Link to="/projects" style={backLinkStyle}>
-          <ArrowLeft size={15} /> Back to Projects
+      {/* ── End-of-page CTA (keep the hire path alive) ───── */}
+      <div style={{ paddingTop: '1.5rem', borderTop: '1px solid var(--color-border)', display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        <a href="mailto:himanshunakrani0@gmail.com" className="btn btn--primary">
+          Start a conversation
+        </a>
+        <Link to="/projects" className="btn btn--ghost">
+          <ArrowLeft size={15} aria-hidden="true" /> Back to projects
         </Link>
+        {study.demoModuleId && (
+          <Link to="/lab" className="btn btn--ghost">
+            <FlaskConical size={15} aria-hidden="true" /> Open Lab
+          </Link>
+        )}
       </div>
 
       {/* ── Responsive ───────────────────────────────────── */}
