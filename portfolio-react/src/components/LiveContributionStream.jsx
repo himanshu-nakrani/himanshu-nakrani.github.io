@@ -43,7 +43,7 @@ export default function LiveContributionStream() {
   const leetcode = useSWR("/leetcode-contributions.json", fetcher);
 
   // ⚡ Bolt: memoize events and compute max in a single pass to avoid O(N) array allocations
-  const { events, max } = useMemo(() => {
+  const { events, max, latestDate } = useMemo(() => {
     const combinedEvents = [
       ...normalizeGithub(github.data),
       ...normalizeLeetCode(leetcode.data),
@@ -58,7 +58,8 @@ export default function LiveContributionStream() {
       }
     }
 
-    return { events: combinedEvents, max: maxCount };
+    const latestDate = combinedEvents.length ? combinedEvents[combinedEvents.length - 1].date : null;
+    return { events: combinedEvents, max: maxCount, latestDate };
   }, [github.data, leetcode.data]);
 
   return (
@@ -74,6 +75,7 @@ export default function LiveContributionStream() {
         <p>
           Recent contribution intensity derived from the generated GitHub and
           LeetCode snapshots.
+          {latestDate ? <span style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}> · Updated through {latestDate}</span> : null}
         </p>
       </header>
       {events.length ? (

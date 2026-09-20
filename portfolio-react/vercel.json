@@ -4,6 +4,7 @@
   "outputDirectory": "dist",
   "installCommand": "pnpm install --frozen-lockfile",
   "rewrites": [
+    { "source": "/resume.pdf", "destination": "https://raw.githubusercontent.com/himanshu-nakrani-75/resume/main/himanshu_nakrani_resume.pdf" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

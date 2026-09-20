@@ -9,7 +9,7 @@ const benchmarkSeries = [
 ]
 
 const metrics = [
-  ['Parameters', '1.12B'],
+  ['Parameters', '1.07B'],
   ['Pretraining tokens', '~57B'],
   ['Final loss', '~2.6'],
   ['Throughput', '~8.9k tok/s/chip'],

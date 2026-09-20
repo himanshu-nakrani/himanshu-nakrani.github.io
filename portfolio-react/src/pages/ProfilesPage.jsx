@@ -3,7 +3,6 @@ import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { Award, ExternalLink, Network, RadioTower } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
-import LeetCodeContributionHeatmap from '../components/LeetCodeContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
 import { GITHUB_REPO_COUNT, LEETCODE_STATS } from '../data/stats'
 import SEO from '../components/SEO'
@@ -29,8 +28,23 @@ const platformRows = [
     ],
   },
   {
-    id: 'kaggle',
+    id: 'huggingface',
     number: '02',
+    name: 'Hugging Face',
+    handle: '@himanshunakrani9',
+    href: 'https://huggingface.co/himanshunakrani9',
+    platformColor: '#ff9d00',
+    summary: 'Model and dataset artifacts for compact reasoning experiments.',
+    focus: ['LoRA', 'Open models'],
+    stats: [
+      { value: '11', label: 'Models' },
+      { value: '2.8K', label: 'Downloads' },
+      { value: '11', label: 'Datasets' },
+    ],
+  },
+  {
+    id: 'kaggle',
+    number: '03',
     name: 'Kaggle',
     badge: 'Expert',
     handle: '@himanshunakrani',
@@ -46,39 +60,8 @@ const platformRows = [
     ],
   },
   {
-    id: 'huggingface',
-    number: '03',
-    name: 'Hugging Face',
-    handle: '@himanshunakrani9',
-    href: 'https://huggingface.co/himanshunakrani9',
-    platformColor: '#ff9d00',
-    summary: 'Model and dataset artifacts for compact reasoning experiments.',
-    focus: ['LoRA', 'Open models'],
-    stats: [
-      { value: '11', label: 'Models' },
-      { value: '2.8K', label: 'Downloads' },
-      { value: '11', label: 'Datasets' },
-    ],
-  },
-  {
-    id: 'leetcode',
-    number: '04',
-    name: 'LeetCode',
-    handle: '@himanshunakrani0',
-    href: 'https://leetcode.com/u/himanshunakrani0/',
-    platformColor: 'var(--color-accent)',
-    summary: 'Problem-solving practice alongside applied AI engineering.',
-    focus: ['DSA', 'Python'],
-    stats: [
-      { value: String(LEETCODE_STATS.solved), label: 'Solved' },
-      { value: String(LEETCODE_STATS.easy), label: 'Easy' },
-      { value: String(LEETCODE_STATS.medium), label: 'Medium' },
-      { value: LEETCODE_STATS.ranking, label: 'Global rank' },
-    ],
-  },
-  {
     id: 'linkedin',
-    number: '05',
+    number: '04',
     name: 'LinkedIn',
     handle: '/in/himanshu-nakrani',
     href: 'https://www.linkedin.com/in/himanshu-nakrani/',
@@ -92,6 +75,21 @@ const platformRows = [
       { value: 'Open', label: 'Contact' },
     ],
   },
+  {
+    id: 'leetcode',
+    number: '05',
+    name: 'LeetCode',
+    handle: '@himanshunakrani0',
+    href: 'https://leetcode.com/u/himanshunakrani0/',
+    platformColor: 'var(--color-accent)',
+    summary: 'Problem-solving practice alongside applied AI engineering.',
+    focus: ['DSA', 'Python'],
+    stats: [
+      { value: String(LEETCODE_STATS.solved), label: 'Solved' },
+      { value: String(LEETCODE_STATS.medium), label: 'Medium' },
+      { value: 'Python', label: 'Language' },
+    ],
+  },
 ]
 
 const kaggleTiers = [
@@ -102,8 +100,8 @@ const kaggleTiers = [
 const overviewStats = [
   { value: platformRows.length, label: 'Public surfaces' },
   { value: GITHUB_REPO_COUNT, label: 'GitHub repos' },
+  { value: '2.8K', label: 'Model downloads' },
   { value: kaggleVoteTotal, label: 'Kaggle votes' },
-  { value: LEETCODE_STATS.solved, label: 'LeetCode solved' },
 ]
 
 function getMotionProps(reduceMotion, inView, delay = 0) {
@@ -287,13 +285,12 @@ function LedgerRow({ row }) {
       )}
 
       {row.id === 'leetcode' && (
-        <div className="profile-ledger-detail-stack">
-          <p className="profile-ledger-note profile-ledger-note--prose">
-            {LEETCODE_STATS.solved} problems solved ({LEETCODE_STATS.hard} hard) — sharpening DSA alongside AI/ML work.
-          </p>
-          <div className="profile-heatmap-shell profile-heatmap-shell--leetcode">
-            <LeetCodeContributionHeatmap username={LEETCODE_STATS.username} />
-          </div>
+        <div className="profile-link-panel">
+          <p className="profile-ledger-note">Ongoing DSA practice that keeps fundamentals sharp alongside applied AI/ML engineering.</p>
+          <a href={row.href} target="_blank" rel="noopener noreferrer" className="profile-link-panel__cta">
+            Open LeetCode
+            <ExternalLink size={14} aria-hidden="true" />
+          </a>
         </div>
       )}
 

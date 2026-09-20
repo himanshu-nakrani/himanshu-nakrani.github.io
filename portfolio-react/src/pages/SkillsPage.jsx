@@ -116,17 +116,9 @@ function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
   )
 }
 
-// ⚡ Bolt Optimization: Pre-compute aggregate total outside the component render cycle
-// using a single-pass loop instead of an in-render .reduce() to prevent
-// redundant O(N) calculations and closure allocations on every state change.
-let TOTAL_SKILLS = 0
-for (const group of skills) {
-  TOTAL_SKILLS += group.items?.length || 0
-}
 
 export default function SkillsPage() {
   const [expandedCategory, setExpandedCategory] = useState(skills[0]?.label || null)
-  const totalSkills = TOTAL_SKILLS
 
   return (
     <>
@@ -148,7 +140,7 @@ export default function SkillsPage() {
         <section className="editorial-section section-hairline" aria-label="Skills statistics">
           <div className="editorial-stat-grid">
             {[
-              { icon: Layers, value: `${totalSkills}+`, label: 'Total Skills' },
+              { icon: Layers, value: PRIMARY_STACK.length, label: 'Core technologies' },
               { icon: Sparkles, value: skills.length, label: 'Domains' },
               { icon: TrendingUp, value: '3', label: 'Cloud Platforms' },
               { icon: Award, value: certifications.length, label: 'Certifications' },

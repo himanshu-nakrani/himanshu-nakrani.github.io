@@ -2354,11 +2354,12 @@ section[id] {
   top: -1.5rem;
   right: 0;
   font-family: var(--font-display);
-  font-size: clamp(5rem, 10vw, 9rem);
+  font-size: clamp(3.5rem, 7vw, 6rem);
   font-weight: var(--font-weight-bold);
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px var(--color-border-strong);
+  -webkit-text-stroke: 1px var(--color-border);
+  opacity: 0.55;
   user-select: none;
   pointer-events: none;
   font-variant-numeric: tabular-nums;
@@ -3451,6 +3452,34 @@ section[id] {
   border-color: var(--color-border-strong);
   color: var(--color-text);
   transform: translateY(-1px);
+}
+
+.hero-social-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.15rem;
+}
+
+.hero-cta--icon {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+}
+
+.hero-cta--icon:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  transform: translateY(-1px);
+}
+
+:root[data-design="instrument"] .hero-cta--icon {
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  border-color: var(--color-border-strong);
 }
 
 :root[data-design="instrument"] .hero-cta--primary {
@@ -4770,19 +4799,6 @@ body[data-modal-open="true"] .back-to-top {
     linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-surface-raised) 34%, var(--color-surface)));
 }
 
-:root[data-design="instrument"] .project-card::before {
-  content: 'SPECIMEN';
-  position: absolute;
-  top: 0.75rem;
-  right: 0.85rem;
-  color: color-mix(in srgb, var(--color-text-subtle) 64%, transparent);
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  pointer-events: none;
-}
-
 :root[data-design="instrument"] .project-card__icon,
 :root[data-design="instrument"] .project-card__availability {
   border-radius: 3px;
@@ -5656,6 +5672,11 @@ body[data-modal-open="true"] .back-to-top {
 .capability-radar__evidence { padding: 1.1rem 1.35rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
 .capability-radar__evidence span { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.35rem; font-family: var(--font-mono); }
 .capability-radar__evidence p { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); line-height: var(--line-height-relaxed); }
+.capability-map__layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; align-items: start; margin-bottom: 1.25rem; }
+.capability-map__evidence-list { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.9rem; }
+.capability-map__evidence-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: var(--text-sm); font-weight: 500; color: var(--color-text); text-decoration: none; padding: 0.4rem 0.55rem; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-bg); transition: border-color 0.15s, color 0.15s; }
+.capability-map__evidence-link:hover, .capability-map__evidence-link:focus-visible { border-color: var(--color-accent); color: var(--color-accent); }
+@media (max-width: 768px) { .capability-map__layout { grid-template-columns: 1fr; } }
 
 /* Contextual Route Transitions */
 .context-route { position: relative; min-height: 1px; }

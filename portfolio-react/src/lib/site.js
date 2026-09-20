@@ -1,6 +1,5 @@
 export const SITE_URL = 'https://www.himanshunakrani.me'
-export const RESUME_URL =
-  'https://github.com/himanshu-nakrani-75/resume/blob/main/himanshu_nakrani_resume.pdf'
+export const RESUME_URL = '/resume.pdf'
 export const SITE_TITLE = 'Himanshu Nakrani - AI Software Developer'
 export const SITE_DESCRIPTION = 'AI Software Developer at State Street Corporation. Building production LLM systems: Text-to-SQL, RAG, and AI agents.'
 export const SITE_IMAGE = `${SITE_URL}/og-image.png`

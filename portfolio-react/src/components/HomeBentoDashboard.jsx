@@ -19,10 +19,12 @@ const outcomes = [
   { value: '95%+', label: 'Test coverage' },
 ]
 
-function Reveal({ children, className, delay = 0 }) {
+function Reveal({ children, className, delay = 0, id, style }) {
   const reduceMotion = useReducedMotion()
   return (
     <motion.div
+      id={id}
+      style={style}
       className={className}
       initial={reduceMotion ? false : { opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
@@ -131,7 +133,7 @@ export default function HomeBentoDashboard() {
             <CardLink to="/experience" label="View full work experience">Full experience</CardLink>
           </Reveal>
 
-          <Reveal className="home-bento-card home-bento-card--contact" delay={0.24}>
+          <Reveal id="contact" className="home-bento-card home-bento-card--contact" delay={0.24} style={{ scrollMarginTop: 'calc(var(--navbar-height, 76px) + 16px)' }}>
             <div className="home-bento-card__eyebrow"><span>Available for conversation</span><span className="status-dot status-dot--pulse" /></div>
             <Mail size={22} aria-hidden="true" />
             <h3>Building an ambitious AI product?</h3>
