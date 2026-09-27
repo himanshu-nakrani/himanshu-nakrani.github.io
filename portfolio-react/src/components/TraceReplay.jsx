@@ -108,7 +108,7 @@ export default function TraceReplay({ steps, defaultStep = 0 }) {
             transition: 'all 0.15s ease',
           }}
         >
-          {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+          {isPlaying ? <Pause size={14} aria-hidden="true" /> : <Play size={14} aria-hidden="true" />}
           <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </button>
 
@@ -131,7 +131,7 @@ export default function TraceReplay({ steps, defaultStep = 0 }) {
             transition: 'all 0.15s ease',
           }}
         >
-          <RotateCcw size={14} />
+          <RotateCcw size={14} aria-hidden="true" />
           <span>Reset</span>
         </button>
 
