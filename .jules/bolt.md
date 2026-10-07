@@ -64,3 +64,7 @@
 ## 2024-09-11 - [Hoist Component Constants]
 **Learning:** Pre-calculating derived values from static imports at the module scope prevents O(n) or O(N*M) calculation cycles from unnecessarily occurring on each React component render state update (like filtering).
 **Action:** Move static reductions and filters outside of components using constant variables at module level to save CPU cycles and garbage collection.
+
+## 2024-10-08 - [Performance] Single-pass Filter and Group
+**Learning:** Chaining array methods like `.filter()` followed by `.forEach()` or `.map()` inside a frequently evaluated `useMemo` block (such as one dependent on a search input value) creates unnecessary intermediate array allocations, increasing garbage collection pressure and main thread blocking during rapid user interaction.
+**Action:** Combine filtering and mapping/grouping operations into a single-pass `for...of` loop. Only allocate the final derived structure (like grouped lists or a flattened rendering array) to reduce GC overhead and avoid O(2N) redundant iteration.
