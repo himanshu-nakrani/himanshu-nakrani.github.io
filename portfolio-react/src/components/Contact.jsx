@@ -81,6 +81,7 @@ export default function Contact() {
                 href={l.href}
                 target={l.href.startsWith('mailto') ? undefined : '_blank'}
                 rel={l.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                aria-label={l.href.startsWith('mailto') ? l.label : `${l.label} (opens in a new tab)`}
                 className="contact-pill-link"
                 style={{
                   opacity: 0,
