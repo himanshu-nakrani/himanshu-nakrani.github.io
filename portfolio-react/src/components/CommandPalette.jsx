@@ -126,16 +126,22 @@ export default function CommandPalette({ toggleTheme, initiallyOpen = false }) {
   // Combines filtering, groupedItems, and renderedItems computations into a single useMemo
   // to reduce React hook overhead, dependency array checking, and multiple render passes.
   const { filteredItems, groupedItems, renderedItems } = useMemo(() => {
-    let currentFiltered = STATIC_COMMAND_ITEMS
-    if (search.trim()) {
-      const query = search.toLowerCase()
-      currentFiltered = STATIC_COMMAND_ITEMS.filter((item) => item.keywords.includes(query))
-    }
-
     const groups = { page: [], project: [], skill: [], action: [] }
-    currentFiltered.forEach((item) => {
-      if (groups[item.type]) groups[item.type].push(item)
-    })
+    const currentFiltered = []
+
+    // ⚡ Bolt Optimization: Combine filtering and grouping into a single-pass loop.
+    // This eliminates intermediate array allocations and reduces garbage collection
+    // overhead during rapid typing.
+    const query = search.trim().toLowerCase()
+
+    for (const item of STATIC_COMMAND_ITEMS) {
+      if (!query || item.keywords.includes(query)) {
+        currentFiltered.push(item)
+        if (groups[item.type]) {
+          groups[item.type].push(item)
+        }
+      }
+    }
 
     const flattened = [
       ...groups.page,

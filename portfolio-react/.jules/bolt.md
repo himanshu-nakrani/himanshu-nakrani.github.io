@@ -21,3 +21,7 @@
 ## 2024-03-24 - Combining useMemo hooks
 **Learning:** When multiple useMemo hooks depend strictly on each other's sequential output, they incur React's internal hook tracking overhead, dependency array checking, and intermediate allocations during renders.
 **Action:** Combine them into a single useMemo.
+
+## 2024-03-24 - Single-pass search filtering and grouping
+**Learning:** To optimize performance during high-frequency user inputs (like rapid typing in a search palette), chaining `.filter()` with `.forEach()` or `.push()` into separate arrays causes redundant iterations and multiple allocations.
+**Action:** Combine filtering and grouping operations into a single-pass loop (e.g., `for...of`) inside `useMemo` to eliminate intermediate array allocations and reduce garbage collection overhead.
