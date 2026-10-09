@@ -61,7 +61,7 @@ function ExperienceItem({ job }) {
           >
             {expanded ? 'Show less' : `Show ${hiddenCount} more highlights`}
             <motion.span animate={{ rotate: expanded ? 180 : 0 }} style={{ display: 'inline-flex' }}>
-              <ChevronDown size={13} />
+              <ChevronDown size={13} aria-hidden="true" />
             </motion.span>
           </button>
         )}

@@ -35,3 +35,6 @@
 ## 2024-08-25 - Icon-only Buttons Missing Native Tooltips
 **Learning:** Icon-only buttons (like theme toggles or hamburger menus) that only have an `aria-label` are accessible to screen readers, but sighted mouse users have no way to discover what the icon does without clicking it if it lacks a `title` attribute.
 **Action:** For icon-only buttons, always supplement the semantic `aria-label` with a native `title` attribute containing the same descriptive text to provide a visible, native tooltip on hover for mouse users.
+## 2024-10-08 - Hide ChevronDown in Experience toggle
+**Learning:** Decorative SVG icons (like ChevronDown) inside of buttons that already have a text label can cause redundancy for screen reader users if left exposed.
+**Action:** Always add `aria-hidden="true"` to SVG icons that do not provide additional semantic value beyond the explicit label or surrounding text of their parent interactive elements.
