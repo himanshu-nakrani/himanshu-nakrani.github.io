@@ -98,7 +98,7 @@ export const DisclosureItem = forwardRef(function DisclosureItem({
         <div className="disclosure-trigger-content">
           {Icon && (
             <span className="disclosure-icon">
-              <Icon size={18} />
+              <Icon size={18} aria-hidden="true" />
             </span>
           )}
           <div className="disclosure-trigger-text">
@@ -116,7 +116,7 @@ export const DisclosureItem = forwardRef(function DisclosureItem({
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: duration.fast, ease: ease.out }}
         >
-          <ChevronDown size={18} />
+          <ChevronDown size={18} aria-hidden="true" />
         </motion.span>
       </button>
 
