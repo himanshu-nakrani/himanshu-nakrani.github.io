@@ -19,7 +19,7 @@ function Stat({ value, label }) {
       transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
     >
       <span className="stat__value">
-        {count}
+        <motion.span>{count}</motion.span>
         <span style={{ color: 'var(--color-accent)' }}>{suffix}</span>
       </span>
       <span className="stat__label">{label}</span>
