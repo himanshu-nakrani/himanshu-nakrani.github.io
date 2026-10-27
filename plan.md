@@ -1,6 +1,21 @@
-1. **Identify Performance Bottleneck**: `portfolio-react/src/onepager/hooks/useCountUp.js` uses `requestAnimationFrame` and `useState` for numeric count-up animations. This is a known anti-pattern (documented in memory) as it triggers a React re-render on every frame, causing unnecessary garbage collection churn and potential layout thrashing on the main thread.
-2. **Implement Solution**: Refactor `portfolio-react/src/onepager/hooks/useCountUp.js` to use `framer-motion` hooks (`useMotionValue`, `useSpring`, `useTransform`). This will allow DOM-level updates that completely bypass React re-renders. The hook should return an object `{ value: MotionValue | string, suffix: string }`.
-3. **Verify Functionality**: Update `portfolio-react/src/onepager/components/Hero.jsx` (which consumes `useCountUp`) to use `<motion.span>` for displaying the animated value `count`.
-4. **Testing & Linting**: Run `pnpm lint` and `pnpm test` to ensure no regressions.
-5. **Pre-commit Steps**: Run `pre_commit_instructions` tool.
-6. **Submit PR**: Create a PR with title "⚡ Bolt: [performance improvement]".
+1. **Optimize SectionNav & ScrollProgressRail Event Listeners**
+   - In `src/components/SectionNav.jsx` and `src/components/ScrollProgressRail.jsx`, state is being set inside a scroll event listener.
+   - I'll need to check the event listener batching but actually `SectionNav` uses IntersectionObserver which sets active section, and it uses `addEventListener('scroll')` to set `isVisible`. `window.scrollY > 300` returns the same boolean value repeatedly, and React bails out if the state doesn't change. However, executing `setIsVisible(window.scrollY > 300)` on *every* scroll still incurs overhead. Wait, the `Bolt` persona guidelines specify: "Debounce search input to reduce API calls" or "Move expensive operation outside of render loop".
+
+Let's look at a better candidate:
+2. **Optimize `ResearchPage` Pre-computing Stats**
+   - In `src/pages/ResearchPage.jsx`, inside `export default function ResearchPage() {`, we have:
+     ```javascript
+     const published = publications.filter((p) => p.link).length
+     const accepted = publications.filter((p) => !p.link).length
+     ```
+   - These compute values every single render by iterating over `publications`.
+   - We can hoist them outside the component definition to avoid O(N) operations on every render.
+   - This directly aligns with the memory: "To avoid O(N * M) overhead during React renders, pre-calculate derived metrics from static data (such as counts of filtered items) at the module level outside the component, rather than recalculating them inline on every state update."
+
+3. **Complete pre-commit steps**
+   - Complete pre-commit steps to ensure proper testing, verification, review, and reflection are done.
+
+4. **Submit PR**
+   - Name: `⚡ Bolt: [performance improvement]`
+   - Description matching guidelines.
