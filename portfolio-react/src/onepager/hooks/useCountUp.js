@@ -1,44 +1,40 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
+import { useSpring, useTransform } from 'framer-motion'
 
 /**
  * Count-up for stat values like '100+', '75%', '1,240'.
  * Returns { value, suffix } where value counts up once `active` is true.
+ * `value` is a motion value so a motion element can paint frames without React renders.
  */
 export function useCountUp(raw, { duration = 1200, active = true } = {}) {
   const match = String(raw).match(/^([\d,]+)(.*)$/)
   const target = match ? Number.parseInt(match[1].replace(/,/g, ''), 10) : 0
   const suffix = match ? match[2] : String(raw)
+  const seconds = duration > 0 ? duration / 1000 : 0
 
-  const prefersReducedMotion =
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  const [count, setCount] = useState(0)
-  const started = useRef(false)
+  // Start on the final number so an inactive stat matches the previous hook.
+  const spring = useSpring(target, { duration: seconds, bounce: 0 })
+  const display = useTransform(spring, (current) => {
+    const rounded = Math.round(current)
+    return target >= 1000 ? rounded.toLocaleString('en-US') : String(rounded)
+  })
 
   useEffect(() => {
-    if (!active || started.current || prefersReducedMotion) return undefined
-    started.current = true
-
-    let rafId = 0
-    const startTime = performance.now()
-
-    const tick = (now) => {
-      const progress = Math.min((now - startTime) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(eased * target))
-      if (progress < 1) rafId = requestAnimationFrame(tick)
-      else setCount(target)
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!active || reduce || seconds === 0) {
+      spring.jump(target)
+      return () => spring.stop()
     }
-
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
-  }, [active, duration, target, prefersReducedMotion])
-
-  const display = prefersReducedMotion || !active ? target : count
+    // jump snaps. set() on a spring that already sits on `target` does not move.
+    spring.jump(0)
+    spring.set(target)
+    return () => spring.stop()
+  }, [active, target, seconds, spring])
 
   return {
-    value: target >= 1000 ? display.toLocaleString('en-US') : String(display),
+    value: display,
     suffix,
   }
 }

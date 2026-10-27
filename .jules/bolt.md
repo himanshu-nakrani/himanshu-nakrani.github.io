@@ -64,3 +64,7 @@
 ## 2024-09-11 - [Hoist Component Constants]
 **Learning:** Pre-calculating derived values from static imports at the module scope prevents O(n) or O(N*M) calculation cycles from unnecessarily occurring on each React component render state update (like filtering).
 **Action:** Move static reductions and filters outside of components using constant variables at module level to save CPU cycles and garbage collection.
+
+## 2023-10-23 - Framer Motion useSpring unit mismatch
+**Learning:** When migrating custom animation loops to Framer Motion's `useSpring` and `useMotionValue` to bypass React renders, the `duration` configuration inside `useSpring` expects seconds, whereas many custom requestAnimationFrame implementations default to milliseconds. Failing to convert this causes seemingly broken animations (e.g., 1200 seconds instead of 1.2s).
+**Action:** Always verify expected time units when migrating animation configurations to new libraries like Framer Motion, and explicitly convert milliseconds to seconds (e.g., `duration: duration / 1000`) for `useSpring`.
