@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Section from './Section'
 import Reveal from './Reveal'
 import { projects } from '../../data'
@@ -87,9 +87,12 @@ function ProjectRow({ project, index }) {
 export default function Projects() {
   const [filter, setFilter] = useState('all')
 
-  const visible = filter === 'all'
-    ? projects
-    : projects.filter(FILTERS.find((f) => f.id === filter).match)
+  // ⚡ Bolt: Memoize the filtered array to avoid O(N) allocations on every render
+  const visible = useMemo(() => {
+    return filter === 'all'
+      ? projects
+      : projects.filter(FILTERS.find((f) => f.id === filter).match)
+  }, [filter])
 
   return (
     <Section
