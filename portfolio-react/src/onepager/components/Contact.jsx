@@ -30,6 +30,7 @@ export default function Contact() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${social.label} (opens in a new tab)`}
                 >
                   {social.label} ↗
                 </a>
@@ -39,6 +40,7 @@ export default function Contact() {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Résumé (opens in a new tab)"
               >
                 Résumé ↗
               </a>
