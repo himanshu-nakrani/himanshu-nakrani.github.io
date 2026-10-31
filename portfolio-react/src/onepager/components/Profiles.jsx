@@ -22,6 +22,7 @@ export default function Profiles() {
               href={platform.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${platform.name} (opens in a new tab)`}
             >
               <span>
                 <span className="plat-cell__name">
@@ -110,6 +111,7 @@ export default function Profiles() {
                     href={item.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${item.title} (opens in a new tab)`}
                   >
                     <span className="work-list__type">
                       {item.medal && `${medalByLabel[item.medal] ?? ''} `}
@@ -127,6 +129,7 @@ export default function Profiles() {
               href="https://www.kaggle.com/himanshunakrani"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="View full Kaggle profile (opens in a new tab)"
             >
               View full Kaggle profile ↗
             </a>

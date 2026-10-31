@@ -108,11 +108,12 @@ export default function Hero() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${social.label} (opens in a new tab)`}
                 >
                   {social.label} ↗
                 </a>
               ))}
-              <a className="text-link" href={resumeUrl} target="_blank" rel="noopener noreferrer">
+              <a className="text-link" href={resumeUrl} target="_blank" rel="noopener noreferrer" aria-label="Résumé (opens in a new tab)">
                 Résumé ↗
               </a>
             </div>
