@@ -149,11 +149,11 @@ export default function AboutPage() {
             backend APIs, retrieval systems, model adaptation, and observability.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1.75rem' }}>
-            <a href="https://github.com/himanshu-nakrani" target="_blank" rel="noopener noreferrer" className="btn btn--primary">
+            <a href="https://github.com/himanshu-nakrani" target="_blank" rel="noopener noreferrer" className="btn btn--primary" aria-label="View GitHub profile (opens in a new tab)">
               <Github size={16} aria-hidden="true" />
               View GitHub
             </a>
-            <a href="https://www.linkedin.com/in/himanshu-nakrani/" target="_blank" rel="noopener noreferrer" className="btn btn--ghost">
+            <a href="https://www.linkedin.com/in/himanshu-nakrani/" target="_blank" rel="noopener noreferrer" className="btn btn--ghost" aria-label="View LinkedIn profile (opens in a new tab)">
               <Linkedin size={16} aria-hidden="true" />
               LinkedIn
             </a>
@@ -249,7 +249,7 @@ export default function AboutPage() {
                           href={cert.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`View credential for ${cert.name}`}
+                          aria-label={`View credential for ${cert.name} (opens in a new tab)`}
                           style={cardStyle}
                         >
                           {content}

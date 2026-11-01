@@ -129,11 +129,11 @@ function ProjectCard({ item, index, onDetails, featured = false }) {
             Deep dive <ArrowRight size={13} aria-hidden="true" />
           </Link>
         ) : item.link ? (
-          <a href={item.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`View source for ${item.title}`}>
+          <a href={item.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`View source for ${item.title} (opens in a new tab)`}>
             View source <ExternalLink size={13} aria-hidden="true" />
           </a>
         ) : item.liveLink ? (
-          <a href={item.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`Open live demo for ${item.title}`}>
+          <a href={item.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--primary project-card__action" aria-label={`Open live demo for ${item.title} (opens in a new tab)`}>
             Live demo <ExternalLink size={13} aria-hidden="true" />
           </a>
         ) : (
@@ -290,8 +290,8 @@ function ProjectModal({ project, onClose }) {
               )}
 
               <div className="project-modal__footer">
-                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary">GitHub <ExternalLink size={13} aria-hidden="true" /></a>}
-                {project.liveLink && <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost">Live Demo <ExternalLink size={13} aria-hidden="true" /></a>}
+                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn btn--primary" aria-label="View source on GitHub (opens in a new tab)">GitHub <ExternalLink size={13} aria-hidden="true" /></a>}
+                {project.liveLink && <a href={project.liveLink} target="_blank" rel="noopener noreferrer" className="btn btn--ghost" aria-label="Open live demo (opens in a new tab)">Live Demo <ExternalLink size={13} aria-hidden="true" /></a>}
                 {!project.link && !project.liveLink && <span className="ledger-note"><Lock size={13} aria-hidden="true" /> Internal / private project</span>}
               </div>
             </div>
