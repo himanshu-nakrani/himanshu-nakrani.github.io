@@ -39,6 +39,7 @@ export default function Research() {
                     href={pub.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="IEEE Xplore (opens in a new tab)"
                   >
                     IEEE Xplore
                     <ArrowUpRight size={12} aria-hidden="true" />
