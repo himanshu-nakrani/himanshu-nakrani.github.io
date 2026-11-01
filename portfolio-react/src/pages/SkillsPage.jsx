@@ -10,6 +10,7 @@ const PRIMARY_STACK = [
   { name: 'FastAPI', icon: 'Zap', note: 'Backend APIs', years: 2 },
   { name: 'LangChain', icon: 'Link', note: 'LLM orchestration', years: 1.5 },
   { name: 'Azure OpenAI', icon: 'Cloud', note: 'LLM infrastructure', years: 1.5, featured: true },
+  { name: 'AWS', icon: 'Cloud', note: 'Cloud & AI services' },
   { name: 'PostgreSQL', icon: 'Database', note: 'Primary database', years: 3 },
   { name: 'pgvector', icon: 'Hash', note: 'Vector search', years: 1 },
   { name: 'RAG', icon: 'BookOpen', note: 'Retrieval AI', years: 1.5 },
@@ -55,7 +56,7 @@ function StackCard({ tool, index }) {
         <h3 style={{ margin: '0 0 0.25rem', color: 'var(--color-text)', fontSize: tool.featured ? 'var(--text-lg)' : 'var(--text-base)', fontWeight: 'var(--font-weight-semibold)' }}>{tool.name}</h3>
         <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>{tool.note}</p>
       </div>
-      <span className="editorial-chip" style={{ width: 'fit-content' }}>{tool.years}+ yrs</span>
+      {tool.years != null && <span className="editorial-chip" style={{ width: 'fit-content' }}>{tool.years}+ yrs</span>}
     </motion.article>
   )
 }

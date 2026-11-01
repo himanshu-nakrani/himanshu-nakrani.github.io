@@ -3,6 +3,23 @@ import { ALPHA_COPILOT, GITHUB_REPO_COUNT, LEETCODE_STATS } from './stats'
 
 export const projects = [
   {
+    icon: 'Cloud',
+    title: 'OpsPilot AWS',
+    desc: 'AI-assisted incident-response proof of concept on AWS, turning CloudWatch alerts into evidence-grounded root-cause analysis, OpsCenter tickets, and human-reviewed fixes.',
+    fullDesc: 'OpsPilot is an AWS-native incident-response proof of concept for a fault-injected sample service. EventBridge and Step Functions coordinate evidence collection, Bedrock-powered root-cause analysis, incident routing, and OpsCenter ticketing. A limited patch agent opens CodeCommit pull requests for four known bugs, with CodeBuild verification and human review required before merging or deployment.',
+    tags: ['AWS', 'Bedrock', 'AI Agents', 'Incident Response'],
+    techStack: ['Python', 'FastAPI', 'React', 'TypeScript', 'AWS CDK', 'Step Functions', 'Lambda', 'EventBridge', 'CloudWatch', 'Bedrock', 'Strands SDK', 'CodeCommit', 'CodeBuild', 'OpsCenter'],
+    badge: null,
+    link: 'https://github.com/himanshu-nakrani/himanshu-nakrani-opspilot-aws',
+    features: [
+      'CloudWatch alert ingestion and Step Functions incident orchestration',
+      'Evidence-grounded root-cause analysis with abstention when evidence is insufficient',
+      'Incident classification, routing, OpsCenter tickets, and notifications',
+      'Stub patch agent for four known bugs, with CodeCommit pull requests and CodeBuild reproduction tests',
+      'React dashboard and offline evaluation fixtures, with human-reviewed fixes and no automatic merges or deployments',
+    ],
+  },
+  {
     icon: 'Bot',
     title: 'Alpha Copilot',
     desc: `Enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data. Serves ${ALPHA_COPILOT.totalUsers} total users across ${ALPHA_COPILOT.businessUnits} business units at State Street.`,
