@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, useLocation } from 'react-router-dom'
 
 import {
   applyDesignMode,
@@ -11,9 +11,10 @@ import {
   THEME_STORAGE_KEY,
 } from './lib/theme'
 import { setItem } from './lib/storage'
-import { routeImporters } from './lib/routePrefetch'
+import { getLoadedPage, routeImporters } from './lib/routePrefetch'
 import MainLayout from './layouts/MainLayout'
 import RouteLoadingBar from './components/RouteLoadingBar'
+import SmoothRoutes from './components/SmoothRoutes'
 
 /**
  * Re-reads persisted theme/design-mode on navigation so the host app adopts
@@ -31,7 +32,6 @@ function RouteSync({ onThemeSync, onDesignSync }) {
 }
 
 const HomePage = lazy(routeImporters['/'])
-const AboutPage = lazy(routeImporters['/about'])
 const ProjectsPage = lazy(routeImporters['/projects'])
 const ExperiencePage = lazy(routeImporters['/experience'])
 const ProfilesPage = lazy(routeImporters['/profiles'])
@@ -44,6 +44,30 @@ const SpotlightCardDemo = lazy(() => import('./components/ui/spotlight-card-demo
 const ProjectDeepDivePage = lazy(routeImporters['/projects/:slug'])
 const ResearchDeepDivePage = lazy(routeImporters['/research/:slug'])
 const LabPage = lazy(routeImporters['/lab'])
+
+const lazyPages = {
+  '/': HomePage,
+  '/projects': ProjectsPage,
+  '/projects/:slug': ProjectDeepDivePage,
+  '/experience': ExperiencePage,
+  '/profiles': ProfilesPage,
+  '/research': ResearchPage,
+  '/research/:slug': ResearchDeepDivePage,
+  '/skills': SkillsPage,
+  '/lab': LabPage,
+  '/minimal': OnePager,
+}
+
+function ResolvedPage({ routeKey }) {
+  const Loaded = getLoadedPage(routeKey)
+  if (Loaded) return <Loaded />
+  const LazyPage = lazyPages[routeKey]
+  return <LazyPage />
+}
+
+function Standalone({ children }) {
+  return <Suspense fallback={<RouteLoadingBar />}>{children}</Suspense>
+}
 
 export default function App() {
   const [isDark, setIsDark] = useState(() => getPreferredTheme() === 'dark')
@@ -92,35 +116,33 @@ export default function App() {
     <>
       <BrowserRouter>
         <RouteSync onThemeSync={setIsDark} onDesignSync={setDesignMode} />
-        <Suspense fallback={<RouteLoadingBar />}>
-          <Routes>
-            <Route path="/demo/3d-nav" element={<ThreeDAdaptiveNavDemo />} />
-            <Route path="/demo/spotlight-card" element={<SpotlightCardDemo />} />
-            <Route path="/styleguide" element={<StyleguidePage />} />
-            <Route path="/minimal" element={<OnePager />} />
-            <Route
-              element={
-                <MainLayout
-                  isDark={isDark}
-                  setIsDark={handleThemeChange}
-                  designMode={designMode}
-                  setDesignMode={handleDesignModeChange}
-                />
-              }
-            >
-              <Route path="/"           element={<HomePage />} />
-              <Route path="/about"      element={<AboutPage />} />
-              <Route path="/projects"   element={<ProjectsPage />} />
-              <Route path="/experience" element={<ExperiencePage />} />
-              <Route path="/profiles"   element={<ProfilesPage />} />
-              <Route path="/research"   element={<ResearchPage />} />
-              <Route path="/research/:slug" element={<ResearchDeepDivePage />} />
-              <Route path="/skills"     element={<SkillsPage />} />
-              <Route path="/projects/:slug" element={<ProjectDeepDivePage />} />
-              <Route path="/lab"        element={<LabPage />} />
-            </Route>
-          </Routes>
-        </Suspense>
+        <SmoothRoutes>
+          <Route path="/demo/3d-nav" element={<Standalone><ThreeDAdaptiveNavDemo /></Standalone>} />
+          <Route path="/demo/spotlight-card" element={<Standalone><SpotlightCardDemo /></Standalone>} />
+          <Route path="/styleguide" element={<Standalone><StyleguidePage /></Standalone>} />
+          <Route path="/minimal" element={<Standalone><ResolvedPage routeKey="/minimal" /></Standalone>} />
+          <Route
+            element={
+              <MainLayout
+                isDark={isDark}
+                setIsDark={handleThemeChange}
+                designMode={designMode}
+                setDesignMode={handleDesignModeChange}
+              />
+            }
+          >
+            <Route path="/"           element={<ResolvedPage routeKey="/" />} />
+            <Route path="/about"      element={<Navigate to="/" replace />} />
+            <Route path="/projects"   element={<ResolvedPage routeKey="/projects" />} />
+            <Route path="/experience" element={<ResolvedPage routeKey="/experience" />} />
+            <Route path="/profiles"   element={<ResolvedPage routeKey="/profiles" />} />
+            <Route path="/research"   element={<ResolvedPage routeKey="/research" />} />
+            <Route path="/research/:slug" element={<ResolvedPage routeKey="/research/:slug" />} />
+            <Route path="/skills"     element={<ResolvedPage routeKey="/skills" />} />
+            <Route path="/projects/:slug" element={<ResolvedPage routeKey="/projects/:slug" />} />
+            <Route path="/lab"        element={<ResolvedPage routeKey="/lab" />} />
+          </Route>
+        </SmoothRoutes>
       </BrowserRouter>
       {analyticsComponents && (
         <>

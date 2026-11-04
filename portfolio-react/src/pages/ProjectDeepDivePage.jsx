@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ExternalLink, Lock, FlaskConical, ChevronDown } from 'lucide-react'
 import SEO from '../components/SEO'
+import CountValue from '../components/CountValue'
 import TechnicalArchitectureMap from '../components/TechnicalArchitectureMap'
 import AgentForgeTopology from '../components/AgentForgeTopology'
 import Tag from '../components/Tag'
@@ -215,7 +216,6 @@ function ProjectDeepDiveContent({ study }) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '0.65rem',
             marginBottom: '2.5rem',
           }}
@@ -235,7 +235,7 @@ function ProjectDeepDiveContent({ study }) {
                   {metricParts.map((part, index) => (
                     <span key={part} className="pddp-metric-value__line">
                       {index > 0 && <span className="pddp-metric-value__slash">/</span>}
-                      {part}
+                      {part && <CountValue value={part} />}
                     </span>
                   ))}
                 </span>
