@@ -273,6 +273,7 @@ export default function ContributionHeatmap({
                       cell={cell}
                       levelBg={LEVEL_BG[level]}
                       isHover={isHover}
+                      isLatest={ci === view.cols.length - 1 && level > 0}
                       reduceMotion={reduceMotion}
                       unitLabel={unit(cell.count)}
                     />
@@ -372,12 +373,13 @@ function Stat({ label, value }) {
   )
 }
 
-const HeatmapCell = memo(function HeatmapCell({ ci, ri, cell, levelBg, isHover, reduceMotion, unitLabel }) {
+const HeatmapCell = memo(function HeatmapCell({ ci, ri, cell, levelBg, isHover, isLatest, reduceMotion, unitLabel }) {
   return (
     <motion.div
       tabIndex={0}
       role="button"
       aria-label={`${cell.count} ${unitLabel} on ${cell.formattedDate}`}
+      className={isLatest && !reduceMotion ? 'heatmap-cell--latest' : undefined}
       data-col={ci}
       data-row={ri}
       initial={reduceMotion ? false : { opacity: 0, scale: 0.6 }}

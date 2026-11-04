@@ -40,6 +40,11 @@ export const skills = [
 export const certifications = [
   {
     icon: 'Cloud',
+    title: 'AWS Certified Generative AI Developer – Professional',
+    href: 'https://www.credly.com/badges/3a733df7-7356-4036-ad66-2a55540b91ed/linked_in',
+  },
+  {
+    icon: 'Cloud',
     title: 'AWS Certified AI Practitioner',
     href: 'https://www.credly.com/badges/dd24a4a1-e038-4e56-b3e9-f3ad9c105f33/linked_in_profile',
   },

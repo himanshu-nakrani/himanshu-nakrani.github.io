@@ -67,15 +67,14 @@ export default function LiveContributionStream() {
       className="signature-visual activity-stream"
       aria-labelledby="activity-stream-title"
     >
-      <header className="signature-visual__header">
+      <header className="signature-visual__header activity-stream__header">
         <div>
-          <span>Local activity datasets</span>
-          <h2 id="activity-stream-title">Live contribution stream</h2>
+          <span className="activity-stream__kicker">Local activity datasets</span>
+          <h2 id="activity-stream-title">Contribution stream</h2>
         </div>
         <p>
-          Recent contribution intensity derived from the generated GitHub and
-          LeetCode snapshots.
-          {latestDate ? <span style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}> · Updated through {latestDate}</span> : null}
+          Recent GitHub and LeetCode intensity.
+          {latestDate ? <span className="activity-stream__updated">Updated through {latestDate}</span> : null}
         </p>
       </header>
       {events.length ? (
