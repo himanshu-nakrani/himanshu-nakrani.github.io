@@ -52,7 +52,7 @@ export default function About() {
           </h3>
           <ul className="cert-list">
             {certifications.map((cert) => (
-              <li key={cert.name}>{cert.name}</li>
+              <li key={cert.title}>{cert.title}</li>
             ))}
           </ul>
         </div>

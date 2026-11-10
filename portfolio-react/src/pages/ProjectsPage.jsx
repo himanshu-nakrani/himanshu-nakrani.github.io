@@ -1,20 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, BarChart2, Code2, ExternalLink, Filter, FolderGit2, Lock, Rocket, Search, X } from 'lucide-react'
+import { ArrowRight, ExternalLink, Lock, Search, X } from 'lucide-react'
 import DataIcon from '../components/DataIcon'
 import SEO from '../components/SEO'
 import Tag from '../components/Tag'
+import CountValue from '../components/CountValue'
 import { projects, technicalCaseStudies } from '../data/projects'
 
 const FEATURED_TAGS = ['Text-to-SQL', 'RAG', 'LLM', 'FastAPI', 'AI Agents']
 const deepDiveSlugs = new Set(technicalCaseStudies.map((study) => study.slug))
 
-const pageStats = [
-  { value: projects.length, label: 'Total', icon: FolderGit2 },
-  { value: projects.filter((p) => p.badge === 'Production').length, label: 'Production', icon: Rocket },
-  { value: projects.filter((p) => p.link).length, label: 'Open Source', icon: Code2 },
-  { value: projects.filter((p) => p.metrics).length, label: 'With Metrics', icon: BarChart2 },
+const statusIndex = [
+  { id: 'All', name: 'All work', value: String(projects.length), meta: 'In the index' },
+  { id: 'Production', name: 'Production', value: String(projects.filter((p) => p.badge === 'Production').length), meta: 'Shipped systems' },
+  { id: 'Open Source', name: 'Open source', value: String(projects.filter((p) => p.link).length), meta: 'Public repos' },
+  { id: 'Research', name: 'Research', value: String(projects.filter((p) => p.badge === 'Research').length), meta: 'Models and papers' },
+  { id: 'Vibe', name: 'Vibe', value: String(projects.filter((p) => p.badge === 'Vibe').length), meta: 'Explorations' },
 ]
 
 // ⚡ Bolt Optimization: Pre-compute static lowercased strings outside of render cycle
@@ -43,21 +45,6 @@ function motionProps(reduceMotion, inView, delay = 0) {
   }
 }
 
-function PageStat({ stat, index }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
-  const reduceMotion = useReducedMotion()
-  const Icon = stat.icon
-
-  return (
-    <motion.div ref={ref} className="editorial-stat" {...motionProps(reduceMotion, inView, index * 0.06)}>
-      <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
-      <span className="editorial-stat-num">{stat.value}</span>
-      <span className="editorial-stat-label">{stat.label}</span>
-    </motion.div>
-  )
-}
-
 function MetricStrip({ metrics, compact = false, limit }) {
   const visibleMetrics = limit ? metrics?.slice(0, limit) : metrics
   if (!visibleMetrics?.length) return null
@@ -65,12 +52,7 @@ function MetricStrip({ metrics, compact = false, limit }) {
     ? { fontSize: 'clamp(1.05rem, 2.2vw, 1.4rem)' }
     : { fontSize: 'clamp(1.35rem, 2.4vw, 1.85rem)' }
   return (
-    <div
-      className="ledger-stat-band"
-      style={compact
-        ? { gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))' }
-        : { gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}
-    >
+    <div className="ledger-stat-band">
       {visibleMetrics.map((metric) => (
         <div key={metric.label} className="ledger-stat" style={compact ? { padding: '0.85rem' } : undefined}>
           <span className="ledger-stat-num" style={numStyle}>{metric.value}</span>
@@ -318,6 +300,7 @@ export default function ProjectsPage() {
         || (activeFilter === 'Production' && project.badge === 'Production')
         || (activeFilter === 'In Progress' && project.badge === 'In Progress')
         || (activeFilter === 'Open Source' && project.link)
+        || (activeFilter === 'Research' && project.badge === 'Research')
         || (activeFilter === 'Vibe' && project.badge === 'Vibe')
       const matchesTag = activeTag === 'All' || project._tagsSet.has(activeTag)
       return matchesQuery && matchesFilter && matchesTag
@@ -349,20 +332,29 @@ export default function ProjectsPage() {
           </p>
         </header>
 
-        <section className="editorial-section section-hairline" aria-label="Project statistics">
-          <div className="editorial-stat-grid">
-            {pageStats.map((stat, index) => <PageStat key={stat.label} stat={stat} index={index} />)}
-          </div>
-        </section>
+        <div role="group" aria-label="Project status" className="signal-index">
+          {statusIndex.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              aria-pressed={activeFilter === item.id}
+              onClick={() => setActiveFilter(item.id)}
+              className="signal-index__card"
+            >
+              <span className="signal-index__name">{item.name}</span>
+              <CountValue className="signal-index__value" value={item.value} />
+              <span className="signal-index__meta">{item.meta}</span>
+            </button>
+          ))}
+        </div>
 
         <section className="editorial-section section-hairline">
-          <span className="section-ghost-num" aria-hidden="true">02</span>
-          <p className="editorial-kicker">[ 02 ] · Index</p>
-          <h2 className="editorial-section-title">Project ledger</h2>
+          <p className="editorial-kicker">[ 02 ] · Work</p>
+          <h2 className="editorial-section-title">Selected systems</h2>
 
           <div className="editorial-card" style={{ padding: '1rem', marginBottom: '1.5rem' }}>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <label style={{ flex: '1 1 260px', display: 'flex', alignItems: 'center', gap: '0.6rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '0.6rem 0.8rem', background: 'var(--color-bg)' }}>
+              <label className="field-search">
                 <Search size={16} color="var(--color-text-muted)" aria-hidden="true" />
                 <span className="sr-only">Search projects</span>
                 <input
@@ -372,7 +364,7 @@ export default function ProjectsPage() {
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Search projects..."
                   maxLength={100}
-                  style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent', color: 'var(--color-text)', fontSize: 'var(--text-sm)' }}
+                  style={{ width: '100%', border: 'none', background: 'transparent', color: 'var(--color-text)', fontSize: 'var(--text-sm)' }}
                 />
                 {query && (
                   <button
@@ -403,18 +395,10 @@ export default function ProjectsPage() {
             </div>
 
             <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>
-              <div role="group" aria-label="Project status filters" style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                <span className="ledger-subhead" style={{ margin: 0, display: 'inline-flex', gap: 4, alignItems: 'center' }}><Filter size={12} /> Status</span>
-                {['All', 'Production', 'In Progress', 'Open Source', 'Vibe'].map((filter) => (
-                  <button key={filter} type="button" aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)} className={activeFilter === filter ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: '0.75rem', padding: '0.4rem 0.75rem' }}>
-                    {filter}
-                  </button>
-                ))}
-              </div>
               <div role="group" aria-label="Project technology filters" style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span className="ledger-subhead" style={{ margin: 0 }}>Tech</span>
                 {['All', ...FEATURED_TAGS].map((tag) => (
-                  <button key={tag} type="button" aria-pressed={activeTag === tag} onClick={() => setActiveTag(tag)} className={activeTag === tag ? 'btn btn--primary' : 'btn btn--ghost'} style={{ fontSize: '0.75rem', padding: '0.4rem 0.75rem' }}>
+                  <button key={tag} type="button" aria-pressed={activeTag === tag} onClick={() => setActiveTag(tag)} className={activeTag === tag ? 'btn btn--primary btn--chip' : 'btn btn--ghost btn--chip'}>
                     {tag}
                   </button>
                 ))}

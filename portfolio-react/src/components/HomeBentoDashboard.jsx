@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, BriefcaseBusiness, Mail, Microscope } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import CountValue from './CountValue'
 import DataIcon from './DataIcon'
 import { projects } from '../data/projects'
 import { modelOpsSnapshots } from '../data/lab'
@@ -86,7 +87,7 @@ export default function HomeBentoDashboard() {
             <div className="home-bento-outcomes">
               {outcomes.map(outcome => (
                 <div key={outcome.label}>
-                  <strong>{outcome.value}</strong>
+                  <strong><CountValue value={outcome.value} /></strong>
                   <span>{outcome.label}</span>
                 </div>
               ))}
@@ -114,7 +115,7 @@ export default function HomeBentoDashboard() {
             <p>{research?.subtitle}. A from-scratch compact reasoning model with a custom tokenizer and distributed training pipeline.</p>
             <div className="home-bento-research-metrics">
               {research?.metrics.slice(0, 3).map(metric => (
-                <div key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span></div>
+                <div key={metric.label}><strong><CountValue value={metric.value} /></strong><span>{metric.label}</span></div>
               ))}
             </div>
             <CardLink to="/research/tinymathreason-1b" label="Read the TinyMathReason research deep dive">Research deep dive</CardLink>

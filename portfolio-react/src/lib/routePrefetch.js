@@ -1,7 +1,6 @@
 // Importers shared with App.jsx lazy() so prefetch and render resolve the same chunk.
 export const routeImporters = {
   '/': () => import('../pages/HomePage'),
-  '/about': () => import('../pages/AboutPage'),
   '/projects': () => import('../pages/ProjectsPage'),
   '/projects/:slug': () => import('../pages/ProjectDeepDivePage'),
   '/experience': () => import('../pages/ExperiencePage'),
@@ -13,7 +12,7 @@ export const routeImporters = {
   '/minimal': () => import('../onepager/OnePager'),
 }
 
-const prefetched = new Set()
+const modules = new Map()
 const pending = new Map()
 
 function getRouteKey(path) {
@@ -33,14 +32,20 @@ function getRouteKey(path) {
   return null
 }
 
+export function getLoadedPage(path) {
+  const routeKey = getRouteKey(path)
+  return routeKey ? modules.get(routeKey)?.default ?? null : null
+}
+
 export function prefetchRoute(path) {
   const routeKey = getRouteKey(path)
-  if (!routeKey || prefetched.has(routeKey)) return pending.get(routeKey)
+  if (!routeKey) return undefined
+  if (modules.has(routeKey)) return Promise.resolve(modules.get(routeKey))
   if (pending.has(routeKey)) return pending.get(routeKey)
 
   const request = routeImporters[routeKey]()
     .then((module) => {
-      prefetched.add(routeKey)
+      modules.set(routeKey, module)
       pending.delete(routeKey)
       return module
     })
@@ -62,31 +67,43 @@ function canWarmRoutes() {
 export function warmPrimaryRoutes(currentPath = '/') {
   if (!canWarmRoutes()) return () => {}
 
-  const priorities = ['/projects', '/experience', '/about', '/research', '/skills', '/profiles']
-    .filter((path) => path !== currentPath)
+  const currentKey = getRouteKey(currentPath) || currentPath
+  const queue = ['/', '/projects', '/experience', '/research', '/lab', '/profiles', '/skills', '/minimal']
+    .filter((path) => path !== currentKey && path !== currentPath)
   let cancelled = false
   let index = 0
+  let idleId = 0
+  let timerId = 0
 
-  const warmNext = (deadline) => {
-    if (cancelled) return
-    while (index < priorities.length && (!deadline || deadline.timeRemaining() > 5 || deadline.didTimeout)) {
-      prefetchRoute(priorities[index])?.catch(() => {})
-      index += 1
-      if (!deadline) break
-    }
-    if (index < priorities.length) schedule()
+  const step = () => {
+    if (cancelled || index >= queue.length) return
+    const batch = queue.slice(index, index + 2)
+    index += batch.length
+    Promise.all(batch.map((path) => prefetchRoute(path)?.catch(() => {}))).finally(() => {
+      if (cancelled || index >= queue.length) return
+      if ('requestIdleCallback' in window) {
+        idleId = window.requestIdleCallback(step, { timeout: 700 })
+      } else {
+        timerId = window.setTimeout(step, 120)
+      }
+    })
   }
 
-  const schedule = () => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(warmNext, { timeout: 1800 })
-    } else {
-      window.setTimeout(() => warmNext(), 350)
-    }
+  const start = () => {
+    if (!cancelled) step()
   }
 
-  schedule()
-  return () => { cancelled = true }
+  if ('requestIdleCallback' in window) {
+    idleId = window.requestIdleCallback(start, { timeout: 350 })
+  } else {
+    timerId = window.setTimeout(start, 120)
+  }
+
+  return () => {
+    cancelled = true
+    if (idleId && 'cancelIdleCallback' in window) window.cancelIdleCallback(idleId)
+    window.clearTimeout(timerId)
+  }
 }
 
 export function installLinkPrefetching(root = document) {
@@ -113,12 +130,14 @@ export function installLinkPrefetching(root = document) {
   }
 
   root.addEventListener('pointerover', prefetchFromEvent, { passive: true })
+  root.addEventListener('pointerdown', prefetchFromEvent, { passive: true })
   root.addEventListener('focusin', prefetchFromEvent)
   root.addEventListener('touchstart', touchIntent, { passive: true })
 
   return () => {
     window.clearTimeout(touchTimer)
     root.removeEventListener('pointerover', prefetchFromEvent)
+    root.removeEventListener('pointerdown', prefetchFromEvent)
     root.removeEventListener('focusin', prefetchFromEvent)
     root.removeEventListener('touchstart', touchIntent)
   }

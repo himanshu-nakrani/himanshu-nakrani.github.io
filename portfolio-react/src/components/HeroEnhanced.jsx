@@ -7,6 +7,7 @@ import MagneticButton from './ui/MagneticButton'
 import { recruiterSummary } from '../data/hero'
 import { RESUME_URL } from '../lib/site'
 import { ALPHA_COPILOT } from '../data/stats'
+import CountValue from './CountValue'
 
 const stats = [
   { num: '3+',  label: 'Years exp.',   detail: 'Intern → Emerging Lead',  link: '/experience' },
@@ -185,7 +186,7 @@ export default function HeroEnhanced({ designMode = 'classic' }) {
               className="hero-stat"
               {...(s.link && s.link.startsWith('http') ? { target: "_blank", rel: "noopener noreferrer" } : {})}
             >
-              <span className="hero-stat-num">{s.num}</span>
+              <CountValue className="hero-stat-num" value={s.num} />
               <span className="hero-stat-label">{s.label}</span>
               <span className="hero-stat-detail">{s.detail}</span>
             </a>

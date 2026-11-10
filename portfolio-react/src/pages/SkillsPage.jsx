@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { AnimatePresence, motion, useInView, useReducedMotion } from 'framer-motion'
-import { Award, ChevronRight, ExternalLink, Layers, Sparkles, TrendingUp } from 'lucide-react'
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { ExternalLink } from 'lucide-react'
 import DataIcon from '../components/DataIcon'
 import SEO from '../components/SEO'
+import CountValue from '../components/CountValue'
 import { certifications, skills } from '../data/skills'
 
 const PRIMARY_STACK = [
@@ -39,6 +40,10 @@ function resolveSkillColor(color) {
     .replace(legacyNavDot, 'var(--color-accent)')
 }
 
+function domainAnchor(label) {
+  return `skill-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
+}
+
 function StackCard({ tool, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
@@ -47,13 +52,12 @@ function StackCard({ tool, index }) {
   return (
     <motion.article
       ref={ref}
-      className="editorial-card"
+      className={`editorial-card stack-card${tool.featured ? ' stack-card--featured' : ''}`}
       {...motionProps(reduceMotion, inView, index * 0.04)}
-      style={{ padding: tool.featured ? '1.35rem' : '1rem', gridColumn: tool.featured ? 'span 2' : 'span 1', display: 'grid', gap: '0.65rem' }}
     >
-      <span style={{ color: 'var(--color-accent)', lineHeight: 1 }}><DataIcon name={tool.icon} size={tool.featured ? 28 : 22} /></span>
+      <span style={{ color: 'var(--color-accent)', lineHeight: 1 }}><DataIcon name={tool.icon} size={22} /></span>
       <div>
-        <h3 style={{ margin: '0 0 0.25rem', color: 'var(--color-text)', fontSize: tool.featured ? 'var(--text-lg)' : 'var(--text-base)', fontWeight: 'var(--font-weight-semibold)' }}>{tool.name}</h3>
+        <h3 style={{ margin: '0 0 0.25rem', color: 'var(--color-text)', fontSize: 'var(--text-base)', fontWeight: 'var(--font-weight-semibold)' }}>{tool.name}</h3>
         <p style={{ margin: 0, color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.72rem' }}>{tool.note}</p>
       </div>
       {tool.years != null && <span className="editorial-chip" style={{ width: 'fit-content' }}>{tool.years}+ yrs</span>}
@@ -61,66 +65,35 @@ function StackCard({ tool, index }) {
   )
 }
 
-function SkillCategoryRow({ group, index, isExpanded, onToggle }) {
+function SkillDomainCard({ group, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
-  const number = String(index + 1).padStart(2, '0')
-  const visibleItems = group.items.slice(0, 12)
 
   return (
     <motion.article
       ref={ref}
-      className="ledger-row section-hairline"
+      id={domainAnchor(group.label)}
+      className="record-card"
       style={{ '--ledger-accent': resolveSkillColor(group.color) }}
       {...motionProps(reduceMotion, inView, index * 0.04)}
     >
-      <span className="section-ghost-num" aria-hidden="true">{number}</span>
-      <button
-        type="button"
-        className="ledger-header"
-        aria-expanded={isExpanded}
-        onClick={onToggle}
-        style={{ background: 'transparent', border: 0, padding: 0, cursor: 'pointer', textAlign: 'left' }}
-      >
+      <div className="ledger-header">
         <span className="ledger-title" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.65rem' }}>
           <DataIcon name={group.icon} size={18} />
           {group.label}
         </span>
-        <span className="ledger-meta">
-          {group.items.length} skills
-          <motion.span animate={reduceMotion ? { rotate: 0 } : { rotate: isExpanded ? 90 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronRight size={14} aria-hidden="true" />
-          </motion.span>
-        </span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div
-            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={reduceMotion ? { opacity: 1 } : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div className="editorial-chip-list" style={{ paddingTop: '0.25rem' }}>
-              {visibleItems.map((item) => <span key={item} className="editorial-chip">{item}</span>)}
-              {group.items.length > visibleItems.length && (
-                <span className="editorial-chip">+{group.items.length - visibleItems.length}</span>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <span className="ledger-meta">{group.items.length}</span>
+      </div>
+      <div className="editorial-chip-list">
+        {group.items.map((item) => <span key={item} className="editorial-chip">{item}</span>)}
+      </div>
     </motion.article>
   )
 }
 
 
 export default function SkillsPage() {
-  const [expandedCategory, setExpandedCategory] = useState(skills[0]?.label || null)
-
   return (
     <>
       <SEO
@@ -138,57 +111,38 @@ export default function SkillsPage() {
           </p>
         </header>
 
-        <section className="editorial-section section-hairline" aria-label="Skills statistics">
-          <div className="editorial-stat-grid">
-            {[
-              { icon: Layers, value: PRIMARY_STACK.length, label: 'Core technologies' },
-              { icon: Sparkles, value: skills.length, label: 'Domains' },
-              { icon: TrendingUp, value: '3', label: 'Cloud Platforms' },
-              { icon: Award, value: certifications.length, label: 'Certifications' },
-            ].map((stat) => {
-              const Icon = stat.icon
-              return (
-                <div key={stat.label} className="editorial-stat">
-                  <Icon size={18} color="var(--color-accent)" aria-hidden="true" />
-                  <span className="editorial-stat-num">{stat.value}</span>
-                  <span className="editorial-stat-label">{stat.label}</span>
-                </div>
-              )
-            })}
-          </div>
-        </section>
+        <nav className="signal-index" aria-label="Skill domains">
+          {skills.map((group) => (
+            <a key={group.label} className="signal-index__card" href={`#${domainAnchor(group.label)}`} style={{ '--profile-platform-color': resolveSkillColor(group.color) }}>
+              <span className="signal-index__name">{group.label}</span>
+              <CountValue className="signal-index__value" value={group.items.length} />
+              <span className="signal-index__meta">Skills<span>{group.items[0]}</span></span>
+            </a>
+          ))}
+        </nav>
 
-        <section className="editorial-section section-hairline">
-          <span className="section-ghost-num" aria-hidden="true">02</span>
+        <section id="core-stack" className="editorial-section section-hairline">
           <p className="editorial-kicker">[ 02 ] · Core</p>
           <h2 className="editorial-section-title">Core technologies</h2>
-          <div className="skills-bento-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.85rem' }}>
+          <div className="skills-bento-grid">
             {PRIMARY_STACK.map((tool, index) => <StackCard key={tool.name} tool={tool} index={index} />)}
           </div>
         </section>
 
         <section className="editorial-section section-hairline">
-          <span className="section-ghost-num" aria-hidden="true">03</span>
           <p className="editorial-kicker">[ 03 ] · Domains</p>
           <h2 className="editorial-section-title">All skills by domain</h2>
-          <div>
+          <div className="record-grid record-grid--3">
             {skills.map((group, index) => (
-              <SkillCategoryRow
-                key={group.label}
-                group={group}
-                index={index}
-                isExpanded={expandedCategory === group.label}
-                onToggle={() => setExpandedCategory(expandedCategory === group.label ? null : group.label)}
-              />
+              <SkillDomainCard key={group.label} group={group} index={index} />
             ))}
           </div>
         </section>
 
-        <section className="editorial-section section-hairline">
-          <span className="section-ghost-num" aria-hidden="true">04</span>
+        <section id="certifications" className="editorial-section section-hairline">
           <p className="editorial-kicker">[ 04 ] · Credentials</p>
           <h2 className="editorial-section-title">Certifications</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '0.75rem' }}>
+          <div className="record-grid record-grid--3">
             {certifications.map((cert) => {
               const content = (
                 <>
@@ -206,7 +160,7 @@ export default function SkillsPage() {
               }
 
               return (
-                <article key={cert.title} className="editorial-card" style={{ padding: '1rem 1.1rem' }}>
+                <article key={cert.title} className="record-card">
                   {cert.href ? (
                     <a
                       href={cert.href}
@@ -225,16 +179,6 @@ export default function SkillsPage() {
             })}
           </div>
         </section>
-
-        <style>{`
-          @media (max-width: 900px) {
-            .skills-bento-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          }
-          @media (max-width: 520px) {
-            .skills-bento-grid { grid-template-columns: 1fr !important; }
-            .skills-bento-grid > article { grid-column: span 1 !important; }
-          }
-        `}</style>
       </main>
     </>
   )
