@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
+import { createElement, lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 
 import { BrowserRouter, Navigate, Route, useLocation } from 'react-router-dom'
 
@@ -59,10 +59,10 @@ const lazyPages = {
 }
 
 function ResolvedPage({ routeKey }) {
-  const Loaded = getLoadedPage(routeKey)
-  if (Loaded) return <Loaded />
+  const loaded = getLoadedPage(routeKey)
+  if (loaded) return createElement(loaded)
   const LazyPage = lazyPages[routeKey]
-  return <LazyPage />
+  return createElement(LazyPage)
 }
 
 function Standalone({ children }) {
