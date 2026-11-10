@@ -1,5 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import AmbientAtmosphere from '../components/AmbientAtmosphere'
 import Navbar from '../components/Navbar'
@@ -9,7 +9,9 @@ import CursorHalo from '../components/CursorHalo'
 import ScrollProgressRail from '../components/ScrollProgressRail'
 import CmdKHint from '../components/CmdKHint'
 import ContextualRouteTransition from '../components/ContextualRouteTransition'
+import RouteLoadingBar from '../components/RouteLoadingBar'
 import { installLinkPrefetching, warmPrimaryRoutes } from '../lib/routePrefetch'
+import { useDisplayLocation } from '../lib/displayLocation'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 
 const CommandPalette = lazy(() => import('../components/CommandPalette'))
@@ -17,9 +19,12 @@ const CommandPalette = lazy(() => import('../components/CommandPalette'))
 
 export default function MainLayout({ isDark, setIsDark, designMode, setDesignMode }) {
   const location = useLocation()
+  const displayLocation = useDisplayLocation()
+  const pageReady = !displayLocation || displayLocation.pathname === location.pathname
   const reduceMotion = usePrefersReducedMotion()
   const [commandPaletteLoaded, setCommandPaletteLoaded] = useState(false)
   const toggleTheme = useCallback(() => setIsDark(!isDark), [isDark, setIsDark])
+  const outletContext = useMemo(() => ({ designMode }), [designMode])
 
   useEffect(() => {
     if (commandPaletteLoaded) return undefined
@@ -39,7 +44,8 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
     }
   }, [commandPaletteLoaded])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!pageReady) return undefined
     const hash = location.hash
     if (hash) {
       const id = hash.replace('#', '')
@@ -62,18 +68,11 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
         cancelAnimationFrame(raf2)
       }
     }
-  }, [location.pathname, location.hash, reduceMotion])
-
-  useEffect(() => {
-    if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-  }, [location.pathname, location.hash])
+  }, [location.hash, location.pathname, pageReady, reduceMotion])
 
   useEffect(() => installLinkPrefetching(document), [])
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => warmPrimaryRoutes(location.pathname), 700)
-    return () => window.clearTimeout(timer)
-  }, [location.pathname])
+  useEffect(() => warmPrimaryRoutes(location.pathname), [location.pathname])
 
   return (
     <>
@@ -97,9 +96,9 @@ export default function MainLayout({ isDark, setIsDark, designMode, setDesignMod
           />
 
           <main id="main-content" tabIndex={-1} style={{ outline: 'none' }}>
-            <ContextualRouteTransition>
-              <Outlet context={{ designMode }} />
-            </ContextualRouteTransition>
+            <Suspense fallback={<RouteLoadingBar />}>
+              <ContextualRouteTransition context={outletContext} />
+            </Suspense>
           </main>
 
           <BackToTop />

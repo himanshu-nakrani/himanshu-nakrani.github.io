@@ -89,7 +89,6 @@ export default function LabPage() {
         aria-labelledby="lab-architecture-heading"
         className="editorial-section section-hairline"
       >
-        <span className="section-ghost-num" aria-hidden="true">02</span>
         <header style={{ marginBottom: '0.9rem' }}>
           <p className="editorial-kicker">[ 02 ] · Architecture</p>
           <h2
@@ -113,31 +112,16 @@ export default function LabPage() {
 
       {/* ── Module selector (tab row) ────────────────────── */}
       <section className="editorial-section section-hairline">
-        <span className="section-ghost-num" aria-hidden="true">03</span>
         <p className="editorial-kicker">[ 03 ] · Modules</p>
         <h2 className="editorial-section-title">Interactive walkthroughs</h2>
 
-        <motion.div
-          {...fadeUp}
-          transition={{ duration: 0.35 }}
-          style={{
-            display: 'flex',
-            gap: '0.4rem',
-            overflowX: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            marginBottom: '1.5rem',
-            paddingBottom: 2,
-          }}
-          role="tablist"
-          aria-label="Demo modules"
-          className="lab-tab-row"
-        >
+        <div role="tablist" aria-label="Demo modules" className="signal-index">
           {demoLabModules.map((mod, index) => {
             const isActive = mod.id === activeModuleId
-            const Icon = moduleIcons[mod.type] || Activity
             return (
               <button
                 key={mod.id}
+                type="button"
                 role="tab"
                 id={`lab-tab-${mod.id}`}
                 aria-selected={isActive}
@@ -145,16 +129,18 @@ export default function LabPage() {
                 tabIndex={isActive ? 0 : -1}
                 onKeyDown={(event) => handleTabKeyDown(event, index)}
                 onClick={() => setActiveModuleId(mod.id)}
-                className={isActive ? 'btn btn--primary' : 'btn btn--ghost'}
-                style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap', flexShrink: 0 }}
+                className="signal-index__card"
               >
-                <Icon size={14} />
-                <span className="lab-tab-full">{mod.title}</span>
-                <span className="lab-tab-short">{moduleShortLabels[mod.id] || mod.title}</span>
+                <span className="signal-index__name">{moduleShortLabels[mod.id] || mod.type}</span>
+                <span className="signal-index__value">{mod.title.replace(/^(Alpha Copilot |Agent Forge )/, '')}</span>
+                <span className="signal-index__meta">
+                  {mod.stack?.[0] || 'Walkthrough'}
+                  <span>{mod.type === 'model' ? `${mod.models.length} models` : `${mod.steps.length} steps`}</span>
+                </span>
               </button>
             )
           })}
-        </motion.div>
+        </div>
 
         {demoLabModules.map((mod) => (
           mod.id !== activeModule.id ? (
@@ -173,12 +159,6 @@ export default function LabPage() {
         {...fadeUp}
         transition={{ duration: 0.4, delay: 0.05 }}
         className="lab-layout"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 320px',
-          gap: '1.25rem',
-          alignItems: 'start',
-        }}
       >
         {/* Active module surface */}
         <AnimatePresence mode="wait">
@@ -191,6 +171,7 @@ export default function LabPage() {
             animate={{ opacity: 1 }}
             exit={reduceMotion ? {} : { opacity: 0 }}
             transition={{ duration: 0.15 }}
+            className="lab-module-panel"
           >
             {activeModule.type === 'trace' && (
               <TraceReplay steps={activeModule.steps} />
@@ -330,32 +311,6 @@ export default function LabPage() {
         </aside>
       </motion.div>
       </section>
-
-      {/* ── Responsive ───────────────────────────────────── */}
-      <style>{`
-        .lab-tab-row::-webkit-scrollbar { display: none; }
-        .lab-tab-row { scrollbar-width: none; }
-        .lab-tab-short { display: none; }
-
-        @media (max-width: 900px) {
-          .lab-layout {
-            grid-template-columns: 1fr !important;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .lab-tab-full { display: none; }
-          .lab-tab-short { display: inline; }
-          .lab-tab-row {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr;
-            overflow-x: visible;
-          }
-          .lab-tab-row > button {
-            justify-content: center;
-          }
-        }
-      `}</style>
     </main>
   )
 }

@@ -12,6 +12,22 @@ export const experience = [
       'Emerging Lead',
     ],
     currentRoleStep: 'Emerging Lead',
+    highlights: [
+      { value: '200+', label: 'Users served' },
+      { value: '10+', label: 'Business units' },
+      { value: '75%', label: 'Latency reduction' },
+      { value: '25%', label: 'SQL accuracy lift' },
+      { value: '50+', label: 'Agent workflows' },
+      { value: '95%+', label: 'Test coverage' },
+    ],
+    focus: [
+      { title: 'Alpha Copilot', line: 'Text-to-SQL over financial data', detailIndexes: [0, 1, 3, 6] },
+      { title: 'Agent Forge', line: 'Agent registry and no-code workflows', detailIndexes: [7, 8] },
+      { title: 'Prospectus RAG', line: 'Retrieval from fund documents', detailIndexes: [2] },
+      { title: 'WealthAI', line: 'Portfolio narratives at scale', detailIndexes: [4] },
+      { title: 'Model work', line: 'Fine-tuning, guardrails, evaluation', detailIndexes: [5] },
+      { title: 'Delivery', line: 'CI/CD, observability, coverage', detailIndexes: [9] },
+    ],
     description: 'Building enterprise-grade LLM systems and AI agents. Architected Alpha Copilot (Text-to-SQL chatbot serving 200+ total users across 10+ business units) and Agent Forge (no-code AI agent builder). Optimized systems achieving 75% latency reduction and 95%+ test coverage.',
     bullets: [
       'Architected and deployed "Alpha Copilot", an enterprise LLM-powered Text-to-SQL chatbot enabling natural language queries over structured financial data, serving 100+ internal users',
@@ -48,6 +64,9 @@ export const experience = [
     company: 'Technocolabs Software Inc.',
     location: 'Remote',
     period: 'Jun 2022 – Jul 2022',
+    highlights: [
+      { value: '87%', label: 'Skip prediction accuracy' },
+    ],
     description: 'Developed CNN-based music skip prediction model achieving 87% accuracy. Executed end-to-end ML pipeline from data preprocessing through production API deployment.',
     bullets: [
       'Built CNN-based Spotify Skip Action Predictor achieving 87% accuracy in real-time prediction',

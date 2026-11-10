@@ -1,11 +1,12 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { Award, ExternalLink, Network, RadioTower } from 'lucide-react'
+import { Award, ExternalLink } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import GitHubContributionHeatmap from '../components/GitHubContributionHeatmap'
 import { kagglePinned } from '../data/profiles'
 import { GITHUB_REPO_COUNT, LEETCODE_STATS } from '../data/stats'
 import SEO from '../components/SEO'
+import CountValue from '../components/CountValue'
 import LiveContributionStream from '../components/LiveContributionStream'
 
 const kaggleVoteTotal = kagglePinned.reduce((total, item) => total + item.votes, 0)
@@ -34,7 +35,8 @@ const platformRows = [
     handle: '@himanshunakrani9',
     href: 'https://huggingface.co/himanshunakrani9',
     platformColor: '#ff9d00',
-    summary: 'Model and dataset artifacts for compact reasoning experiments.',
+    summary: 'Fine-tuning artifacts, datasets, and compact reasoning models.',
+    lead: 1,
     focus: ['LoRA', 'Open models'],
     stats: [
       { value: '11', label: 'Models' },
@@ -66,7 +68,8 @@ const platformRows = [
     handle: '/in/himanshu-nakrani',
     href: 'https://www.linkedin.com/in/himanshu-nakrani/',
     platformColor: '#0a66c2',
-    summary: 'Professional context, credentials, and contact.',
+    summary: 'Career context, verified certifications, and direct outreach.',
+    lead: 1,
     focus: ['Credentials', 'Contact'],
     stats: [
       { value: 'AI', label: 'Focus' },
@@ -82,7 +85,7 @@ const platformRows = [
     handle: '@himanshunakrani0',
     href: 'https://leetcode.com/u/himanshunakrani0/',
     platformColor: 'var(--color-accent)',
-    summary: 'Problem-solving practice alongside applied AI engineering.',
+    summary: 'DSA practice that keeps fundamentals sharp alongside applied AI work.',
     focus: ['DSA', 'Python'],
     stats: [
       { value: String(LEETCODE_STATS.solved), label: 'Solved' },
@@ -97,12 +100,7 @@ const kaggleTiers = [
   { title: 'Notebooks Expert', rank: '2,883', total: '62,296', silver: 1, bronze: 16 },
 ]
 
-const overviewStats = [
-  { value: platformRows.length, label: 'Public surfaces' },
-  { value: GITHUB_REPO_COUNT, label: 'GitHub repos' },
-  { value: '2.8K', label: 'Model downloads' },
-  { value: kaggleVoteTotal, label: 'Kaggle votes' },
-]
+const featuredIds = new Set(['github', 'kaggle'])
 
 function getMotionProps(reduceMotion, inView, delay = 0) {
   if (reduceMotion) {
@@ -119,23 +117,28 @@ function getMotionProps(reduceMotion, inView, delay = 0) {
   }
 }
 
-function PlatformHeader({ row }) {
-  const label = row.badge ? `${row.name} · ${row.badge}` : row.name
-
+function ProfileIndex() {
   return (
-    <a
-      className="profile-ledger-header ledger-header"
-      href={row.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Open ${row.name} profile for ${row.handle}`}
-    >
-      <span className="profile-ledger-platform ledger-title">{label}</span>
-      <span className="profile-ledger-handle ledger-meta">
-        {row.handle}
-        <ExternalLink size={15} strokeWidth={1.8} aria-hidden="true" />
-      </span>
-    </a>
+    <nav className="signal-index" aria-label="Profile index">
+      {platformRows.map((row) => {
+        const stat = row.stats[row.lead || 0]
+        return (
+          <a
+            key={row.id}
+            href={`#profile-${row.id}`}
+            className="signal-index__card"
+            style={{ '--profile-platform-color': row.platformColor }}
+          >
+            <span className="signal-index__name">{row.name}</span>
+            <CountValue className="signal-index__value" value={stat.value} />
+            <span className="signal-index__meta">
+              {stat.label}
+              <span>{row.handle}</span>
+            </span>
+          </a>
+        )
+      })}
+    </nav>
   )
 }
 
@@ -148,38 +151,14 @@ function StatBand({ stats, inView, reduceMotion }) {
           className="profile-ledger-stat ledger-stat"
           {...getMotionProps(reduceMotion, inView, 0.08 + index * 0.06)}
         >
-          <span className={`profile-ledger-stat-num ledger-stat-num${String(stat.value).length > 6 ? ' is-compact' : ''}`}>
-            {stat.value}
-          </span>
+          <CountValue
+            className={`profile-ledger-stat-num ledger-stat-num${String(stat.value).length > 6 ? ' is-compact' : ''}`}
+            value={stat.value}
+          />
           <span className="profile-ledger-stat-label ledger-stat-label">{stat.label}</span>
         </motion.div>
       ))}
     </div>
-  )
-}
-
-function ProfilesOverview() {
-  return (
-    <section className="profiles-overview editorial-card" aria-label="Profile overview">
-      <div className="profiles-overview__copy">
-        <p className="profiles-overview__label">
-          <RadioTower size={15} aria-hidden="true" />
-          Public signal map
-        </p>
-        <h2 className="profiles-overview__title">A compact map of public proof.</h2>
-        <p className="profiles-overview__text">
-          Code, notebooks, models, problem solving, and credentials grouped by signal.
-        </p>
-      </div>
-      <div className="profiles-overview__stats" aria-label="Profile summary statistics">
-        {overviewStats.map((stat) => (
-          <div key={stat.label} className="profiles-overview__stat">
-            <span className="profiles-overview__stat-value">{stat.value}</span>
-            <span className="profiles-overview__stat-label">{stat.label}</span>
-          </div>
-        ))}
-      </div>
-    </section>
   )
 }
 
@@ -220,32 +199,37 @@ function LedgerRow({ row }) {
   const inView = useInView(ref, { once: true, margin: '-40px' })
   const reduceMotion = useReducedMotion()
 
+  const featured = featuredIds.has(row.id)
+
   return (
     <motion.section
       ref={ref}
-      className={`profile-ledger-row ledger-row section-hairline profile-ledger-row--${row.id}`}
+      id={`profile-${row.id}`}
+      className={`profile-ledger-row ledger-row profile-ledger-row--${row.id}${featured ? ' profile-ledger-row--featured' : ' profile-ledger-row--compact'}`}
       style={{ '--profile-platform-color': row.platformColor, '--ledger-accent': row.platformColor }}
       aria-labelledby={`profile-${row.id}-title`}
       {...getMotionProps(reduceMotion, inView)}
     >
-      <span className="section-ghost-num" aria-hidden="true">
-        {row.number}
-      </span>
-      <h2 id={`profile-${row.id}-title`} className="sr-only">
-        {row.name}
-      </h2>
-
-      <PlatformHeader row={row} />
-      <div className="profile-ledger-intel">
-        <p className="profile-ledger-summary">{row.summary}</p>
-        <div className="profile-focus-list" aria-label={`${row.name} focus areas`}>
-          {row.focus.map((item) => (
-            <span key={item} className="profile-focus-chip">
-              <Network size={13} aria-hidden="true" />
-              {item}
-            </span>
-          ))}
+      <header className="profile-card__head">
+        <div>
+          <p className="profile-card__index">{row.number}{row.badge ? ` · ${row.badge}` : ''}</p>
+          <h2 id={`profile-${row.id}-title`} className="profile-card__name">{row.name}</h2>
+          <p className="profile-ledger-summary">{row.summary}</p>
         </div>
+        <a
+          className="profile-card__open"
+          href={row.href}
+          target="_blank"
+          aria-label={`Open ${row.name} profile`}
+        >
+          {row.handle}
+          <ExternalLink size={14} strokeWidth={1.8} aria-hidden="true" />
+        </a>
+      </header>
+      <div className="profile-focus-list" aria-label={`${row.name} focus areas`}>
+        {row.focus.map((item) => (
+          <span key={item} className="profile-focus-chip">{item}</span>
+        ))}
       </div>
       <StatBand stats={row.stats} inView={inView} reduceMotion={reduceMotion} />
 
@@ -274,35 +258,6 @@ function LedgerRow({ row }) {
         </div>
       )}
 
-      {row.id === 'huggingface' && (
-        <div className="profile-link-panel">
-          <p className="profile-ledger-note">Compact-model experimentation, fine-tuning artifacts, datasets, and reasoning-model work.</p>
-          <a href={row.href} target="_blank" rel="noopener noreferrer" className="profile-link-panel__cta">
-            Open model hub
-            <ExternalLink size={14} aria-hidden="true" />
-          </a>
-        </div>
-      )}
-
-      {row.id === 'leetcode' && (
-        <div className="profile-link-panel">
-          <p className="profile-ledger-note">Ongoing DSA practice that keeps fundamentals sharp alongside applied AI/ML engineering.</p>
-          <a href={row.href} target="_blank" rel="noopener noreferrer" className="profile-link-panel__cta">
-            Open LeetCode
-            <ExternalLink size={14} aria-hidden="true" />
-          </a>
-        </div>
-      )}
-
-      {row.id === 'linkedin' && (
-        <div className="profile-link-panel">
-          <p className="profile-ledger-note">Best surface for career context, verified certifications, and direct outreach.</p>
-          <a href={row.href} target="_blank" rel="noopener noreferrer" className="profile-link-panel__cta">
-            Open LinkedIn
-            <ExternalLink size={14} aria-hidden="true" />
-          </a>
-        </div>
-      )}
     </motion.section>
   )
 }
@@ -321,14 +276,21 @@ export default function ProfilesPage() {
           description="Code, notebooks, models, problem solving, and professional context."
         />
 
-        <ProfilesOverview />
+        <ProfileIndex />
 
         <LiveContributionStream />
 
-        <div className="profiles-ledger" aria-label="External profile activity ledger">
-          {platformRows.map((row) => (
-            <LedgerRow key={row.id} row={row} />
-          ))}
+        <div className="profiles-ledger" aria-label="External profile activity">
+          {platformRows
+            .filter((row) => featuredIds.has(row.id))
+            .map((row) => (
+              <LedgerRow key={row.id} row={row} />
+            ))}
+          {platformRows
+            .filter((row) => !featuredIds.has(row.id))
+            .map((row) => (
+              <LedgerRow key={row.id} row={row} />
+            ))}
         </div>
       </section>
     </>
