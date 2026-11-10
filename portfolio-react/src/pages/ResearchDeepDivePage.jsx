@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import SEO from '../components/SEO'
+import CountValue from '../components/CountValue'
 import TechnicalArchitectureMap from '../components/TechnicalArchitectureMap'
 import { researchDeepDives } from '../data'
 
@@ -138,7 +139,6 @@ function ResearchDeepDiveContent({ item }) {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '0.65rem',
             marginBottom: '2.5rem',
           }}
@@ -150,16 +150,14 @@ function ResearchDeepDiveContent({ item }) {
               className="editorial-card"
               style={{ padding: '1rem 1.1rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}
             >
-              <span style={{
-                fontSize: 'var(--text-stat)',
-                fontWeight: 'var(--font-weight-bold)',
-                color: 'var(--color-accent)',
-                fontFamily: 'var(--font-mono)',
-                fontFeatureSettings: '"tnum" 1',
-                lineHeight: 1,
-              }}>
-                {m.value}
-              </span>
+                <CountValue value={m.value} style={{
+                  fontSize: 'var(--text-stat)',
+                  fontWeight: 'var(--font-weight-bold)',
+                  color: 'var(--color-accent)',
+                  fontFamily: 'var(--font-mono)',
+                  fontFeatureSettings: '"tnum" 1',
+                  lineHeight: 1,
+                }} />
               <span style={{
                 fontSize: '0.7rem',
                 fontWeight: 500,

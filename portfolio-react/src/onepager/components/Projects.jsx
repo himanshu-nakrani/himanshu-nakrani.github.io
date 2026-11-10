@@ -64,6 +64,7 @@ function ProjectRow({ project, index }) {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Live Demo (opens in a new tab)"
             >
               Live ↗
             </a>
@@ -74,6 +75,7 @@ function ProjectRow({ project, index }) {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={`${project.link.includes('huggingface.co') ? 'Model' : 'Source'} (opens in a new tab)`}
             >
               {project.link.includes('huggingface.co') ? 'Model ↗' : 'Source ↗'}
             </a>

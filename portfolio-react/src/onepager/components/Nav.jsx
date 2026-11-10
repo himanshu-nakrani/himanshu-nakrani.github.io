@@ -100,6 +100,7 @@ export default function Nav({ isDark, onThemeChange }) {
               className="btn btn--ghost btn--sm nav__resume"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Resume (opens in a new tab)"
             >
               <FileText size={14} aria-hidden="true" />
               Resume
